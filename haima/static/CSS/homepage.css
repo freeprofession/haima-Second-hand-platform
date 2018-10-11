@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, Helvetica, Sans-Serif;
+    overflow: hidden;
+}
+
+a {
+    cursor: pointer;
+    color: #514820;
+}
+
+ul, ol, li, td, th, img, h1, h2, h3, h4, h5, h6, dl, dt, dd, form ,body {
+    padding: 0px;
+    margin: 0px;
+}
+
+#head {
+    background-color: #f4f4f4;
+    width: 1600px;
+    height: 26px;
+}
+
+ul {
+    list-style: none;
+    width: 1000px;
+    margin-left: 250px;
+
+}
+
+li {
+    float: left;
+    width: 150px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 26px;
+}
+
+ul li a:link{
+
+    text-decoration: none;
+}
+
+a:hover{
+    color: hotpink;
+    text-decoration: none;
+}
