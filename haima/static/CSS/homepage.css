@@ -8,7 +8,7 @@ a {
     color: #514820;
 }
 
-ul, ol, li, td, th, img, h1, h2, h3, h4, h5, h6, dl, dt, dd, form ,body {
+ul, ol, li, td, th, img, h1, h2, h3, h4, h5, h6, dl, dt, dd, form, body ,nav,div{
     padding: 0px;
     margin: 0px;
 }
@@ -19,14 +19,13 @@ ul, ol, li, td, th, img, h1, h2, h3, h4, h5, h6, dl, dt, dd, form ,body {
     height: 26px;
 }
 
-ul {
+header ul {
     list-style: none;
     width: 1000px;
     margin-left: 250px;
-
 }
 
-li {
+header li {
     float: left;
     width: 150px;
     text-align: center;
@@ -34,12 +33,69 @@ li {
     line-height: 26px;
 }
 
-ul li a:link{
-
+ul li a:link {
     text-decoration: none;
 }
 
-a:hover{
-    color: hotpink;
+a:hover {
+    color: red;
     text-decoration: none;
 }
+
+#search div {
+    float: left;
+}
+
+#logo {
+    margin-left: 300px;
+}
+
+#search {
+    line-height: 100px;
+}
+
+#searcher {
+    height: 30px;
+    width: 580px;
+    border: #17bdbd 2px solid;
+}
+
+#searcher2 {
+    height: 36px;
+    width: 100px;
+    background-color: #17bdbd;
+    border: 3px #17bdbd solid;
+    color: #f4f4f4;
+}
+
+#search div {
+    float: left;
+}
+
+nav {
+    clear: both;
+    position: relative;
+    top: -50px;
+}
+
+nav ul li {
+    float: left;
+    list-style: none;
+    text-align: center;
+    background-color: #ffda44;
+    height: 44px;
+    line-height: 44px;
+}
+
+nav ul li:nth-child(1) {
+    width: 480px;
+}
+
+nav ul li:nth-child(2) {
+    width: 15px;
+}
+
+nav ul li:nth-child(3), nav ul li:nth-child(4), nav ul li:nth-child(5), nav ul li:nth-child(6), nav ul li:nth-child(7) {
+    width: 200px;
+}
+
