@@ -1,0 +1,140 @@
+body
+{
+	font-family:'Microsoft Yahei';font-size:12px;color:#666;
+}
+html,body
+{
+	height:100%
+}
+.header_con{
+	background-color:#f7f7f7;
+	height:29px;
+	border-bottom:1px solid #dddddd
+}
+.header{
+	width:1200px;
+	height:29px;
+	margin:0 auto;
+}
+
+.welcome,.login_info,.login_btn,.user_link{
+	line-height:29px;
+}
+
+.login_info{
+	display:none;
+}
+
+.login_info em{color:#ff8800}
+
+.login_info .quit{
+	color:#666;
+	padding-left:10px;
+}
+
+.login_info .quit:hover{
+	color:#ff8800;
+}
+
+.login_btn a,.user_link a{
+	color:#666;
+}
+
+.login_btn a:hover,.user_link a:hover{
+	color:#ff8800;
+}
+
+.login_btn span,.user_link span{
+	color:#cecece;
+	margin:0 10px;
+}
+.search_bar{width:1200px;height:115px;margin:0 auto;}
+.logo{width:150px;height:59px;margin:29px 0 0 17px;}
+
+.search_wrap{width:618px;height:60px;margin:34px 0 0 124px;}
+
+.search_con{width:616px;height:32px;border:2px solid #ffda44;background:url(../images/icons.png) 10px -340px no-repeat;}
+
+.search_con .input_text{width:470px;height:28px;border:0px;margin:2px 0 0 36px;outline:none;font-size:12px;color:#737272;font-family:'Microsoft Yahei'}
+
+.search_con .input_btn{
+	width:100px;height:32px;background-color:#ffda44;border:0px;font-size:14px;color:#fff;font-family:'Microsoft Yahei';outline:none;cursor:pointer;
+}
+.search_suggest li a:hover{
+	color:#f80;
+}
+
+.mt40{margin-top:40px}
+
+.guest_cart{
+	width:200px;height:32px;position:absolute;top:62px;left:50%;margin-left:400px;z-index:9997;
+}
+
+.guest_cart .cart_name{
+	width:158px;height:32px;line-height:32px;border:1px solid #dddddd;display:block;background:url(../images/icons.png) 13px -302px no-repeat #fff;font-size:14px;color:#fe0000;text-indent:56px;
+}
+
+.guest_cart .goods_count{
+	width:40px;height:34px;text-align:center;line-height:34px;font-size:18px;
+	font-weight:bold;color:#fff;background-color:#fe0000;
+}
+.guest_cart:hover .cart_name{
+	position:relative;
+	z-index:9999;
+	border-bottom:1px solid #fff;
+}
+.guest_cart:hover .cart_goods_show{
+	display:block;
+}
+.cart_goods_show{
+	position:absolute;
+	width:320px;
+	padding:10px;
+	background:#fff;
+	border:1px solid #ddd;
+	right:0px;
+	top:33px;
+	z-index:9998;
+	display:none;
+}
+.cart_goods_show li{
+	border-bottom:1px dotted #ddd;
+	overflow:hidden;
+}
+.cart_goods_show li img{
+	margin-top:10px;
+	float:left;
+	width:50px;
+	height:50px;
+}
+.cart_goods_show li h4{
+	float:left;
+	line-height:70px;
+	font-size:12px;
+	margin-left:20px;
+}
+.cart_goods_show li div{
+	float:right;
+	line-height:70px;
+	font-size:13px;
+	margin-right:20px;
+}
+#aution_Navigation{
+    padding-left: 50px;
+}
+#aution_Navigation button{
+	width: 120px;
+}
+.Navigation_information{
+    height: 20px;
+}
+.Navigation_information div{
+    float: left;
+}
+#aution_classification {
+    padding-left: 500px;
+    font-size: 16px;
+}
+#aution_classification div{
+    width: 100px;
+}
