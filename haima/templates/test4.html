@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+    <style>
+        #div2 {
+            width: 400px;
+            height: 200px;
+            background: yellow;
+        }
+
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background: green;
+        }
+        .add2 {
+            width: 100px;
+            height: 100px;
+            background: green;
+        }
+        #div3{
+            width: 100px;
+            height: 200px;
+            background: hotpink;
+            margin-left: 300px;
+        }
+
+        /*.add{background:red;}*/
+        .add {
+            background-color: red !important;
+            border-radius: 10%;
+        }
+    </style>
+</head>
+<body>
+<div id="div2">
+    <div id="div1"></div>
+    <div id="div3"></div>
+</div>
+<script>
+    $("#div1").hover(function () {
+        $("#div1").removeClass('add2');
+        $("#div2").addClass('add');
+        $("#div3").addClass('add');
+    }, function () {
+        $("#div1").removeClass('add');
+        $("#div2").removeClass('add');
+        $("#div3").removeClass('add');
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        function change_div(id) {
+            if (id == 'gsywly') {
+                document.getElementById("gsgs").style.display = 'none';
+                document.getElementById("gsywly").style.display = 'block';
+            }
+            else {
+                document.getElementById("gsywly").style.display = 'none';
+                document.getElementById("gsgs").style.display = 'block';
+            }
+        }
+    </script>
+
+    <style type="text/css">
+
+        #gsywly {
+            display: none;
+        }
+
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<ul>
+
+    <li id="a"><a href="#" onmouseover="change_div('gsgs')">集团公告</a></li>
+    <li id="b"><a href="#" onmouseover="change_div('gsywly')">单位公告</a></li>
+
+</ul>
+
+<div id="gsgs">A</div>
+<div id="gsywly">B</div>
+</body>
+</html>
