@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,9 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" href="../static/CSS/my_auction.css">
       <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="../static/JS/slide.js"></script>
+    <script type="text/javascript" src="../static/JS/my_auction.js"></script>
 </head>
-<body>
+<body onload="timer()">
 <div class="header_con">
     <div class="header">
         <div class="welcome fl">欢迎来到海马二手商城!</div>
@@ -59,6 +60,7 @@
     </div>
 </div>
 <hr>
+<hr>
 <div id="my_auction_goods">
     <div>
         <img src="../static/Images/banner02.jpg" alt="" height="360px" width="400px">
@@ -74,7 +76,7 @@
                 <br>
                 <div>结束时间：<span id="acution_goods_end_time">1999/4/4</span></div>
                 <br>
-                <div>保证金：<span>200</span></div>
+                <div>保证金：<span>200</span>元</div>
                 <br>
                 <div>单次加价最低：<span id="auction_goods_premium">50元</span></div>
                 <br>
@@ -84,7 +86,7 @@
                 <br>
                 <div>当前竞拍者：<span id="acution_goods_start_time">张三</span></div>
                 <br>
-                <div>距离拍卖结束：<span id="acution_goods_start_time">4小时19分</span></div>
+                <div>距离拍卖结束:<span id = "timer"></span></div>
                 <br>
                 <div style="padding-left: 300px;">
                     <button>
