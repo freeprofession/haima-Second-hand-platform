@@ -456,7 +456,7 @@ html, body {
     left: 0px;
     top: 30px;
     margin-left: 0px;
-    background: rgba(0, 0, 0, 0.6);
+    background: white;
     z-index: 1000;
     display: none;
 }
@@ -875,7 +875,6 @@ html, body {
 
 /* 页面底部样式 */
 .footer {
-    border-top: 1px solid #fe0000;
     margin: 30px 0;
 }
 
@@ -933,7 +932,7 @@ html, body {
 }
 
 .r_wrap {
-    width: 980px;
+    width: 1200px;
 }
 
 /* 新品推荐样式 */
@@ -1459,7 +1458,7 @@ html, body {
 
 .login_form_bg {
     height: 480px;
-    background-color: #810101
+    background-color: #fff51e;
 }
 
 .no-mp {
@@ -1481,9 +1480,9 @@ html, body {
 
 .slogan {
     width: 30px;
-    height: 300px;
-    font-size: 24px;
-    color: #f9dddd;
+    height: 250px;
+    font-size: 25px;
+    color: #343f40;
     text-align: center;
     line-height: 30px;
     margin: 65px 0 0 30px
@@ -1516,7 +1515,7 @@ html, body {
 
 /* .login_title a:first-child{border-right:1px solid #e0e0e0} */
 .login_title a.cur {
-    color: #e3101e
+    color: #ffd529
 }
 
 .form_input {
@@ -1635,7 +1634,7 @@ html, body {
     position: absolute;
     left: 0;
     top: 180px;
-    background-color: #ff5757;
+    background-color: #ffd529;
     color: #fff;
     font-size: 22px;
     border: 0px;

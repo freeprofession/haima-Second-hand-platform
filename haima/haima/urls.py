@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from haima import view
+
 urlpatterns = [
     path('haima/', view.homepage),
+    path('login/', view.login),
+    path('register/', view.register),
+    path('user/', view.user_center_info),
 ]
