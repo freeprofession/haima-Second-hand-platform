@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/static/js/register_ok.js"></script>
+</head>
+<body>
+<div align="center">
+    <h3 style="color: brown">注册成功</h3>
+    <p>
+        <b id="second">5</b>秒后回到登录 &nbsp;&nbsp; <a href="/login/">点击跳转</a>
+    </p>
+</div>
+<script type="text/javascript">
+    //设定倒数秒数
+    var t = 10;
+
+    //显示倒数秒数
+    function showTime() {
+        t -= 1;
+        document.getElementById('second').innerHTML = t;
+        if (t == 0) {
+            location.href = '/login/';
+        }
+        //每秒执行一次,showTime()
+        setTimeout("showTime()", 1000);
+    }
+
+
+    //执行showTime()
+    showTime();
+</script>
+</body>
+</html>

@@ -36,13 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp.apps.MyappConfig',
+    'captcha'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -74,11 +75,18 @@ WSGI_APPLICATION = 'haima.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'haima',
+        'USER': 'user',
+        'PASSWORD': '123456',
+        'HOST': '47.100.200.132',
+        'PORT': '3306'
     }
 }
-
+# 配置失效时间为半个小时
+SESSION_COOKIE_AGE = 60 * 30
+# 关闭浏览器清除cookie
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 

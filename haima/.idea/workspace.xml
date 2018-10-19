@@ -1,0 +1,993 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9465c3f6-b129-4a55-9332-5527696107d3" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haima/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+            <state relative-caret-position="448">
+=======
+            <state relative-caret-position="400">
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="e#629#661#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file leaf-file-name="view.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haima/view.py">
+=======
+      <file leaf-file-name="auction-index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/auction-index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1950">
+              <caret line="78" column="12" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aution-index.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/CSS/aution-index.css">
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="236">
+              <caret line="101" column="20" lean-forward="true" selection-start-line="101" selection-start-column="20" selection-end-line="101" selection-end-column="20" />
+=======
+      <file leaf-file-name="auction-index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/auction-index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="88" column="22" selection-start-line="88" selection-start-column="22" selection-end-line="88" selection-end-column="22" />
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <file leaf-file-name="homepage.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="392">
+              <caret line="119" column="22" lean-forward="true" selection-start-line="119" selection-start-column="22" selection-end-line="119" selection-end-column="22" />
+              <folding>
+                <element signature="n#style#0;n#img#0;n#a#0;n#div#1;n#div#2;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+=======
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/CSS/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+=======
+      <file leaf-file-name="auction-index.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/CSS/auction-index.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="436">
+              <caret line="142" column="4" selection-start-line="142" selection-start-column="4" selection-end-line="143" selection-end-column="18" />
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/CSS/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="519" column="20" selection-start-line="519" selection-start-column="14" selection-end-line="519" selection-end-column="20" />
+=======
+      <file leaf-file-name="homepage.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="8" selection-end-column="72" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reset.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/CSS/reset.css">
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+            <state relative-caret-position="28">
+              <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+=======
+            <state relative-caret-position="200">
+              <caret line="8" selection-start-line="8" selection-end-line="26" selection-end-column="16" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file leaf-file-name="guess.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/JS/guess.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="560">
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
+=======
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haima/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2825">
+              <caret line="113" selection-start-line="113" selection-end-line="113" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file leaf-file-name="test2.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/test2.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="448">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test3.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/test3.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1879">
+              <caret line="103" column="93" selection-start-line="103" selection-start-column="93" selection-end-line="103" selection-end-column="93" />
+=======
+      <file leaf-file-name="my_auction.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/my_auction.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="625">
+              <caret line="90" column="28" selection-start-line="90" selection-start-column="28" selection-end-line="90" selection-end-column="28" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#8;n#div#0;n#div#1;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file leaf-file-name="test4.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/test4.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="9" column="26" lean-forward="true" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
+=======
+      <file leaf-file-name="view.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haima/view.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="125">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+=======
+      <file leaf-file-name="my_auction.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/CSS/my_auction.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="386">
+              <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+        <option value="CSS File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>slide</find>
+      <find>#999</find>
+      <find>251,241,245</find>
+      <find>f1</find>
+      <find>subnav</find>
+      <find>prev</find>
+      <find>navbar_con</find>
+      <find>pip3 install django</find>
+      <find>interval</find>
+      <find>nginx.repo</find>
+      <find>level1</find>
+      <find>news_title</find>
+      <find>next</find>
+      <find>navbar</find>
+      <find>sub_menu</find>
+      <find>list_model</find>
+      <find>197</find>
+      <find>guess</find>
+      <find>se</find>
+      <find>show_count</find>
+      <find>goods_count</find>
+      <find>advs</find>
+      <find>level2</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/haima/settings.py" />
+        <option value="$PROJECT_DIR$/template/homepage.html" />
+        <option value="$PROJECT_DIR$/haima/view.py" />
+        <option value="$PROJECT_DIR$/static/CSS/homepage.css" />
+        <option value="$PROJECT_DIR$/static/JS/轮播.js" />
+        <option value="$PROJECT_DIR$/static/CSS/reset.css" />
+        <option value="$PROJECT_DIR$/templates/test.html" />
+        <option value="$PROJECT_DIR$/templates/test3.html" />
+        <option value="$PROJECT_DIR$/templates/test2.html" />
+        <option value="$PROJECT_DIR$/templates/test4.html" />
+        <option value="$PROJECT_DIR$/static/JS/guess.js" />
+        <option value="$PROJECT_DIR$/static/CSS/main.css" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/templates/homepage.html" />
+=======
+        <option value="$PROJECT_DIR$/haima/urls.py" />
+        <option value="$PROJECT_DIR$/static/CSS/aution index.css" />
+        <option value="$PROJECT_DIR$/templates/auction index.html" />
+        <option value="$PROJECT_DIR$/static/CSS/aution-index.css" />
+<<<<<<< HEAD
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+=======
+        <option value="$PROJECT_DIR$/static/CSS/auction-index.css" />
+        <option value="$PROJECT_DIR$/templates/auction-index.html" />
+        <option value="$PROJECT_DIR$/static/CSS/my_auction.css" />
+        <option value="$PROJECT_DIR$/templates/my_auction.html" />
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+<<<<<<< HEAD
+<<<<<<< HEAD
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="450" />
+    <option name="y" value="20" />
+    <option name="width" value="1180" />
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
+=======
+  <component name="ProjectFrameBounds" extendedState="7">
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+    <option name="width" value="1135" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+    <option name="height" value="1040" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="CSS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="JS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="haima" type="b2602c69:ProjectViewProjectNode" />
+              <item name="haima" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SearchEverywhereHistoryKey" value="navbar_con&#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="E:/项目" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2\static\images" />
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2\static\JS" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2\static" />
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2" />
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2\haima" />
+    </key>
+<<<<<<< HEAD
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima\static\images" />
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2\static\images" />
+      <recent name="C:\Users\Administrator\Desktop\Item\ecitai\haima2\static\JS" />
+    </key>
+=======
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Django server.haima">
+    <configuration name="test3.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:59946/haima/templates/test3.html" />
+    <configuration name="haima" type="Python.DjangoServer" factoryName="Django server">
+      <module name="haima" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="haima.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+    </configuration>
+    <list>
+      <item itemvalue="Django server.haima" />
+      <item itemvalue="JavaScript Debug.test3.html" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.test3.html" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9465c3f6-b129-4a55-9332-5527696107d3" name="Default" comment="" />
+      <created>1539153805749</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1539153805749</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.12551723" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14973958" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32965517" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6076">
+          <caret line="217" column="21" selection-start-line="217" selection-start-column="21" selection-end-line="217" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5824">
+          <caret line="208" column="49" selection-start-line="208" selection-start-column="49" selection-end-line="208" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/auction-index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1950">
+          <caret line="78" column="12" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="4" column="29" lean-forward="true" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="8" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/reset.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="26" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2825">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/aution-index.css">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="1316">
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+=======
+        <state relative-caret-position="3350">
+          <caret line="134" column="19" selection-start-line="134" selection-start-column="19" selection-end-line="134" selection-end-column="19" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="448">
+=======
+        <state relative-caret-position="400">
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="3164">
+=======
+        <state relative-caret-position="2825">
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="140">
+=======
+        <state relative-caret-position="125">
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="4872">
+          <caret line="174" column="13" selection-start-line="174" selection-start-column="13" selection-end-line="174" selection-end-column="13" />
+=======
+        <state relative-caret-position="550">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/reset.css" />
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css" />
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3164">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4872">
+          <caret line="174" column="13" selection-start-line="174" selection-start-column="13" selection-end-line="174" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/reset.css" />
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css" />
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3164">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css" />
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3164">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css" />
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3164">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css" />
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="20" column="34" lean-forward="true" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3164">
+          <caret line="113" lean-forward="true" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css" />
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="16" column="40" lean-forward="true" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="20" column="21" lean-forward="true" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2825">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <state relative-caret-position="448">
+=======
+        <state relative-caret-position="400">
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+=======
+        <state relative-caret-position="450">
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#629#661#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haima/view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/templates/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+=======
+    <entry file="file://$PROJECT_DIR$/static/JS/轮播.js" />
+    <entry file="file://$PROJECT_DIR$/static/CSS/reset.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="8" selection-start-line="8" selection-end-line="26" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="175">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="8" selection-end-column="72" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+=======
+        <state relative-caret-position="3400">
+          <caret line="136" column="1" selection-start-line="136" selection-start-column="1" selection-end-line="136" selection-end-column="1" />
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <state relative-caret-position="28">
+          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/test2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/test3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1879">
+          <caret line="103" column="93" selection-start-line="103" selection-start-column="93" selection-end-line="103" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="2084" column="4" selection-start-line="2084" selection-start-column="4" selection-end-line="2084" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/test4.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="9" column="26" lean-forward="true" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/JS/guess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/images/icons.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/images/icons02.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/images/goods_450.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="519" column="20" selection-start-line="519" selection-start-column="14" selection-end-line="519" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="119" column="22" lean-forward="true" selection-start-line="119" selection-start-column="22" selection-end-line="119" selection-end-column="22" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#a#0;n#div#1;n#div#2;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+=======
+        <state relative-caret-position="100">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+=======
+        <state relative-caret-position="25">
+          <caret line="74" selection-start-line="74" selection-end-line="85" selection-end-column="6" />
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/banner01.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/goods/goods007.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/goods/goods005.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/goods/goods002.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/goods/goods004.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/goods/goods006.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/bar_code.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/banner02.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/Images/banner03.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/auction-index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="88" column="22" selection-start-line="88" selection-start-column="22" selection-end-line="88" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/my_auction.css">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="236">
+          <caret line="101" column="20" lean-forward="true" selection-start-line="101" selection-start-column="20" selection-end-line="101" selection-end-column="20" />
+>>>>>>> 5b1ad957ff71c08afc2dd108ffdb45f473f3a97e
+=======
+        <state relative-caret-position="386">
+          <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/CSS/auction-index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="142" column="4" selection-start-line="142" selection-start-column="4" selection-end-line="143" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/my_auction.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="90" column="28" selection-start-line="90" selection-start-column="28" selection-end-line="90" selection-end-column="28" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#8;n#div#0;n#div#1;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+>>>>>>> e0dc8265321ab5c11c7810cc86c2ee5ee003fc17
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

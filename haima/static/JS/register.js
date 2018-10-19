@@ -1,83 +1,56 @@
-var vm = new Vue({
-	el: '#app',
-	data: {
-		error_name: false,
-		error_password: false,
-		error_check_password: false,
-		error_phone: false,
-		error_allow: false,
-		error_image_code: false,
-		error_sms_code: false,
+//验证密码
+function checkPassword() {
+    // pwd_ = document.getElementById('pwd').value;
+    var userpasswd = document.getElementById('pwd');
+    var pattern = /^\w{6,16}$/;
+    if (!pattern.test(userpasswd.value)) {
+        document.getElementById('pwd_error').style.color = 'Red';
+        document.getElementById('pwd_error').style.display = 'block';
+        return false
+    }
+    else {
+        document.getElementById('pwd_error').style.display = 'none';
+        return true
+    }
+}
 
-		username: '',
-		password: '',
-		password2: '',
-		mobile: '', 
-		image_code: '',
-		sms_code: '',
-		allow: false
-	},
-	methods: {
-		check_username: function (){
-			var len = this.username.length;
-			if(len<5||len>20) {
-				this.error_name = true;
-			} else {
-				this.error_name = false;
-			}
-		},
-		check_pwd: function (){
-			var len = this.password.length;
-			if(len<8||len>20){
-				this.error_password = true;
-			} else {
-				this.error_password = false;
-			}		
-		},
-		check_cpwd: function (){
-			if(this.password!=this.password2) {
-				this.error_check_password = true;
-			} else {
-				this.error_check_password = false;
-			}		
-		},
-		check_phone: function (){
-			var re = /^1[345789]\d{9}$/;
-			if(re.test(this.mobile)) {
-				this.error_phone = false;
-			} else {
-				this.error_phone = true;
-			}
-		},
-		check_image_code: function (){
-			if(!this.image_code) {
-				this.error_image_code = true;
-			} else {
-				this.error_image_code = false;
-			}	
-		},
-		check_sms_code: function(){
-			if(!this.sms_code){
-				this.error_sms_code = true;
-			} else {
-				this.error_sms_code = false;
-			}
-		},
-		check_allow: function(){
-			if(!this.allow) {
-				this.error_allow = true;
-			} else {
-				this.error_allow = false;
-			}
-		},
-		// 注册
-		on_submit: function(){
-			this.check_username();
-			this.check_pwd();
-			this.check_cpwd();
-			this.check_phone();
-			this.check_sms_code();
-			this.check_allow();
-		}
-	}
-});
+//确认密码
+function ConfirmPassword() {
+    var userpasswd = document.getElementById('pwd');
+    var userConPassword = document.getElementById('cpwd');
+    if ((userpasswd.value) !== (userConPassword.value) || userConPassword.value.length === 0) {
+        document.getElementById('cpwd_error').style.color = 'Red';
+        document.getElementById('cpwd_error').style.display = 'block';
+        return false;
+    }
+    else {
+        document.getElementById('cpwd_error').style.display = 'none';
+        return true;
+    }
+}
+
+//验证手机号
+function checkPhone() {
+    var phone = document.getElementById('phone');
+    var pattern = /^1[34578]\d{9}$/; //验证手机号正则表达式
+    if (!pattern.test(phone.value)) {
+        document.getElementById('phone_error').style.color = 'Red';
+        document.getElementById('phone_error').style.display = 'block';
+        return false;
+    }
+    else {
+        document.getElementById('phone_error').style.display = 'none';
+        return true;
+    }
+}
+
+function checkall() {
+    flag1 = checkPassword()
+    flag2 = ConfirmPassword()
+    flag3 = checkPhone()
+    return flag1 && flag2 && flag3
+
+
+}
+
+
