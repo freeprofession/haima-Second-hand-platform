@@ -1611,6 +1611,7 @@ label:hover{
     position: absolute;
     left: 0;
     top: 0
+
 }
 
 .pass_input {
@@ -1618,16 +1619,14 @@ label:hover{
     background-position: 280px -95px;
 }
 
-.user_error, .pwd_error {
+.user_error {
     color: #f00;
     position: absolute;
     left: 0;
     top: 43px;
 }
 
-.pwd_error {
-    top: 110px;
-}
+
 
 .more_input {
     position: absolute;
@@ -1654,6 +1653,12 @@ label:hover{
 .more_input a:hover {
     color: #ff8800
 }
+
+#code_img {
+    cursor: pointer;
+}
+
+
 
 .input_submit {
     width: 100%;
@@ -1828,14 +1833,14 @@ label:hover{
     height: 30px;
     line-height: 30px;
     margin-left: 87px;
-    color: #e62e2e;
+    color: #73858C;
 }
 
 .reg_form li .error_tip2 {
     float: left;
     height: 20px;
     line-height: 20px;
-    color: #e62e2e;
+    color: #73858C;
 }
 
 .sub_page_name {
