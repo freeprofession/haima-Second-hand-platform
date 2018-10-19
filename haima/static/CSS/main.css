@@ -55,6 +55,26 @@ html, body {
     margin: 0 10px;
 }
 
+.user_link ul {
+    margin-top: -28px;
+    margin-left: 160px;
+}
+
+#order_show {
+    position: absolute;
+    top: 20px;
+    left: 1282px;
+    width: 50px;
+    padding: 10px;
+    background: #f7f7f7;
+    display: none;
+    z-index: 10000;
+}
+
+#my_order {
+    height: 30px;
+}
+
 /* logo、搜索框、购物车样式 */
 
 .search_bar {
@@ -398,31 +418,16 @@ html, body {
 }
 
 .slide {
-    width: 100%;
-    height: 350px;
+    width: 640px;
+    height: 310px;
     position: relative;
-}
-
-.slide li {
-    width: 100%;
-    height: 350px;
-    position: absolute;
-    left: 350px;
-    top: 0px;
-    overflow: hidden;
-}
-
-.slide li a {
-    display: block;
-    width: 100%;
-    height: 350px;
 }
 
 .slide li a img {
     position: absolute;
-    left: 56.7%;
+    left: 0%;
     top: 0px;
-    margin-left: -800px;
+    margin-left: 390px;
 }
 
 .prev, .next {
@@ -608,18 +613,38 @@ html, body {
 #mid {
     width: 1200px;
     height: 200px;
-    margin: -10px auto 0;
+    margin: 40px auto 0;
 }
 
 #mid div {
     float: left;
 }
 
-#user_message img {
-    height: 80px;
-    width: 80px;
+#image {
+    position: absolute;
+    top: 338px;
+    left: 132px;
+    z-index: 0;
     border-radius: 50%;
     border: 10px #f3f3f3 solid
+}
+#image img{
+    border-radius: 50%;
+}
+#pic {
+    position: absolute;
+    z-index: 1;
+    top: 348px;
+    left: 142px;
+    opacity: 0;
+    border-radius: 50%;
+
+}
+label:hover{
+    cursor: pointer;
+}
+#wel{
+    margin-left: 120px;
 }
 
 .box span {
@@ -647,7 +672,8 @@ html, body {
 }
 
 #guess {
-    margin-left: 50px;
+    margin-left: 32px;
+    margin-top: -15px;
 }
 
 .item-type li {
@@ -875,7 +901,8 @@ html, body {
 
 /* 页面底部样式 */
 .footer {
-    margin: 30px 0;
+    border-top: 1px #ffda44 solid;
+    margin: 50px 0;
 }
 
 .foot_link {
@@ -1458,7 +1485,7 @@ html, body {
 
 .login_form_bg {
     height: 480px;
-    background-color: #fff51e;
+    background-color: #ffe215;
 }
 
 .no-mp {
@@ -2412,10 +2439,10 @@ html, body {
 }
 
 .user_info_list {
-    background-color: #f9f9f9;
+
     margin: 10px 0 15px;
     padding: 10px 0;
-    height: 90px;
+
 }
 
 .user_info_list li {
@@ -2432,6 +2459,19 @@ html, body {
 
 .info_con {
     width: 980px;
+    height: 140px;
+    background-color: #f9f9f9;
+}
+
+.info_con div {
+    float: left;
+    margin-left: 20px;
+}
+
+.info_con img {
+    margin-top: 30px;
+    margin-left: 30px;
+    border-radius: 50%;
 }
 
 .info_l {

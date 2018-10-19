@@ -22,4 +22,9 @@ urlpatterns = [
     path('login/', view.login),
     path('register/', view.register),
     path('user/', view.user_center_info),
+    path('publish/', view.publish),
+    path('auction/', view.auction),
+    path('sale/', view.sale),
+    path('buy/', view.buy),
+    path('address/', view.address),
 ]
