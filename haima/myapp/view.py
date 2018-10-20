@@ -1,4 +1,3 @@
-from django.shortcuts import HttpResponse, render
 import pymysql
 import redis
 
@@ -21,7 +20,6 @@ from captcha.helpers import captcha_image_url
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
-
 
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
