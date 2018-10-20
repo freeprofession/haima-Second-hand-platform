@@ -162,6 +162,14 @@
         })
 
     })
+        //验证码更换！！
+    $('#code_img').click(function () {
+        $.get("/captcha/refresh/", function (result) {
+            $('#code_img').attr('src', result['image_url']);
+            $('#hash').val(result['key'])
+        }, 'json');
+
+    })
 
 </script>
 </html>

@@ -11,19 +11,26 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
-r = redis.Redis(host="127.0.0.1", port=6379)
-conn = pymysql.connect(host='127.0.0.1', user='root', password='sb123456', database='haimaershou', charset='utf8')
+r = redis.Redis(host="47.100.200.132", port=6379)
+conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
 
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    username = request.session.get('username')
+    if username:
+        login_status = username
+        return render(request, 'homepage.html', {"login_status": login_status})
+    else:
+        login_status = '未登录'
+        return render(request, 'homepage.html', {"login_status": login_status})
 
 
 # 登录
 def login(request):
     username = request.session.get('username')
     if username:
+        print(username)
         hashkey = CaptchaStore.generate_key()
         image_url = captcha_image_url(hashkey)
         code = CaptchaStore.generate_key()
@@ -80,6 +87,7 @@ def login_ajax(request):
             print(login_code['status'])
             if password == user_login['password']:  # 判断用户名密码
                 error = "login_ok"
+                request.session['username'] = username
                 return HttpResponse(json.dumps({"msg": error}))
             else:
                 error = "login_error"  # 用户名或密码错误
@@ -146,8 +154,9 @@ def register_ajax(request):
         check_all = request.POST.get("check_all")
         print(username, password, phone, check_code, check_all, login_code)
         if login_code['status'] == 1:  # 图片验证码
-            check_code = check_code.decode('utf8')
+
             if check_code:  # 手机验证码待定！
+                check_code = check_code.decode('utf8')
                 if user_error == "" and check_all == 'true':
                     cur.execute("insert into user(username,password,phone) values(%s,%s,%s)",
                                 [username, password, phone])
