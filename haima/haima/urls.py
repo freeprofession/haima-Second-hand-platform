@@ -29,4 +29,9 @@ urlpatterns = [
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('user/', view.user_center_info),
+    path('publish/', view.publish),
+    path('auction/', view.auction),
+    path('sale/', view.sale),
+    path('buy/', view.buy),
+    path('address/', view.address),
 ]

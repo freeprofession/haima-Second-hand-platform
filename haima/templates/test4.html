@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<form action=""  method="post" enctype="multipart/form-data">
+                <label for="fileId"><img src="../static/images/addpic.jpg" alt=""></label>
+            <input type="file" id="fileId" name="image" value="请上传图片"/>
+            <input type="hidden" id="hiddId" name="id" value="1"/>
+            <input type="button" id="submit" value="上传"/>
+</form>
+   
+<script type="text/javascript">
+    $("#submit").click(function () {
+        var a = new FormData();
+        a.append("image", $("#fileId")[0].files[0]);
+        a.append("id", 1);
+        $.ajax({
+            url: "http://localhost.....",
+            xhrFields: {
+                withCredentials: true
+            },
+            type: "POST",
+            cache: false,
+            data: a,
+            processData: false,
+            contentType: false,
+            async: false,
+            success: function (result) {
+
+            }
+            //cache 上传文件不需要缓存，所以设置false
+            //processData 因为data值是FormData对象，不需要对数据处理
+            //contentType 因为是由form表单构造的FormData对象，且已声明了属性enctype，所以为false
+        })
+    })
+</script>
+</body>
+</html>
