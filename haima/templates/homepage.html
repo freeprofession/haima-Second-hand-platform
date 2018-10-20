@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="../static/JS/slide.js"></script>
     <script type="text/javascript" src="../static/JS/guess.js"></script>
 </head>
 <body>
@@ -636,50 +635,6 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $("#guess1").addClass('add');
-        $("#guess1").hover(function () {
-            $("#guess1").addClass('add');
-            $("#guess2").removeClass('add');
-            $("#guess3").removeClass('add');
-        });
-    });
-    $("#guess2").hover(function () {
-        $("#guess2").addClass('add');
-        $("#guess1").removeClass('add');
-        $("#guess3").removeClass('add');
-    });
-
-    $("#guess3").hover(function () {
-        $("#guess3").addClass('add');
-        $("#guess2").removeClass('add');
-        $("#guess1").removeClass('add');
-    });
-</script>
-<script type="text/javascript">
-    $("#order_show").hide();
-    $("#my_order").hover(function () {
-        $("#order_show").show();
-    }, function () {
-        $("#order_show").hide();
-    })
-    // 鼠标移动到list的div上的时候list div不会被隐藏
-    $("#order_show").hover(function () {
-        $("#order_show").show();
-    }, function () {
-        $("#order_show").hide();
-    })
-
-
-    document.getElementById('file').onchange = function () {
-        var imgFile = this.files[0];
-        var fr = new FileReader();
-        fr.onload = function () {
-            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
-        };
-        fr.readAsDataURL(imgFile);
-    };
-</script>
+<script type="text/javascript" src="../static/JS/main.js"></script>
 </body>
 </html>

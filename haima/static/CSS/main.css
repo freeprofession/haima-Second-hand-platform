@@ -628,9 +628,11 @@ html, body {
     border-radius: 50%;
     border: 10px #f3f3f3 solid
 }
-#image img{
+
+#image img {
     border-radius: 50%;
 }
+
 #pic {
     position: absolute;
     z-index: 1;
@@ -640,10 +642,12 @@ html, body {
     border-radius: 50%;
 
 }
-label:hover{
+
+label:hover {
     cursor: pointer;
 }
-#wel{
+
+#wel {
     margin-left: 120px;
 }
 
@@ -1626,8 +1630,6 @@ label:hover{
     top: 43px;
 }
 
-
-
 .more_input {
     position: absolute;
     left: 0;
@@ -1657,8 +1659,6 @@ label:hover{
 #code_img {
     cursor: pointer;
 }
-
-
 
 .input_submit {
     width: 100%;
@@ -3134,4 +3134,62 @@ label:hover{
 
 [v-cloak] {
     display: none
+}
+#publish{
+    height: 550px;
+}
+#publish_header{
+    background-color: #ffda44;
+    height: 30px;
+    width: 800px;
+    margin-top: 20px;
+    margin-left: 180px;
+    border-top-left-radius: 5px ;
+    border-top-right-radius: 5px;
+
+}
+#publish_header span{
+    line-height: 30px;
+    margin-left: 5px;
+    font-weight: bold;
+}
+#publish form{
+    width: 798px;
+    border: 1px solid #ffda44;
+    border-top: none;
+}
+#publish .pub {
+    float: left;
+}
+
+#publish_goods {
+    margin-top: -15px;
+    margin-left: 180px;
+}
+#rule{
+    margin-top: -70px;
+    margin-left: 10px;
+}
+#publish_goods table tr td:nth-child(1){
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+}
+#publish_goods table tr td{
+   padding: 10px;
+}
+#publish_goods table tr td input,select{
+    height: 25px;
+    font-size: 18px;
+}
+#publish_goods table tr td input{
+    width: 200px;
+}
+#publish_button{
+    background-color: #ffda44;
+    border: 0px;
+    height: 30px;
+    width: 200px;
+    margin-left: 300px;
+    margin-bottom: 50px;
 }

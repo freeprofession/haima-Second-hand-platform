@@ -12,7 +12,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
 r = redis.Redis(host="127.0.0.1", port=6379)
-conn = pymysql.connect(host='127.0.0.1', user='root', password='sb123456', database='haimaershou', charset='utf8')
+conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
 
 
@@ -187,25 +187,35 @@ def register_ok(request):
     return render(request, "register_ok.html")
 
 
-def user_center_info(request):
-    return render(request, 'user_center_info.html')
-
-
+# 发布商品
 def publish(request):
     return render(request, 'publish.html')
 
+# 估价
+def assess(request):
+    return render(request, 'assess.html')
 
+
+# 拍卖
 def auction(request):
     return render(request, 'auction-index.html')
 
 
-def sale(request):
-    return render(request, 'sale.html')
+# 用户中心
+def user_center_info(request):
+    return render(request, 'user_center_info.html')
 
 
-def buy(request):
-    return render(request, 'buy.html')
+# 我出售的
+def my_sale(request):
+    return render(request, 'my_sale.html')
 
 
+# 我购买的
+def my_buy(request):
+    return render(request, 'my_buy.html')
+
+
+# 我的地址
 def address(request):
     return render(request, 'address.html')
