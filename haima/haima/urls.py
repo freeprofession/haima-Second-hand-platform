@@ -19,7 +19,7 @@ from myapp import view
 
 urlpatterns = [
 
-    path('', view.homepage),
+    path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
     path('captcha/', include('captcha.urls')),
