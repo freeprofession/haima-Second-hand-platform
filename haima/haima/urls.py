@@ -18,6 +18,7 @@ from django.urls import path, include
 from myapp import view
 
 urlpatterns = [
+
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
