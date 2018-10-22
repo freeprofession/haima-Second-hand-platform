@@ -3,58 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        div.up {
+            width: 350px;
+            height: 300px;
+            background: #CCCCCC;
+            overflow: hidden;
+        }
+
+        div.up img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #down img {
+            width: 60px;
+            height: 100px;
+            opacity: 0.3;
+            filter: alpha(opacity=30);
+        }
+
+        #down img.change_image {
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+
+        div.down {
+            width: 350px;
+            height: 100px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <label>请选择一个图像文件：</label>
-    <input type="file" id="file_input" multiple/>
+<div class="up" id="up"><img src="" width="100%" height="100%"></div>
+<div class="down" id="down">
+    <table>
+        <tr>
+            <td><img src="../static/images/game.png"></td>
+            <td><img src="../static/images/camera.png"/></td>
+            <td><img src="../static/images/computer.png"/></td>
+            <td><img src="../static/images/pad.jpg"/></td>
+            <td><img src="../static/images/phone.png"/></td>
+        </tr>
+    </table>
 </div>
 </body>
-<script>
-    window.onload = function () {
-        var input = document.getElementById("file_input");
-        var result, div;
 
-        if (typeof FileReader === 'undefined') {
-            result.innerHTML = "抱歉，你的浏览器不支持 FileReader";
-            input.setAttribute('disabled', 'disabled');
-        } else {
-            input.addEventListener('change', readFile, false);
-        }
-
-        function readFile() {
-            for (var i = 0; i < this.files.length; i++) {
-                if (!input['value'].match(/.jpg|.gif|.png|.bmp/i)) {　　//判断上传文件格式
-                    return alert("上传的图片格式不正确，请重新选择")
-                }
-                var reader = new FileReader();
-                reader.readAsDataURL(this.files[i]);
-                reader.onload = function (e) {
-                    result = '<div id="result"><img src="' + this.result + '" alt=""/></div>';
-                    div = document.createElement('div');
-                    div.innerHTML = result;
-                    document.getElementById('body').appendChild(div);  　　//插入dom树                      <br>　　　　　　　　　　}
-                }
-            }
-        }
-    }
-</script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-    function readFile() {
-        var fd = new FormData();
-        for (var i = 0; i < this.files.length; i++) {
-            var reader = new FileReader();
-            reader.readAsDataURL(this.files[i]);
-            fd.append(i, this.files[i]);
-        }
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: fd,
-            success: function (data) {
-                console.log(data)
-            }
-        })
-    }
+    $(document).ready(function () {
+        $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
+        $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
+        $('#down img').hover(function () {
+            $('#down img').removeClass("change_image");//先清除所有选中
+            $(this).addClass("change_image");//当前图片选中
+            $('#up img').attr('src', $(this).attr('src'));//当前图片地址给#up img
+        });
+    });
 </script>
+</body>
 </html>
