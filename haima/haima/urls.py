@@ -18,7 +18,6 @@ from django.urls import path, include
 from myapp import view
 
 urlpatterns = [
-
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -36,6 +35,6 @@ urlpatterns = [
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
     path('address/', view.address),
-    path('test_qiniu/',view.test_qiniu),
-    path('callback/',view.callback),
+    path('test_qiniu/', view.test_qiniu),
+    path('callback/', view.callback),
 ]
