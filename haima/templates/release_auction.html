@@ -2,59 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>海马商城-发布</title>
+    <title>发布拍卖</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>历史拍卖场</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
-    <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
-    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../static/CSS/font-style.css">
-    <style type="text/css">
-        #js-pre {
-            width: 500px;
-            height: 100px;
-
-        }
-
-        #js-pre:after {
-            content: '';
-            display: block;
-            height: 0;
-            visibility: hidden;
-            clear: both;
-        }
-
-        #show_pic div {
-            float: left;
-        }
-
-        .img-box {
-            float: left;
-        }
-
-        .img-border {
-            position: relative;
-            box-sizing: border-box;
-            height: 100px;
-            width: 100px;
-            border: 1px solid #ccc
-        }
-
-        .js-upload_delete {
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-
-        .red {
-            font-size: 20px;
-            color: #ffda44;
-        }
-
-        img {
-            height: 100px;
-            width: 100%;
-        }
-    </style>
-
+    <link rel="stylesheet" href="../static/CSS/main.css">
+    <link rel="stylesheet" href="../static/CSS/release_auction.css">
+      <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/main.js"></script>
 </head>
 <body>
 <div class="header_con">
@@ -66,47 +26,55 @@
                 <a href="javascript:;" class="quit">退出</a>
             </div>
             <div class="login_btn fl">
-                <a href="/login/">登录</a>
+                <a href="login.html">登录</a>
                 <span>|</span>
-                <a href="/register/">注册</a>
+                <a href="register.html">注册</a>
             </div>
             <div class="user_link fl">
                 <span>|</span>
-                <a href="/haima/">首页</a>
+                <a href="user_center_info.html">用户中心</a>
                 <span>|</span>
-                <a href="/user/">用户中心</a>
+                <a href="cart.html">我的购物车</a>
                 <span>|</span>
-                <a href="" id="my_order" onmouseover="showhide()">我的订单</a>
+                <a href="user_center_order.html">我的订单</a>
             </div>
         </div>
     </div>
 </div>
-<div id="order_show">
-    <ul>
-        <li><a href="/my_sale/">我出售的</a></li>
-        <li><a href="/my_buy/">我购买的</a></li>
-    </ul>
-</div>
-
 <div class="navbar_con">
     <div class="navbar">
         <h1 class="fl">商品分类</h1>
         <ul class="navlist fl">
-            <li><a href="/haima/">首页</a></li>
-            <li><a href="/publish/">发布闲置</a></li>
-            <li><a href="/auction/">拍卖</a></li>
-            <li><a href="/assess/">二手估价</a></li>
-            <li><a href="/my_leave/">我的闲置</a></li>
+            <li><a href="">首页</a></li>
+            <li><a href="">发布闲置</a></li>
+            <li><a href="">拍卖</a></li>
+            <li><a href="">二手估价</a></li>
+            <li><a href="">我的闲置</a></li>
         </ul>
     </div>
 </div>
+<div class="Navigation_information">
+    <div id="auction_Navigation">
+        <a href="/my_auction/"><button id="my_auction">我的拍卖</button></a>
+        <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
+        <a href="/histroy_auction/"><button id="histroy_auction">历史拍卖</button></a>
+    </div>
+    <div id="auction_classification">
+        <div>拍卖分类：</div>
+        <div><a href="">手机</a></div>
+        <div><a href="">相机</a></div>
+        <div><a href="">电脑</a></div>
+        <div><a href="">外设</a></div>
+    </div>
+</div>
+<hr>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/images/haima1.png" width="180" height="60"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/publish/" style="color: #ff8800">发布闲置</a></div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/release_auction/" style="color: #ff8800">发布拍卖</a></div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #666">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|
     </div>
 </div>
-<div id="publish">
+<div id="publish_auction" >
     <div id="publish_header">
         <span>描述你的宝贝</span>
     </div>
@@ -116,11 +84,19 @@
             <table border="0">
                 <tr>
                     <td>宝贝标题：</td>
-                    <td><input type="text"></td>
+                    <td><input type="text" id="goods_title"></td>
                 </tr>
+                 <tr>
+                    <td>开始时间：</td>
+                    <td><input type="date" id="start_date"></td>
+                 </tr>
+                <tr>
+                    <td>结束时间：</td>
+                    <td><input type="date" id="end_date"></td>
+                 </tr>
                 <tr>
                     <td>类型：</td>
-                    <td><select style="width: 200px">
+                    <td><select style="width: 200px" id="goods_category">
                         <option value="phone">手机</option>
                         <option value="computer">电脑</option>
                         <option value="pad">平板</option>
@@ -131,16 +107,16 @@
                 </tr>
 
                 <tr>
-                    <td>价格：</td>
+                    <td>商品底价：</td>
                     <td>
-                        <input type="text">
+                        <input type="text" id="goods_floorprice">
                     </td>
                 </tr>
                 <tr>
                     <td>包邮：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">是</option>
-                        <option value="computer">否</option>
+                    <td><select style="width: 200px" id="postage">
+                        <option value="0">是</option>
+                        <option value="1">否</option>
                     </select></td>
                 </tr>
                 <tr>
@@ -156,7 +132,7 @@
                 </tr>
                 <tr>
                     <td>宝贝描述：</td>
-                    <td><textarea name="" id="" cols="100" rows="8"></textarea></td>
+                    <td><textarea name="" id="goods_desc" cols="100" rows="8"></textarea></td>
                 </tr>
             </table>
             <div>
@@ -183,6 +159,7 @@
     </div>
     <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
     <p>电话：0512-****888 苏ICP备*******8号</p>
+</div>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>

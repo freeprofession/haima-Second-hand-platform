@@ -17,7 +17,6 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
-r = redis.Redis(host="127.0.0.1", port=6379)
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -216,8 +215,20 @@ def assess(request):
 
 
 # 拍卖
-def auction(request):
-    return render(request, 'auction-index.html')
+def auction_index(request):
+    return render(request, 'auction_index.html')
+
+# 历史拍卖
+def history_auction(request):
+    return render(request,'histroy_auction.html')
+
+# 我的拍卖
+def my_auction(request):
+    return render(request,'my_auction.html')
+
+# 发布拍卖
+def release_auction(request):
+    return render(request,'release_auction.html')
 
 
 # 用户中心

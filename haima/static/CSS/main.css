@@ -3213,3 +3213,21 @@ label:hover {
 #assess_button:hover {
     cursor: pointer;
 }
+.tab_content .message{
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 2px;
+}
+.hismessages .messages{
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 2px;
+}
+.tab_content button{
+    background-color: #ffda44;
+    border-radius: 5px;
+    border: 0px;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+}
