@@ -11,7 +11,7 @@
         #js-pre {
             width: 500px;
             height: 100px;
-            border: 1px solid #87827f;
+
         }
 
         #js-pre:after {
@@ -95,7 +95,7 @@
             <li><a href="/haima/">首页</a></li>
             <li><a href="/publish/">发布闲置</a></li>
             <li><a href="/auction/">拍卖</a></li>
-            <li><a href="/evaluate/">二手估价</a></li>
+            <li><a href="/assess/">二手估价</a></li>
             <li><a href="/my_leave/">我的闲置</a></li>
         </ul>
     </div>
@@ -132,9 +132,17 @@
 
                 <tr>
                     <td>价格：</td>
-                    <td><input type="text"></td>
+                    <td>
+                        <input type="text">
+                    </td>
                 </tr>
-
+                <tr>
+                    <td>包邮：</td>
+                    <td><select style="width: 200px">
+                        <option value="phone">是</option>
+                        <option value="computer">否</option>
+                    </select></td>
+                </tr>
                 <tr>
                     <td>宝贝图片：</td>
                     <td id="show_pic">

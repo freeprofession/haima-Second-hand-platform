@@ -200,6 +200,11 @@ def register_ok(request):
     return render(request, "register_ok.html")
 
 
+# 商品分类展示
+def goods_list(request):
+    return render(request, 'goods_list.html')
+
+
 # 发布商品
 def publish(request):
     return render(request, 'publish.html')

@@ -28,6 +28,7 @@ urlpatterns = [
     path('register_ajax/', view.register_ajax),
     path('code/', view.code),
     path('register_ok/', view.register_ok),
+    path('goods_list/', view.goods_list),
     path('user/', view.user_center),
     path('publish/', view.publish),
     path('assess/', view.assess),
