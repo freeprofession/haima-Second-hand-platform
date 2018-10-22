@@ -16,12 +16,11 @@ import captcha
 from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
-r = redis.Redis(host="127.0.0.1", port=6379)
 
 r = redis.Redis(host="47.100.200.132", port=6379)
-
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
+
 
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
@@ -30,7 +29,7 @@ def homepage(request):
     for goods in goods_list:
         goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
     print(goods_list)
-    return render(request, 'homepage.html',{'goods_list':goods_list})
+    return render(request, 'homepage.html', {'goods_list': goods_list})
 
 
 # 登录
@@ -200,9 +199,15 @@ def register_ok(request):
     return render(request, "register_ok.html")
 
 
+# 商品分类展示
+def goods_list(request):
+    return render(request, 'goods_list.html')
+
+
 # 发布商品
 def publish(request):
     return render(request, 'publish.html')
+
 
 # 估价
 def assess(request):
@@ -227,8 +232,8 @@ def release_auction(request):
 
 
 # 用户中心
-def user_center_info(request):
-    return render(request, 'user_center_info.html')
+def user_center(request):
+    return render(request, 'user_center.html')
 
 
 # 我出售的

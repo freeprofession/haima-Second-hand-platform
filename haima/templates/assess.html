@@ -54,11 +54,81 @@
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/images/haima1.png" width="180" height="60"></a>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/publish/" style="color: #666">发布闲置</a></div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #ff8800">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|</div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #ff8800">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|
+    </div>
 </div>
+<div id="assess">
+    <div id="assess_header">
+        <span>描述你的宝贝</span>
+    </div>
+    <br>
+    <div id="publish_goods" class="pub">
+        <form action="/publish/" method="post">
+            <table border="0">
+                <tr>
+                    <td>宝贝标题：</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>类型：</td>
+                    <td><select style="width: 200px">
+                        <option value="phone">手机</option>
+                        <option value="computer">电脑</option>
+                        <option value="pad">平板</option>
+                        <option value="camera">相机</option>
+                        <option value="game">外设</option>
+                        <option value="other">其他</option>
+                    </select></td>
+                </tr>
 
-
-
+                <tr>
+                    <td>价格：</td>
+                    <td>
+                        <input type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>包邮：</td>
+                    <td><select style="width: 200px">
+                        <option value="phone">是</option>
+                        <option value="computer">否</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td>宝贝图片：</td>
+                    <td id="show_pic">
+                        <div style="width: 100px">
+                            <label for="js-file"><img src="../static/images/addpic.jpg" alt=""
+                                                      style="height: 100%;width: 100%"></label>
+                            <input type="file" name="fuck" multiple="" id="js-file" style="display: none">
+                        </div>
+                        <div id="js-pre"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>宝贝描述：</td>
+                    <td><textarea name="" id="" cols="100" rows="8"></textarea></td>
+                </tr>
+            </table>
+            <div>
+                <button id="publish_button">发布</button>
+            </div>
+        </form>
+    </div>
+    <div class="footer">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+        <p>电话：0512-****888 苏ICP备*******8号</p>
+    </div>
+</div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 </body>
 </html>

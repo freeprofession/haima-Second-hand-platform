@@ -6,26 +6,12 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <style>
-        #image {
-            position: absolute;
-            z-index: 0;
-        }
-
-        #pic {
-            position: absolute;
-            z-index: 1;
-            margin-top: 0px;
-            margin-left: 0px;
-            opacity: 0;
-        }
-    </style>
     <link rel="stylesheet" type="text/css" href="../static/CSS/font-style.css">
     <style type="text/css">
         #js-pre {
             width: 500px;
             height: 100px;
-            border: 1px solid #87827f;
+
         }
 
         #js-pre:after {
@@ -97,8 +83,8 @@
 </div>
 <div id="order_show">
     <ul>
-        <li><a href="/sale/">我出售的</a></li>
-        <li><a href="/buy/">我购买的</a></li>
+        <li><a href="/my_sale/">我出售的</a></li>
+        <li><a href="/my_buy/">我购买的</a></li>
     </ul>
 </div>
 
@@ -109,22 +95,16 @@
             <li><a href="/haima/">首页</a></li>
             <li><a href="/publish/">发布闲置</a></li>
             <li><a href="/auction/">拍卖</a></li>
-            <li><a href="/evaluate/">二手估价</a></li>
+            <li><a href="/assess/">二手估价</a></li>
             <li><a href="/my_leave/">我的闲置</a></li>
         </ul>
     </div>
 </div>
 <div class="search_bar clearfix">
-<<<<<<< HEAD
     <a href="/haima/" class="logo fl"><img src="../static/images/haima1.png" width="180" height="60"></a>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/publish/" style="color: #ff8800">发布闲置</a></div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #666">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|
     </div>
-=======
-    <a href="index.html" class="logo fl"><img src="../static/Images/haima1.png" width="180" height="60"></a>
-    <div class="sub_page_name fl"><a href="/publish/" style="color: #ff8800">|&nbsp;&nbsp;&nbsp;&nbsp;发布闲置</a></div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;一键估价&nbsp;&nbsp;&nbsp;&nbsp;|</div>
->>>>>>> e768da67a0f2d6f5ae6ff40f66989a5c39ed82f2
 </div>
 <div id="publish">
     <div id="publish_header">
@@ -152,27 +132,24 @@
 
                 <tr>
                     <td>价格：</td>
-                    <td><input type="text"></td>
+                    <td>
+                        <input type="text">
+                    </td>
                 </tr>
-
+                <tr>
+                    <td>包邮：</td>
+                    <td><select style="width: 200px">
+                        <option value="phone">是</option>
+                        <option value="computer">否</option>
+                    </select></td>
+                </tr>
                 <tr>
                     <td>宝贝图片：</td>
-<<<<<<< HEAD
                     <td id="show_pic">
                         <div style="width: 100px">
                             <label for="js-file"><img src="../static/images/addpic.jpg" alt=""
                                                       style="height: 100%;width: 100%"></label>
                             <input type="file" name="fuck" multiple="" id="js-file" style="display: none">
-=======
-                    <td>
-                        <div id="image" style="width:100px;height:100px; background:#CCCCCC; ">
-                            <img src="" height="100px" width="100px"/>
-                        </div>
-                        <div id="pic">
-                            <label for="file"><img src="../static/Images/addpic.jpg" height="100px"
-                                                   width="100px"></label>
-                            <input type="file" id="file" name="" style="display: none"/>
->>>>>>> e768da67a0f2d6f5ae6ff40f66989a5c39ed82f2
                         </div>
                         <div id="js-pre"></div>
                     </td>
@@ -183,7 +160,7 @@
                 </tr>
             </table>
             <div>
-                <button id="publish_button">发布</button>
+                <button id="publish_button">确认发布</button>
             </div>
         </form>
     </div>
