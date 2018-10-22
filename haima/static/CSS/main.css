@@ -955,7 +955,7 @@ label:hover {
 
 .main_wrap {
     width: 1200px;
-    margin-top: 550px;
+    margin-top: 360px;
 }
 
 .l_wrap {
@@ -1237,21 +1237,21 @@ label:hover {
     margin: 0 auto 20px;
 }
 
-.goods_detail_pic {
+.up {
     width: 400px;
     height: 400px;
     margin: 24px 0 0 24px;
     border: 1px solid #ededed
 }
 
-.goods_detail_pic img {
+.up img {
     width: 400px;
     height: 400px;
 }
 
 .goods_detail_list {
     width: 730px;
-    margin: 24px 24px 0 0;
+    margin: -80px 24px 0 0;
 }
 
 .goods_detail_list h3 {
@@ -1301,7 +1301,6 @@ label:hover {
 .prize_bar .goods_judge:hover {
     text-decoration: underline
 }
-
 
 .goods_num .num_name {
     width: 70px;
@@ -1377,13 +1376,15 @@ label:hover {
 .type_select label {
     float: left;
     width: 70px;
+    font-size: 16px;
     line-height: 42px;
 }
 
 .type_select span {
     line-height: 40px;
     color: #5e5e5e;
-    margin-right: 10px;
+    font-size: 16px;
+    margin-left: 20px;
 }
 
 .type_select a:hover {
@@ -3117,29 +3118,39 @@ label:hover {
 [v-cloak] {
     display: none
 }
+<<<<<<< HEAD
 #publish{
+height: 550px;
+=======
+
+#publish {
     height: 550px;
+>>>>>>> 3592a553a708e62645eb5c864f73e68986c057bd
 }
-#publish_header{
+
+#publish_header {
     background-color: #ffda44;
     height: 30px;
     width: 800px;
     margin-top: 20px;
     margin-left: 180px;
-    border-top-left-radius: 5px ;
+    border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 
 }
-#publish_header span{
+
+#publish_header span {
     line-height: 30px;
     margin-left: 5px;
     font-weight: bold;
 }
-#publish form{
+
+#publish form {
     width: 798px;
     border: 1px solid #ffda44;
     border-top: none;
 }
+
 #publish .pub {
     float: left;
 }
@@ -3148,26 +3159,32 @@ label:hover {
     margin-top: -15px;
     margin-left: 180px;
 }
-#rule{
+
+#rule {
     margin-top: -70px;
     margin-left: 10px;
 }
-#publish_goods table tr td:nth-child(1){
+
+#publish_goods table tr td:nth-child(1) {
     text-align: right;
     font-size: 15px;
     font-weight: bold;
 }
-#publish_goods table tr td{
-   padding: 10px;
+
+#publish_goods table tr td {
+    padding: 10px;
 }
-#publish_goods table tr td input,select{
+
+#publish_goods table tr td input, select {
     height: 25px;
     font-size: 18px;
 }
-#publish_goods table tr td input{
+
+#publish_goods table tr td input {
     width: 200px;
 }
-#publish_button{
+
+#publish_button, #assess_button {
     background-color: #ffda44;
     border: 0px;
     height: 30px;
@@ -3176,6 +3193,28 @@ label:hover {
     margin-bottom: 50px;
     border-radius: 5px;
 }
-#publish_button:hover{
+
+#publish_button:hover {
+    cursor: pointer;
+}
+#assess_goods table tr td:nth-child(1) {
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#assess_goods table tr td {
+    padding: 10px;
+}
+
+#assess_goods table tr td input, select {
+    height: 25px;
+    font-size: 18px;
+}
+
+#assess_goods table tr td input {
+    width: 200px;
+}
+#assess_button:hover {
     cursor: pointer;
 }
