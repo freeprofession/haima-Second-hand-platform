@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>海马商城-首页</title>
+    <title>海马商城-商品详情</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="../static/JS/guess.js"></script>
+    <script>
+        $(function () {
+            var $tab_btn = $('.detail_tab li');
+            var $tab_con = $('.tab_content');
+            $tab_btn.click(function () {
+                $(this).addClass('active').siblings().removeClass('active');
+                $tab_con.eq($(this).index()).addClass('current').siblings().removeClass('current');
+            })
+        })
+    </script>
 </head>
 <body>
 <div class="header_con">
@@ -41,7 +50,7 @@
 </div>
 
 <div class="search_bar clearfix">
-    <a href="index.html" class="logo fl"><img src="Images/logo.png"></a>
+    <a href="/haima/" class="logo fl"><img src="Images/logo.png"></a>
     <div class="search_wrap fl">
         <div class="search_con">
             <input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -195,8 +204,8 @@
 
 
         <ul class="navlist fl">
-            <li><a href="/haima/">首页</a></li>
-            <li><a href="/publish/">发布闲置</a></li>
+            <li><a href="">首页</a></li>
+            <li><a href="">发布闲置</a></li>
             <li><a href="">拍卖</a></li>
             <li><a href="">二手估价</a></li>
             <li><a href="">我的闲置</a></li>
@@ -207,179 +216,93 @@
 <div class="breadcrumb">
     <a href="#">全部分类</a>
     <span>></span>
-    <a href="#">手机</a>
+    <a href="#">笔记本</a>
+    <span>></span>
+    <a href="#">mac电脑</a>
 </div>
 
-<div class="main_wrap clearfix">
-    <div class="r_wrap fr clearfix">
-        <div class="sort_bar">
-            <a href="#" class="active">时间</a>
-            <a href="#">价格</a>
-            <a href="#">信用</a>
+<div class="goods_detail_con clearfix">
+    <div class="goods_detail_pic fl"><img src="../static/images/goods_450.jpg"></div>
+    <br>
+    <div><img src="" alt=""><img src="" alt=""><img src="" alt=""><img src="" alt=""><img src="" alt=""></div>
+    <div class="goods_detail_list fr">
+        <h3>Apple MacBook Pro 13.3英寸笔记本 银色</h3>
+        <div class="prize_bar">
+            <span class="show_pirze">¥<em>11388.00</em></span>
+            <a href="" class="goods_judge">449人浏览</a>
         </div>
-
-        <ul class="goods_type_list clearfix">
-            <li>
-                <a href="detail.html"><img src="Images/goods/goods003.jpg"></a>
-                <h4><a href="detail.html">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥16.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods004.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥5.50</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods005.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥10.00</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods006.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥28.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods007.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥6.45</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods008.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥9.50</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods009.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥3.30</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods001.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥5.00</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods002.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥28.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#"><img src="Images/goods/goods003.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥25.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods004.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥4.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods005.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥3.50</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods006.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥3.90</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods007.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥16.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-        </ul>
-
-        <div class="pagenation">
-            <a href="#">&lt;上一页</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">下一页&gt;</a>
+        <div class="goods_num clearfix">
+            <div class="type_select">
+                <label>成色：</label>
+                <span>全新</span>
+            </div>
+            <div class="type_select">
+                <label>所在地:</label>
+                <span>北京</span>
+            </div>
+            <div class="type_select">
+                <label>商品介绍:</label>
+                <span>它纤薄如刃，轻盈如羽，却又比以往速度更快、性能更强大。它为你展现的，是迄今最明亮、最多彩的 Mac
+                        笔记本显示屏。它更配备了触控栏，一个内置于键盘的玻璃面多点触控条，让你能在需要时快速取用各种工具</span>
+            </div>
+            <div class="type_select">
+                <label>快递:</label>
+                <span>免运费</span>
+            </div>
+            <div class="operate_btn">
+                <a href="javascript:;" class="buy_btn">立即购买</a>
+                <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="footer">
-    <div class="foot_link">
-        <a href="#">关于我们</a>
-        <span>|</span>
-        <a href="#">联系我们</a>
-        <span>|</span>
-        <a href="#">招聘人才</a>
-        <span>|</span>
-        <a href="#">友情链接</a>
+    <div class="main_wrap clearfix">
+        <div class="wrap fr clearfix">
+            <ul class="detail_tab clearfix">
+                <li class="active">卖家信息</li>
+                <li>留言</li>
+                <li>安全保证</li>
+            </ul>
+            <div class="tab_content current">
+                <dl>
+                    <dt>卖家：</dt>
+                    <dd> 卖家信用：100。。。。
+
+                    </dd>
+                </dl>
+            </div>
+            <div class="tab_content">
+                <dl>
+                    <dt>留言：</dt>
+                    <dd>
+                        <textarea name="" id="" cols="180" rows="4"></textarea>
+                    </dd>
+                </dl>
+            </div>
+            <div class="tab_content">
+                <dl>
+                    <dt>安全保证：</dt>
+                    <dd>它纤薄如刃，轻盈如羽，却又比以往速度更快、性能更强大。它为你展现的，是迄今最明亮、最多彩的 Mac
+                        笔记本显示屏。它更配备了触控栏，一个内置于键盘的玻璃面多点触控条，让你能在需要时快速取用各种工具。MacBook Pro 是对我们突破性理念的一场出色演绎，而它，也正期待着演绎你的奇思妙想。
+                    </dd>
+                </dl>
+            </div>
+        </div>
     </div>
-    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
-    <p>电话：0512-****888 苏ICP备*******8号</p>
+
+    <div class="footer">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+        <p>电话：0512-****888 苏ICP备*******8号</p>
+    </div>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 </body>

@@ -940,7 +940,7 @@ label:hover {
 
 .breadcrumb a {
     line-height: 40px;
-    color: #fe0000
+    color: #392d05;
 }
 
 .breadcrumb a:hover {
@@ -949,20 +949,20 @@ label:hover {
 
 .breadcrumb span {
     line-height: 40px;
-    color: #fe0000;
+    color: #ffda44;
     padding: 0 5px;
 }
 
 .main_wrap {
     width: 1200px;
-    margin: 0 auto;
+    margin-top: 550px;
 }
 
 .l_wrap {
     width: 200px;
 }
 
-.r_wrap {
+.wrap {
     width: 1200px;
 }
 
@@ -1238,15 +1238,15 @@ label:hover {
 }
 
 .goods_detail_pic {
-    width: 350px;
-    height: 350px;
+    width: 400px;
+    height: 400px;
     margin: 24px 0 0 24px;
     border: 1px solid #ededed
 }
 
 .goods_detail_pic img {
-    width: 350px;
-    height: 350px;
+    width: 400px;
+    height: 400px;
 }
 
 .goods_detail_list {
@@ -1256,7 +1256,7 @@ label:hover {
 
 .goods_detail_list h3 {
     font-size: 24px;
-    line-height: 24px;
+    line-height: 30px;
     color: #666;
     font-weight: normal;
 }
@@ -1268,7 +1268,7 @@ label:hover {
 
 .prize_bar {
     height: 72px;
-    background-color: #fff5f5;
+    background-color: #fdffad;
     line-height: 72px;
 }
 
@@ -1302,10 +1302,6 @@ label:hover {
     text-decoration: underline
 }
 
-.goods_num {
-    height: 52px;
-    margin-top: 19px;
-}
 
 .goods_num .num_name {
     width: 70px;
@@ -1315,19 +1311,8 @@ label:hover {
 
 .goods_num .num_add {
     width: 75px;
-    height: 50px;
-    border: 1px solid #dddddd
-}
-
-.goods_num .num_add input {
-    width: 49px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border: 0px;
-    outline: none;
-    font-size: 14px;
-    color: #666
+    height: 20px;
+    margin-top: 17px;
 }
 
 .goods_num .num_add .add, .goods_num .num_add .minus {
@@ -1368,17 +1353,17 @@ label:hover {
     display: inline-block;
     width: 178px;
     height: 38px;
-    border: 1px solid #c40000;
+    border: 1px solid #c4c2a8;
     font-size: 14px;
-    color: #c40000;
+    color: #c42f2d;
     line-height: 38px;
     text-align: center;
-    background-color: #ffeded;
+    background-color: #fdff8e;
 }
 
 .operate_btn .add_cart {
-    background-color: #c40000;
-    color: #fff;
+    background-color: #feff4d;
+    color: #343f40;
     margin-left: 10px;
     position: relative;
     z-index: 10;
@@ -1395,11 +1380,8 @@ label:hover {
     line-height: 42px;
 }
 
-.type_select a {
-    float: left;
+.type_select span {
     line-height: 40px;
-    border: 1px solid #ccc;
-    padding: 0px 10px;
     color: #5e5e5e;
     margin-right: 10px;
 }
@@ -1428,7 +1410,7 @@ label:hover {
 
 .detail_tab {
     height: 35px;
-    border-bottom: 1px solid #e3101e;
+    border-bottom: 1px solid #fffd08;
 }
 
 .detail_tab li {
@@ -1445,11 +1427,11 @@ label:hover {
 }
 
 .detail_tab li.active {
-    border-top: 2px solid #e3101e;
+    border-top: 2px solid #fffd08;
     position: relative;
     background-color: #fff;
-    border-left: 1px solid #e3101e;
-    border-right: 1px solid #e3101e;
+    border-left: 1px solid #fffd08;
+    border-right: 1px solid #fffd08;
     top: -1px;
     height: 35px;
 }
