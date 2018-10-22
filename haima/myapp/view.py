@@ -1,11 +1,18 @@
+import pymysql
+import redis
+
+r = redis.Redis(host='47.100.200.132', port='6379')
+con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
+cursor = con.cursor(pymysql.cursors.DictCursor)
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import pymysql
 import redis
 import json
 import time
 import random
 import re
+import datetime
 import captcha
 from myapp import forms
 from captcha.models import CaptchaStore
@@ -20,10 +27,18 @@ def homepage(request):
     username = request.session.get('username')
     if username:
         login_status = username
-        return render(request, 'homepage.html', {"login_status": login_status})
     else:
         login_status = '未登录'
-        return render(request, 'homepage.html', {"login_status": login_status})
+    sql = "select * from goods_test limit 0,10"
+    cursor.execute(sql)
+    goods_list = cursor.fetchall()
+    for goods in goods_list:
+        goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+    return render(request, 'homepage.html', locals())
+
+
+def homepage_ajax(request):
+    pass
 
 
 # 登录
@@ -77,8 +92,9 @@ def login_ajax(request):
     # 获取表单信息
     username = request.POST.get("username")
     password = request.POST.get("password")
-    cur.execute("select * from user where username=%s", [username, ])  # 全表搜索，待建立索引
+    cur.execute("select * from t_user where user_name=%s", [username, ])  # 全表搜索，待建立索引
     user_login = cur.fetchone()
+    user_id = user_login['user_id']
     if user_login is None:  # 判断用户名密码
         error = "login_error"
         return HttpResponse(json.dumps({"msg": error}))
@@ -88,6 +104,7 @@ def login_ajax(request):
             if password == user_login['password']:  # 判断用户名密码
                 error = "login_ok"
                 request.session['username'] = username
+                request.session['user_id'] = user_id
                 return HttpResponse(json.dumps({"msg": error}))
             else:
                 error = "login_error"  # 用户名或密码错误
@@ -196,5 +213,60 @@ def register_ok(request):
     return render(request, "register_ok.html")
 
 
+# 用户中心
 def user_center_info(request):
-    return render(request, 'user_center_info.html')
+    username = request.session.get('username')
+    if username:
+        cur.execute("select * from t_user where user_name=%s", [username, ])
+        user_info = cur.fetchall()
+        for i in user_info:
+            print(i)
+        return render(request, 'user_center_info.html', locals())
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+# 商品界面设置
+def goods(request):
+    username = request.session.get('username')  # 获取买家用户名
+    user_id = request.session.get('user_id')  # 获取买家ID
+    goods_id = request.GET.get('shangping_id')  # 获取商品ID
+    cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])  # 获取商品表内容
+    goods_list = cur.fetchall()
+    seller_id = goods_list['user_id']  # 获取卖家ID
+    cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
+    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
+    print(username, user_id, goods_id, seller_id, now_time)
+    if username:
+        login_status = username
+        count = goods_list['goods_browse_count']
+        count += 1
+        # 更新商品浏览次数
+        cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
+        # 用户浏览记录
+        cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
+                    [user_id, now_time, goods_id])
+        conn.commit()
+    else:
+        login_status = '未登录'
+    return render(request, "goods_info.html", locals())
+
+
+def publish(request):
+    return render(request, 'publish.html')
+
+
+def auction(request):
+    return render(request, 'auction-index.html')
+
+
+def sale(request):
+    return render(request, 'sale.html')
+
+
+def buy(request):
+    return render(request, 'buy.html')
+
+
+def address(request):
+    return render(request, 'address.html')
