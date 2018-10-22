@@ -17,11 +17,11 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
-
 r = redis.Redis(host="127.0.0.1", port=6379)
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
+
 
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
@@ -30,7 +30,7 @@ def homepage(request):
     for goods in goods_list:
         goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
     print(goods_list)
-    return render(request, 'homepage.html',{'goods_list':goods_list})
+    return render(request, 'homepage.html', {'goods_list': goods_list})
 
 
 # 登录
@@ -204,6 +204,7 @@ def register_ok(request):
 def publish(request):
     return render(request, 'publish.html')
 
+
 # 估价
 def assess(request):
     return render(request, 'assess.html')
@@ -232,3 +233,40 @@ def my_buy(request):
 # 我的地址
 def address(request):
     return render(request, 'address.html')
+
+
+def test_qiniu(request):
+    if request.method == 'GET':
+        from qiniu import Auth
+
+        # 需要填写你的 Access Key 和 Secret Key
+        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
+        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
+        # 构建鉴权对象
+        q = Auth(access_key, secret_key)
+        # 要上传的空间
+        bucket_name = 'haima'
+        # 上传到七牛后保存的文件名
+        key = None
+        # 生成上传 Token，可以指定过期时间等
+        # 上传策略示例
+        # https://developer.qiniu.com/kodo/manual/1206/put-policy
+        policy = {
+            "scope": "haima",
+            'callbackUrl': '127.0.0.1:8000/callback',
+            # 'callbackBody':'filename=$(fname)&filesize=$(fsize)'
+            # 'persistentOps':'imageView2/1/w/200/h/200'
+        }
+        # 3600为token过期时间，秒为单位。3600等于一小时
+        token = q.upload_token(bucket_name, key, 3600, policy)
+        print(token)
+        return render(request, '7cow.html', {'token': token})
+    else:
+        file = request.FILES.get('file')
+        print(file)
+        print(type(file))
+        return HttpResponse("...")
+
+
+def callback(request):
+    return HttpResponse("callback")

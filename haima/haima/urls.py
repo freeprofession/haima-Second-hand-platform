@@ -35,4 +35,6 @@ urlpatterns = [
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
     path('address/', view.address),
+    path('test_qiniu/',view.test_qiniu),
+    path('callback/',view.callback),
 ]
