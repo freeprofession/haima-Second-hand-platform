@@ -18,6 +18,7 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
+r = redis.Redis(host="127.0.0.1", port=6379)
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -39,13 +40,15 @@ def homepage(request):
 
 def homepage_ajax(request):
     pass
+    # print(goods_list)
+    return render(request, 'homepage.html', {'goods_list': goods_list})
 
 
 # 登录
 def login(request):
     username = request.session.get('username')
     if username:
-        print(username)
+        # print(username)
         hashkey = CaptchaStore.generate_key()
         image_url = captcha_image_url(hashkey)
         code = CaptchaStore.generate_key()
@@ -80,20 +83,21 @@ def login_ajax(request):
     login_code = {}
     if request.is_ajax():
         a = request.POST.get('response')
-        print(a, request.POST.get('hashkey'))
+        # print(a, request.POST.get('hashkey'))
         result = CaptchaStore.objects.filter(response=request.POST.get('response'), hashkey=request.POST.get('hashkey'))
         if result:
-            print(result)
+            # print(result)
             login_code = {'status': 1}
-            print(login_code)
+            # print(login_code)
         else:
             login_code = {'status': 0}
-            print(login_code)
+            # print(login_code)
     # 获取表单信息
     username = request.POST.get("username")
     password = request.POST.get("password")
     cur.execute("select * from t_user where user_name=%s", [username, ])  # 全表搜索，待建立索引
     user_login = cur.fetchone()
+    # print(user_login)
     user_id = user_login['user_id']
     if user_login is None:  # 判断用户名密码
         error = "login_error"
@@ -101,10 +105,11 @@ def login_ajax(request):
     else:
         if login_code['status'] == 1:  # 判断验证码
             print(login_code['status'])
-            if password == user_login['password']:  # 判断用户名密码
+            if password == user_login['user_password']:  # 判断用户名密码
                 error = "login_ok"
                 request.session['username'] = username
                 request.session['user_id'] = user_id
+                time.sleep(1)
                 return HttpResponse(json.dumps({"msg": error}))
             else:
                 error = "login_error"  # 用户名或密码错误
@@ -151,16 +156,16 @@ def register_ajax(request):
         login_code = {}
         if request.is_ajax():
             a = request.POST.get('response')
-            print(a, request.POST.get('hashkey'))
+            # print(a, request.POST.get('hashkey'))
             result = CaptchaStore.objects.filter(response=request.POST.get('response'),
                                                  hashkey=request.POST.get('hashkey'))
             if result:
-                print(result)
+                # print(result)
                 login_code = {'status': 1}
-                print(login_code)
+                # print(login_code)
             else:
                 login_code = {'status': 0}
-                print(login_code)
+                # print(login_code)
         # 获取用户表单信息
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -169,7 +174,7 @@ def register_ajax(request):
         # code = request.POST.get("code")
         check_code = r.get(phone)  # 获取手机验证码
         check_all = request.POST.get("check_all")
-        print(username, password, phone, check_code, check_all, login_code)
+        # print(username, password, phone, check_code, check_all, login_code)
         if login_code['status'] == 1:  # 图片验证码
 
             if check_code:  # 手机验证码待定！
@@ -203,7 +208,7 @@ def register_ajax(request):
 def code(request):
     phone = request.GET.get("phone")
     code_ = random.randint(100000, 999999)
-    print(code, phone)
+    # print(code, phone)
     r.set(phone, code_, 60)
     return HttpResponse(code)
 
@@ -214,59 +219,80 @@ def register_ok(request):
 
 
 # 用户中心
-def user_center_info(request):
+def user_center(request):
     username = request.session.get('username')
     if username:
         cur.execute("select * from t_user where user_name=%s", [username, ])
         user_info = cur.fetchall()
-        for i in user_info:
-            print(i)
-        return render(request, 'user_center_info.html', locals())
+        return render(request, 'user_center.html', locals())
     else:
         return HttpResponseRedirect('/login/')
 
 
 # 商品界面设置
-def goods(request):
+def goods_detail(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
-    goods_id = request.GET.get('shangping_id')  # 获取商品ID
+    goods_id = request.GET.get('goods')
+    print(goods_id)  # 获取商品ID
     cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])  # 获取商品表内容
-    goods_list = cur.fetchall()
-    seller_id = goods_list['user_id']  # 获取卖家ID
+    goods_list = cur.fetchall()  # 商品表内容
+    print(username, user_id, goods_id, goods_list)
+    seller_id = goods_list[0]['user_id']  # 获取卖家ID
     cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
     print(username, user_id, goods_id, seller_id, now_time)
     if username:
-        login_status = username
-        count = goods_list['goods_browse_count']
-        count += 1
-        # 更新商品浏览次数
-        cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
+        cur.execute("select * from t_user_browse where browse_user_id=%s", [user_id, ])
+        browse = cur.fetchone()
+        print(browse, 1)
+        if browse is None:
+            print(1111111)
+            login_status = username
+            count = goods_list[0]['goods_browse_count']
+            count += 1
+            print(1)
+            # 更新商品浏览次数
+            cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
         # 用户浏览记录
         cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
                     [user_id, now_time, goods_id])
         conn.commit()
     else:
         login_status = '未登录'
-    return render(request, "goods_info.html", locals())
+    return render(request, "detail.html", locals())
 
 
+# 商品分类展示
+def goods_list(request):
+    return render(request, 'goods_list.html')
+
+
+# 发布商品
 def publish(request):
     return render(request, 'publish.html')
 
 
+# 估价
+def assess(request):
+    return render(request, 'assess.html')
+
+
+# 拍卖
 def auction(request):
     return render(request, 'auction-index.html')
 
 
-def sale(request):
-    return render(request, 'sale.html')
+# 我出售的
+def my_sale(request):
+    return render(request, 'my_sale.html')
 
 
-def buy(request):
-    return render(request, 'buy.html')
+# 我购买的
+def my_buy(request):
+    return render(request, 'my_buy.html')
 
 
+# 我的地址
 def address(request):
     return render(request, 'address.html')
