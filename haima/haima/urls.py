@@ -36,7 +36,12 @@ urlpatterns = [
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
     path('address/', view.address),
+<<<<<<< HEAD
     path('my_auction/',view.my_auction),
     path('history_auction/',view.history_auction),
     path('release_auction/',view.release_auction),
+=======
+    path('test_qiniu/',view.test_qiniu),
+    path('callback/',view.callback),
+>>>>>>> 3592a553a708e62645eb5c864f73e68986c057bd
 ]

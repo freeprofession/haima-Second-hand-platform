@@ -249,3 +249,40 @@ def my_buy(request):
 # 我的地址
 def address(request):
     return render(request, 'address.html')
+
+
+def test_qiniu(request):
+    if request.method == 'GET':
+        from qiniu import Auth
+
+        # 需要填写你的 Access Key 和 Secret Key
+        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
+        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
+        # 构建鉴权对象
+        q = Auth(access_key, secret_key)
+        # 要上传的空间
+        bucket_name = 'haima'
+        # 上传到七牛后保存的文件名
+        key = None
+        # 生成上传 Token，可以指定过期时间等
+        # 上传策略示例
+        # https://developer.qiniu.com/kodo/manual/1206/put-policy
+        policy = {
+            "scope": "haima",
+            'callbackUrl': '127.0.0.1:8000/callback',
+            # 'callbackBody':'filename=$(fname)&filesize=$(fsize)'
+            # 'persistentOps':'imageView2/1/w/200/h/200'
+        }
+        # 3600为token过期时间，秒为单位。3600等于一小时
+        token = q.upload_token(bucket_name, key, 3600, policy)
+        print(token)
+        return render(request, '7cow.html', {'token': token})
+    else:
+        file = request.FILES.get('file')
+        print(file)
+        print(type(file))
+        return HttpResponse("...")
+
+
+def callback(request):
+    return HttpResponse("callback")
