@@ -96,10 +96,36 @@ html,body
 	padding-left: 120px;
 }
 #my_auction_goods{
-	margin: auto;
+	margin: 15px auto;
 	width: 1100px;
 	height: 400px;
 }
 #my_auction_goods #title{
 	padding-left: 100px;
+}
+#auction_Navigation{
+    padding-left: 50px;
+
+}
+#auction_Navigation button{
+	width: 120px;
+}
+.Navigation_information{
+    height: 30px;
+}
+.Navigation_information div{
+    float: left;
+}
+#auction_classification {
+    padding-left: 500px;
+    font-size: 16px;
+}
+#auction_classification div{
+    width: 100px;
+}
+#now_auction ,#release_auction ,#histroy_auction{
+	height: 25px;
+	background-color: #ffda44;
+	border: 0px;
+	border-radius: 5px;
 }
