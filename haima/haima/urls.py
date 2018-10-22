@@ -28,7 +28,7 @@ urlpatterns = [
     path('register_ajax/', view.register_ajax),
     path('code/', view.code),
     path('register_ok/', view.register_ok),
-    path('user/', view.user_center_info),
+    path('user/', view.user_center),
     path('publish/', view.publish),
     path('assess/', view.assess),
     path('auction/', view.auction),
