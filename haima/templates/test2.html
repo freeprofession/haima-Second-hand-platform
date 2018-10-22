@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <style>
+        .upload-img {
+            position: relative;
+        }
+
+        .upload-img input {
+            opacity: 0;
+            border: 1px solid red;
+            width: 177px;
+            height: 164px;
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<label>图片</label>
+<div class="upload-img">
+    <input id="img-upload" type="file" name="img" accept="image/*">
+    <img id="img-show" src="../static/Images/addpic.jpg" class="img-polaroid" width="170" height="170" alt="上传图片" title="上传图片">
+</div>
+<script type="text/javascript">
+    $('#img-upload').change(function(e){
+        var input = $("#img-upload");
+        var file = input[0].files[0];//获取input上传的文件
+        if(!file.name){
+            alert("未选择图片");
+        }else{
+            //高版本浏览器对文件上传路径进行了安全处理，无法直接通过获取input的value进行访问，故转化为获取图片的url进行安全访问
+            var url = window.URL.createObjectURL(file);//将上传的文件转化为url
+            $("#img-show").attr('src', url);//更新img的src属性
+        };
+    });
+</script>
+</body>
+</html>

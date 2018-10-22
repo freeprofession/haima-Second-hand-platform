@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #image{
+            position: absolute;
+            z-index: 0;
+        }
+        #pic{
+            position: absolute;
+            z-index: 1;
+            margin-top: 0px;
+            margin-left: 0px;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div id="image" style="width:100px;height:100px; background:#CCCCCC; ">
+    <img src="" height="100px" width="100px"/>
+</div>
+<div id="pic">
+    <label for="file"><img src="../static/Images/addpic.jpg" height="100px" width="100px"></label>
+    <input type="file" id="file" name="" style="display: none"/>
+</div>
+</body>
+<script>
+    document.getElementById('file').onchange = function () {
+        var imgFile = this.files[0];
+        var fr = new FileReader();
+        fr.onload = function () {
+            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+        };
+        fr.readAsDataURL(imgFile);
+    };
+</script>
+
+</html>
