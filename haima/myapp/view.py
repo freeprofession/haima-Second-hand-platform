@@ -39,8 +39,8 @@ def get_token(func):
         policy = {
             "scope": "haima",
             # 'callbackUrl': 'http://g1.xmgc360.com/callback/',
-            'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
-            'returnUrl': 'http://g1.xmgc360.com/callback/'
+            # 'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
+            # 'returnUrl': 'http://g1.xmgc360.com/callback/'
             # 'persistentOps':'imageView2/1/w/200/h/200'
         }
         # 3600为token过期时间，秒为单位。3600等于一小时
@@ -232,8 +232,9 @@ def goods_list(request):
 
 
 # 发布商品
-def publish(request):
-    return render(request, 'publish.html')
+@get_token
+def publish(request,token):
+    return render(request, 'publish.html',{'token': token})
 
 
 # 估价
