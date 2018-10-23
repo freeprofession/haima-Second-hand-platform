@@ -37,4 +37,8 @@ urlpatterns = [
     path('my_buy/', view.my_buy),
     path('address/', view.address),
     path('goods_detail/', view.goods_detail),
+    path('goods_detail_ajax/', view.goods_detail_ajax),
+    path('test_qiniu/', view.test_qiniu),
+    path('callback/', view.callback),
+
 ]
