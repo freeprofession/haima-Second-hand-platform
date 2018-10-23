@@ -13,7 +13,7 @@ $(function () {
             'hashkey': hashkey,
         }, function (data) {
             if (data.msg === 'login_ok') {
-                location.href = '/haima/'
+                top.location.href = data.href
             } else if (data.msg === 'code_error') {
                 $('#code_error').html('验证码错误');
             } else if (data.msg === "login_error") {

@@ -50,7 +50,7 @@
                 <a href="javascript:;" class="quit">退出</a>
             </div>
             <div class="login_btn fl">
-                <a href="/login/">登录</a>
+                <a href="/login/?href=/goods_detail/?goods={{ goods_id }}">登录</a>
                 <span>|</span>
                 <a href="/register/">注册</a>
             </div>
@@ -306,18 +306,36 @@
                 </dl>
             </div>
             <div class="tab_content">
-                <dl>
+                <dl style="margin-bottom: 25px">
                     <dt>留言：</dt>
                     {% for message in message_list %}
-                        <dd>
-                            <div><img src="{{ message.user_imgurl }}" alt="" width="50" height="50">{</div>
-                            <div>{{ message.user_name }}</div>
-                            <p>{{ message.message_desc }}{{ message.message_date }}</p>
-
+                        <dd class="hismessages">
+                            <img class="messages" src="{{ message.user_imgurl }}" alt="" height="30" width="30"
+                                 style="border-radius: 50%;border: 1px solid grey">
+                            <div class="messages" style="height: 30px;line-height: 30px;">{{ message.user_name }}</div>
                         </dd>
+                        <dd style="margin-top: 40px">
+                            <p style="text-indent: 6em">{{ message.message_desc }}</p>
+                        </dd>
+                        <dd>
+                            <p style="text-indent: 6em;color: #a3a3a3">{{ message.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;<a
+                                    href="">回复</a></p>
+                        </dd>
+                        <dd class="newline"><img src="../static/Images/lineH_1.gif" height="1" width="1"/></dd>
                     {% endfor %}
+                </dl>
+
+                <dl>
+                    <dd>
+                        <img class="message" src="../static/Images/user.gif" alt="" height="30" width="30"
+                             style="border-radius: 50%;border: 1px solid grey">
+                        <div class="message" style="height: 30px;line-height: 30px;">JQlove</div>
+                    </dd>
                     <dd>
                         <textarea name="" id="" cols="180" rows="4"></textarea>
+                    </dd>
+                    <dd style="padding-left: 1070px">
+                        <button>发表</button>
                     </dd>
                 </dl>
             </div>

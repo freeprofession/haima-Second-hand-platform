@@ -1,5 +1,6 @@
 import pymysql
 import redis
+import base64
 
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
@@ -18,10 +19,37 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 
-r = redis.Redis(host="127.0.0.1", port=6379)
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
+
+
+def get_token(func):
+    def in_func(request):
+        from qiniu import Auth
+        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
+        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
+        # 构建鉴权对象
+        q = Auth(access_key, secret_key)
+        # 要上传的空间
+        bucket_name = 'haima'
+        # 上传到七牛后保存的文件名
+        key = None
+        # 生成上传 Token，可以指定过期时间等
+        # https://developer.qiniu.com/kodo/manual/1206/put-policy
+        policy = {
+            "scope": "haima",
+            # 'callbackUrl': 'http://g1.xmgc360.com/callback/',
+            'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
+            'returnUrl': 'http://g1.xmgc360.com/callback/'
+            # 'persistentOps':'imageView2/1/w/200/h/200'
+        }
+        # 3600为token过期时间，秒为单位。3600等于一小时
+        token = q.upload_token(bucket_name, key, 3600, policy)
+        print(token)
+        return func(request, token)
+
+    return in_func
 
 
 def homepage(request):
@@ -46,6 +74,8 @@ def homepage_ajax(request):
 
 # 登录
 def login(request):
+    href = request.GET.get('href')
+    request.session['href'] = href
     username = request.session.get('username')
     if username:
         # print(username)
@@ -98,19 +128,25 @@ def login_ajax(request):
     cur.execute("select * from t_user where user_name=%s", [username, ])  # 全表搜索，待建立索引
     user_login = cur.fetchone()
     # print(user_login)
-    user_id = user_login['user_id']
     if user_login is None:  # 判断用户名密码
         error = "login_error"
         return HttpResponse(json.dumps({"msg": error}))
     else:
         if login_code['status'] == 1:  # 判断验证码
             print(login_code['status'])
-            if password == user_login['user_password']:  # 判断用户名密码
-                error = "login_ok"
+            if password == user_login['user_password']:
+                user_id = user_login['user_id']  # 判断用户名密码
                 request.session['username'] = username
                 request.session['user_id'] = user_id
-                time.sleep(1)
-                return HttpResponse(json.dumps({"msg": error}))
+
+                href = request.session.get('href')
+                print(href)
+                error = "login_ok"
+                if href:
+                    pass
+                else:
+                    href = "/haima/"
+                return HttpResponse(json.dumps({"msg": error, "href": href}))
             else:
                 error = "login_error"  # 用户名或密码错误
                 return HttpResponse(json.dumps({"msg": error}))
@@ -265,6 +301,37 @@ def goods_detail(request):
     return render(request, "detail.html", locals())
 
 
+def text_message(request):
+    cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
+                [1, ])
+    b = cur.fetchall()
+    cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
+                [1, ])
+    a = cur.fetchall()
+    c_comment_dict = {}
+    for d in b:
+        id = d.get('second_message_id')
+        c_comment_dict[id] = d
+    p_comment_dict = {}
+    for d in a:
+        id = d.get('message_user_id')
+        p_comment_dict[id] = d
+    # lst = {}
+    for i in p_comment_dict:
+        lst = []
+        for j in c_comment_dict:
+            if p_comment_dict[i]['message_user_id'] == c_comment_dict[j]['parent_user_id']:
+                lst.append(c_comment_dict[j])
+        p_comment_dict[i]['child_message'] = lst
+    print(p_comment_dict)
+
+    return render(request, "test2.html", locals())
+
+
+def test_ajax(request):
+    pass
+
+
 def goods_detail_ajax(request):
     pass
 
@@ -285,8 +352,23 @@ def assess(request):
 
 
 # 拍卖
-def auction(request):
-    return render(request, 'auction-index.html')
+def auction_index(request):
+    return render(request, 'auction_index.html')
+
+
+# 历史拍卖
+def history_auction(request):
+    return render(request, 'histroy_auction.html')
+
+
+# 我的拍卖
+def my_auction(request):
+    return render(request, 'my_auction.html')
+
+
+# 发布拍卖
+def release_auction(request):
+    return render(request, 'release_auction.html')
 
 
 # 我出售的
@@ -304,38 +386,21 @@ def address(request):
     return render(request, 'address.html')
 
 
-def test_qiniu(request):
-    if request.method == 'GET':
-        from qiniu import Auth
-
-        # 需要填写你的 Access Key 和 Secret Key
-        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
-        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
-        # 构建鉴权对象
-        q = Auth(access_key, secret_key)
-        # 要上传的空间
-        bucket_name = 'haima'
-        # 上传到七牛后保存的文件名
-        key = None
-        # 生成上传 Token，可以指定过期时间等
-        # 上传策略示例
-        # https://developer.qiniu.com/kodo/manual/1206/put-policy
-        policy = {
-            "scope": "haima",
-            'callbackUrl': '127.0.0.1:8000/callback',
-            # 'callbackBody':'filename=$(fname)&filesize=$(fsize)'
-            # 'persistentOps':'imageView2/1/w/200/h/200'
-        }
-        # 3600为token过期时间，秒为单位。3600等于一小时
-        token = q.upload_token(bucket_name, key, 3600, policy)
-        print(token)
-        return render(request, '7cow.html', {'token': token})
-    else:
-        file = request.FILES.get('file')
-        print(file)
-        print(type(file))
-        return HttpResponse("...")
+@get_token
+def test_qiniu(request, token):
+    return render(request, '7cow.html', {'token': token})
 
 
 def callback(request):
-    return HttpResponse("callback")
+    if request.method == 'GET':
+        key_json_base64 = request.GET.get('upload_ret')
+        key_json = base64.b64decode(key_json_base64).decode('utf-8')
+        print(key_json)
+        key_dict = json.loads(key_json)
+        key = key_dict['key']
+        print(key)
+        return HttpResponse('pgwecu7z4.bkt.clouddn.com/' + key + '-haima.shuiy')
+    else:
+        # json_result = json.loads(postBody)
+        # print(json_result)
+        return HttpResponse("POST")
