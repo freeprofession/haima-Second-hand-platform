@@ -47,6 +47,7 @@ def get_token(func):
         token = q.upload_token(bucket_name, key, 3600, policy)
         print(token)
         return func(request, token)
+
     return in_func
 
 
@@ -245,17 +246,20 @@ def assess(request):
 def auction_index(request):
     return render(request, 'auction_index.html')
 
+
 # 历史拍卖
 def history_auction(request):
-    return render(request,'histroy_auction.html')
+    return render(request, 'histroy_auction.html')
+
 
 # 我的拍卖
 def my_auction(request):
-    return render(request,'my_auction.html')
+    return render(request, 'my_auction.html')
+
 
 # 发布拍卖
 def release_auction(request):
-    return render(request,'release_auction.html')
+    return render(request, 'release_auction.html')
 
 
 # 用户中心
@@ -273,9 +277,29 @@ def my_buy(request):
     return render(request, 'my_buy.html')
 
 
-# 我的地址
-def address(request):
-    return render(request, 'address.html')
+# 我的收藏
+def my_collection(request):
+    return render(request, 'my_collection.html')
+
+
+# 评价
+def evaluate(request):
+    return render(request, 'evaluate.html')
+
+
+# 我的评价
+def my_evaluate(request):
+    return render(request, 'my_evaluate.html')
+
+
+# 宝贝留言
+def leave_message(request):
+    return render(request, 'leave_message.html')
+
+
+# 修改信息
+def modify_information(request):
+    return render(request, 'modify_information.html')
 
 
 @get_token
@@ -286,12 +310,12 @@ def test_qiniu(request, token):
 def callback(request):
     if request.method == 'GET':
         key_json_base64 = request.GET.get('upload_ret')
-        key_json= base64.b64decode(key_json_base64).decode('utf-8')
+        key_json = base64.b64decode(key_json_base64).decode('utf-8')
         print(key_json)
         key_dict = json.loads(key_json)
-        key= key_dict['key']
+        key = key_dict['key']
         print(key)
-        return HttpResponse('pgwecu7z4.bkt.clouddn.com/'+key+'-haima.shuiy')
+        return HttpResponse('pgwecu7z4.bkt.clouddn.com/' + key + '-haima.shuiy')
     else:
         # json_result = json.loads(postBody)
         # print(json_result)
