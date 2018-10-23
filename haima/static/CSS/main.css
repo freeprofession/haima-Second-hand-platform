@@ -3118,15 +3118,11 @@ label:hover {
 [v-cloak] {
     display: none
 }
-<<<<<<< HEAD
-#publish{
-height: 550px;
-=======
 
 #publish {
     height: 550px;
->>>>>>> 3592a553a708e62645eb5c864f73e68986c057bd
 }
+
 
 #publish_header {
     background-color: #ffda44;

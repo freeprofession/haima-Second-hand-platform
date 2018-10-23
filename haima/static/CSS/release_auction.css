@@ -145,3 +145,192 @@ html,body
 	border: 0px;
 	border-radius: 5px;
 }
+#publish {
+    height: 550px;
+}
+
+
+#publish_header {
+    background-color: #ffda44;
+    height: 30px;
+    width: 800px;
+    margin-top: 20px;
+    margin-left: 180px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+}
+
+#publish_header span {
+    line-height: 30px;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+#publish form {
+    width: 798px;
+    border: 1px solid #ffda44;
+    border-top: none;
+}
+
+#publish .pub {
+    float: left;
+}
+
+#publish_goods {
+    margin-top: -15px;
+    margin-left: 180px;
+}
+
+#rule {
+    margin-top: -70px;
+    margin-left: 10px;
+}
+
+#publish_goods table tr td:nth-child(1) {
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#publish_goods table tr td {
+    padding: 10px;
+}
+
+#publish_goods table tr td input, select {
+    height: 25px;
+    font-size: 18px;
+}
+
+#publish_goods table tr td input {
+    width: 200px;
+}
+
+#publish_button, #assess_button {
+    background-color: #ffda44;
+    border: 0px;
+    height: 30px;
+    width: 200px;
+    margin-left: 300px;
+    margin-bottom: 50px;
+    border-radius: 5px;
+}
+
+#publish_button:hover {
+    cursor: pointer;
+}
+#assess_goods table tr td:nth-child(1) {
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+}
+.navbar_con {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    background: #ffda44;
+    margin-bottom: 5px
+}
+
+.navbar {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar h1 {
+    width: 245px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    background-color: #ffda44;
+    font-weight: bold;
+}
+
+.navbar .subnav_con {
+    width: 200px;
+    height: 40px;
+    background-color: #39a93e;
+    position: relative;
+    cursor: pointer;
+}
+
+.navbar .subnav_con h1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: left;
+    text-indent: 40px
+}
+
+.navbar .subnav_con span {
+    display: block;
+    width: 16px;
+    height: 9px;
+    background: url(../images/down.png) no-repeat;
+    position: absolute;
+    right: 27px;
+    top: 16px;
+    transition: all 300ms ease-in;
+}
+
+.navbar .subnav_con:hover span {
+    transform: rotateZ(180deg)
+}
+
+.navbar .subnav_con .subnav {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    display: none;
+    border-top: 2px solid #39a93e;
+}
+
+.navbar .subnav_con:hover .subnav {
+    display: block;
+}
+
+.navlist {
+    margin-left: 34px;
+}
+
+.navlist li {
+    float: left;
+    line-height: 30px;
+    width: 180px;
+    text-align: center
+}
+
+.navlist li a {
+    color: #666;
+    font-size: 14px
+}
+
+.navlist li a:hover {
+    color: #ff8800
+}
+.sub_page_name {
+    font-size: 20px;
+    color: #666;
+    margin: 60px 0 0 43px
+}
+.footer{
+margin-top: 10px;
+    border-top: 1px solid #ffda44;
+}
+.footer p{
+text-align: center;
+}
+.foot_link{
+    text-align: center;
+}
+#auction_rules_desc p{
+    font-size: 15px;color: black;text-indent: 2em
+}
+#error_message{
+    position: relative;
+    left: 500px;
+    top: -600px;
+    display: none;
+    color: red;
+    font-size: 16px;
+}
