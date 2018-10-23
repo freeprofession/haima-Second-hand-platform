@@ -6,6 +6,38 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+    <style>
+        .mark ul {
+            padding-left: 0;
+            overflow: hidden;
+        }
+
+        .mark ul li {
+            float: left;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+        }
+
+        .mark ul li a {
+            display: inline-block;
+            padding-top: 20px;
+            width: 50%;
+            overflow: hidden;
+        }
+
+        .emptyStar {
+            background: url(../static/images/emptystar.png)
+        }
+
+        .halfStar {
+            background: url(../static/images/halfstar.png)
+        }
+
+        .fullStar {
+            background: url(../static/images/fullstar.png)
+        }
+    </style>
     <style type="text/css">
         div.up {
             width: 350px;
@@ -37,7 +69,13 @@
             height: 100px;
             margin-left: 20px;
         }
-
+        #eva td{
+            width: 60px;
+        }
+        #eva{
+            padding: 5px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -214,7 +252,7 @@
                     </div>
                     <div class="level2">
                         <div class="list_group">
-                            <div class="group_name fl">男装 &gt;</div>
+                            <div class="group_name fl">男装 &gt</div>
                             <div class="group_detail fl">
                                 <a href="#">男装</a>
                             </div>
@@ -289,62 +327,93 @@
     <div class="main_wrap clearfix">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
-                <li class="active">宝贝信息</li>
-                <li>留言</li>
-                <li>安全保证</li>
+                <li class="active">评价</li>
+                <li>卖家历史评价</li>
             </ul>
             <div class="tab_content current">
+                <form action="">
+                    <table border="0" id="eva" align="center">
+                        <tr>
+                            <td><label><input type="radio" value="" name="evaluate" checked>好评</label></td>
+                            <td><label><input type="radio" value="" name="evaluate">中评</label></td>
+                            <td><label><input type="radio" value="" name="evaluate">差评</label></td>
+                        </tr>
+                        <tr>
+                            <td>卖家态度：</td>
+                            <td colspan="2">
+                                <div class="mark">
+                                    <ul>
+                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>宝贝情况：</td>
+                            <td colspan="2">
+                                <div class="mark">
+                                    <ul>
+                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>发货速度：</td>
+                            <td colspan="2">
+                                <div class="mark">
+                                    <ul>
+                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <dl style="margin-bottom: 25px">
+                        <dt>对本次交易的感受：</dt>
+                        <dd>
+                            <textarea name="" id="" cols="180" rows="4"></textarea>
+                        </dd>
+                        <dd style="padding-left: 1070px">
+                            <button>提交评论</button>
+                        </dd>
+                    </dl>
+                </form>
+            </div>
+            <div class="tab_content">
                 <dl>
                     <dd>
                         <p style="text-indent: 2em">
                             卖家信用：100。。。。卖家信用：100卖家信用：100。。。。卖家信用：100。。。。卖家信用：100。。。。卖家信用：100卖家信用：100。。。
                             。卖家信用：100。。。。卖家信用：100。。。。卖家信用：100卖家信用：100。。。。卖家信用：100卖家信用：1卖家信用：100。。。。卖家信用：100卖家信用：1
                         </p>
-                    </dd>
-                </dl>
-            </div>
-            <div class="tab_content">
-                <dl style="margin-bottom: 25px">
-                    <dt>留言：</dt>
-                    <dd class="hismessages">
-                        <img class="messages" src="../static/Images/user.gif" alt="" height="30" width="30"
-                             style="border-radius: 50%;border: 1px solid grey">
-                        <div class="messages" style="height: 30px;line-height: 30px;">JQlove</div>
-                    </dd>
-                    <dd style="margin-top: 40px">
-                        <p style="text-indent: 6em">7777777777世界聚焦于你</p>
-                    </dd>
-                    <dd>
-                        <p style="text-indent: 6em;color: #a3a3a3">2018-10-22 21:55&nbsp;&nbsp;&nbsp;&nbsp;<input
-                                type="button" value="回复" id="review"></p>
-                    </dd>
-                    <dd style="display: none" id="hidreview">
-                        <textarea name="" id="" cols="150" rows="2" style="margin-left: 72px"></textarea>
-                        <input type="button" value="发 表"
-                               style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
-                    </dd>
-                    <dd class="newline"><img src="../static/Images/lineH_1.gif" height="1" width="1"/></dd>
-                </dl>
-
-                <dl>
-                    <dd>
-                        <img class="message" src="../static/Images/user.gif" alt="" height="30" width="30"
-                             style="border-radius: 50%;border: 1px solid grey">
-                        <div class="message" style="height: 30px;line-height: 30px;">JQlove</div>
-                    </dd>
-                    <dd>
-                        <textarea name="" id="" cols="180" rows="4"></textarea>
-                    </dd>
-                    <dd style="padding-left: 1070px">
-                        <button>发表</button>
-                    </dd>
-                </dl>
-            </div>
-            <div class="tab_content">
-                <dl>
-                    <dt>安全保证：</dt>
-                    <dd>它纤薄如刃，轻盈如羽，却又比以往速度更快、性能更强大。它为你展现的，是迄今最明亮、最多彩的 Mac
-                        笔记本显示屏。它更配备了触控栏，一个内置于键盘的玻璃面多点触控条，让你能在需要时快速取用各种工具。MacBook Pro 是对我们突破性理念的一场出色演绎，而它，也正期待着演绎你的奇思妙想。
                     </dd>
                 </dl>
             </div>
@@ -388,15 +457,25 @@
         })
     })
 </script>
-<script>
-    $('#review').click(function () {
-        if ($("#review").val() == "回复") {
-            $("#review").val("收起回复");
-            $("#hidreview").show();
+<script type="text/javascript">
+    $(".mark ul li a").on("mouseover", function () {
+        //判断是全星点还是半星点，修改当前标签的父标签li的class为对应的星星图像
+        if (parseInt($(this).html()) % 2 == 1) {
+            $(this).parent().attr("class", "halfStar");
+        } else {
+            $(this).parent().attr("class", "fullStar");
         }
-        else {
-            $("#review").val("回复");
-            $("#hidreview").hide();
+        //对前方的星星进行处理，遍历前方的li使背景图均变为全星
+        var prev = $(this).parent();
+        for (var i = 0; i <= (parseInt($(this).html()) / 2) - 1; i++) {
+            prev.prev().attr("class", "fullStar");
+            prev = prev.prev();
+        }
+        //对后方星星进行处理，遍历后面的li使背景图均变为空星
+        var after = $(this).parent();
+        for (var i = 0; i <= (5 - parseInt($(this).html()) / 2) - 1; i++) {
+            after.next().attr("class", "emptyStar");
+            after = after.next();
         }
     })
 </script>

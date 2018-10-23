@@ -1,42 +1,172 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
-    <style>
-        #image{
-            position: absolute;
-            z-index: 0;
+    <title>星级评分系统</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
         }
-        #pic{
+
+        body {
+            font: 15px "微软雅黑";
+            color: darkslategrey;
+        }
+
+        #score {
+            width: 600px;
+            border: 3px solid #CCC;
+            height: 50px;
+            margin: 10px auto;
+            position: relative;
+        }
+
+        #score span {
+            display: inline-block;
+            width: 150px;
+            height: 50px;
+
+            line-height: 50px;
+            text-align: center;
+        }
+
+        #score ul {
+            width: 270px;
             position: absolute;
+            top: 0px;
+            left: 160px;
+        }
+
+        #score ul.clearfix:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        #score ul li {
+            float: left;
+            list-style: none;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            background: url(../static/images/emptystar.png);
+            background-size: 45px 45px;
+        }
+
+        #score p {
+            float: right;
+            width: 180px;
+            height: 50px;
+            line-height: 50px;
+
+            text-align: center;
+        }
+
+        #tip {
+            position: absolute;
+            background: #94e24f;
+            border: 1px solid #FFA07A;
+            width: 180px;
+            height: 50px;
+            left: 160px;
+            top: 70px;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 3px;
+            display: none;
+        }
+
+        #tip .triangle {
+            width: 0px;
+            height: 0px;
+            border-width: 14px;
+            border-style: solid;
+            border-color: transparent transparent #94e24f transparent;
+            position: absolute;
+            left: 10px;
+            top: -28px;
             z-index: 1;
-            margin-top: 0px;
-            margin-left: 0px;
-            opacity: 0;
         }
+
+        #tip .triangle_outer {
+            width: 0px;
+            height: 0px;
+            border-width: 14px;
+            border-style: solid;
+            border-color: transparent transparent #FFA07A transparent;
+            position: absolute;
+            left: 10px;
+            top: -29px;
+        }
+
+        strong {
+            color: crimson;
+            margin: 2px;
+        }
+
+        #score li.current {
+            background: url(../static/images/fullstar.png);
+            background-size: 45px 45px;
+        }
+
     </style>
 </head>
-
 <body>
-<div id="image" style="width:100px;height:100px; background:#CCCCCC; ">
-    <img src="" height="100px" width="100px"/>
+<div id="score">
+    <span>请为我们的宝贝打分</span>
+    <ul class="clearfix">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <p><strong></strong></p>
+    <div id="tip">
+        <strong>1星,非常糟糕</strong>
+        <div class="triangle"></div>
+        <div class="triangle_outer"></div>
+    </div>
 </div>
-<div id="pic">
-    <label for="file"><img src="../static/Images/addpic.jpg" height="100px" width="100px"></label>
-    <input type="file" id="file" name="" style="display: none"/>
-</div>
-</body>
-<script>
-    document.getElementById('file').onchange = function () {
-        var imgFile = this.files[0];
-        var fr = new FileReader();
-        fr.onload = function () {
-            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
-        };
-        fr.readAsDataURL(imgFile);
-    };
-</script>
+<script type="text/javascript">
+    var oScore = document.getElementById("score");
+    var oTip = document.getElementById("tip");
+    var oLi = oScore.getElementsByTagName('li');
+    var oStrong = oScore.getElementsByTagName('strong');
+    var oSpan = oScore.getElementsByTagName('span')[0];
+    var iScore = iPoint = 0;
+    var msg = ['1星  非常糟糕', '2星  糟糕', '3星  一般', '4星  商品良好', '5星  非常棒'];
+    var review = ['1星满意度,请联系我们', '2星满意度,请联系我们', '3星满意度,还不满意？？', '4星满意度,会再接再厉', '5星满意度,会继续努力哒'];
+    for (var i = 0; i < oLi.length; i++) {
+        oLi[i].index = i;
+        oLi[i].onmouseover = function () {
+            iScore = this.index + 1;             //记录下索引值
+            fnPoint(iScore);                   //鼠标移过显示评分
+            oTip.style.display = 'block';        //让提示框显示在对应的位置
+            oTip.style.left = 160 + this.index * 48 + 'px';
+            oStrong[1].innerHTML = msg[this.index];  //移过不同的星星显示对应的文字
+            console.log(this.index)
+        }
+        oLi[i].onclick = function () {
+            oStrong[0].innerHTML = review[this.index]; //右上角评价结果显示
+            iPoint = this.index + 1;       //鼠标点击事件，记录下索引，并返回索引值
+            return iPoint;
 
+        }
+        oLi[i].onmouseout = function () {  //接收点击的索引，鼠标移出后，恢复上次的评分
+            fnPoint(iPoint);
+            oTip.style.display = 'none';     //鼠标移出隐藏提示框
+        }
+
+    }
+
+    function fnPoint(arg) {
+        iScore = arg ? arg : iScore;        //接收一个参数，如果没传进参数就用iScore
+        for (var i = 0; i < oLi.length; i++) {   //遍历oLi,对点击的和之前的都亮起来，之后的不亮
+            oLi[i].className = i < iScore ? 'current' : '';
+        }
+    }
+</script>
+</body>
 </html>

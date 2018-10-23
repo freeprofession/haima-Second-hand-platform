@@ -28,27 +28,27 @@ urlpatterns = [
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
-    path('user/', view.user_center),
+    path('user_center/', view.user_center),
     path('publish/', view.publish),
     path('assess/', view.assess),
     path('auction_index/', view.auction_index),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
-    path('address/', view.address),
-<<<<<<< HEAD
-=======
+
     path('test_qiniu/', view.test_qiniu),
     path('callback/', view.callback),
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
-    path('my_auction/',view.my_auction),
-    path('history_auction/',view.history_auction),
-    path('release_auction/',view.release_auction),
-    path('test_qiniu/',view.test_qiniu),
-    path('callback/',view.callback),
-<<<<<<< HEAD
+    path('my_auction/', view.my_auction),
+    path('my_collection/', view.my_collection),
+    path('history_auction/', view.history_auction),
+    path('release_auction/', view.release_auction),
+
+    path('evaluate/', view.evaluate),
+    path('my_evaluate/', view.my_evaluate),
+    path('modify_information/', view.modify_information),
+    path('leave_message/', view.leave_message),
+
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
 
-=======
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
+
 ]
