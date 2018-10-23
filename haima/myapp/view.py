@@ -1,5 +1,10 @@
 import pymysql
 import redis
+<<<<<<< HEAD
+=======
+import base64
+
+>>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cursor = con.cursor(pymysql.cursors.DictCursor)
@@ -18,13 +23,44 @@ from captcha.helpers import captcha_image_url
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
+<<<<<<< HEAD
+=======
+
+
+def get_token(func):
+    def in_func(request):
+        from qiniu import Auth
+        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
+        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
+        # 构建鉴权对象
+        q = Auth(access_key, secret_key)
+        # 要上传的空间
+        bucket_name = 'haima'
+        # 上传到七牛后保存的文件名
+        key = None
+        # 生成上传 Token，可以指定过期时间等
+        # https://developer.qiniu.com/kodo/manual/1206/put-policy
+        policy = {
+            "scope": "haima",
+            # 'callbackUrl': 'http://g1.xmgc360.com/callback/',
+            'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
+            'returnUrl': 'http://g1.xmgc360.com/callback/'
+            # 'persistentOps':'imageView2/1/w/200/h/200'
+        }
+        # 3600为token过期时间，秒为单位。3600等于一小时
+        token = q.upload_token(bucket_name, key, 3600, policy)
+        print(token)
+        return func(request, token)
+    return in_func
+
+
+>>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
     cursor.execute(sql)
     goods_list = cursor.fetchall()
     for goods in goods_list:
         goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
-    print(goods_list)
     return render(request, 'homepage.html', {'goods_list': goods_list})
 
 
@@ -295,38 +331,21 @@ def address(request):
     return render(request, 'address.html')
 
 
-def test_qiniu(request):
-    if request.method == 'GET':
-        from qiniu import Auth
-
-        # 需要填写你的 Access Key 和 Secret Key
-        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
-        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
-        # 构建鉴权对象
-        q = Auth(access_key, secret_key)
-        # 要上传的空间
-        bucket_name = 'haima'
-        # 上传到七牛后保存的文件名
-        key = None
-        # 生成上传 Token，可以指定过期时间等
-        # 上传策略示例
-        # https://developer.qiniu.com/kodo/manual/1206/put-policy
-        policy = {
-            "scope": "haima",
-            'callbackUrl': '127.0.0.1:8000/callback',
-            # 'callbackBody':'filename=$(fname)&filesize=$(fsize)'
-            # 'persistentOps':'imageView2/1/w/200/h/200'
-        }
-        # 3600为token过期时间，秒为单位。3600等于一小时
-        token = q.upload_token(bucket_name, key, 3600, policy)
-        print(token)
-        return render(request, '7cow.html', {'token': token})
-    else:
-        file = request.FILES.get('file')
-        print(file)
-        print(type(file))
-        return HttpResponse("...")
+@get_token
+def test_qiniu(request, token):
+    return render(request, '7cow.html', {'token': token})
 
 
 def callback(request):
-    return HttpResponse("callback")
+    if request.method == 'GET':
+        key_json_base64 = request.GET.get('upload_ret')
+        key_json= base64.b64decode(key_json_base64).decode('utf-8')
+        print(key_json)
+        key_dict = json.loads(key_json)
+        key= key_dict['key']
+        print(key)
+        return HttpResponse('pgwecu7z4.bkt.clouddn.com/'+key+'-haima.shuiy')
+    else:
+        # json_result = json.loads(postBody)
+        # print(json_result)
+        return HttpResponse("POST")
