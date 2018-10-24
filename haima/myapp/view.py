@@ -1,10 +1,9 @@
 import pymysql
 import redis
-<<<<<<< HEAD
-=======
+
 import base64
 
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
+
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cursor = con.cursor(pymysql.cursors.DictCursor)
@@ -23,8 +22,6 @@ from captcha.helpers import captcha_image_url
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
-<<<<<<< HEAD
-=======
 
 
 def get_token(func):
@@ -55,7 +52,7 @@ def get_token(func):
     return in_func
 
 
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
+
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
     cursor.execute(sql)
@@ -286,7 +283,6 @@ def publish_auction(request):
                 try:
                     cursor.execute("insert into test_agoods(goods_title) values(%s)",[title])
                     new_id = cursor.lastrowid
-                    con.commit()
                     sql="insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
                         "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
                         "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)",[new_id,title,desc,floorprice,"../static/Images/goods/goods003.jpg",floorpremium,start_date,end_date,200,int(postage)]
@@ -315,6 +311,10 @@ def publish_auction(request):
 def release_auction_ok(request):
     return render(request,'release_auction_ok.html')
 
+
+#购买拍卖页面
+def buy_auction(request):
+    return  render()
 # 用户中心
 def user_center(request):
     return render(request, 'user_center.html')

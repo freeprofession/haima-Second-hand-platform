@@ -66,26 +66,26 @@ html,body
 
 .mt40{margin-top:40px}
 
-.guest_cart{
-	width:200px;height:32px;position:absolute;top:62px;left:50%;margin-left:400px;z-index:9997;
-}
+/*.guest_cart{*/
+	/*width:200px;height:32px;position:absolute;top:62px;left:50%;margin-left:400px;z-index:9997;*/
+/*}*/
 
-.guest_cart .cart_name{
-	width:158px;height:32px;line-height:32px;border:1px solid #dddddd;display:block;background:url(../images/icons.png) 13px -302px no-repeat #fff;font-size:14px;color:#fe0000;text-indent:56px;
-}
+/*.guest_cart .cart_name{*/
+	/*width:158px;height:32px;line-height:32px;border:1px solid #dddddd;display:block;background:url(../images/icons.png) 13px -302px no-repeat #fff;font-size:14px;color:#fe0000;text-indent:56px;*/
+/*}*/
 
-.guest_cart .goods_count{
-	width:40px;height:34px;text-align:center;line-height:34px;font-size:18px;
-	font-weight:bold;color:#fff;background-color:#fe0000;
-}
-.guest_cart:hover .cart_name{
-	position:relative;
-	z-index:9999;
-	border-bottom:1px solid #fff;
-}
-.guest_cart:hover .cart_goods_show{
-	display:block;
-}
+/*.guest_cart .goods_count{*/
+	/*width:40px;height:34px;text-align:center;line-height:34px;font-size:18px;*/
+	/*font-weight:bold;color:#fff;background-color:#fe0000;*/
+/*}*/
+/*.guest_cart:hover .cart_name{*/
+	/*position:relative;*/
+	/*z-index:9999;*/
+	/*border-bottom:1px solid #fff;*/
+/*}*/
+/*.guest_cart:hover .cart_goods_show{*/
+	/*display:block;*/
+/*}*/
 .cart_goods_show{
 	position:absolute;
 	width:320px;
@@ -139,68 +139,9 @@ html,body
 #auction_classification div{
     width: 100px;
 }
-
-#auction_goods{
-	padding-top: 15px;
-    margin: 15px auto;
-	width: 1100px;
-	height: 350px;
-    border: solid 1px;
-	border-color: #ffda44;
-}
-#auction_goods div{
-    float: left;
-}
-#auction_goods_desc
-{
-	color: #16bcbd;
-    padding-left: 300px;
-    width:400px;
-}
-#desc{
-	width: 500px;
-}
-#auction_goods_img{
-    padding-top: 0px;
-    padding-left: 70px;
-}
-#auction_messige{
-	font-size: 16px;
-
-}
-#auction_messige_desc div{
-padding-top: 10px;
-}
-#auction_messige_desc2 div{
-padding-top: 10px;
-padding-left: 80px;
-}
-#auction_button{
-padding-left: 150px;
-padding-top: 70px;
-}
-#auction_button button{
-	width: 100px;
-	height: 40px;
-
-}
-#auction_wantbuy_persons{
-	padding-left: 140px;
-	padding-top: 25px;
-	font-size: 14px;
-}
-#go_buy{
-	background-color: #ffda44;
-	border: 0px;
-	border-radius: 7px;
-}
 #now_auction ,#my_auction ,#histroy_auction{
 	height: 25px;
 	background-color: #ffda44;
 	border: 0px;
 	border-radius: 5px;
-}
-.logo {
-	position: relative;
-	top: -20px;
 }

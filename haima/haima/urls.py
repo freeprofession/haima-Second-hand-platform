@@ -22,7 +22,6 @@ urlpatterns = [
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
     path('captcha/', include('captcha.urls')),
-    # path('ajax_captcha/', view.ajax_captcha),
     path('register/', view.register),
     path('register_ajax/', view.register_ajax),
     path('code/', view.code),
@@ -34,21 +33,19 @@ urlpatterns = [
     path('auction_index/', view.auction_index),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
-
     path('test_qiniu/', view.test_qiniu),
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('my_collection/', view.my_collection),
     path('history_auction/', view.history_auction),
     path('release_auction/', view.release_auction),
-
     path('evaluate/', view.evaluate),
     path('my_evaluate/', view.my_evaluate),
     path('modify_information/', view.modify_information),
     path('leave_message/', view.leave_message),
-
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
+    path('buy_auction/',)
 
 
 ]
