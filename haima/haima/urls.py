@@ -33,6 +33,21 @@ urlpatterns = [
     path('auction_index/', view.auction_index),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
+    # path('address/', view.address),
+    path('goods_detail/', view.goods_detail),
+    path('goods_detail_ajax/', view.goods_detail_ajax),
+    path('test_qiniu/', view.test_qiniu),
+    path('callback/', view.callback),
+    path('test_qiniu/', view.test_qiniu),
+    path('callback/', view.callback),
+    path('my_auction/', view.my_auction),
+    path('history_auction/', view.history_auction),
+    path('release_auction/', view.release_auction),
+    path('test_qiniu/', view.test_qiniu),
+    path('callback/', view.callback),
+    path('test/', view.text_message),
+    path('test_ajax', view.test_ajax),
+
     path('test_qiniu/', view.test_qiniu),
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
@@ -45,7 +60,6 @@ urlpatterns = [
     path('leave_message/', view.leave_message),
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
-    path('buy_auction/',)
-
+    path('buy_auction/',view.buy_auction),
 
 ]
