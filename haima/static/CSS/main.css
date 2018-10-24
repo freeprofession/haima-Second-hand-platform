@@ -1247,25 +1247,69 @@ label:hover {
     height: 400px;
 }
 
-.goods_detail_list {
-    width: 730px;
-    margin: -80px 24px 0 0;
+#detail_user .detail_right {
+    float: left;
+    margin-left: 80px;
 }
 
-.goods_detail_list h3 {
+#detail_user {
+    margin-top: -70px;
+}
+
+#user_detail {
+    margin-top: 30px;
+    border: 1px solid #c7c7c7;
+}
+
+.info_detail div {
+    float: left;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.info_detail {
+    height: 50px;
+    border-bottom: 1px solid #ededed;
+}
+
+.user-verify {
+    background-position: -250px -320px;
+    display: inline-block;
+    height: 24px;
+    margin: 5px 5px 0 0;
+    width: 38px;
+    background-image: url("../Images/taobao.png");
+}
+
+#check_detail {
+    height: 26px;
+    line-height: 26px;
+    width: 92px;
+    text-align: center;
+    border-radius: 2px;
+    color: #fff;
+    border: none;
+    background-color: #f85300;
+    background-image: linear-gradient(to bottom, #f50, #ed4f00);
+    background: -moz-linear-gradient(top, #f50, #ed4f00);
+    background: -webkit-linear-gradient(top, #f50, #ed4f00);
+}
+
+#detail_user h3 {
     font-size: 24px;
     line-height: 30px;
     color: #666;
     font-weight: normal;
 }
 
-.goods_detail_list p {
+#goods_detail_list p {
     color: #666;
     line-height: 40px;
 }
 
 .prize_bar {
     height: 72px;
+    width: 400px;
     background-color: #fdffad;
     line-height: 72px;
 }
@@ -1361,7 +1405,7 @@ label:hover {
 .operate_btn .add_cart {
     background-color: #feff4d;
     color: #343f40;
-    margin-left: 10px;
+    margin-left: 40px;
     position: relative;
     z-index: 10;
 }
@@ -1443,7 +1487,7 @@ label:hover {
     display: block;
 }
 
-.tab_content dt {
+.tab_content #leave_message_head {
     margin-top: 10px;
     font-size: 16px;
     color: #c40000
@@ -3121,7 +3165,6 @@ label:hover {
     height: 550px;
 }
 
-
 #publish_header {
     background-color: #ffda44;
     height: 30px;
@@ -3194,17 +3237,20 @@ label:hover {
 #publish_button:hover {
     cursor: pointer;
 }
-.tab_content .message{
+
+.tab_content .message {
     float: left;
     margin-left: 10px;
     margin-bottom: 2px;
 }
-.hismessages .messages{
+
+.hismessages .messages {
     float: left;
     margin-left: 10px;
     margin-bottom: 2px;
 }
-.tab_content button{
+
+.tab_content button {
     background-color: #ffda44;
     border-radius: 5px;
     border: 0px;
@@ -3212,6 +3258,7 @@ label:hover {
     height: 30px;
     cursor: pointer;
 }
+
 #assess_goods table tr td:nth-child(1) {
     text-align: right;
     font-size: 15px;
@@ -3238,11 +3285,11 @@ label:hover {
     cursor: pointer;
 }
 
-#assess{
+#assess {
     height: 550px;
 }
 
-#assess form{
+#assess form {
     width: 798px;
     border: 1px solid #ffda44;
     margin-left: 180px;
@@ -3250,11 +3297,11 @@ label:hover {
     margin-top: -16px;
 }
 
-#assess_goods table{
+#assess_goods table {
     margin-left: 210px;
 }
 
-#assess_header{
+#assess_header {
     background-color: #ffda44;
     height: 30px;
     width: 800px;
@@ -3263,19 +3310,23 @@ label:hover {
     border-top-right-radius: 5px;
     margin-left: 180px;
 }
+
 #assess_header span {
     line-height: 30px;
     margin-left: 5px;
     font-weight: bold;
 }
+
 #assess .ass {
     float: left;
 }
+
 #ass_rule {
     margin-top: -60px;
     margin-left: 10px;
 }
-#review{
+
+#review {
     border: 0px;
     color: #919191;
     background-color: white;
