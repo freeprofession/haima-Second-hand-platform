@@ -3118,14 +3118,9 @@ label:hover {
 [v-cloak] {
     display: none
 }
-<<<<<<< HEAD
-#publish{
-height: 550px;
-=======
 
 #publish {
     height: 550px;
->>>>>>> 3592a553a708e62645eb5c864f73e68986c057bd
 }
 
 #publish_header {
@@ -3216,5 +3211,23 @@ height: 550px;
     width: 200px;
 }
 #assess_button:hover {
+    cursor: pointer;
+}
+.tab_content .message{
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 2px;
+}
+.hismessages .messages{
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 2px;
+}
+.tab_content button{
+    background-color: #ffda44;
+    border-radius: 5px;
+    border: 0px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
 }
