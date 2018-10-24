@@ -1,7 +1,6 @@
 import pymysql
 import redis
 import base64
-
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cursor = con.cursor(pymysql.cursors.DictCursor)
@@ -18,7 +17,6 @@ import captcha
 from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
-
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
@@ -282,6 +280,30 @@ def goods_detail(request):
     cur.execute('select * from t_user right join t_message on user_id = message_user_id')
     message_list = cur.fetchall()  # 留言
     print(message_list)
+    #++++++++++++++++++++++++商品留言处理++++++++++++++++++++++++++++++
+    cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
+                [1, ])
+    b = cur.fetchall()
+    cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
+                [1, ])
+    a = cur.fetchall()
+    c_comment_dict = {}
+    for d in b:
+        id = d.get('second_message_id')
+        c_comment_dict[id] = d
+    p_comment_dict = {}
+    for d in a:
+        id = d.get('message_user_id')
+        p_comment_dict[id] = d
+    # lst = {}
+    for i in p_comment_dict:
+        lst = []
+        for j in c_comment_dict:
+            if p_comment_dict[i]['message_user_id'] == c_comment_dict[j]['parent_user_id']:
+                lst.append(c_comment_dict[j])
+        p_comment_dict[i]['child_message'] = lst
+    print(p_comment_dict)
+    #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
     if username:  # 登录后才记录，浏览记录
         cur.execute("select * from t_user_browse where browse_user_id=%s", [user_id, ])
         browse = cur.fetchone()
@@ -370,6 +392,59 @@ def my_auction(request):
 def release_auction(request):
     return render(request, 'release_auction.html')
 
+#发布拍卖提交处理
+def publish_auction(request):
+    global error
+    if request.method == 'POST':
+        title=request.POST.get('title')
+        desc= request.POST.get('desc')
+        floorprice= request.POST.get('floorprice')
+        floorpremium=request.POST.get("floorpremium")
+        end_date=request.POST.get("end_date")
+        start_date=request.POST.get("start_date")
+        category=request.POST.get("category")
+        postage=request.POST.get("postage")
+        list1=[]
+        print(title,desc,floorprice,floorpremium,end_date,start_date,category,postage)
+        if title and desc and floorpremium and floorprice and end_date and start_date and category and postage:
+            if len(title)>=6 and floorpremium < floorprice and  str(floorprice).isdigit()==True and str(floorpremium).isdigit()==True:
+                error="ok"
+                try:
+                    cursor.execute("insert into test_agoods(goods_title) values(%s)",[title])
+                    new_id = cursor.lastrowid
+                    con.commit()
+                    sql="insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
+                        "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
+                        "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)",[new_id,title,desc,floorprice,"../static/Images/goods/goods003.jpg",floorpremium,start_date,end_date,200,int(postage)]
+                    cursor.execute(sql)
+                    con.commit()
+                except:
+                    con.rollback()
+                    error = "sql_error"
+                    print("数据库插入错误！")
+                return HttpResponse(json.dumps({"msg": error}))
+            elif len(title)<6:
+                error='title.length_error'
+                return HttpResponse(json.dumps({"msg": error}))
+            elif str(floorprice).isdigit()==False or str(floorpremium).isdigit()==False:
+                error='price_error'
+                return HttpResponse(json.dumps({"msg": error}))
+            elif int(floorpremium)>=int(floorprice):
+                error='floorpremium_error'
+                return HttpResponse(json.dumps({"msg": error}))
+
+        else:
+            error='less_error'
+            return HttpResponse(json.dumps({"msg": error}))
+
+#发布拍卖成功
+def release_auction_ok(request):
+    return render(request,'release_auction_ok.html')
+
+# 用户中心
+def user_center(request):
+    return render(request, 'user_center.html')
+
 
 # 我出售的
 def my_sale(request):
@@ -381,9 +456,29 @@ def my_buy(request):
     return render(request, 'my_buy.html')
 
 
-# 我的地址
-def address(request):
-    return render(request, 'address.html')
+# 我的收藏
+def my_collection(request):
+    return render(request, 'my_collection.html')
+
+
+# 评价
+def evaluate(request):
+    return render(request, 'evaluate.html')
+
+
+# 我的评价
+def my_evaluate(request):
+    return render(request, 'my_evaluate.html')
+
+
+# 宝贝留言
+def leave_message(request):
+    return render(request, 'leave_message.html')
+
+
+# 修改信息
+def modify_information(request):
+    return render(request, 'modify_information.html')
 
 
 @get_token

@@ -10,11 +10,12 @@
 <head>
     <meta charset="UTF-8">
     <title>历史拍卖场</title>
+
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
-    <link rel="stylesheet" href="../static/CSS/main.css">
     <link rel="stylesheet" href="../static/CSS/release_auction.css">
       <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/main.js"></script>
+    <script type="text/javascript" src="../static/JS/release_auction.js"></script>
 </head>
 <body>
 <div class="header_con">
@@ -28,13 +29,13 @@
             <div class="login_btn fl">
                 <a href="login.html">登录</a>
                 <span>|</span>
-                <a href="register.html">注册</a>
+                <a href="/register/">注册</a>
             </div>
             <div class="user_link fl">
                 <span>|</span>
                 <a href="user_center_info.html">用户中心</a>
                 <span>|</span>
-                <a href="cart.html">我的购物车</a>
+                <a href="cart.html">我的收藏</a>
                 <span>|</span>
                 <a href="user_center_order.html">我的订单</a>
             </div>
@@ -74,21 +75,21 @@
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #666">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|
     </div>
 </div>
-<div id="publish_auction" >
+<div id="publish" >
     <div id="publish_header">
         <span>描述你的宝贝</span>
     </div>
     <br>
     <div id="publish_goods" class="pub">
-        <form action="/publish/" method="post">
+        <form>
             <table border="0">
                 <tr>
                     <td>宝贝标题：</td>
-                    <td><input type="text" id="goods_title"></td>
+                    <td><input type="text"  id="goods_title" ></td>
                 </tr>
                  <tr>
                     <td>开始时间：</td>
-                    <td><input type="date" id="start_date"></td>
+                    <td><input type="date" id="start_date" ></td>
                  </tr>
                 <tr>
                     <td>结束时间：</td>
@@ -97,12 +98,12 @@
                 <tr>
                     <td>类型：</td>
                     <td><select style="width: 200px" id="goods_category">
-                        <option value="phone">手机</option>
-                        <option value="computer">电脑</option>
-                        <option value="pad">平板</option>
-                        <option value="camera">相机</option>
-                        <option value="game">外设</option>
-                        <option value="other">其他</option>
+                        <option value="0">手机</option>
+                        <option value="1">电脑</option>
+                        <option value="2">平板</option>
+                        <option value="3">相机</option>
+                        <option value="4">外设</option>
+                        <option value="5">其他</option>
                     </select></td>
                 </tr>
 
@@ -110,6 +111,12 @@
                     <td>商品底价：</td>
                     <td>
                         <input type="text" id="goods_floorprice">
+                    </td>
+                </tr>
+                   <tr>
+                    <td>最低加价：</td>
+                    <td>
+                        <input type="text" id="goods_floorpremium">
                     </td>
                 </tr>
                 <tr>
@@ -136,31 +143,36 @@
                 </tr>
             </table>
             <div>
-                <button id="publish_button">确认发布</button>
+                <button type="button" id="publish_button" >确认发布</button>
             </div>
         </form>
+        <div id="error_message">
+          dshsiuhgisu
+        </div>
     </div>
     <div class="pub" id="rule">
-        <h1 style="font-size: x-large;text-align: center">平台商品发布规则</h1>
-        <div style="border: #ffda44 1px solid;height: 500px;width: 300px;">
-            <p style="font-size: 15px;color: black;text-indent: 2em">卖NMB NMSL</p>
+        <h1 style="font-size: x-large;text-align: center">拍卖商品发布规则</h1>
+        <div style="border: #ffda44 1px solid;height: 500px;width: 300px;" id="auction_rules_desc">
+            <p>1，不得发布与平台类型不符合的商品。</p>
+            <p>1，不得发布与自己描述不符合的商品。</p>
         </div>
     </div>
 </div>
-<div class="footer">
-    <div class="foot_link">
-        <a href="#">关于我们</a>
-        <span>|</span>
-        <a href="#">联系我们</a>
-        <span>|</span>
-        <a href="#">招聘人才</a>
-        <span>|</span>
-        <a href="#">友情链接</a>
-    </div>
-    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
-    <p>电话：0512-****888 苏ICP备*******8号</p>
+<div class="footer"  style="clear: both;">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+        <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
-</div>
+
+
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="../static/JS/F_File1.2.js"></script>
@@ -195,17 +207,69 @@
     }
 
     $(function () {
-        var f = new FFile({
-            name: 'fuck',								//唯一名,用来与其他文件区分
-            fileInput: '#js-file',				//html file控件
-            upButton: '#js-button',					//提交按钮
-            pre: '#js-pre',									//预览地址
-            url: 'fuck.php',									//ajax地址
-            onSuccess: function (res) {
-                console.log(res)
-            },	//文件全部上传完毕时
+        $("#publish_button").click(function () {
+            title = $('#goods_title').val();
+            desc=$('#goods_desc').val();
+            floorpremium=$('#goods_floorpremium').val();
+            floorprice=$('#goods_floorprice').val();
+            start_date=$('#start_date').val();
+            end_date=$('#end_date').val();
+            category=$('#goods_category').val();
+            postage=$('#postage').val();
+                $.post('/publish_auction/', {
+                'title': title,
+                'desc': desc,
+                'floorpremium' :floorpremium,
+                'floorprice' :floorprice,
+                'end_date':end_date,
+                'start_date':start_date,
+                'category':category,
+                'postage':postage,
+
+            }, function (data) {
+                    if (data.msg === 'ok') {
+                        location.href = '/release_auction_ok/'
+                    } else if (data.msg === 'title.length_error') {
+                        $('#error_message').html(function () {
+
+                            document.getElementById('error_message').style.display='block'
+                            document.getElementById('error_message').innerText = "标题不得少于6位数";
+                        })
+                    } else if (data.msg === 'less_error') {
+
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '必须全部输入';
+                        })
+
+                    }  else if (data.msg === 'price_error') {
+                          $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '商品最低加价和底价必须为整数';
+
+                        })
+                    }
+                    else if (data.msg === 'floorpremium_error') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '商品最低加价不得高于商品底价';
+
+                        })
+
+                    }
+                       else if (data.msg === 'sql_error') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '数据库错误请重试';
+
+                        })
+
+                    }
+                },'json')
+
         })
-    })
+        })
+
 </script>
 </body>
 </html>

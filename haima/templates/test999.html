@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul {
+            padding-left: 0;
+            overflow: hidden;
+        }
+
+        ul li {
+            float: left;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+        }
+
+        ul li a {
+            display: inline-block;
+            padding-top: 20px;
+            width: 50%;
+            overflow: hidden;
+        }
+        .emptyStar {
+            background: url(../static/images/emptystar.png)
+        }
+
+        .halfStar {
+            background: url(../static/images/halfstar.png)
+        }
+
+        .fullStar {
+            background: url(../static/images/fullstar.png)
+        }
+    </style>
+</head>
+<body>
+<div class="mark">
+    <span>评分：</span>
+    <ul>
+        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a></li>
+        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a></li>
+        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a></li>
+        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a></li>
+        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a></li>
+    </ul>
+</div>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(".mark ul li a").on("mouseover", function () {
+        //判断是全星点还是半星点，修改当前标签的父标签li的class为对应的星星图像
+        if (parseInt($(this).html()) % 2 == 1) {
+            $(this).parent().attr("class", "halfStar");
+        } else {
+            $(this).parent().attr("class", "fullStar");
+        }
+        //对前方的星星进行处理，遍历前方的li使背景图均变为全星
+        var prev = $(this).parent();
+        for (var i = 0; i <= (parseInt($(this).html()) / 2) - 1; i++) {
+            prev.prev().attr("class", "fullStar");
+            prev = prev.prev();
+        }
+        //对后方星星进行处理，遍历后面的li使背景图均变为空星
+        var after = $(this).parent();
+        for (var i = 0; i <= (5 - parseInt($(this).html()) / 2) - 1; i++) {
+            after.next().attr("class", "emptyStar");
+            after = after.next();
+        }
+    })
+</script>
+</body>
+</html>
