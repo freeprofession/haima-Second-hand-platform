@@ -11,14 +11,14 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl">{{ login_status }}欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_info fl">
                 欢迎您：<em>张 山</em>
                 <a href="javascript:;" class="quit">退出</a>
             </div>
             <div class="login_btn fl">
-                <a href="/login/">登录</a>
+                <a href="/login/?href=/haima/" target="_blank">登录</a>
                 <span>|</span>
                 <a href="/register/">注册</a>
             </div>
@@ -485,8 +485,8 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
-                        <h4><a href="#">{{ goods.goods_title }}</a></h4>
+                        <a href="/goods_detail/?goods=1" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <h4><a href="/goods_detail/?goods=1">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
                 {% endfor %}
