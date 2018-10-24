@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>海马商城-发布</title>
+    <title>海马商城-估价</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
@@ -32,6 +32,7 @@
         </div>
     </div>
 </div>
+
 <div id="order_show">
     <ul>
         <li><a href="/my_sale/">我出售的</a></li>
@@ -52,16 +53,17 @@
     </div>
 </div>
 <div class="search_bar clearfix">
-    <a href="/haima/" class="logo fl"><img src="../static/images/haima1.png" width="180" height="60"></a>
+    <a href="/haima/" class="logo fl"><img src="../static/images/haima3.png" width="200" height="100"></a>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/publish/" style="color: #666">发布闲置</a></div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #ff8800">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|
     </div>
 </div>
 <div id="assess">
     <div id="assess_header">
+        <span>评估你的宝贝价值</span>
     </div>
     <br>
-    <div id="assess_goods" class="pub">
+    <div id="assess_goods" class="ass">
         <form action="/assess/" method="post">
             <table border="0">
                 <tr>
@@ -163,20 +165,27 @@
             </div>
         </form>
     </div>
-    <div class="footer">
-        <div class="foot_link">
-            <a href="#">关于我们</a>
-            <span>|</span>
-            <a href="#">联系我们</a>
-            <span>|</span>
-            <a href="#">招聘人才</a>
-            <span>|</span>
-            <a href="#">友情链接</a>
+    <div class="ass" id="ass_rule">
+        <h1 style="font-size: x-large;text-align: center">平台估价说明</h1>
+        <div style="border: #ffda44 1px solid;height: 500px;width: 300px;">
+            <p style="font-size: 15px;color: black;text-indent: 2em">卖NMB NMSL</p>
         </div>
-        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
-        <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：0512-****888 苏ICP备*******8号</p>
+</div>
+
 <script type="text/javascript" src="../static/JS/main.js"></script>
 </body>
 </html>

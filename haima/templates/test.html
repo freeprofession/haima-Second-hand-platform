@@ -1,44 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <style>
-        .user_avatar_file {
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            margin-left: 15px;
-
-        }
-
-        .user_avatar_thumbnail {
-            position: relative;
-        }
-
-    </style>
+<head lang="en">
+        <script type="text/javascript" src="address.js"></script>
 </head>
-<body>
-<div class="form-group">
-    <label for="user_avatar" class="col-md-3 control-label" style="display: none">头像</label>
-    <div class="col-sm-offset-3 col-md-9">
-        <img src="../static/Images/addpic.jpg" alt="" id="user_avatar_thumbnail" style="width:100px;height:100px"
-             class="user_avatar_thumbnail">
-        <input type="file" class="user_avatar_file" id="user_avatar_file" style="height: 100px;width: 100px">
-    </div>
-</div>
-</body>
-<script>
-    $('#user_avatar_file').change(function () {
-        var file = this.files[0];
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            $('#user_avatar_thumbnail')[0].src = this.result
-        }
-    });
-</script>
-<ml>
 
+<body>
+<select id="cmbProvince" name="cmbProvince"></select>
+<select id="cmbCity" name="cmbCity"></select>
+<select id="cmbArea" name="cmbArea"></select>
+<input type="text" value="详细地址" onblur="if(this.value=''){this.value='详细地址'}" onfocus="if(this.value='详细地址'){this.value='';this.style.color='#ff0000'}">
+
+<script type="text/javascript">
+addressInit('cmbProvince', 'cmbCity', 'cmbArea');
+</script>
+</body>
+</html>
