@@ -1,10 +1,7 @@
 import pymysql
 import redis
-<<<<<<< HEAD
-=======
 import base64
 
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cursor = con.cursor(pymysql.cursors.DictCursor)
@@ -23,8 +20,7 @@ from captcha.helpers import captcha_image_url
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
-<<<<<<< HEAD
-=======
+
 
 
 def get_token(func):
@@ -55,7 +51,6 @@ def get_token(func):
     return in_func
 
 
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
     cursor.execute(sql)
