@@ -38,18 +38,12 @@ urlpatterns = [
     path('goods_detail_ajax/', view.goods_detail_ajax),
     path('test_qiniu/', view.test_qiniu),
     path('callback/', view.callback),
-    path('test_qiniu/', view.test_qiniu),
-    path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
     path('release_auction/', view.release_auction),
-    path('test_qiniu/', view.test_qiniu),
-    path('callback/', view.callback),
     path('test/', view.text_message),
     path('test_ajax', view.test_ajax),
-
     path('test_qiniu/', view.test_qiniu),
-    path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('my_collection/', view.my_collection),
     path('history_auction/', view.history_auction),
@@ -58,10 +52,15 @@ urlpatterns = [
     path('my_evaluate/', view.my_evaluate),
     path('modify_information/', view.modify_information),
     path('leave_message/', view.leave_message),
+    path('publish_auction/', view.publish_auction),
+    path('release_auction_ok/', view.release_auction_ok),
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
     path('buy_auction/',view.buy_auction),
+<<<<<<< HEAD
     #实时计算拍卖总价的路径
     path('calculate_price/',view.calculate_price),
 
+=======
+>>>>>>> 1874bcbb239ddad14cebee8eb46b59e495f54943
 ]
