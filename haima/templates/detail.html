@@ -60,7 +60,7 @@
                 <span>|</span>
                 <a href="/user/">用户中心</a>
                 <span>|</span>
-                <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
+                <a href="" id="my_order">我的订单</a><br>
             </div>
         </div>
     </div>
@@ -256,38 +256,62 @@
             </tr>
         </table>
     </div>
-    {% for goods in goods_list %}
-        <div class="goods_detail_list fr">
-        <h3>{{ goods.goods_title }}</h3>
-        <div class="prize_bar">
-            <span class="show_pirze">¥<em>{{ goods.goods_price }}</em></span>
-            <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览</a>
+    <div id="detail_user">
+        {% for goods in goods_list %}
+            <div id="goods_detail_list fr" class="detail_right">
+            <h3>{{ goods.goods_title }}</h3>
+            <div class="prize_bar">
+                <span class="show_pirze">¥<em>{{ goods.goods_price }}</em></span>
+                <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览</a>
+            </div>
+            <div class="goods_num clearfix">
+                <div class="type_select">
+                    <label>成色：</label>
+                    <span>全新</span>
+                </div>
+                <div class="type_select">
+                    <label>所在地:</label>
+                    <span>{{ goods.goods_address }}</span>
+                </div>
+                <div class="type_select">
+                    <label>发布日期:</label>
+                    <span>{{ goods.release_date }}</span>
+                </div>
+                <div class="type_select">
+                    <label>快递:</label>
+                    <span>免运费</span>
+                </div>
+                <div class="operate_btn">
+                    <a href="javascript:;" class="buy_btn">立即购买</a>
+                    <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+                </div>
+            </div>
+        {% endfor %}
         </div>
-        <div class="goods_num clearfix">
-            <div class="type_select">
-                <label>成色：</label>
-                <span>全新</span>
+        <div class="detail_right" id="user_detail">
+            <div class="info_detail">
+                <div><img src="../static/Images/user.gif" alt="" height="45" width="45"></div>
+                <div><a href="" style="font-size: 16px;">JQlove</a></div>
+                <br>
+                <div><span title="已实名认证" class="user-verify"></span></div>
             </div>
-            <div class="type_select">
-                <label>所在地:</label>
-                <span>{{ goods.goods_address }}</span>
+            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                <div><p>男</p>
+                    <p>注册时间：2018-10-24</p></div>
             </div>
-            <div class="type_select">
-                <label>发布日期:</label>
-                <span>{{ goods.release_date }}</span>
+            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
+                <ul>
+                    <li><span>卖家评分： </span><strong>-</strong> 分</li>
+                </ul>
             </div>
-            <div class="type_select">
-                <label>快递:</label>
-                <span>免运费</span>
-            </div>
-            <div class="operate_btn">
-                <a href="javascript:;" class="buy_btn">立即购买</a>
-                <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+            <div style="margin: 5px;text-align: center">
+                <input type="button" value="卖家信息" id="check_detail">
+                <input type="button" value="私聊卖家" id="check_detail">
             </div>
         </div>
-    {% endfor %}
-    </div>
 
+    </div>
     <div class="main_wrap clearfix">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
@@ -306,41 +330,57 @@
             </div>
 
             <div class="tab_content">
-
-                <dl style="margin-bottom: 25px">
-                    <dt>留言：</dt>
-                    {% for key,value in p_comment_dict.items %}
+                <p id="leave_message_head">留言：</p>
+                {% for key,value in p_comment_dict.items %}
+                    <dl style="margin-bottom: 25px;border: 1px solid white">
                         <dd class="hismessages">
-                            <img class="messages" src="{{ value.user_imgurl }}" alt="" height="30" width="30"
-                                 style="border-radius: 50%;border: 1px solid grey">
-                            <div class="messages" style="height: 30px;line-height: 30px;">{{ value.user_name }}</div>
+                            {#获取父级回复ID#}
+                            <input type="text" id="get_goods_id" value="{{ value.message_goods_id }}" >
+                            <input type="text" id="get_parent_id" value="{{ value.message_user_id }}" >
+                            <input type="text" id="get_message_id" value="{{ value.message_id }}" >
+                            {#----------------------------------------------------------#}
+                            <img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45">
+                            <div class="messages" style="height: 30px;line-height: 30px;">
+                                <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
+                                <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
+                            </div>
+                            <br>
+                            <div style="position: relative;left: -90px">
+                                <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <input id="review" type="button" value="回复" class="review_{{ value.message_id }}"
+                                       onclick="review({{ value.message_id }})">
+                            </div>
                         </dd>
-                        <dd style="margin-top: 40px">
-                            <p style="text-indent: 6em">{{ value.message_desc }}</p>
-                        </dd>
-                        <dd>
-                            <p style="text-indent: 6em;color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;<input
-                                    type="button" value="回复" class="review"></p>
-                        </dd>
-
-                        {% for item in value.child_message %}
-                            <dd style="margin-left: 100px">
-                                <img src="{{ item.user_imgurl }}" alt="" height="30" width="30">
-                                {{ item.user_name }}
-                                <p>{{ item.second__desc }}</p>{{ item.second_date }}
+                        <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
+                            {% for item in value.child_message %}
+                                <dl>
+                                    <dd style="margin-left: 75px;height: 50px;">
+                                        <input type="text" id="child_user_id" value="{{ item.child_user_id }}" >
+                                        <img src="{{ item.user_imgurl }}" alt="" height="40" width="40">
+                                        <div style="margin-left: 45px;position: relative;top: -50px;"><a
+                                                href="" style="color: #2d64b3"
+                                                class="c_name_{{ item.second_message_id }}">{{ item.user_name }}</a>:
+                                            <span style="color: #333333;font-size: 14px">{{ item.second__desc }}</span>
+                                            <div><span style="color: #a3a3a3">{{ item.second_date }}</span>
+                                                <a name="abc">1</a>
+                                                <input id="review" class="c_review_{{ item.second_message_id }}"
+                                                       type="button" value="回复"
+                                                       onclick="c_review({{ item.second_message_id }})">
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            {% endfor %}
+                            <dd>
+                                <textarea name="" id="child_review" cols="150" rows="2"
+                                          style="margin-left: 72px"></textarea>
+                                <input type="button" class="send_{{ value.message_id }}" value="发 表"
+                                       style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
                             </dd>
-
-                        {% endfor %}
-                        <dd style="display: none" class="hidreview">
-                            <textarea name="" id="" cols="150" rows="2" style="margin-left: 72px"></textarea>
-                            <input type="button" value="发 表"
-                                   style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
-                        </dd>
-                        <dd class="newline"><img src="../static/Images/lineH_1.gif" height="1" width="1"/></dd>
-                    {% endfor %}
-                </dl>
-
-
+                        </div>
+                        <div class="newline"><img src="../static/Images/lineH_1.gif" height="1" width="1"/></div>
+                    </dl>
+                {% endfor %}
                 <dl>
                     <dd>
                         <img class="message" src="../static/Images/user.gif" alt="" height="30" width="30"
@@ -384,6 +424,7 @@
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+    var get_message_id = 0;
     $(document).ready(function () {
         $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
         $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
@@ -405,16 +446,45 @@
     })
 </script>
 <script>
-    $('.review').click(function () {
-        if ($(".review").val() == "回复") {
-            $(".review").val("收起回复");
-            $(".hidreview").show();
+    function review(id) {
+        get_message_id = id;
+        if ($(".review_" + id).val() == "回复") {
+            $(".review_" + id).val("收起回复");
+            $(".hidreview_" + id).show();
+              $(".send_" + get_message_id).click(function () {
+            message_id = $('#get_message_id').val()
+            child_review = $('#child_review').val();
+            child_user_id = $('#child_user_id').val();
+            parent_id = $("#get_parent_id").val()
+            goods_id = $("#get_goods_id").val()
+            $.post('/review_ajax/', {
+                'child_review': child_review,
+                'child_user_id': child_user_id,
+                "message_id": message_id,
+                "parent_id": parent_id,
+                "goods_id": goods_id,
+            }, function (data) {
+                if (data.msg === 'need_login') {
+                    top.location.href = data.href
+                } else {
+                    $(".hidreview_" + get_message_id).append(data.msg)
+                }
+            }, 'json')
+
+        })
         }
         else {
-            $(".review").val("回复");
-            $(".hidreview").hide();
+            $(".review_" + id).val("回复");
+            $(".hidreview_" + id).hide();
         }
-    })
+    }
+
+    function c_review(c_id) {
+        var c_name = $(".c_name_" + c_id).text();
+        var input_ = document.getElementById("child_review");
+        input_.style.fontFamily = "Microsoft YaHei"
+        input_.value = "回复" + c_name + ":"
+    }
 </script>
 </body>
 </html>

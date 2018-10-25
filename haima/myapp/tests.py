@@ -2,6 +2,7 @@ import pymysql
 import redis
 from django.test import TestCase
 import json
+import re
 
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
@@ -60,5 +61,26 @@ tt = """            <div class="reply">
                    </div>
 
            </div>"""
-a=tt.format('ddddd', 'jqlopv', 'wwweq')
-print(a)
+# a = tt.format('ddddd', 'jqlopv', 'wwweq')
+# print(a)
+# template = "回复clearlove:dsaddadaddsd@454:"
+# rule = r':(.*)'
+# slotList = re.findall(rule, template)[0]
+# print(slotList)
+rr = """ <dl>
+                                    <dd style="margin-left: 75px;height: 50px;">
+                                        <input type="text" id="child_user_id" value="{{ item.child_user_id }}" hidden>
+                                        <img src="{{ item.user_imgurl }}" alt="" height="40" width="40">
+                                        <div style="margin-left: 45px;position: relative;top: -50px;"><a
+                                                href="" style="color: #2d64b3"
+                                                class="c_name_{{ item.second_message_id }}">{{ item.user_name }}</a>:
+                                            <span style="color: #333333;font-size: 14px">{{ item.second__desc }}</span>
+                                            <div><span style="color: #a3a3a3">{{ item.second_date }}</span>
+                                                <a name="abc">1</a>
+                                                <input id="review" class="c_review_{{ item.second_message_id }}"
+                                                       type="button" value="回复"
+                                                       onclick="c_review({{ item.second_message_id }})">
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>"""

@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>历史拍卖场</title>
-    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
-    <link rel="stylesheet" href="../static/CSS/histroy_auction.css">
-      <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="../static/JS/main.js"></script>
+    <title>购买拍卖商品</title>
+      <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" href="../static/CSS/buy_auction.css">
+     <link rel="stylesheet" href="../static/CSS/main.css">
+     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 <div class="header_con">
@@ -24,9 +24,9 @@
             </div>
             <div class="user_link fl">
                 <span>|</span>
-                <a href="user_center_info.html">用户中心</a>
+                <a href="user_center.html">用户中心</a>
                 <span>|</span>
-                <a href="cart.html">我的购物车</a>
+                <a href="cart.html">我的收藏</a>
                 <span>|</span>
                 <a href="user_center_order.html">我的订单</a>
             </div>
@@ -34,7 +34,7 @@
     </div>
 </div>
 <div class="search_bar clearfix">
-    <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+    <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
         <div class="search_con">
             <input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -42,7 +42,7 @@
         </div>
     </div>
 <div class="guest_cart fr">
-        <a href="#" class="cart_name fl">我的购物车</a>
+        <a href="#" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
 
         <ul class="cart_goods_show">
@@ -73,7 +73,7 @@
     <div id="auction_Navigation">
         <a href="/my_auction/"><button id="my_auction">我的拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/histroy_auction/"><button id="histroy_auction">历史拍卖</button></a>
+        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
     </div>
     <div id="auction_classification">
         <div>拍卖分类：</div>
@@ -82,42 +82,10 @@
         <div><a href="">电脑</a></div>
         <div><a href="">外设</a></div>
     </div>
+</div>
+<hr>
+<div id="">
 
 </div>
-<hr style="background-color: #16bcbd">
-<div id="auction_goods">
-    <div id="auction_goods_img"><img src="../static/Images/banner01.jpg" alt=""></div>
-    <div id="auction_goods_desc">
-        <div id="title" style="font-size: large">这是商品的标题</div>
-        <div id="desc" style="font-size: medium">这是商品的介绍在这里输入商品的介绍sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.</div>
-
-        <div id="auction_messige">
-            <div id="auction_messige_desc" >
-                <div>开始时间：<span id="acution_goods_start_time">1998/4/4</span></div>
-                <br>
-                <div>结束时间：<span id="acution_goods_end_time">1999/4/4</span></div>
-                <br>
-                <div>保证金：<span>200</span></div>
-                <br>
-                <div>单次加价最低：<span id="auction_goods_premium">50元</span></div>
-                <br>
-                <div>商品底价：<span id="auction_goods_floorprice">4000元</span></div>
-                <br>
-            </div>
-            <div id="auction_messige_desc2" >
-                <div>成交时间：<span id="acution_goods_start_time">1998/4/4</span></div>
-                <br>
-                <div>买家：<span id="acution_goods_end_time">1999/4/4</span></div>
-                <br>
-                <div>成交金额：<span>200</span></div>
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-
 </body>
 </html>
