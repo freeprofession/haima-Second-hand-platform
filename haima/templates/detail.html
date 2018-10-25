@@ -349,7 +349,7 @@
                         <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
                             {% for item in value.child_message %}
                                 <dl>
-                                    <dd style="margin-left: 75px;height: 50px;">
+                                    <dd style="margin-left: 75px;height: 45px;width:972px;background-color: #f7f8fa;">
                                         <img src="{{ item.user_imgurl }}" alt="" height="40" width="40">
                                         <div style="margin-left: 45px;position: relative;top: -50px;"><a
                                                 href="" style="color: #2d64b3">{{ item.user_name }}</a>:
@@ -367,7 +367,7 @@
                                        style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
                             </dd>
                         </div>
-                        <div class="newline"><img src="../static/Images/lineH_1.gif" height="1" width="1"/></div>
+                        <div class="newline"></div>
                     </dl>
                 {% endfor %}
                 <dl>
@@ -437,11 +437,20 @@
     function review(id) {
         if ($(".review_" + id).val() == "回复") {
             $(".review_" + id).val("收起回复");
-            $(".hidreview_" + id).show();
+            for (i = 0; i < 10; i++) {
+                if (i == id) {
+                    $(".hidreview_" + id).show(500);
+                }
+                else {
+                    $(".hidreview_" + i).hide(500);
+                    $(".review_" + i).val("回复");
+                }
+            }
+
         }
         else {
             $(".review_" + id).val("回复");
-            $(".hidreview_" + id).hide();
+            $(".hidreview_" + id).hide(500);
         }
     }
 </script>

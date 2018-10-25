@@ -6,20 +6,20 @@
 </head>
 <body>
 
-<select name="queryType" onchange="select(this)">
+<select name="queryType" onchange="op(this)">
     <option value="0" name="queryType"> 0</option>
     <option value="1" name="queryType"> 1</option>
     <option value="2" name="queryType"> 2</option>
     <option value="3" name="queryType"> 3</option>
 </select>
-<div>
-    <div class="div1">111</div>
-    <div class="div2">222</div>
-    <div class="div3">333</div>
-</div>
+<table>
+    <tr class="div1"><td>111</td></tr>
+    <tr class="div2"><td>222</td></tr>
+    <tr class="div3"><td>333</td></tr>
+</table>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
-    function select(obj) {
+    function op(obj) {
         if (obj.value == 0) {
             $(".div1").show();
             $(".div2").show();

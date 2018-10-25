@@ -49,8 +49,8 @@
 </div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="" style="color: #ff8800">收到的评价</a></div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="" style="color: #666">给他人的评价</a></div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_get/" style="color: #666">收到的评价</a></div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_give/" style="color: #ff8800">给他人的评价</a></div>
 </div>
 
 <div class="main_con clearfix">
@@ -231,21 +231,33 @@
     <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
-<script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
     function choseGoodOrBad(obj) {
-        if (obj.value == 2) {
-            alert(obj.value)
+        if (obj.value == 1) {
+            $(".rate2").show();
+            $(".rate3").show();
+            $(".rate4").show();
+        }
+
+        else if (obj.value == 2) {
             $(".rate2").show();
             $(".rate3").hide();
             $(".rate4").hide();
         }
         else if (obj.value == 3) {
-            alert(obj.value)
             $(".rate2").hide();
             $(".rate3").show();
             $(".rate4").hide();
         }
+        else {
+            $(".rate2").hide();
+            $(".rate3").hide();
+            $(".rate4").show();
+        }
+    }
+    function showContent(obj) {
+
     }
 </script>
 </body>
