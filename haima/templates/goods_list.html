@@ -5,7 +5,7 @@
     <title>海马商城-首页</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
-    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../static/JS/guess.js"></script>
 </head>
 <body>
@@ -13,10 +13,6 @@
     <div class="header">
         <div class="welcome fl">欢迎来到海马二手商城!</div>
         <div class="fr">
-            <div class="login_info fl">
-                欢迎您：<em>张 山</em>
-                <a href="javascript:;" class="quit">退出</a>
-            </div>
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
                 <span>|</span>
@@ -28,7 +24,7 @@
                 <span>|</span>
                 <a href="/user/">用户中心</a>
                 <span>|</span>
-                <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
+                <a href="" id="my_order">我的订单</a><br>
             </div>
         </div>
     </div>
@@ -41,7 +37,7 @@
 </div>
 
 <div class="search_bar clearfix">
-    <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+    <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100" id="haima"></a>
     <div class="search_wrap fl">
         <div class="search_con">
             <input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -205,166 +201,170 @@
 </div>
 
 <div class="breadcrumb">
-    <a href="#">全部分类</a>
-    <span>></span>
-    <a href="#">手机</a>
+    <span>已选条件：</span>
+    <span>所有与“手机”相关的宝贝</span>
 </div>
 
-<div class="main_wrap clearfix">
-    <div class="r_wrap fr clearfix">
-        <div class="sort_bar">
-            <a href="#" class="active">时间</a>
-            <a href="#">价格</a>
-            <a href="#">信用</a>
+<div class="main_list clearfix">
+    <div class="sort_bar">
+        <a href="#" class="active">综合</a>
+        <a href="#">价格</a>
+        <a href="#">时间</a>
+        <a href="#">信用</a>
+        <div class="sortdiv">
+            <input type="text" placeholder="¥" class="sort">
+            <span>-</span>
+            <input type="text" placeholder="¥" class="sort">
+            <input type="button" value="确定" id="sortok">
         </div>
+    </div>
 
-        <ul class="goods_type_list clearfix">
-            <li>
-                <a href="detail.html"><img src="Images/goods/goods003.jpg"></a>
-                <h4><a href="detail.html">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥16.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+    <ul class="goods_type_list clearfix">
+        <li>
+            <a href="detail.html"><img src="../static/Images/goods/goods003.jpg"></a>
+            <h4><a href="detail.html">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥16.80</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods004.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥5.50</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods004.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥5.50</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods005.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥10.00</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods005.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥10.00</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods006.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥28.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods006.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥28.80</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods007.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥6.45</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods007.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥6.45</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods008.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥9.50</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods008.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥9.50</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods009.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥3.30</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods009.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥3.30</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods001.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥5.00</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods001.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥5.00</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods002.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥28.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods002.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥28.80</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
 
-            <li>
-                <a href="#"><img src="Images/goods/goods003.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥25.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods004.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥4.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods005.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥3.50</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods006.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥3.90</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-            <li>
-                <a href="#"><img src="Images/goods/goods007.jpg"></a>
-                <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                <div class="operate">
-                    <span class="prize">￥16.80</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-        </ul>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods003.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥25.80</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods004.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥4.80</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods005.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥3.50</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods006.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥3.90</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
+        <li>
+            <a href="#"><img src="../static/Images/goods/goods007.jpg"></a>
+            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
+            <div class="operate">
+                <span class="prize">￥16.80</span>
+                <span class="unit">台</span>
+                <a href="#" class="add_goods" title="加入购物车"></a>
+            </div>
+        </li>
+    </ul>
 
-        <div class="pagenation">
-            <a href="#">&lt;上一页</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">下一页&gt;</a>
-        </div>
+    <div class="pagenation">
+        <a href="#">&lt;上一页</a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">下一页&gt;</a>
     </div>
 </div>
 
@@ -382,5 +382,16 @@
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script>
+    $(document).click(function () {
+        $("#sortok").hide()
+        $(".sortdiv").removeClass("sortdiv1")
+    });
+    $(".sort").click(function (event) {
+        event.stopPropagation();
+        $("#sortok").show()
+        $(".sortdiv").addClass("sortdiv1")
+    });
+</script>
 </body>
 </html>

@@ -43,12 +43,8 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl">{{ username }} 欢迎来到海马二手商城!</div>
         <div class="fr">
-            <div class="login_info fl">
-                欢迎您：<em>{{ username }}</em>
-                <a href="javascript:;" class="quit">退出</a>
-            </div>
             <div class="login_btn fl">
                 <a href="/login/?href=/goods_detail/?goods={{ goods_id }}">登录</a>
                 <span>|</span>
@@ -306,8 +302,8 @@
                 </ul>
             </div>
             <div style="margin: 5px;text-align: center">
-                <input type="button" value="卖家信息" id="check_detail">
-                <input type="button" value="私聊卖家" id="check_detail">
+                <input type="button" value="卖家信息" id="check_detail" class="opsale">
+                <input type="button" value="私聊卖家" id="communication" class="opsale">
             </div>
         </div>
 

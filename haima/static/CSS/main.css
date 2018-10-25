@@ -913,23 +913,14 @@ label:hover {
 
 /* 二级页面面包屑导航 */
 .breadcrumb {
-    width: 1200px;
+    width: 1246px;
     height: 40px;
     margin: 0 auto;
 }
 
-.breadcrumb a {
-    line-height: 40px;
-    color: #392d05;
-}
-
-.breadcrumb a:hover {
-    color: #ff8800
-}
-
 .breadcrumb span {
     line-height: 40px;
-    color: #ffda44;
+    color: #020101;
     padding: 0 5px;
 }
 
@@ -1111,6 +1102,8 @@ label:hover {
 
 .sort_bar {
     height: 30px;
+    width: 1240px;
+    margin: auto;
     background-color: #fbf3f3
 }
 
@@ -1129,13 +1122,22 @@ label:hover {
 }
 
 .goods_type_list {
-    margin: 10px auto 0;
+    width: 1248px;
+    margin: 10px 139.6px;
 }
 
 .goods_type_list li {
     width: 196px;
+    margin-right: 10px;
     float: left;
+    border: 1px solid #c0c0c0;
     margin-bottom: 10px
+}
+
+.goods_type_list li:hover {
+    border: 1px solid #f80000;
+    cursor: pointer;
+    box-shadow: darkgrey 1px 1px 1px 1px;
 }
 
 .goods_type_list li img {
@@ -1263,7 +1265,7 @@ label:hover {
     background-image: url("../Images/taobao.png");
 }
 
-#check_detail {
+.opsale {
     height: 26px;
     line-height: 26px;
     width: 92px;
@@ -3408,6 +3410,38 @@ label:hover {
 #back-to-top:hover {
     background-color: rgba(0, 0, 0, 0.5);
 }
-.newline{
-     border-top: 1px solid #eaeaea;
+
+.main_list .sort {
+    width: 44px;
+    margin: 4px 5px;
+    padding: 1px;
+    height: 20px;
+    line-height: 32px;
+    border: 1px solid #ccc;
+}
+
+#sortok {
+    height: 20px;
+    line-height: 20px;
+    width: 40px;
+    margin-left: 10px;
+    text-align: center;
+    border-radius: 2px;
+    color: #fff;
+    border: none;
+    background-color: #f85300;
+    background-image: linear-gradient(to bottom, #f50, #ed4f00);
+    background: -moz-linear-gradient(top, #f50, #ed4f00);
+    background: -webkit-linear-gradient(top, #f50, #ed4f00);
+    display: none;
+}
+
+.sortdiv {
+    width: 200px;
+    margin-left: 250px;
+}
+
+.sortdiv1 {
+    border: 1px solid #cec5c1;
+    box-shadow: darkgrey 10px 10px 20px 5px;
 }

@@ -60,7 +60,7 @@ def homepage(request):
     if username:
         login_status = username
     else:
-        login_status = '未登录'
+        login_status = ''
     sql = "select * from goods_test limit 0,10"
     cursor.execute(sql)
     goods_list = cursor.fetchall()
@@ -256,6 +256,9 @@ def code(request):
 def register_ok(request):
     return render(request, "register_ok.html")
 
+# 搜索
+def search(request):
+    return render(request,)
 
 # 用户中心
 def user_center(request):
@@ -381,12 +384,12 @@ def assess(request):
 
 # 拍卖首页
 def auction_index(request):
-    sql='select * from test_auction'
+    sql = 'select * from test_auction'
     cursor.execute(sql)
-    auction_goods=cursor.fetchall()
+    auction_goods = cursor.fetchall()
     print(auction_goods)
 
-    return render(request, 'auction_index.html',{'auction_goods':auction_goods})
+    return render(request, 'auction_index.html', {'auction_goods': auction_goods})
 
 
 # 历史拍卖
@@ -460,28 +463,25 @@ def release_auction_ok(request):
 
 # 购买拍卖页面
 def buy_auction(request):
-<<<<<<< HEAD
-    return render(request, 'buy_auction.html')
-=======
-        id=request.GET.get("id")
+    id = request.GET.get("id")
+    cursor.execute("select * from test_auction where auction_goods_id=%s", [id, ])
+    one_goods = cursor.fetchall()
 
-        cursor.execute("select * from test_auction where auction_goods_id=%s",[id,])
-        one_goods=cursor.fetchall()
-
-        return render(request,'buy_auction.html',{"one_goods":one_goods})
+    return render(request, 'buy_auction.html', {"one_goods": one_goods})
 
 
-#计算拍卖的总价
+# 计算拍卖的总价
 def calculate_price(request):
-    price=request.POST.get('price')
-    permium=request.POST.get('permium')
+    price = request.POST.get('price')
+    permium = request.POST.get('permium')
 
-    count_price=int(price)+int(permium)
+    count_price = int(price) + int(permium)
     return HttpResponse(count_price)
+
+
 # 用户中心
 def user_center(request):
     return render(request, 'user_center.html')
->>>>>>> 9ce498356a3150bf12552f682546e0a82b660252
 
 
 # 我出售的
