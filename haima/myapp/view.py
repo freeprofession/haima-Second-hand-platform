@@ -379,9 +379,14 @@ def assess(request):
     return render(request, 'assess.html')
 
 
-# 拍卖
+# 拍卖首页
 def auction_index(request):
-    return render(request, 'auction_index.html')
+    sql='select * from test_auction'
+    cursor.execute(sql)
+    auction_goods=cursor.fetchall()
+    print(auction_goods)
+
+    return render(request, 'auction_index.html',{'auction_goods':auction_goods})
 
 
 # 历史拍卖
@@ -455,7 +460,28 @@ def release_auction_ok(request):
 
 # 购买拍卖页面
 def buy_auction(request):
+<<<<<<< HEAD
     return render(request, 'buy_auction.html')
+=======
+        id=request.GET.get("id")
+
+        cursor.execute("select * from test_auction where auction_goods_id=%s",[id,])
+        one_goods=cursor.fetchall()
+
+        return render(request,'buy_auction.html',{"one_goods":one_goods})
+
+
+#计算拍卖的总价
+def calculate_price(request):
+    price=request.POST.get('price')
+    permium=request.POST.get('permium')
+
+    count_price=int(price)+int(permium)
+    return HttpResponse(count_price)
+# 用户中心
+def user_center(request):
+    return render(request, 'user_center.html')
+>>>>>>> 9ce498356a3150bf12552f682546e0a82b660252
 
 
 # 我出售的

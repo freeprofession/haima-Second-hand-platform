@@ -55,7 +55,19 @@ urlpatterns = [
     path('leave_message/', view.leave_message),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
+<<<<<<< HEAD
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),
+=======
+    path('publish_auction/',view.publish_auction),
+    path('release_auction_ok/',view.release_auction_ok),
+    path('buy_auction/',view.buy_auction),
+<<<<<<< HEAD
+    #实时计算拍卖总价的路径
+    path('calculate_price/',view.calculate_price),
+
+=======
+>>>>>>> 1874bcbb239ddad14cebee8eb46b59e495f54943
+>>>>>>> 9ce498356a3150bf12552f682546e0a82b660252
 ]

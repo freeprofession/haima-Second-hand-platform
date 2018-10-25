@@ -5,8 +5,44 @@
     <title>购买拍卖商品</title>
       <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" href="../static/CSS/buy_auction.css">
-     <link rel="stylesheet" href="../static/CSS/main.css">
-     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" href="../static/CSS/auction_index.css">
+    <link rel="stylesheet" href="../static/CSS/main.css">
+      <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/main.js"></script>
+        <style type="text/css">
+        div.up {
+            width: 350px;
+            height: 300px;
+            background: #CCCCCC;
+            overflow: hidden;
+        }
+
+        div.up img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #down img {
+            width: 65px;
+            height: 100px;
+            border: 1px solid #505450;
+            opacity: 0.3;
+            filter: alpha(opacity=30);
+        }
+
+        #down img.change_image {
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+
+        div.down {
+            width: 350px;
+            height: 100px;
+            margin-left: 20px;
+        }
+
+    </style>
 </head>
 <body>
 <div class="header_con">
@@ -34,7 +70,7 @@
     </div>
 </div>
 <div class="search_bar clearfix">
-    <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+    <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
         <div class="search_con">
             <input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -82,10 +118,175 @@
         <div><a href="">电脑</a></div>
         <div><a href="">外设</a></div>
     </div>
-</div>
-<hr>
-<div id="">
 
 </div>
+<hr style="background-color: #16bcbd">
+
+<div class="goods_detail_con clearfix">
+    <div class="up fl" id="up"><img src="../static/images/goods_450.jpg"></div>
+    <div class="down" id="down">
+        <table>
+            <tr>
+                <td><img src="../static/images/game.png"></td>
+                <td><img src="../static/images/camera.png"/></td>
+                <td><img src="../static/images/computer.png"/></td>
+                <td><img src="../static/images/pad.jpg"/></td>
+                <td><img src="../static/images/phone.png"/></td>
+            </tr>
+        </table>
+    </div>
+{% for i in one_goods %}
+        <div class="goods_detail_list fr">
+        <h3>{{ i.auction_goods_title }}</h3>
+        <div class="prize_bar">
+            <span class="show_pirze">¥<em>{{ i.auction_goods_price }}</em></span>
+            <a href="" class="goods_judge">12人竞拍过</a>
+        </div>
+        <div class="goods_num clearfix">
+            <div class="type_select">
+                <label>开始时间：</label>
+                <span>{{ i.auction_goods_startdate }}</span>
+            </div>
+            <div class="type_select">
+                <label>结束时间:</label>
+                <span>{{ i.auction_goods_enddate }}</span>
+            </div>
+            <div class="type_select">
+                <label>商品底价:</label>
+                <span>{{ i.auction_goods_floorprice }}</span>
+            </div>
+            <div class="type_select">
+                <label>最低加价:</label>
+                <span>{{ i.auction_goods_floorpremium }}</span>
+            </div>
+             <div class="type_select">
+                <label>保证金:</label>
+                <span>{{ i.auction_goods_margin }}</span>
+            </div>
+             <div class="type_select">
+                <label>当前价格:</label>
+                <span id="old_price">{{ i.auction_goods_price }}</span>
+            </div>
+               <div class="type_select">
+                <label>输入竞拍加价:</label>
+                <span><input type="text" id="auction_premium">:元</span>
+                   <span>当前总计：<span id="auction_goods_price"></span></span>
+            </div>
+            <div class="operate_btn">
+                <a href="" class="buy_btn" id="buy_btn">立即竞拍</a>
+                <a href="" class="add_cart" id="add_cart">加入收藏</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="main_wrap clearfix">
+        <div class="wrap fr clearfix">
+            <ul class="detail_tab clearfix">
+                <li class="active">宝贝信息</li>
+                <li>拍卖须知</li>
+                <li>安全保证</li>
+            </ul>
+            <div class="tab_content current" style="font-size: 12px;">
+                <dl>
+                    <dd>
+                        <p style="text-indent: 2em">
+                            {{ i.auction_goods_desc }}
+                        </p>
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="tab_content" style="font-size: 12px;">
+
+                <dl style="margin-bottom: 25px">
+                    <dt>拍卖须知：</dt>
+                    <dd>它纤薄如刃，轻盈如羽，却又比以往速度更快、性能更强大。它为你展现的，是迄今最明亮、最多彩的 Mac
+                        笔记本显示屏。它更配备了触控栏，一个内置于键盘的玻璃面多点触控条，让你能在需要时快速取用各种工具。MacBook Pro 是对我们突破性理念的一场出色演绎，而它，也正期待着演绎你的奇思妙想。
+                    </dd>
+                </dl>
+            </div>
+            <div class="tab_content">
+                <dl>
+                    <dt>安全保证：</dt>
+                    <dd>它纤薄如刃，轻盈如羽，却又比以往速度更快、性能更强大。它为你展现的，是迄今最明亮、最多彩的 Mac
+                        笔记本显示屏。它更配备了触控栏，一个内置于键盘的玻璃面多点触控条，让你能在需要时快速取用各种工具。MacBook Pro 是对我们突破性理念的一场出色演绎，而它，也正期待着演绎你的奇思妙想。
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    <div class="footer">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+        <p>电话：0512-****888 苏ICP备*******8号</p>
+    </div>
+</div>
+<script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
+        $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
+        $('#down img').hover(function () {
+            $('#down img').removeClass("change_image");//先清除所有选中
+            $(this).addClass("change_image");//当前图片选中
+            $('#up img').attr('src', $(this).attr('src'));//当前图片地址给#up img
+        });
+    });
+</script>
+<script>
+    $(function () {
+        var $tab_btn = $('.detail_tab li');
+        var $tab_con = $('.tab_content');
+        $tab_btn.click(function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            $tab_con.eq($(this).index()).addClass('current').siblings().removeClass('current');
+        })
+    })
+</script>
+<script>
+    $('.review').click(function () {
+        if ($(".review").val() == "回复") {
+            $(".review").val("收起回复");
+            $(".hidreview").show();
+        }
+        else {
+            $(".review").val("回复");
+            $(".hidreview").hide();
+        }
+    })
+</script>
+{#拍卖总价的计算#}
+<script>
+    $(function () {
+        $("#auction_premium").change(function () {
+            permium=$("#auction_premium").val();
+            price=$("#old_price").text();
+                $.post('/calculate_price/',
+            {
+                'price':price,
+                'permium':permium,
+            },function (data) {
+                    $('#auction_goods_price').html(function () {
+
+
+                            document.getElementById('auction_goods_price').innerText=data+"元";
+                        })
+            }
+                )
+
+        })
+    })
+</script>
 </body>
 </html>
