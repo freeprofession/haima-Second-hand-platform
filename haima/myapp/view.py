@@ -141,7 +141,6 @@ def login_ajax(request):
                 user_id = user_login['user_id']  # 判断用户名密码
                 request.session['username'] = username
                 request.session['user_id'] = user_id
-
                 href = request.session.get('href')
                 print(href)
                 error = "login_ok"
@@ -151,6 +150,7 @@ def login_ajax(request):
                     href = "/haima/"
                 return HttpResponse(json.dumps({"msg": error, "href": href}))
             else:
+
                 error = "login_error"  # 用户名或密码错误
                 return HttpResponse(json.dumps({"msg": error}))
         else:
@@ -263,9 +263,11 @@ def search(request):
 # 用户中心
 def user_center(request):
     username = request.session.get('username')
+    print(username)
     if username:
         cur.execute("select * from t_user where user_name=%s", [username, ])
         user_info = cur.fetchall()
+        print(user_info)
         return render(request, 'user_center.html', locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -353,18 +355,153 @@ def text_message(request):
             if p_comment_dict[i]['message_user_id'] == c_comment_dict[j]['parent_user_id']:
                 lst.append(c_comment_dict[j])
         p_comment_dict[i]['child_message'] = lst
-    print(p_comment_dict)
 
     return render(request, "test2.html", locals())
 
 
 def test_ajax(request):
-    pass
+    username = request.session.get('username')
+    print(username, 4444)
+    child_id = request.POST.get('child_id')
+    cur.execute("select * from t_user where user_id=%s", [child_id, ])
+    child_user = cur.fetchone()
+    print(child_user['user_name'], 45555)
+    message = request.POST.get('message')
+    if username:
+        print(message)
+        # cur.execute()   #加入数据库
+        # 评论拼接
+        tt = """            
+                    <div style="margin-left: 100px">
+                        <img src="{0}" alt="" height="50" width="50">
+                        {1}
+                        <p>{2}<input type="text" id="message"><input type="button" value="回复"
+                                                                                         id="btn_message"></p>
+                        <p><input type="text" id="c_message" value="" hidden></p>
+                  
+                </div>
+            """
+        tt = tt.format(child_user['user_imgurl'], child_user['user_name'], message)
+
+        return HttpResponse(json.dumps({"msg": tt}))
+    else:
+        href = request.session.get('username')
+        r_error = 'need_login'
+        href = '/login/?href=/test/%23abc'  # get方法#号
+        return HttpResponse(json.dumps({"msg": r_error, "href": href}))
+
+
+# 回复处理，留言板
+def review_ajax(request):
+    # ------接受值———————————
+    child_review = request.POST.get('child_review')
+    rp_user_id = request.POST.get('reply_id')
+    message_id = request.POST.get('message_id')
+    # parent_id = request.POST.get("parent_id")
+    # goods_id = request.POST.get("goods_id")
+    username = request.session.get('username')
+    user_id = request.session.get('user_id')
+    print(" # ------接受值———————————")
+    print(child_review, rp_user_id, message_id, username, user_id)
+    cur.execute("select * from t_message where message_id=%s", [message_id, ])
+    message_id_list = cur.fetchone()
+    print(message_id_list)
+    message_id = message_id_list["message_id"]
+    goods_id = message_id_list["message_goods_id"]
+
+    # 判断登陆状态----------------
+    if user_id:
+        login_state = username
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # ------获取用户信息———————————
+        cur.execute("select * from t_user where user_id=%s", [user_id, ])
+        child_user = cur.fetchone()
+        # 提取要回复人的名字
+        # child_name_ = child_review
+        rule1 = r'回复(.*?):'
+        child_name = re.findall(rule1, child_review)
+        print(child_name, "要回复人")
+        print(rp_user_id, child_review, "回复内容，ID")
+        # 判断@名字是否合法：
+        cur.execute("select * from t_second_message where second_message_id=%s", [rp_user_id, ])
+        check_child_name_ = cur.fetchone()
+        reply_id1 = check_child_name_["child_user_id"]
+        cur.execute("select * from t_user where user_id=%s", [reply_id1, ])
+        check_child_name_2 = cur.fetchone()
+        # check_child_name = check_child_name_['user_name']
+        if child_name and check_child_name_2 and check_child_name_2:
+            print("判断用户名", child_name[0], check_child_name_2['user_name'])
+            if check_child_name_2['user_name'] == child_name[0]:
+                rule2 = r':(.*)'
+                print('ture')
+                send_review = "@" + child_name[0] + re.findall(rule2, child_review)[0] + ":"
+                reply_id = reply_id1
+            else:
+                send_review = child_review
+                cur.execute("select * from t_message where message_id=%s", [message_id, ])
+                reply_id__ = cur.fetchone()
+                reply_id = reply_id__["message_user_id"]
+        else:
+            send_review = child_review
+            cur.execute("select * from t_message where message_id=%s", [message_id, ])
+            reply_id__ = cur.fetchone()
+            reply_id = reply_id__["message_user_id"]
+        # 储存数据
+        user_id_ = str(user_id)
+        print(send_review, goods_id, now_time, user_id, rp_user_id)
+        # print(type, type(send_review), type(goods_id), type(now_time), type(user_id_), type(rp_user_id))
+        cur.execute(
+            "insert into t_second_message(parent_user_id,second_desc,second_goods_id,second_date,child_user_id,to_rid) value(%s,%s,%s,%s,%s,%s)",
+            [message_id, send_review, goods_id, now_time, user_id_, reply_id])
+        second_message_id = cur.lastrowid
+        conn.commit()
+        # cur.execute("select * from t_second_message where second_message_id=%s", [second_message_id, ])
+        # second_message_lst = cur.fetchone()
+        rr = """<dl>
+                                    <dd style="margin-left: 75px;height: 50px;">
+                                        <input type="text" id="child_user_id" value="{0}" hidden>
+                                        <img src="{1}" alt="" height="40" width="40">
+                                        <div style="margin-left: 45px;position: relative;top: -50px;"><a
+                                                href="" style="color: #2d64b3"
+                                                class="c_name_{2}">{3}</a>:
+                                            <span style="color: #333333;font-size: 14px">{4}</span>
+                                            <div><span style="color: #a3a3a3">{5}</span>
+                                                <a name="abc">1</a>
+                                                <input id="review" class="c_review_{6}"
+                                                       type="button" value="回复"
+                                                       onclick="c_review({7})">
+                                            </div>
+                                        </div>
+                                    </dd>
+                                   </dl>
+                               """
+        rr = rr.format(child_user["user_id"], child_user["user_imgurl"], second_message_id, username, send_review,
+                       now_time,
+                       second_message_id, second_message_id)
+        return HttpResponse(json.dumps({"msg": rr}))
+    else:
+        login_state = "未登录"
+        r_error = 'need_login'
+        href = '/login/?href=/goods_detail/?goods=' + str(goods_id)  # get方法#号
+        return HttpResponse(json.dumps({"msg": r_error, "href": href}))
 
 
 def goods_detail_ajax(request):
     pass
 
+
+def search(request):
+    global b
+    if request.method == "GET":
+        return render(request, "search.html")
+    else:
+        one = request.POST.get("search_one")
+        print(one)
+        # 数据库操作获取ID
+        id = '1'
+        b = '/goods_detail/?goods=' + id
+        print(b)
+        return redirect("/tiaozhuan/")
 
 # 商品分类展示
 def goods_list(request):
@@ -464,6 +601,10 @@ def release_auction_ok(request):
 # 购买拍卖页面
 def buy_auction(request):
     id = request.GET.get("id")
+<<<<<<< HEAD
+=======
+
+>>>>>>> dcc55dabdad96b68a04f5028b8436aa571a7c3fb
     cursor.execute("select * from test_auction where auction_goods_id=%s", [id, ])
     one_goods = cursor.fetchall()
 
@@ -520,15 +661,6 @@ def leave_message(request):
 
 
 # 修改信息
-def modify_information(request):
-    return render(request, 'modify_information.html')
-
-
-@get_token
-def test_qiniu(request, token):
-    return render(request, '7cow.html', {'token': token})
-
-
 def callback(request):
     if request.method == 'GET':
         key_json_base64 = request.GET.get('upload_ret')
