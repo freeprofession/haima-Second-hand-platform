@@ -392,14 +392,19 @@ def test_ajax(request):
 def review_ajax(request):
     # ------接受值———————————
     child_review = request.POST.get('child_review')
-    rp_user_id = request.POST.get('child_user_id')
+    rp_user_id = request.POST.get('reply_id')
     message_id = request.POST.get('message_id')
-    parent_id = request.POST.get("parent_id")
-    goods_id = request.POST.get("goods_id")
+    # parent_id = request.POST.get("parent_id")
+    # goods_id = request.POST.get("goods_id")
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     print(" # ------接受值———————————")
-    print(child_review, rp_user_id, message_id, parent_id, goods_id, username, user_id)
+    print(child_review, rp_user_id, message_id, username, user_id)
+    cur.execute("select * from t_message where message_id=%s", [message_id, ])
+    message_id_list = cur.fetchone()
+    print(message_id_list)
+    message_id = message_id_list["message_id"]
+    goods_id = message_id_list["message_goods_id"]
 
     # 判断登陆状态----------------
     if user_id:
@@ -415,30 +420,41 @@ def review_ajax(request):
         print(child_name, "要回复人")
         print(rp_user_id, child_review, "回复内容，ID")
         # 判断@名字是否合法：
-        cur.execute("select * from t_user where user_id=%s", [rp_user_id, ])
+        cur.execute("select * from t_second_message where second_message_id=%s", [rp_user_id, ])
         check_child_name_ = cur.fetchone()
+        reply_id1 = check_child_name_["child_user_id"]
+        cur.execute("select * from t_user where user_id=%s", [reply_id1, ])
+        check_child_name_2 = cur.fetchone()
         # check_child_name = check_child_name_['user_name']
-        if child_name and check_child_name_:
-            print("判断用户名", child_name[0], check_child_name_['user_name'])
-            if check_child_name_['user_name'] == child_name[0]:
+        if child_name and check_child_name_2 and check_child_name_2:
+            print("判断用户名", child_name[0], check_child_name_2['user_name'])
+            if check_child_name_2['user_name'] == child_name[0]:
                 rule2 = r':(.*)'
+                print('ture')
                 send_review = "@" + child_name[0] + re.findall(rule2, child_review)[0] + ":"
+                reply_id = reply_id1
             else:
                 send_review = child_review
+                cur.execute("select * from t_message where message_id=%s", [message_id, ])
+                reply_id__ = cur.fetchone()
+                reply_id = reply_id__["message_user_id"]
         else:
             send_review = child_review
+            cur.execute("select * from t_message where message_id=%s", [message_id, ])
+            reply_id__ = cur.fetchone()
+            reply_id = reply_id__["message_user_id"]
         # 储存数据
         user_id_ = str(user_id)
-        print(parent_id, send_review, goods_id, now_time, user_id, rp_user_id)
-        print(type(parent_id), type(send_review), type(goods_id), type(now_time), type(user_id_), type(rp_user_id))
+        print(send_review, goods_id, now_time, user_id, rp_user_id)
+        # print(type, type(send_review), type(goods_id), type(now_time), type(user_id_), type(rp_user_id))
         cur.execute(
             "insert into t_second_message(parent_user_id,second_desc,second_goods_id,second_date,child_user_id,to_rid) value(%s,%s,%s,%s,%s,%s)",
-            [parent_id, send_review, goods_id, now_time, user_id_, rp_user_id])
+            [message_id, send_review, goods_id, now_time, user_id_, reply_id])
         second_message_id = cur.lastrowid
-        # conn.commit()
+        conn.commit()
         # cur.execute("select * from t_second_message where second_message_id=%s", [second_message_id, ])
         # second_message_lst = cur.fetchone()
-        rr = """ 
+        rr = """<dl>
                                     <dd style="margin-left: 75px;height: 50px;">
                                         <input type="text" id="child_user_id" value="{0}" hidden>
                                         <img src="{1}" alt="" height="40" width="40">
@@ -454,22 +470,35 @@ def review_ajax(request):
                                             </div>
                                         </div>
                                     </dd>
+                                   </dl>
                                """
-        print(rr)
-        rr = rr.format(child_user["user_id"], child_user["user_imgurl"], 6, username, send_review,
+        rr = rr.format(child_user["user_id"], child_user["user_imgurl"], second_message_id, username, send_review,
                        now_time,
-                       6, 6)
+                       second_message_id, second_message_id)
         return HttpResponse(json.dumps({"msg": rr}))
     else:
         login_state = "未登录"
         r_error = 'need_login'
-        href = '/login/?href=/goods_detail/?goods=' + goods_id  # get方法#号
+        href = '/login/?href=/goods_detail/?goods=' + str(goods_id)  # get方法#号
         return HttpResponse(json.dumps({"msg": r_error, "href": href}))
 
 
 def goods_detail_ajax(request):
     pass
 
+
+def search(request):
+    global b
+    if request.method == "GET":
+        return render(request, "search.html")
+    else:
+        one = request.POST.get("search_one")
+        print(one)
+        # 数据库操作获取ID
+        id = '1'
+        b = '/goods_detail/?goods=' + id
+        print(b)
+        return redirect("/tiaozhuan/")
 
 # 商品分类展示
 def goods_list(request):
@@ -487,9 +516,14 @@ def assess(request):
     return render(request, 'assess.html')
 
 
-# 拍卖
+# 拍卖首页
 def auction_index(request):
-    return render(request, 'auction_index.html')
+    sql = 'select * from test_auction'
+    cursor.execute(sql)
+    auction_goods = cursor.fetchall()
+    print(auction_goods)
+
+    return render(request, 'auction_index.html', {'auction_goods': auction_goods})
 
 
 # 历史拍卖
@@ -528,15 +562,12 @@ def publish_auction(request):
                 try:
                     cursor.execute("insert into test_agoods(goods_title) values(%s)", [title])
                     new_id = cursor.lastrowid
-
-                    con.commit()
                     sql = "insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
                           "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
                           "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)", [new_id, title, desc, floorprice,
                                                                      "../static/Images/goods/goods003.jpg",
                                                                      floorpremium, start_date, end_date, 200,
                                                                      int(postage)]
-
                     cursor.execute(sql)
                     con.commit()
                 except:
@@ -566,7 +597,26 @@ def release_auction_ok(request):
 
 # 购买拍卖页面
 def buy_auction(request):
-    return render(request, 'buy_auction.html')
+    id = request.GET.get("id")
+
+    cursor.execute("select * from test_auction where auction_goods_id=%s", [id, ])
+    one_goods = cursor.fetchall()
+
+    return render(request, 'buy_auction.html', {"one_goods": one_goods})
+
+
+# 计算拍卖的总价
+def calculate_price(request):
+    price = request.POST.get('price')
+    permium = request.POST.get('permium')
+
+    count_price = int(price) + int(permium)
+    return HttpResponse(count_price)
+
+
+# 用户中心
+def user_center(request):
+    return render(request, 'user_center.html')
 
 
 # 我出售的
@@ -589,9 +639,14 @@ def evaluate(request):
     return render(request, 'evaluate.html')
 
 
-# 我的评价
-def my_evaluate(request):
-    return render(request, 'my_evaluate.html')
+# 我收到的评价
+def my_evaluate_get(request):
+    return render(request, 'my_evaluate_get.html')
+
+
+# 给他人的评价
+def my_evaluate_give(request):
+    return render(request, 'my_evaluate_give.html')
 
 
 # 宝贝留言
