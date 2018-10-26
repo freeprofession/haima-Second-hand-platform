@@ -9,11 +9,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马商城!</div>
-        <div class="fr">
-            <div class="login_info fl">
-                欢迎您：<em>张 山</em>
-            </div>
+        <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
                 <span>|</span>
@@ -38,7 +34,7 @@
 </div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;个人信息</div>
 </div>
 
 <div class="main_con clearfix">
@@ -56,31 +52,36 @@
         </ul>
     </div>
     <div class="right_content clearfix">
+
         <h3 class="common_title2">基本信息</h3>
-        <div class="info_con clearfix">
-            <div><img src="../static/Images/user.gif" alt="" width="80" height="80"></div>
-            <div>
-                <ul class="user_info_list">
-                    <li><span>用户名：</span>18210569700</li>
-                    <li><span>手机号：</span>18210569700</li>
-                    <li><span>Email：</span>demo@demo.com</li>
-                </ul>
+        {% for user in user_info %}
+            <div class="info_con clearfix">
+                <div><img src="{{ user.user_imgurl }}" alt="" width="80" height="80"></div>
+                <div>
+
+                    <ul class="user_info_list">
+                        <li><span>用户名：</span>{{ user.user_name }}</li>
+                        <li><span>手机号：</span>{{ user.user_phone }}</li>
+                        <li><span>Email：</span>demo@demo.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="user_info_list">
+                        <li><span>用户信用：</span>1星</li>
+                        <li><span>地区：</span>{{ user.user_address }}</li>
+                        <li><span>身份认证：</span>未认证</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="user_info_list">
+                        <li><span>累计出售：</span>1</li>
+                        <li><span>累计购买：</span>1</li>
+                        <li><span>身份认证：</span>未认证</li>
+                    </ul>
+                </div>
+
             </div>
-            <div>
-                <ul class="user_info_list">
-                    <li><span>用户信用：</span>1星</li>
-                    <li><span>地区：</span>苏州</li>
-                    <li><span>身份认证：</span>未认证</li>
-                </ul>
-            </div>
-            <div>
-                <ul class="user_info_list">
-                    <li><span>累计出售：</span>1</li>
-                    <li><span>累计购买：</span>1</li>
-                    <li><span>身份认证：</span>未认证</li>
-                </ul>
-            </div>
-        </div>
+        {% endfor %}
 
         <h3 class="common_title2">最近浏览</h3>
         <div class="has_view_list">

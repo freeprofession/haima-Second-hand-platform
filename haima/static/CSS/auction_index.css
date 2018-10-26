@@ -159,6 +159,7 @@ html,body
 }
 #desc{
 	width: 500px;
+	height: 100px;
 }
 #auction_goods_img{
     padding-top: 0px;
@@ -173,7 +174,7 @@ padding-top: 10px;
 }
 #auction_button{
 padding-left: 150px;
-padding-top: 70px;
+padding-top: 10px;
 }
 #auction_button button{
 	width: 100px;
@@ -181,8 +182,8 @@ padding-top: 70px;
 
 }
 #auction_wantbuy_persons{
-	padding-left: 140px;
-	padding-top: 25px;
+	padding-left: 260px;
+	padding-top: 0px;
 	font-size: 14px;
 }
 #go_buy{

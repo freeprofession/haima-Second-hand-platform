@@ -3,12 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-<dl>
-    <dd>1</dd>
-    <dd>2</dd>
-    <dd>3</dd>
-</dl>
+<ul>
+    {% for key,value in p_comment_dict.items %}
+        <li class="ddd">
+            <div>{{ value.message_user_id }}
+                <img src="{{ value.user_imgurl }}" alt="" height="50" width="50">
+                {{ value.user_name }}
+                回复区：{{ value.message_desc }} <p><a href=""></a></p>
+                <p><input type="text" id="c_message" value="{{ value.message_user_id }}" hidden>
+                    <input type="text" id="message"><input type="button"
+                                                           value="回复" id="btn_message"></p>
+            </div>
+            <div class="review_{{ value.message_id }}">
+                {% for item in value.child_message %}
+                    <div style="margin-left: 100px">
+                        <input type="text" value="{{ value.message_id }}" id="c_id" hidden>
+                        <img src="{{ item.user_imgurl }}" alt="" height="50" width="50">
+                        {{ item.user_name }}
+                        <p>{{ item.second__desc }}<input type="text" id="message"><input type="button" value="回复"
+                                                                                         id="btn_message" onclick="">
+                        </p>
+                        <p><input type="text" id="c_message" value="{{ item.child_user_id }}" hidden></p>
+                    </div>
+                {% endfor %}
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+<br>
+<br>
+<br>
+<br>
+<a id="abc">??</a>
 </body>
+<script>
+
+
+    $(function () {
+        $("#btn_message").click(function () {
+            child_id = $('#c_message').val();
+            message = $('#message').val();
+            second_message_id = $('#second_message_id').val()
+            c_message = $('#c_id').val()
+            $.post('/test_ajax/', {
+                'child_id': child_id,
+                'message': message,
+            }, function (data) {
+                if (data.msg === 'need_login') {
+                    top.location.href = data.href
+                } else {
+                    $(".review_" + c_message).append(data.msg)
+                }
+            }, 'json')
+        })
+
+    })
+</script>
 </html>

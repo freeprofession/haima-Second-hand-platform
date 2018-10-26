@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>海马商城-用户中心</title>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <style>
+        table th, table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #DDD;
+        }
+
+        .price em {
+            color: #F60;
+            margin: 0 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">欢迎来到海马商城!</div>
+        <div class="fr">
+            <div class="login_btn fl">
+                <a href="/login/">登录</a>
+                <span>|</span>
+                <a href="/register/">注册</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/haima/">首页</a>
+                <span>|</span>
+                <a href="/user/">用户中心</a>
+                <span>|</span>
+                <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="order_show">
+    <ul>
+        <li><a href="/sale/">我出售的</a></li>
+        <li><a href="/buy/">我购买的</a></li>
+    </ul>
+</div>
+<div class="search_bar clearfix">
+    <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_get/" style="color: #666">收到的评价</a></div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_give/" style="color: #ff8800">给他人的评价</a></div>
+</div>
+
+<div class="main_con clearfix">
+    <div class="left_menu_con clearfix">
+        <h3>用户中心</h3>
+        <ul>
+            <li><a href="/user_center/">· 个人信息</a></li>
+            <li><a href="/my_sale/">· 我出售的</a></li>
+            <li><a href="/my_buy/">· 我购买的</a></li>
+            <li><a href="user_center_order.html">· 我的拍卖</a></li>
+            <li><a href="/my_collection/">· 我的收藏</a></li>
+            <li><a href="/my_evaluate/" class="active">· 我的评价</a></li>
+            <li><a href="/leave_message/">· 宝贝留言</a></li>
+            <li><a href="/modify_information/">· 修改信息</a></li>
+        </ul>
+    </div>
+    <div>
+        <table class="my_evaluate">
+            <colgroup>
+                <col class="rate">
+                <col class="content">
+                <col class="who">
+                <col class="what">
+                <col class="op">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="align-c">
+                    <select onchange="choseGoodOrBad(this);">
+                        <option selected="selected" value="1">评价</option>
+                        <option value="2">好评</option>
+                        <option value="3">中评</option>
+                        <option value="4">差评</option>
+                    </select>
+                </th>
+                <th>
+                    <select onchange="showContent(this);" style="float: left">
+                        <option selected="selected" value="">评论</option>
+                        <option value="1">有评论内容</option>
+                        <option value="0">无评论内容</option>
+                    </select>
+                </th>
+                <th style="text-align: left">
+                    评价人
+                </th>
+                <th style="text-align: left">宝贝信息</th>
+                <th class="align-c">操作 <i class="tb-rate-icf colored" title="已好评则不可修改；中差评在30天内，可删除或修改为好评。"
+                                          data-tbrate-tooltip></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="J_RateItem rate2">
+                <td class="align-c" style="text-align: center">
+                    <i class="tb-rate-ico ico-rate2" title="好评"></i>
+                </td>
+                <td class="J_ReviewContent">
+                    <p class="comment">
+                        感谢亲的光临，期待再合作啦!
+                    </p>
+                    <p class="date">[2018-07-22 16:17:17]</p>
+                </td>
+                <td>
+                    <span class="saleman">卖家：<a href="" target="_blank">acliu</a></span>
+                </td>
+                <td>
+                    <a href="" title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚" target="_blank" class="desct">牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子</a>
+                    <p class="price"><em>14.8</em>元</p>
+                </td>
+                <td class="J_RateListOp align-c op">
+                    <div class="compaint-content"></div>
+                    <div class="main-complaint-result">
+                        <p></p>
+                    </div>
+                    <div class="append-result">
+                        <p></p>
+                    </div>
+                </td>
+            </tr>
+            <tr class="J_RateItem rate2">
+                <td class="align-c" style="text-align: center">
+                    <i class="tb-rate-ico ico-rate2" title="好评"></i>
+                </td>
+                <td class="J_ReviewContent">
+                    <p class="comment">
+                        Waiting微汀轻珠宝，主营月光石、托帕石925银饰，期待您的光临^_^
+                    </p>
+                    <p class="date">[2018-07-12 15:38:28]</p>
+                </td>
+                <td>
+                    <span class="saleman">卖家：<a href="" target="_blank">幻翼蝴蝶</a></span>
+                </td>
+                <td>
+                    <a href="" title="Waiting星与月 月光石托帕石星星耳坠不对称纯银耳环短发韩国气质" target="_blank" class="desct">Waiting星与月
+                        月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环</a>
+                    <p class="price"><em>159.0</em>元</p>
+                </td>
+                <td class="J_RateListOp align-c op">
+                    <div class="compaint-content"></div>
+                    <div class="main-complaint-result">
+                        <p></p>
+                    </div>
+                    <div class="append-result">
+                        <p></p>
+                    </div>
+                </td>
+            </tr>
+            <tr class="J_RateItem rate3">
+                <td class="align-c" style="text-align: center">
+                    <i class="tb-rate-ico ico-rate3" title="中评"></i>
+                </td>
+                <td class="J_ReviewContent">
+                    <p class="comment">
+                        感谢亲的光临，期待再合作啦!
+                    </p>
+                    <p class="date">[2018-07-22 16:17:17]</p>
+                </td>
+                <td>
+                    <span class="saleman">卖家：<a href="" target="_blank">acliu</a></span>
+                </td>
+                <td>
+                    <a href="" title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚" target="_blank" class="desct">牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子</a>
+                    <p class="price"><em>14.8</em>元</p>
+                </td>
+                <td class="J_RateListOp align-c op">
+                    <div class="compaint-content"></div>
+                    <div class="main-complaint-result">
+                        <p></p>
+                    </div>
+                    <div class="append-result">
+                        <p></p>
+                    </div>
+                </td>
+            </tr>
+            <tr class="J_RateItem rate4">
+                <td class="align-c" style="text-align: center">
+                    <i class="tb-rate-ico ico-rate4" title="差评"></i>
+                </td>
+                <td class="J_ReviewContent">
+                    <p class="comment">
+                        Waiting微汀轻珠宝，主营月光石、托帕石925银饰，期待您的光临^_^
+                    </p>
+                    <p class="date">[2018-07-12 15:38:28]</p>
+                </td>
+                <td>
+                    <span class="saleman">卖家：<a href="" target="_blank">幻翼蝴蝶</a></span>
+                </td>
+                <td>
+                    <a href="" title="Waiting星与月 月光石托帕石星星耳坠不对称纯银耳环短发韩国气质" target="_blank" class="desct">Waiting星与月
+                        月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环</a>
+                    <p class="price"><em>159.0</em>元</p>
+                </td>
+                <td class="J_RateListOp align-c op">
+                    <div class="compaint-content"></div>
+                    <div class="main-complaint-result">
+                        <p></p>
+                    </div>
+                    <div class="append-result">
+                        <p></p>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：0512-****888 苏ICP备*******8号</p>
+</div>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
+    function choseGoodOrBad(obj) {
+        if (obj.value == 1) {
+            $(".rate2").show();
+            $(".rate3").show();
+            $(".rate4").show();
+        }
+
+        else if (obj.value == 2) {
+            $(".rate2").show();
+            $(".rate3").hide();
+            $(".rate4").hide();
+        }
+        else if (obj.value == 3) {
+            $(".rate2").hide();
+            $(".rate3").show();
+            $(".rate4").hide();
+        }
+        else {
+            $(".rate2").hide();
+            $(".rate3").hide();
+            $(".rate4").show();
+        }
+    }
+    function showContent(obj) {
+
+    }
+</script>
+</body>
+</html>

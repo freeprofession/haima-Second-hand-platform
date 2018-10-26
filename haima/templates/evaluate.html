@@ -69,10 +69,12 @@
             height: 100px;
             margin-left: 20px;
         }
-        #eva td{
+
+        #eva td {
             width: 60px;
         }
-        #eva{
+
+        #eva {
             padding: 5px;
             margin-top: 10px;
         }
@@ -83,10 +85,6 @@
     <div class="header">
         <div class="welcome fl">欢迎来到海马二手商城!</div>
         <div class="fr">
-            <div class="login_info fl">
-                欢迎您：<em>张 山</em>
-                <a href="javascript:;" class="quit">退出</a>
-            </div>
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
                 <span>|</span>
@@ -294,38 +292,63 @@
             </tr>
         </table>
     </div>
-    <div class="goods_detail_list fr">
-        <h3>Apple MacBook Pro 13.3英寸笔记本 银色</h3>
-        <div class="prize_bar">
-            <span class="show_pirze">¥<em>11388.00</em></span>
-            <a href="" class="goods_judge">449人浏览</a>
+    <div id="detail_user">
+        <div class="goods_detail_list fr" style="position: relative;right: 350px">
+            <h3>Apple MacBook Pro 13.3英寸笔记本</h3>
+            <div class="prize_bar">
+                <span class="show_pirze">¥<em>11388.00</em></span>
+                <a href="" class="goods_judge">449人浏览</a>
+            </div>
+            <div class="goods_num clearfix">
+                <div class="type_select">
+                    <label>成色：</label>
+                    <span>全新</span>
+                </div>
+                <div class="type_select">
+                    <label>所在地:</label>
+                    <span>北京</span>
+                </div>
+                <div class="type_select">
+                    <label>发布日期:</label>
+                    <span>2018-10-22</span>
+                </div>
+                <div class="type_select">
+                    <label>快递:</label>
+                    <span>免运费</span>
+                </div>
+                <div class="operate_btn">
+                    <a href="javascript:;" class="buy_btn">立即购买</a>
+                    <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+                </div>
+            </div>
         </div>
-        <div class="goods_num clearfix">
-            <div class="type_select">
-                <label>成色：</label>
-                <span>全新</span>
+        <div class="detail_right" id="user_detail" style="position: relative;left: 500px">
+            <div class="info_detail">
+                <div><img src="../static/Images/user.gif" alt="" height="45" width="45"></div>
+                <div><a href="" style="font-size: 16px;">JQlove</a></div>
+                <br>
+                <div><span title="已实名认证" class="user-verify"></span></div>
             </div>
-            <div class="type_select">
-                <label>所在地:</label>
-                <span>北京</span>
+            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                <div><p>男</p>
+                    <p>注册时间：2018-10-24</p></div>
             </div>
-            <div class="type_select">
-                <label>发布日期:</label>
-                <span>2018-10-22</span>
+            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
+                <ul>
+                    <li><span>卖家评分： </span><strong>-</strong> 分</li>
+                </ul>
             </div>
-            <div class="type_select">
-                <label>快递:</label>
-                <span>免运费</span>
-            </div>
-            <div class="operate_btn">
-                <a href="javascript:;" class="buy_btn">立即购买</a>
-                <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+            <div style="margin: 5px;text-align: center">
+                <input type="button" value="卖家信息" id="check_detail">
+                <input type="button" value="私聊卖家" id="check_detail">
             </div>
         </div>
     </div>
 
     <div class="main_wrap clearfix">
         <div class="wrap fr clearfix">
+            <a href="" name="evalua"></a>
             <ul class="detail_tab clearfix">
                 <li class="active">评价</li>
                 <li>卖家历史评价</li>
