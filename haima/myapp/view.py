@@ -1,10 +1,7 @@
 import pymysql
 import redis
-<<<<<<< HEAD
-=======
 import base64
 
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cursor = con.cursor(pymysql.cursors.DictCursor)
@@ -20,11 +17,10 @@ import captcha
 from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
+
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
-<<<<<<< HEAD
-=======
 
 
 def get_token(func):
@@ -32,30 +28,23 @@ def get_token(func):
         from qiniu import Auth
         access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
         secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
-        # 构建鉴权对象
         q = Auth(access_key, secret_key)
-        # 要上传的空间
         bucket_name = 'haima'
-        # 上传到七牛后保存的文件名
         key = None
-        # 生成上传 Token，可以指定过期时间等
-        # https://developer.qiniu.com/kodo/manual/1206/put-policy
         policy = {
             "scope": "haima",
+            # "returnBody":
             # 'callbackUrl': 'http://g1.xmgc360.com/callback/',
             # 'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
             # 'returnUrl': 'http://g1.xmgc360.com/callback/'
             # 'persistentOps':'imageView2/1/w/200/h/200'
         }
-        # 3600为token过期时间，秒为单位。3600等于一小时
         token = q.upload_token(bucket_name, key, 3600, policy)
-        print(token)
         return func(request, token)
 
     return in_func
 
 
->>>>>>> b561a6ecbf39d2cebb17160282c5b23fe25c9d5a
 def homepage(request):
     sql = "select * from goods_test limit 0,10"
     cursor.execute(sql)
@@ -238,9 +227,8 @@ def goods_list(request):
 
 
 # 发布商品
-@get_token
-def publish(request,token):
-    return render(request, 'publish.html',{'token': token})
+def publish(request, token):
+    return render(request, 'publish.html')
 
 
 # 估价
@@ -267,30 +255,35 @@ def my_auction(request):
 def release_auction(request):
     return render(request, 'release_auction.html')
 
-#发布拍卖提交处理
+
+# 发布拍卖提交处理
 def publish_auction(request):
     global error
     if request.method == 'POST':
-        title=request.POST.get('title')
-        desc= request.POST.get('desc')
-        floorprice= request.POST.get('floorprice')
-        floorpremium=request.POST.get("floorpremium")
-        end_date=request.POST.get("end_date")
-        start_date=request.POST.get("start_date")
-        category=request.POST.get("category")
-        postage=request.POST.get("postage")
-        list1=[]
-        print(title,desc,floorprice,floorpremium,end_date,start_date,category,postage)
+        title = request.POST.get('title')
+        desc = request.POST.get('desc')
+        floorprice = request.POST.get('floorprice')
+        floorpremium = request.POST.get("floorpremium")
+        end_date = request.POST.get("end_date")
+        start_date = request.POST.get("start_date")
+        category = request.POST.get("category")
+        postage = request.POST.get("postage")
+        list1 = []
+        print(title, desc, floorprice, floorpremium, end_date, start_date, category, postage)
         if title and desc and floorpremium and floorprice and end_date and start_date and category and postage:
-            if len(title)>=6 and floorpremium < floorprice and  str(floorprice).isdigit()==True and str(floorpremium).isdigit()==True:
-                error="ok"
+            if len(title) >= 6 and floorpremium < floorprice and str(floorprice).isdigit() == True and str(
+                    floorpremium).isdigit() == True:
+                error = "ok"
                 try:
-                    cursor.execute("insert into test_agoods(goods_title) values(%s)",[title])
+                    cursor.execute("insert into test_agoods(goods_title) values(%s)", [title])
                     new_id = cursor.lastrowid
                     con.commit()
-                    sql="insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
-                        "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
-                        "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)",[new_id,title,desc,floorprice,"../static/Images/goods/goods003.jpg",floorpremium,start_date,end_date,200,int(postage)]
+                    sql = "insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
+                          "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
+                          "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)", [new_id, title, desc, floorprice,
+                                                                     "../static/Images/goods/goods003.jpg",
+                                                                     floorpremium, start_date, end_date, 200,
+                                                                     int(postage)]
                     cursor.execute(sql)
                     con.commit()
                 except:
@@ -298,23 +291,25 @@ def publish_auction(request):
                     error = "sql_error"
                     print("数据库插入错误！")
                 return HttpResponse(json.dumps({"msg": error}))
-            elif len(title)<6:
-                error='title.length_error'
+            elif len(title) < 6:
+                error = 'title.length_error'
                 return HttpResponse(json.dumps({"msg": error}))
-            elif str(floorprice).isdigit()==False or str(floorpremium).isdigit()==False:
-                error='price_error'
+            elif str(floorprice).isdigit() == False or str(floorpremium).isdigit() == False:
+                error = 'price_error'
                 return HttpResponse(json.dumps({"msg": error}))
-            elif int(floorpremium)>=int(floorprice):
-                error='floorpremium_error'
+            elif int(floorpremium) >= int(floorprice):
+                error = 'floorpremium_error'
                 return HttpResponse(json.dumps({"msg": error}))
 
         else:
-            error='less_error'
+            error = 'less_error'
             return HttpResponse(json.dumps({"msg": error}))
 
-#发布拍卖成功
+
+# 发布拍卖成功
 def release_auction_ok(request):
-    return render(request,'release_auction_ok.html')
+    return render(request, 'release_auction_ok.html')
+
 
 # 用户中心
 def user_center(request):
@@ -368,9 +363,20 @@ def callback(request):
         print(key_json)
         key_dict = json.loads(key_json)
         key = key_dict['key']
-        print(key)
         return HttpResponse('pgwecu7z4.bkt.clouddn.com/' + key + '-haima.shuiy')
-    else:
-        # json_result = json.loads(postBody)
-        # print(json_result)
-        return HttpResponse("POST")
+
+# 上传图片所需要的token
+def gettokendata(request):
+    index = request.POST.get('index')
+    from qiniu import Auth
+    access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
+    secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
+    q = Auth(access_key, secret_key)
+    bucket_name = 'haima'
+    key = None
+    policy = {
+        "scope": "haima",
+        "returnBody": '{"key": $(key), "index": "' + index + '"}',
+    }
+    token = q.upload_token(bucket_name, key, 3600, policy)
+    return HttpResponse(token)

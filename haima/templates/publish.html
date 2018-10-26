@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>海马商城-发布</title>
+    <script type="text/javascript" src="https://unpkg.com/qiniu-js@2.5.1/dist/qiniu.min.js"></script>
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../static/JS/qiniu.js"></script>
     <script type="text/javascript" src="../static/JS/moxie.min.js"></script>
     <script type="text/javascript" src="../static/JS/plupload.full.min.js"></script>
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
@@ -57,7 +59,8 @@
             height: 100px;
             width: 100%;
         }
-        #logoimg{
+
+        #logoimg {
             height: 100px;
             width: 200px;
         }
@@ -156,13 +159,12 @@
                 <tr>
                     <td>宝贝图片：</td>
                     <td id="show_pic">
-                        <div class="container" id="container">
-                            <div id="album_imgs">
-                            </div>
-                            <input id="pickfiles1" type="image" src="../static/Images/addpic.jpg"
-                                   style="width: 40px;height: 40px"/>
-                        </div>
-
+{#                        <div class="container" id="container">#}
+{#                            <div id="album_imgs">#}
+{#                            </div>#}
+{#                            <input id="pickfiles1" type="image" src="../static/Images/addpic.jpg"#}
+{#                                   style="width: 40px;height: 40px"/>#}
+{#                        </div>#}
                         <div style="width: 100px">
                             <label for="js-file"><img src="../static/Images/addpic.jpg" alt=""
                                                       style="height: 100%;width: 100%"></label>
@@ -177,11 +179,7 @@
                 </tr>
             </table>
             <div>
-<<<<<<< HEAD
-                <input type="submit" id="publish_button" value="发布"></input>
-=======
-                <button id="publish_button">确认发布</button>
->>>>>>> a2d9bf3570804791127d7c5a50d6df7d48cfa97f
+                <input type="button" id="publish_button" value="发布">
             </div>
         </form>
     </div>
@@ -205,7 +203,47 @@
     <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
-<script type="text/javascript" src="../static/JS/main.js"></script>
+
+
+<style>
+    .background {
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        background: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2000;
+    }
+
+    .progressBar {
+        border: solid 2px #86A5AD;
+        background: white url(../static/Images/5-121204193R0.gif) no-repeat 10px 10px;
+    }
+
+    .progressBar {
+        display: block;
+        width: 148px;
+        height: 28px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: -74px;
+        margin-top: -14px;
+        padding: 10px 10px 10px 50px;
+        text-align: left;
+        line-height: 27px;
+        font-weight: bold;
+        z-index: 2001;
+    }
+</style>
+<div id="background" class="background" style="display: none; "></div>
+<div id="progressBar" class="progressBar" style="display: none; ">数据加载中，请稍等...</div>
+
+
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="../static/JS/F_File1.2.js"></script>
 <script type="text/javascript">
@@ -214,121 +252,123 @@
          *param{number} iwidth 预计图片的宽度
          *param{number} iheight 预计的图片的高度
          */
-    function DrawImage(ImgD, iwidth, iheight) {
-        var image = new Image();//新建一个image
-        image.src = ImgD.src;//新建的image与传入的image关联,便于调整传入图片的比例
-        if (image.width > 0 && image.height > 0) {//如果传入图片大于预计图片大小进行等比例缩放 否则不进行能比例缩放
-            if (image.width / image.height >= iwidth / iheight) {
-                if (image.width > iwidth) {//如果宽度大于预计,基于宽度进行等比例缩放
-                    ImgD.width = iwidth;
-                    ImgD.height = (image.height * iwidth) / image.width;
-                } else {
-                    ImgD.width = image.width;
-                    ImgD.height = image.height;
-                }
-            } else {
-                if (image.height > iheight) {//如果传入图片高度大于预计,则基于高度进行等比例缩放
-                    ImgD.height = iheight;
-                    ImgD.width = (image.width * iheight) / image.height;
-                } else {
-                    ImgD.width = image.width;
-                    ImgD.height = image.height;
-                }
-            }
-        }
-    }
+    {#function DrawImage(ImgD, iwidth, iheight) {#}
+    {#    var image = new Image();//新建一个image#}
+    {#    image.src = ImgD.src;//新建的image与传入的image关联,便于调整传入图片的比例#}
+    {#    if (image.width > 0 && image.height > 0) {//如果传入图片大于预计图片大小进行等比例缩放 否则不进行能比例缩放#}
+    {#        if (image.width / image.height >= iwidth / iheight) {#}
+    {#            if (image.width > iwidth) {//如果宽度大于预计,基于宽度进行等比例缩放#}
+    {#                ImgD.width = iwidth;#}
+    {#                ImgD.height = (image.height * iwidth) / image.width;#}
+    {#            } else {#}
+    {#                ImgD.width = image.width;#}
+    {#                ImgD.height = image.height;#}
+    {#            }#}
+    {#        } else {#}
+    {#            if (image.height > iheight) {//如果传入图片高度大于预计,则基于高度进行等比例缩放#}
+    {#                ImgD.height = iheight;#}
+    {#                ImgD.width = (image.width * iheight) / image.height;#}
+    {#            } else {#}
+    {#                ImgD.width = image.width;#}
+    {#                ImgD.height = image.height;#}
+    {#            }#}
+    {#        }#}
+    {#    }#}
+    {#}#}
+
 
     $(function () {
         var f = new FFile({
             name: 'fuck',								//唯一名,用来与其他文件区分
             fileInput: '#js-file',				//html file控件
-            upButton: '#js-button',					//提交按钮
+            upButton: '#publish_button',					//提交按钮
             pre: '#js-pre',									//预览地址
-            url: 'fuck.php',									//ajax地址
+            url: '/test_img/',									//ajax地址
             onSuccess: function (res) {
                 console.log(res)
             },	//文件全部上传完毕时
         })
     })
 </script>
-<script>
-    var imgscount = 0;
-    //引入Plupload 、qiniu.js后
-    var uploader1 = Qiniu.uploader({
-        runtimes: 'html5,flash,html4',    //上传模式,依次退化
-        browse_button: 'pickfiles1',       //上传选择的点选按钮，**必需**
-        //uptoken_url: '/qiniu_token',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
-        uptoken: '{{ token }}', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
-        unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
-        //save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
-        domain: 'http://pgwecu7z4.bkt.clouddn.com/',   //bucket 域名，下载资源时用到，**必需**
-        get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token
-        container: 'container',           //上传区域DOM ID，默认是browser_button的父元素，
-        max_file_size: '10000000',           //最大文件体积限制
-        flash_swf_url: 'js/plupload/Moxie.swf',  //引入flash,相对路径
-        max_retries: 3,                   //上传失败最大重试次数
-        dragdrop: true,                   //开启可拖曳上传
-        drop_element: 'container',        //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-        chunk_size: '4m',                //分块上传时，每片的体积
-        auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
-        init: {
-            'FilesAdded': function (up, files) {
-                plupload.each(files, function (file) {
-                    // 文件添加进队列后,处理相关的事情
-                });
+{#<script>#}
+{#    var imgscount = 0;#}
+{#    //引入Plupload 、qiniu.js后#}
+{#    var uploader1 = Qiniu.uploader({#}
+{#        runtimes: 'html5,flash,html4',    //上传模式,依次退化#}
+{#        browse_button: 'js-file',       //上传选择的点选按钮，**必需**#}
+{#        //uptoken_url: '/qiniu_token',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）#}
+{#        uptoken: '{{ token }}', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成#}
+{#        unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。#}
+{#        //save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理#}
+{#        domain: 'http://pgwecu7z4.bkt.clouddn.com/',   //bucket 域名，下载资源时用到，**必需**#}
+{#        get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token#}
+{#        container: 'container',           //上传区域DOM ID，默认是browser_button的父元素，#}
+{#        max_file_size: '10000000',           //最大文件体积限制#}
+{#        flash_swf_url: 'js/plupload/Moxie.swf',  //引入flash,相对路径#}
+{#        max_retries: 3,                   //上传失败最大重试次数#}
+{#        dragdrop: true,                   //开启可拖曳上传#}
+{#        drop_element: 'container',        //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传#}
+{#        chunk_size: '4m',                //分块上传时，每片的体积#}
+{#        auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传#}
+{#        init: {#}
+{#            'FilesAdded': function (up, files) {#}
+{#                plupload.each(files, function (file) {#}
+{#                    // 文件添加进队列后,处理相关的事情#}
+{#                });#}
+{##}
+{#            },#}
+{#            'BeforeUpload': function (up, file) {#}
+{#                // 每个文件上传前,处理相关的事情#}
+{#            },#}
+{#            'UploadProgress': function (up, file) {#}
+{#                // 每个文件上传时,处理相关的事情#}
+{#                console.log(file.percent + "%");#}
+{#            },#}
+{#            'FileUploaded': function (up, file, info) {#}
+{#                // 每个文件上传成功后,处理相关的事情#}
+{#                // 其中 info.response 是文件上传成功后，服务端返回的json，形式如#}
+{#                // {#}
+{#                //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",#}
+{#                //    "key": "gogopher.jpg"#}
+{#                //  }#}
+{#                // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html#}
+{#                imgscount++;#}
+{#                if (imgscount <= 9) {#}
+{##}
+{#                    var domain = up.getOption('domain');#}
+{##}
+{#                    var dataobj;#}
+{#                    if (typeof(info.response) == 'string') {#}
+{#                        var dataobj = JSON.parse(info.response);#}
+{#                    } else {#}
+{#                        var dataobj = info.response;#}
+{#                    }#}
+{##}
+{#                    var image_url = domain + dataobj['key'];#}
+{#                    var thumbimage_url = image_url + "?imageView2/1/w/100/h/100/q/75";#}
+{#                    //$("#pickfiles1").attr("src",thumbimage_url);#}
+{##}
+{#                    var imghtml = '<div style="margin-left: 9px;float: left;">\n' +#}
+{#                        '                                <img  src="' + thumbimage_url + '"/>\n' +#}
+{##}
+{#                        '                            </div>';#}
+{#                    $("#album_imgs").append(imghtml);#}
+{#                    console.log(image_url);#}
+{#                }#}
+{#            },#}
+{#            'Error': function (up, err, errTip) {#}
+{#                //上传出错时,处理相关的事情#}
+{#            },#}
+{#            'UploadComplete': function () {#}
+{##}
+{#            },#}
+{#            'Key': function (up, file) {#}
+{#                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数#}
+{#                // 该配置必须要在 unique_names: false , save_key: false 时才生效#}
+{#            }#}
+{#        }#}
+{#    });#}
+{#</script>#}
 
-            },
-            'BeforeUpload': function (up, file) {
-                // 每个文件上传前,处理相关的事情
-            },
-            'UploadProgress': function (up, file) {
-                // 每个文件上传时,处理相关的事情
-                console.log(file.percent + "%");
-            },
-            'FileUploaded': function (up, file, info) {
-                // 每个文件上传成功后,处理相关的事情
-                // 其中 info.response 是文件上传成功后，服务端返回的json，形式如
-                // {
-                //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
-                //    "key": "gogopher.jpg"
-                //  }
-                // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
-                imgscount++;
-                if (imgscount <= 9) {
-
-                    var domain = up.getOption('domain');
-
-                    var dataobj;
-                    if (typeof(info.response) == 'string') {
-                        var dataobj = JSON.parse(info.response);
-                    } else {
-                        var dataobj = info.response;
-                    }
-
-                    var image_url = domain + dataobj['key'];
-                    var thumbimage_url = image_url + "?imageView2/1/w/100/h/100/q/75";
-                    //$("#pickfiles1").attr("src",thumbimage_url);
-
-                    var imghtml = '<div style="margin-left: 9px;float: left;">\n' +
-                        '                                <img  src="' + thumbimage_url + '"/>\n' +
-
-                        '                            </div>';
-                    $("#album_imgs").append(imghtml);
-                    console.log(image_url);
-                }
-            },
-            'Error': function (up, err, errTip) {
-                //上传出错时,处理相关的事情
-            },
-            'UploadComplete': function () {
-
-            },
-            'Key': function (up, file) {
-                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-                // 该配置必须要在 unique_names: false , save_key: false 时才生效
-            }
-        }
-    });
-</script>
 </body>
 </html>

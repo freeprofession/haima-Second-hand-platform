@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from myapp import view
 
+# from django.views.generic.base import RedirectView
+
 urlpatterns = [
     path('', view.homepage),
     path('haima/', view.homepage),
@@ -38,13 +40,12 @@ urlpatterns = [
 
     path('test_qiniu/', view.test_qiniu),
     path('callback/', view.callback),
-<<<<<<< HEAD
-    path('my_auction/',view.my_auction),
-    path('history_auction/',view.history_auction),
-    path('release_auction/',view.release_auction),
-    path('test_qiniu/',view.test_qiniu),
+    path('gettokendata/', view.gettokendata),
+    path('my_auction/', view.my_auction),
+    path('history_auction/', view.history_auction),
+    path('release_auction/', view.release_auction),
+    path('test_qiniu/', view.test_qiniu),
     # path('callback/',view.callback),
-=======
     path('my_auction/', view.my_auction),
     path('my_collection/', view.my_collection),
     path('history_auction/', view.history_auction),
@@ -55,9 +56,7 @@ urlpatterns = [
     path('modify_information/', view.modify_information),
     path('leave_message/', view.leave_message),
 
-    path('publish_auction/',view.publish_auction),
-    path('release_auction_ok/',view.release_auction_ok),
-
-
->>>>>>> a2d9bf3570804791127d7c5a50d6df7d48cfa97f
+    path('publish_auction/', view.publish_auction),
+    path('release_auction_ok/', view.release_auction_ok),
+    # path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
 ]
