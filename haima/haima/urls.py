@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from myapp import view
 
-# from django.views.generic.base import RedirectView
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('haima/', view.homepage),
@@ -50,7 +50,7 @@ urlpatterns = [
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
     path('leave_message/', view.leave_message),
-    # path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
+    path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('publish_auction/', view.publish_auction),
