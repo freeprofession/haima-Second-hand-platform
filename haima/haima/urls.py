@@ -17,7 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 from myapp import view
 
+# from django.views.generic.base import RedirectView
+
 urlpatterns = [
+    path("", view.homepage),
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -33,9 +36,17 @@ urlpatterns = [
     path('auction_index/', view.auction_index),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
-    # path('address/', view.address),
+    # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
+<<<<<<< HEAD
+=======
+    path('review_ajax/', view.review_ajax),
+    path('lea_message/', view.lea_message),
+    path('collection/', view.collection),
+    # -------------------------
+
+>>>>>>> c54509e19295837ec0600bed25b65c8d3d791885
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
@@ -44,17 +55,24 @@ urlpatterns = [
     path('test_ajax', view.test_ajax),
     path('my_auction/', view.my_auction),
     path('my_collection/', view.my_collection),
-    path('history_auction/', view.history_auction),
-    path('release_auction/', view.release_auction),
     path('evaluate/', view.evaluate),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
-    path('modify_information/', view.modify_information),
-    path('leave_message/', view.leave_message),
+    # path('modify_information/', view.modify_information),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的拍卖发布历史记录
+    path("my_release_record/", view.my_release_record),
     path('publish_auction/', view.publish_auction),
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
+<<<<<<< HEAD
+=======
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+>>>>>>> c54509e19295837ec0600bed25b65c8d3d791885
 ]

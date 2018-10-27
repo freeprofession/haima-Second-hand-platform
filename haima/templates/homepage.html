@@ -5,6 +5,8 @@
     <title>海马商城-首页</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../static/JS/guess.js"></script>
 </head>
@@ -51,28 +53,20 @@
     <div class="guest_cart fr">
         <a href="#" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
-
         <ul class="cart_goods_show">
-            <li>
-                <img src="../static/Images/goods/goods001.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>4</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods002.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>5</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
+            {% if not collection_list %}
+                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                     alt=""  height="100">
+                你没有收藏任何商品
+            {% else %}
+                {% for value in collection_list %}
+                    <li>
+                        <img src="{{ value.goods_imgurl }}" alt="商品图片">
+                        <h4>{{ value.goods_title }}</h4>
+                        <div><span style="color: red"></span>{{ value.goods_price }}</div>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 </div>
@@ -109,9 +103,14 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1">
+<<<<<<< HEAD
                 <a href="/goods_list/?q=手机" class="main_type">手机</a><a href="/goods_list/?q=华为"
                                                                        class="child_type">华为</a><a href="#"
                                                                                                    class="child_type">苹果</a><a
+=======
+                <a href="/goods_list/?" class="main_type">手机</a><a href="#" class="child_type">华为</a><a href="#"
+                                                                                                        class="child_type">苹果</a><a
+>>>>>>> c54509e19295837ec0600bed25b65c8d3d791885
                     href="#" class="child_type">小米</a><a href="#" class="child_type">oppo</a>
             </div>
             <div class="level2">

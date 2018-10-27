@@ -386,11 +386,13 @@
                         <div class="message" style="height: 30px;line-height: 30px;">JQlove</div>
                     </dd>
                     <dd>
-                        <textarea name="" id="" cols="180" rows="4"></textarea>
+                        <textarea name="get_Published" id="Published" cols="180" rows="4"></textarea>
+                        <input type="text" value="{{ goods_id }}" id="goods_id" hidden>
                     </dd>
                     <dd style="padding-left: 1070px">
-                        <button>发表</button>
+                        <input type="button" id="pub_text" value="发表">
                     </dd>
+
                 </dl>
 
             </div>
@@ -490,12 +492,55 @@
     }
 
     function c_review(c_id) {
-        rip_id = c_id
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
         input_.value = "回复" + c_name + ":"
     }
+
+    $(function () {
+        $("#pub_text").click(function () {
+            Published = $('#Published').val();
+            goods_id = $('#goods_id').val();
+            url_ = location.href;
+            $.post('/lea_message/', {
+                'Published': Published,
+                'goods_id': goods_id,
+                'url_': url_
+            }, function (data) {
+                if (data.msg === 'need_login') {
+                    top.location.href = data.href
+                } else {
+                    top.location.href = data.href
+                }
+            }, 'json')
+
+        })
+
+    });
+    $(function () {
+        $("#add_cart").click(function () {
+            goods_id = $('#goods_id').val();
+            $.post('/collection/', {
+                {#'Published': Published,#}
+                'goods_id': goods_id,
+                {#'url_': url_#}
+            }, function (data) {
+                if (data.msg === '您已收藏过改商品') {
+                    {#$("#add_cart").css("background", "grey").text("已收藏")#}
+                    $("#add_cart").attr('disabled', true)
+                    alert("您已收藏过改商品")
+                } else if (data.msg === 'need_login') {
+                    top.location.href = data.href
+                } else {
+                    $("#add_cart").css("background", "#F75009").text("已收藏")
+                    alert("收藏成功")
+                }
+            }, 'json')
+
+        })
+
+    });
 </script>
 </body>
 </html>

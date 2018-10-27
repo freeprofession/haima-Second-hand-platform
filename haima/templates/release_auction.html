@@ -20,20 +20,22 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl">{{ username.user_name }}欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
-                <a href="login.html">登录</a>
+                <a href="/login/?href=/release_auction/" target="_blank">登录</a>
                 <span>|</span>
                 <a href="/register/">注册</a>
             </div>
             <div class="user_link fl">
                 <span>|</span>
-                <a href="user_center_info.html">用户中心</a>
+                <a href="/haima/">首页</a>
                 <span>|</span>
-                <a href="cart.html">我的收藏</a>
+                <a href="/user_center/">用户中心</a>
                 <span>|</span>
-                <a href="user_center_order.html">我的订单</a>
+                <a href="" id="my_order">我的订单</a>
+                <span>|</span>
+                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
             </div>
         </div>
     </div>
@@ -94,12 +96,12 @@
                 <tr>
                     <td>类型：</td>
                     <td><select style="width: 200px" id="goods_category">
-                        <option value="0">手机</option>
-                        <option value="1">电脑</option>
-                        <option value="2">平板</option>
-                        <option value="3">相机</option>
-                        <option value="4">外设</option>
-                        <option value="5">其他</option>
+                        <option value="1">手机</option>
+                        <option value="2">电脑</option>
+                        <option value="3">平板</option>
+                        <option value="4">相机</option>
+                        <option value="5">外设</option>
+                        <option value="6">其他</option>
                     </select></td>
                 </tr>
 
@@ -257,6 +259,14 @@
                         $('#error_message').html(function () {
                             document.getElementById('error_message').style.display = 'block';
                             document.getElementById('error_message').innerText = '数据库错误请重试';
+
+                        })
+
+                    }
+                      else if (data.msg === 'time_error') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '发布时间有误';
 
                         })
 

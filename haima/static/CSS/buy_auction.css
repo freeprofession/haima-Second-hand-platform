@@ -126,8 +126,24 @@
     text-align: center;
     background-color: #fdff8e;
 }
+#add_collection{
+     display: inline-block;
+    width: 178px;
+    height: 38px;
+    border: 1px solid #c4c2a8;
+    font-size: 14px;
+    color: #c42f2d;
+    line-height: 38px;
+    text-align: center;
+    background-color: #fdff8e;
+       background-color: #feff4d;
+    color: #343f40;
+    margin-left: 10px;
+    position: relative;
+}
 
 .operate_btn .add_cart {
+
     background-color: #feff4d;
     color: #343f40;
     margin-left: 10px;
@@ -406,4 +422,21 @@ html,body
 #auction_classification div{
     width: 100px;
 }
-
+#buy_now_message{
+   position: fixed;
+    top: 200px;
+    left: 600px;
+    width: 350px;
+    height: 250px;
+    background-color: #16bcbd;
+    display: none;
+}
+#shutdown{
+    float: right;
+}
+#price_error{
+    display: none;
+}
+#shutdown_error{
+    float: right;
+}

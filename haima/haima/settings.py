@@ -84,7 +84,7 @@ DATABASES = {
     }
 }
 # 配置失效时间为半个小时
-SESSION_COOKIE_AGE = 60 * 30
+SESSION_COOKIE_AGE = 60 * 60 * 12
 # 关闭浏览器清除cookie
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Password validation
