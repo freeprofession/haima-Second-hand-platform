@@ -51,28 +51,20 @@
     <div class="guest_cart fr">
         <a href="#" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
-
         <ul class="cart_goods_show">
-            <li>
-                <img src="../static/Images/goods/goods001.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>4</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods002.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>5</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
+            {% if not collection_list %}
+                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                     alt="" height="100">
+                你没有收藏任何商品
+            {% else %}
+                {% for value in collection_list %}
+                    <li>
+                        <img src="{{ value.goods_imgurl }}" alt="商品图片">
+                        <h4>{{ value.goods_title }}</h4>
+                        <div><span style="color: red"></span>{{ value.goods_price }}</div>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 </div>
@@ -180,7 +172,6 @@
                         <a href="#">移动硬盘</a>
                     </div>
                 </div>
-        </li>
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/camera.png" alt="" height="30" width="15" class="pic1">

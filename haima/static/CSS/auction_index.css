@@ -96,6 +96,7 @@ html,body
 	top:33px;
 	z-index:9998;
 	display:none;
+	background-color: red;
 }
 .cart_goods_show li{
 	border-bottom:1px dotted #ddd;
@@ -149,12 +150,12 @@ html,body
 	border-color: #ffda44;
 }
 #auction_goods div{
-    float: left;
+	float: left;
 }
 #auction_goods_desc
 {
 	color: #16bcbd;
-    padding-left: 300px;
+    margin-left: 100px;
     width:400px;
 }
 #desc{
@@ -167,6 +168,7 @@ html,body
 }
 #auction_messige{
 	font-size: 16px;
+	float: left;
 
 }
 #auction_messige_desc div{
@@ -175,6 +177,7 @@ padding-top: 10px;
 #auction_button{
 padding-left: 150px;
 padding-top: 10px;
+
 }
 #auction_button button{
 	width: 100px;
@@ -182,11 +185,16 @@ padding-top: 10px;
 
 }
 #auction_wantbuy_persons{
-	padding-left: 260px;
+
+	position: relative;
+	top: -20px;
+	left: 100px;
 	padding-top: 0px;
 	font-size: 14px;
 }
 #go_buy{
+	position: relative;
+	top: -150px;
 	background-color: #ffda44;
 	border: 0px;
 	border-radius: 7px;
