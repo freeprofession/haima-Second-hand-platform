@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>购买拍卖商品</title>
-      <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" href="../static/CSS/buy_auction.css">
-   <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" href="../static/CSS/auction_index.css">
     <link rel="stylesheet" href="../static/CSS/main.css">
-      <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/main.js"></script>
-        <style type="text/css">
+    <style type="text/css">
         div.up {
             width: 350px;
             height: 300px;
@@ -47,20 +47,22 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl">{{ username.user_name }}欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
-                <a href="login.html">登录</a>
+                <a href="/login/?href=/history_auction/" target="_blank">登录</a>
                 <span>|</span>
-                <a href="register.html">注册</a>
+                <a href="/register/">注册</a>
             </div>
             <div class="user_link fl">
                 <span>|</span>
-                <a href="user_center.html">用户中心</a>
+                <a href="/haima/">首页</a>
                 <span>|</span>
-                <a href="cart.html">我的收藏</a>
+                <a href="/user_center/">用户中心</a>
                 <span>|</span>
-                <a href="user_center_order.html">我的订单</a>
+                <a href="" id="my_order">我的订单</a>
+                <span>|</span>
+                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
             </div>
         </div>
     </div>
@@ -73,7 +75,7 @@
             <input type="button" class="input_btn fr" name="" value="搜索">
         </div>
     </div>
-<div class="guest_cart fr">
+    <div class="guest_cart fr">
         <a href="#" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
 
@@ -81,7 +83,8 @@
             <li>
                 <img src="../static/Images/goods/goods001.jpg" alt="商品图片">
                 <h4>商品名称手机</h4>
-                <div>4</div>1
+                <div>4</div>
+                1
             </li>
             <li>
                 <img src="../static/Images/goods/goods002.jpg" alt="商品图片">
@@ -103,9 +106,15 @@
 </div>
 <div class="Navigation_information">
     <div id="auction_Navigation">
-        <a href="/my_auction/"><button id="my_auction">我的拍卖</button></a>
-        <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+        <a href="/my_auction/">
+            <button id="my_auction">我的拍卖</button>
+        </a>
+        <a href="/auction_index/">
+            <button id="now_auction">正在拍卖</button>
+        </a>
+        <a href="/history_auction/">
+            <button id="histroy_auction">历史拍卖</button>
+        </a>
     </div>
     <div id="auction_classification">
         <div>拍卖分类：</div>
@@ -117,9 +126,9 @@
 
 </div>
 <hr style="background-color: #16bcbd">
-
-<div class="goods_detail_con clearfix">
-    <div class="up fl" id="up"><img src="../static/images/goods_450.jpg"></div>
+{% for i in list1 %}
+    <div class="goods_detail_con clearfix">
+    <div class="up fl" id="up"><img src={{ i.goods.auction_goods_imgurl }}></div>
     <div class="down" id="down">
         <table>
             <tr>
@@ -131,52 +140,85 @@
             </tr>
         </table>
     </div>
-{% for i in one_goods %}
-        <div class="goods_detail_list fr">
-        <h3>{{ i.auction_goods_title }}</h3>
+
+    <div class="goods_detail_list fr">
+        <h3>{{ i.goods.auction_goods_title }}</h3>
         <div class="prize_bar">
-            <span class="show_pirze">¥<em>{{ i.auction_goods_price }}</em></span>
-            <a href="" class="goods_judge">12人竞拍过</a>
+        <span class="show_pirze">¥<em>{{ i.attribute.auction_goods_price }}</em></span>
+        <a href="" class="goods_judge">12人竞拍过</a>
         </div>
         <div class="goods_num clearfix">
-            <div class="type_select">
-                <label>开始时间：</label>
-                <span>{{ i.auction_goods_startdate }}</span>
-            </div>
-            <div class="type_select">
-                <label>结束时间:</label>
-                <span>{{ i.auction_goods_enddate }}</span>
-            </div>
-            <div class="type_select">
-                <label>商品底价:</label>
-                <span>{{ i.auction_goods_floorprice }}</span>
-            </div>
-            <div class="type_select">
-                <label>最低加价:</label>
-                <span>{{ i.auction_goods_floorpremium }}</span>
-            </div>
+        <div class="type_select">
+            <label>开始时间：</label>
+            <span id="startdate">{{ i.attribute.start_date }}</span>
+        </div>
+        <div class="type_select">
+            <label>结束时间:</label>
+            <span id="enddate">{{ i.attribute.end_date }}</span>
+        </div>
+        <div class="type_select">
+            <label>商品底价:</label>
+            <span id="floorprice">{{ i.attribute.auction_goods_floorprice }}</span>
+        </div>
+        <div class="type_select">
+            <label>最低加价:</label>
+            <span id="floor_premium">{{ i.attribute.auction_goods_floorpremium }}</span>
+        </div>
+        <div class="type_select">
+            <label>保证金:</label>
+            <span>{{ i.attribute.auction_goods_margin }}</span>
+        </div>
              <div class="type_select">
-                <label>保证金:</label>
-                <span>{{ i.auction_goods_margin }}</span>
+            <label>当前价格</label>
+            <span id="old_price">{{ i.attribute.auction_goods_price }}</span>
+        </div>
+
+        <div class="type_select">
+            <label>输入竞拍加价:</label>
+            <span><input type="text" id="auction_premium"></span>
+            <span>当前总计：<span id="auction_goods_price" style="color: red"></span></span>
+        </div>
+        <div class="operate_btn">
+            <button class="buy_btn" id="buy_btn">立即竞拍</button>
+            <a href="" class="add_collection" id="add_collection">加入收藏</a>
+        </div>
+    </div>
+
+        <div id="buy_now_message">
+            <button id="shutdown">
+                关闭
+            </button>
+                <div class="type_select">
+                        <label>当前价格:</label>
+                        <span id="old_price">{{ i.attribute.auction_goods_price }}</span>
+                </div>
+              <div class="type_select">
+                        <label>竞拍加价:</label>
+                        <span id="buy_auction_premium">0</span>
+                </div>
+              <div class="type_select">
+                        <label>总计:</label>
+                        <span id="buy_auction_goods_price">0</span>
+                </div>
+
+                <div class="type_select">
+                        <button>确认竞拍</button>
+                </div>
             </div>
-             <div class="type_select">
-                <label>当前价格:</label>
-                <span id="old_price">{{ i.auction_goods_price }}</span>
-            </div>
-               <div class="type_select">
-                <label>输入竞拍加价:</label>
-                <span><input type="text" id="auction_premium">:元</span>
-                   <span>当前总计：<span id="auction_goods_price"></span></span>
-            </div>
-            <div class="operate_btn">
-                <a href="" class="buy_btn" id="buy_btn">立即竞拍</a>
-                <a href="" class="add_cart" id="add_cart">加入收藏</a>
+        <div id="price_error">
+            <button id="shutdown_error">
+                关闭
+            </button>
+            <div>
+                必须输入正确的价格
             </div>
         </div>
 
-    </div>
 
-    <div class="main_wrap clearfix">
+
+
+    </div>
+        <div class="main_wrap clearfix">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
@@ -187,7 +229,7 @@
                 <dl>
                     <dd>
                         <p style="text-indent: 2em">
-                            {{ i.auction_goods_desc }}
+                            {{ i.goods.auction_goods_desc }}
                         </p>
                     </dd>
                 </dl>
@@ -212,8 +254,7 @@
             </div>
         </div>
     </div>
-{% endfor %}
-    <div class="footer">
+     <div class="footer">
         <div class="foot_link">
             <a href="#">关于我们</a>
             <span>|</span>
@@ -226,7 +267,8 @@
         <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
-</div>
+    </div>
+{% endfor %}
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -266,22 +308,53 @@
 <script>
     $(function () {
         $("#auction_premium").change(function () {
-            permium=$("#auction_premium").val();
-            price=$("#old_price").text();
-                $.post('/calculate_price/',
-            {
-                'price':price,
-                'permium':permium,
-            },function (data) {
+            permium = $("#auction_premium").val();
+            price = $("#old_price").text();
+            floormium = $("#floor_premium").text();
+
+            $.post('/calculate_price/',
+                {
+                    "floormium": floormium,
+                    'price': price,
+                    'permium': permium,
+                }, function (data) {
                     $('#auction_goods_price').html(function () {
 
 
-                            document.getElementById('auction_goods_price').innerText=data+"元";
-                        })
-            }
-                )
+                        document.getElementById('auction_goods_price').innerText = data;
+                        document.getElementById('buy_auction_goods_price').innerText = data;
+
+                    })
+                }
+            )
 
         })
+    })
+</script>
+<script>
+    $("#buy_btn").click(function () {
+        permium = $("#auction_premium").val();
+        price = $("#old_price").text();
+        info=$("#auction_goods_price").text();
+        var ival = parseInt(info);
+        if (!isNaN(ival)) {
+            $("#buy_now_message").show();
+              $("#price_error").hide();
+            document.getElementById("buy_auction_premium").innerText = permium;
+
+        }
+        else {
+            $("#buy_now_message").hide();
+            $("#price_error").show();
+        }
+    })
+    $("#shutdown").click(function () {
+        $("#buy_now_message").hide()
+
+    })
+    $("#shutdown_error").click(function () {
+        $("#price_error").hide()
+
     })
 </script>
 </body>

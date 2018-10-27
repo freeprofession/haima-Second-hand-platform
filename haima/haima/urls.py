@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from myapp import view
 
+# from django.views.generic.base import RedirectView
+
 urlpatterns = [
     path("", view.homepage),
     path('haima/', view.homepage),
@@ -50,17 +52,21 @@ urlpatterns = [
     path('test_ajax', view.test_ajax),
     path('my_auction/', view.my_auction),
     path('my_collection/', view.my_collection),
-    path('history_auction/', view.history_auction),
-    path('release_auction/', view.release_auction),
     path('evaluate/', view.evaluate),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
     # path('modify_information/', view.modify_information),
-    path('leave_message/', view.leave_message),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的拍卖发布历史记录
+    path("my_release_record/", view.my_release_record),
     path('publish_auction/', view.publish_auction),
     path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
 ]
