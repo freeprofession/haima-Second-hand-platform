@@ -57,10 +57,12 @@ urlpatterns = [
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
     path('buy_auction/',view.buy_auction),
-<<<<<<< HEAD
     #实时计算拍卖总价的路径
     path('calculate_price/',view.calculate_price),
+    #返回用户的拍卖发布历史记录
+    path("my_release_record/",view.my_release_record),
 
-=======
->>>>>>> 1874bcbb239ddad14cebee8eb46b59e495f54943
+
+
+
 ]

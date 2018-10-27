@@ -12,24 +12,26 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl">{{ username.user_name }}欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_info fl">
                 欢迎您：<em>张 山</em>
                 <a href="javascript:;" class="quit">退出</a>
             </div>
             <div class="login_btn fl">
-                <a href="login.html">登录</a>
+                <a href="/login/?href=/auction_index/" target="_blank">登录</a>
                 <span>|</span>
-                <a href="register.html">注册</a>
+                <a href="/register/">注册</a>
             </div>
             <div class="user_link fl">
                 <span>|</span>
-                <a href="user_center.html">用户中心</a>
+                <a href="/haima/">首页</a>
                 <span>|</span>
-                <a href="cart.html">我的收藏</a>
+                <a href="/user_center/">用户中心</a>
                 <span>|</span>
-                <a href="user_center_order.html">我的订单</a>
+                <a href="" id="my_order">我的订单</a>
+                <span>|</span>
+                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
             </div>
         </div>
     </div>
@@ -86,36 +88,42 @@
 
 </div>
 <hr style="background-color: #16bcbd">
-{% for i in auction_goods %}
+{% for i in list1 %}
         <div id="auction_goods">
-        <div id="auction_goods_img"><img src="../static/Images/banner01.jpg" alt=""></div>
-        <div id="auction_goods_desc">
-            <div id="title" style="font-size: large">{{ i.auction_goods_title }}</div>
-            <div id="desc" style="font-size: medium ; ">{{ i.auction_goods_desc }}</div>
-
-            <div id="auction_messige">
-                <div id="auction_messige_desc" >
-                    <div>开始时间：<span id="acution_goods_start_time">{{ i.auction_goods_startdate }}</span></div>
-                    <br>
-                    <div>结束时间：<span id="acution_goods_end_time">{{ i.auction_goods_enddate }}</span></div>
-                    <br>
-                    <div>保证金：<span>{{ i.auction_goods_margin }}</span></div>
-                    <br>
-                    <div>单次加价最低：<span id="auction_goods_premium">{{ i.auction_goods_floorpremium}}</span></div>
-                    <br>
-                    <div>商品底价：<span id="auction_goods_floorprice">{{ i.auction_goods_floorprice }}</span></div>
-                    <br>
-
-                </div>
-                <div id="auction_button" >
-                   <a href="/buy_auction/?id={{ i.auction_goods_id }}"><button id="go_buy">马上去拍</button></a>
-                </div>
-                <div id="auction_wantbuy_persons">
-                    <span>1234</span>人想要
-                </div>
+            <div id="auction_goods_img">
+                <a href="/buy_auction/?id={{ i.goods.auction_goods_id }}">
+                    <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="340px">
+                </a>
             </div>
+            <div id="auction_goods_desc">
+                <div id="title" style="font-size: large">{{ i.goods.auction_goods_title }}</div>
+                <div id="desc" style="font-size: medium ; ">{{ i.goods.auction_goods_desc }}</div>
 
-        </div>
+                <div id="auction_messige">
+                    <div id="auction_messige_desc" >
+                        <div>开始时间：<span id="acution_goods_start_time">{{ i.attribute.start_date }}</span></div>
+                        <br>
+                        <div>结束时间：<span id="acution_goods_end_time">{{ i.attribute.end_date }}</span></div>
+                        <br>
+                        <div>保证金：<span>{{ i.auction_goods_margin }}</span></div>
+                        <br>
+                        <div>单次加价最低：<span id="auction_goods_premium">{{ i.attribute.auction_goods_floorpremium}}</span></div>
+                        <br>
+                        <div>商品底价：<span id="auction_goods_floorprice">{{ i.attribute.auction_goods_floorprice }}</span></div>
+                        <br>
+                        <div>当前价格：<span id="auction_goods_floorprice">{{ i.attribute.auction_goods_price }}</span></div>
+                        <br>
+                    </div>
+                    <div id="auction_button" >
+                       <a href="/buy_auction/?id={{ i.goods.auction_goods_id }}"><button id="go_buy">马上去拍</button></a>
+                        <div id="auction_wantbuy_persons">
+                        <span>1234</span>人想要
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 {% endfor %}
 
