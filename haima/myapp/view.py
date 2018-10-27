@@ -8,7 +8,7 @@ import base64
 r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cursor = con.cursor(pymysql.cursors.DictCursor)
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import pymysql
 import redis
@@ -21,9 +21,10 @@ import captcha
 from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 r = redis.Redis(host="47.100.200.132", port=6379)
-conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='item', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
 
 
@@ -256,9 +257,56 @@ def code(request):
 def register_ok(request):
     return render(request, "register_ok.html")
 
-# 搜索
-def search(request):
-    return render(request,)
+
+# 搜索跳转到商品列表
+def goods_list(request):
+    r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
+    value_list = []
+    goods_lst = []
+    if request.method == 'GET':
+        question = request.GET.get('q')
+        request.session['question'] = question
+        if r1.smembers(question):
+            bvalue_list = list(r1.smembers(question))
+            for value in bvalue_list:
+                value = int(value.decode('utf-8'))
+                value_list.append(value)
+            for goods_id in value_list:
+                sql = "select * from goods_test where goods_id = %d" % goods_id
+                cur.execute(sql)
+                goods = cur.fetchone()
+                goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+                goods_lst.append(goods)
+            request.session['goods_lst'] = goods_lst
+            print(goods_lst)
+
+            paginator = Paginator(request.session['goods_lst'], 6)
+            page = request.GET.get('page')
+            print(page)
+            try:
+                contacts = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                contacts = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                contacts = paginator.page(paginator.num_pages)
+            return render(request, 'goods_list.html', locals())
+    else:
+        if request.POST.get('sort_price_hid') == '价格(升)':
+            goods_lst = request.session.get('goods_lst')
+            goods_lst.sort(key=lambda x: x['goods_price'])
+            question = request.session.get('question')
+            print(1)
+            return render(request, 'goods_list.html', locals())
+        if request.POST.get('sort_price_hid') == '价格(降)':
+            goods_lst = request.session.get('goods_lst')
+            print(goods_lst)
+            goods_lst.sort(key=lambda x: x['goods_price'], reverse=True)
+            question = request.session.get('question')
+            print(2)
+            return render(request, 'goods_list.html', locals())
+
 
 # 用户中心
 def user_center(request):
@@ -490,24 +538,6 @@ def goods_detail_ajax(request):
     pass
 
 
-def search(request):
-    global b
-    if request.method == "GET":
-        return render(request, "search.html")
-    else:
-        one = request.POST.get("search_one")
-        print(one)
-        # 数据库操作获取ID
-        id = '1'
-        b = '/goods_detail/?goods=' + id
-        print(b)
-        return redirect("/tiaozhuan/")
-
-# 商品分类展示
-def goods_list(request):
-    return render(request, 'goods_list.html')
-
-
 # 发布商品
 @get_token
 def publish(request, token):
@@ -601,13 +631,8 @@ def release_auction_ok(request):
 # 购买拍卖页面
 def buy_auction(request):
     id = request.GET.get("id")
-<<<<<<< HEAD
-=======
-
->>>>>>> dcc55dabdad96b68a04f5028b8436aa571a7c3fb
     cursor.execute("select * from test_auction where auction_goods_id=%s", [id, ])
     one_goods = cursor.fetchall()
-
     return render(request, 'buy_auction.html', {"one_goods": one_goods})
 
 
@@ -661,6 +686,10 @@ def leave_message(request):
 
 
 # 修改信息
+def modify_information(request):
+    return render(request, 'modify_information.html')
+
+
 def callback(request):
     if request.method == 'GET':
         key_json_base64 = request.GET.get('upload_ret')
