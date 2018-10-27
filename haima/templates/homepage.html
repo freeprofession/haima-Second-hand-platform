@@ -5,18 +5,16 @@
     <title>海马商城-首页</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../static/JS/guess.js"></script>
 </head>
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">{{ login_status }}欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red;"><b>{{ login_status }}</b></span> 欢迎来到海马二手商城!</div>
         <div class="fr">
-            <div class="login_info fl">
-                欢迎您：<em>张 山</em>
-                <a href="javascript:;" class="quit">退出</a>
-            </div>
             <div class="login_btn fl">
                 <a href="/login/?href=/haima/" target="_blank">登录</a>
                 <span>|</span>
@@ -111,7 +109,8 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1">
-                <a href="">手机</a><a href="#">华为</a><a href="#">苹果</a><a href="#">小米</a>
+                <a href="/goods_list/?" class="main_type">手机</a><a href="#" class="child_type">华为</a><a href="#" class="child_type">苹果</a><a
+                    href="#" class="child_type">小米</a><a href="#" class="child_type">oppo</a>
             </div>
             <div class="level2">
                 <div class="list_group">
@@ -143,7 +142,7 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/computer.png" alt="" height="30" width="15" class="pic1">
-                <a href="#">电脑</a>
+                <a href="#" class="main_type">电脑</a>
             </div>
             <div class="level2">
                 <div class="list_group">
@@ -164,7 +163,7 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/camera.png" alt="" height="30" width="15" class="pic1">
-                <a href="#">相机</a>
+                <a href="#" class="main_type">相机</a>
             </div>
             <div class="level2">
                 <div class="list_group">
@@ -185,7 +184,7 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/game.png" alt="" height="30" width="15" class="pic1">
-                <a href="#">外设</a>
+                <a href="#" class="main_type">外设</a>
             </div>
             <div class="level2">
                 <div class="list_group">
@@ -196,10 +195,10 @@
                 </div>
             </div>
         </li>
-        <li class="newli">
+        <li class="newli" style="border-bottom: 0px">
             <div class="level1">
                 <img src="../static/Images/pad.png" alt="" height="30" width="15" class="pic1">
-                <a href="#">平板电脑</a>
+                <a href="#" class="main_type">平板</a>
             </div>
             <div class="level2">
                 <div class="list_group">
@@ -214,21 +213,21 @@
     <div class="new">
         <div id="mod">
             <div class="mod_left">
-                <a href="#">
+                <a href="/publish/">
                     <p class="main-title">发布闲置</p><br>
                     <p class="subtitle">闲置换钱 快速出手</p>
                 </a>
             </div>
             <div class="mod_right">
-                <a href="#">
-                    <p class="main-title">一键转卖</p><br>
-                    <p class="subtitle">转卖已买到的宝贝</p>
+                <a href="/assess/">
+                    <p class="main-title">一键估价</p><br>
+                    <p class="subtitle">数据分析 智能估价</p>
                 </a>
             </div>
         </div>
         <div>
             <a href="/auction_index/" class="advs"><img src="../static/Images/paimai.png" width="292" height="150"
-                                          style="border: 1px black solid;margin-left: 5px"></a>
+                                                        style="border: 1px black solid;margin-left: 5px"></a>
         </div>
     </div>
     <div id="mid">
@@ -244,7 +243,7 @@
             </div>
             <div id="wel">
                 <br>
-                <span style="font-size: 20px"><b>欢迎！ XXX</b></span><br><br>
+                <span style="font-size: 20px"><b>欢迎！ {{ login_status }}</b></span><br><br>
                 <span style="font-size: 22px"><b>你可能感兴趣</b></span>
             </div>
             <br>
@@ -489,7 +488,9 @@
             </ul>
         </div>
     </div>
-
+    <div>
+        <a href="#" id="back-to-top">回到顶端</a>
+    </div>
     <div class="footer">
         <div class="foot_link">
             <a href="#">关于我们</a>
@@ -505,5 +506,22 @@
     </div>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script>
+    $(document).ready(function () {
+        // 滚动窗口来判断按钮显示或隐藏
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 200) {
+                $('#back-to-top').fadeIn(800);
+            } else {
+                $('#back-to-top').fadeOut(800);
+            }
+        });
+        // jQuery实现动画滚动
+        $('#back-to-top').click(function (event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 500);
+        });
+    });
+</script>
 </body>
 </html>

@@ -25,23 +25,6 @@ html, body {
     line-height: 29px;
 }
 
-.login_info {
-    display: none;
-}
-
-.login_info em {
-    color: #ff8800
-}
-
-.login_info .quit {
-    color: #666;
-    padding-left: 10px;
-}
-
-.login_info .quit:hover {
-    color: #ff8800;
-}
-
 .login_btn a, .user_link a {
     color: #666;
 }
@@ -307,7 +290,7 @@ html, body {
 }
 
 .navlist li a {
-    color: #666;
+    color: #000;
     font-size: 14px
 }
 
@@ -469,19 +452,19 @@ html, body {
 
 .sub_menu {
     width: 213px;
-    height: 280px;
+    height: 298px;
     background-color: white;
     position: absolute;
     left: 50%;
     top: 0px;
     margin-left: -600px;
-    padding: 10px 15px;
+    padding: 0px 15px;
     border: 1px #e6e6e6 solid
 }
 
 .sub_menu .newli {
-    height: 54px;
-    line-height: 54px;
+    height: 58.6px;
+    line-height: 58.6px;
     border-bottom: 1px solid #d6d6d6;
 }
 
@@ -496,10 +479,17 @@ html, body {
     color: #333;
 }
 
-.sub_menu .level1 a {
+.main_type {
     line-height: 30px;
-    color: black;
+    color: #333;
     font-size: 14px;
+    margin-right: 10px;
+}
+
+.child_type {
+    line-height: 30px;
+    color: #979797;
+    font-size: 12px;
     margin-right: 10px;
 }
 
@@ -923,23 +913,14 @@ label:hover {
 
 /* 二级页面面包屑导航 */
 .breadcrumb {
-    width: 1200px;
+    width: 1246px;
     height: 40px;
     margin: 0 auto;
 }
 
-.breadcrumb a {
-    line-height: 40px;
-    color: #392d05;
-}
-
-.breadcrumb a:hover {
-    color: #ff8800
-}
-
 .breadcrumb span {
     line-height: 40px;
-    color: #ffda44;
+    color: #020101;
     padding: 0 5px;
 }
 
@@ -1121,6 +1102,8 @@ label:hover {
 
 .sort_bar {
     height: 30px;
+    width: 1240px;
+    margin: auto;
     background-color: #fbf3f3
 }
 
@@ -1139,13 +1122,22 @@ label:hover {
 }
 
 .goods_type_list {
-    margin: 10px auto 0;
+    width: 1248px;
+    margin: 10px 139.6px;
 }
 
 .goods_type_list li {
     width: 196px;
+    margin-right: 10px;
     float: left;
+    border: 1px solid #c0c0c0;
     margin-bottom: 10px
+}
+
+.goods_type_list li:hover {
+    border: 1px solid #f80000;
+    cursor: pointer;
+    box-shadow: darkgrey 1px 1px 1px 1px;
 }
 
 .goods_type_list li img {
@@ -1273,7 +1265,7 @@ label:hover {
     background-image: url("../Images/taobao.png");
 }
 
-#check_detail {
+.opsale {
     height: 26px;
     line-height: 26px;
     width: 92px;
@@ -3334,6 +3326,7 @@ label:hover {
     background-position: 0 -100px;
     background-image: url(//img.alicdn.com/tps/TB1WgeNIVXXXXb5XXXXXXXXXXXX.png);
 }
+
 .ico-rate3 {
     width: 20px;
     height: 18px;
@@ -3343,6 +3336,7 @@ label:hover {
     background-position: 0 -50px;
     background-image: url(//img.alicdn.com/tps/TB1WgeNIVXXXXb5XXXXXXXXXXXX.png);
 }
+
 .ico-rate4 {
     width: 20px;
     height: 18px;
@@ -3352,6 +3346,7 @@ label:hover {
     background-position: 0 -0px;
     background-image: url(//img.alicdn.com/tps/TB1WgeNIVXXXXb5XXXXXXXXXXXX.png);
 }
+
 .tb-rate-icf {
     width: 20px;
     height: 20px;
@@ -3376,7 +3371,8 @@ label:hover {
     -webkit-line-clamp: 3;
     overflow: hidden;
 }
-.saleman{
+
+.saleman {
     width: 110px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -3384,4 +3380,68 @@ label:hover {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
+}
+
+.comment {
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+#back-to-top {
+    position: fixed;
+    top: 20em;
+    right: 5em;
+    text-decoration: none;
+    color: #EEEEEE;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 12px;
+    width: 14px;
+    padding: 1em;
+    border-radius: 3px;
+    border: 1px solid #CCCCCC;
+    display: none;
+}
+
+#back-to-top:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.main_list .sort {
+    width: 44px;
+    margin: 4px 5px;
+    padding: 1px;
+    height: 20px;
+    line-height: 32px;
+    border: 1px solid #ccc;
+}
+
+#sortok {
+    height: 20px;
+    line-height: 20px;
+    width: 40px;
+    margin-left: 10px;
+    text-align: center;
+    border-radius: 2px;
+    color: #fff;
+    border: none;
+    background-color: #f85300;
+    background-image: linear-gradient(to bottom, #f50, #ed4f00);
+    background: -moz-linear-gradient(top, #f50, #ed4f00);
+    background: -webkit-linear-gradient(top, #f50, #ed4f00);
+    display: none;
+}
+
+.sortdiv {
+    width: 200px;
+    margin-left: 250px;
+}
+
+.sortdiv1 {
+    border: 1px solid #cec5c1;
+    box-shadow: darkgrey 10px 10px 20px 5px;
 }

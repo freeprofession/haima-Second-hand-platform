@@ -1,11 +1,14 @@
 import pymysql
 import redis
+<<<<<<< HEAD
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import base64
 
 
 
+=======
+>>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 import base64
 
 r = redis.Redis(host='47.100.200.132', port='6379')
@@ -24,32 +27,29 @@ import captcha
 from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
+
 r = redis.Redis(host="47.100.200.132", port=6379)
 conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = conn.cursor(pymysql.cursors.DictCursor)
+
+
 def get_token(func):
     def in_func(request):
         from qiniu import Auth
         access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
         secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
-        # 构建鉴权对象
         q = Auth(access_key, secret_key)
-        # 要上传的空间
         bucket_name = 'haima'
-        # 上传到七牛后保存的文件名
         key = None
-        # 生成上传 Token，可以指定过期时间等
-        # https://developer.qiniu.com/kodo/manual/1206/put-policy
         policy = {
             "scope": "haima",
+            # "returnBody":
             # 'callbackUrl': 'http://g1.xmgc360.com/callback/',
             # 'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
             # 'returnUrl': 'http://g1.xmgc360.com/callback/'
             # 'persistentOps':'imageView2/1/w/200/h/200'
         }
-        # 3600为token过期时间，秒为单位。3600等于一小时
         token = q.upload_token(bucket_name, key, 3600, policy)
-        print(token)
         return func(request, token)
 
     return in_func
@@ -60,7 +60,7 @@ def homepage(request):
     if username:
         login_status = username
     else:
-        login_status = '未登录'
+        login_status = ''
     sql = "select * from goods_test limit 0,10"
     cursor.execute(sql)
     goods_list = cursor.fetchall()
@@ -141,7 +141,6 @@ def login_ajax(request):
                 user_id = user_login['user_id']  # 判断用户名密码
                 request.session['username'] = username
                 request.session['user_id'] = user_id
-
                 href = request.session.get('href')
                 print(href)
                 error = "login_ok"
@@ -151,6 +150,7 @@ def login_ajax(request):
                     href = "/haima/"
                 return HttpResponse(json.dumps({"msg": error, "href": href}))
             else:
+
                 error = "login_error"  # 用户名或密码错误
                 return HttpResponse(json.dumps({"msg": error}))
         else:
@@ -256,13 +256,18 @@ def code(request):
 def register_ok(request):
     return render(request, "register_ok.html")
 
+# 搜索
+def search(request):
+    return render(request,)
 
 # 用户中心
 def user_center(request):
     username = request.session.get('username')
+    print(username)
     if username:
         cur.execute("select * from t_user where user_name=%s", [username, ])
         user_info = cur.fetchall()
+        print(user_info)
         return render(request, 'user_center.html', locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -285,7 +290,7 @@ def goods_detail(request):
     cur.execute('select * from t_user right join t_message on user_id = message_user_id')
     message_list = cur.fetchall()  # 留言
     print(message_list)
-    #++++++++++++++++++++++++商品留言处理++++++++++++++++++++++++++++++
+    # ++++++++++++++++++++++++商品留言处理++++++++++++++++++++++++++++++
     cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
                 [1, ])
     b = cur.fetchall()
@@ -308,7 +313,7 @@ def goods_detail(request):
                 lst.append(c_comment_dict[j])
         p_comment_dict[i]['child_message'] = lst
     print(p_comment_dict)
-    #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
     if username:  # 登录后才记录，浏览记录
         cur.execute("select * from t_user_browse where browse_user_id=%s", [user_id, ])
         browse = cur.fetchone()
@@ -350,18 +355,153 @@ def text_message(request):
             if p_comment_dict[i]['message_user_id'] == c_comment_dict[j]['parent_user_id']:
                 lst.append(c_comment_dict[j])
         p_comment_dict[i]['child_message'] = lst
-    print(p_comment_dict)
 
     return render(request, "test2.html", locals())
 
 
 def test_ajax(request):
-    pass
+    username = request.session.get('username')
+    print(username, 4444)
+    child_id = request.POST.get('child_id')
+    cur.execute("select * from t_user where user_id=%s", [child_id, ])
+    child_user = cur.fetchone()
+    print(child_user['user_name'], 45555)
+    message = request.POST.get('message')
+    if username:
+        print(message)
+        # cur.execute()   #加入数据库
+        # 评论拼接
+        tt = """            
+                    <div style="margin-left: 100px">
+                        <img src="{0}" alt="" height="50" width="50">
+                        {1}
+                        <p>{2}<input type="text" id="message"><input type="button" value="回复"
+                                                                                         id="btn_message"></p>
+                        <p><input type="text" id="c_message" value="" hidden></p>
+                  
+                </div>
+            """
+        tt = tt.format(child_user['user_imgurl'], child_user['user_name'], message)
+
+        return HttpResponse(json.dumps({"msg": tt}))
+    else:
+        href = request.session.get('username')
+        r_error = 'need_login'
+        href = '/login/?href=/test/%23abc'  # get方法#号
+        return HttpResponse(json.dumps({"msg": r_error, "href": href}))
+
+
+# 回复处理，留言板
+def review_ajax(request):
+    # ------接受值———————————
+    child_review = request.POST.get('child_review')
+    rp_user_id = request.POST.get('reply_id')
+    message_id = request.POST.get('message_id')
+    # parent_id = request.POST.get("parent_id")
+    # goods_id = request.POST.get("goods_id")
+    username = request.session.get('username')
+    user_id = request.session.get('user_id')
+    print(" # ------接受值———————————")
+    print(child_review, rp_user_id, message_id, username, user_id)
+    cur.execute("select * from t_message where message_id=%s", [message_id, ])
+    message_id_list = cur.fetchone()
+    print(message_id_list)
+    message_id = message_id_list["message_id"]
+    goods_id = message_id_list["message_goods_id"]
+
+    # 判断登陆状态----------------
+    if user_id:
+        login_state = username
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # ------获取用户信息———————————
+        cur.execute("select * from t_user where user_id=%s", [user_id, ])
+        child_user = cur.fetchone()
+        # 提取要回复人的名字
+        # child_name_ = child_review
+        rule1 = r'回复(.*?):'
+        child_name = re.findall(rule1, child_review)
+        print(child_name, "要回复人")
+        print(rp_user_id, child_review, "回复内容，ID")
+        # 判断@名字是否合法：
+        cur.execute("select * from t_second_message where second_message_id=%s", [rp_user_id, ])
+        check_child_name_ = cur.fetchone()
+        reply_id1 = check_child_name_["child_user_id"]
+        cur.execute("select * from t_user where user_id=%s", [reply_id1, ])
+        check_child_name_2 = cur.fetchone()
+        # check_child_name = check_child_name_['user_name']
+        if child_name and check_child_name_2 and check_child_name_2:
+            print("判断用户名", child_name[0], check_child_name_2['user_name'])
+            if check_child_name_2['user_name'] == child_name[0]:
+                rule2 = r':(.*)'
+                print('ture')
+                send_review = "@" + child_name[0] + re.findall(rule2, child_review)[0] + ":"
+                reply_id = reply_id1
+            else:
+                send_review = child_review
+                cur.execute("select * from t_message where message_id=%s", [message_id, ])
+                reply_id__ = cur.fetchone()
+                reply_id = reply_id__["message_user_id"]
+        else:
+            send_review = child_review
+            cur.execute("select * from t_message where message_id=%s", [message_id, ])
+            reply_id__ = cur.fetchone()
+            reply_id = reply_id__["message_user_id"]
+        # 储存数据
+        user_id_ = str(user_id)
+        print(send_review, goods_id, now_time, user_id, rp_user_id)
+        # print(type, type(send_review), type(goods_id), type(now_time), type(user_id_), type(rp_user_id))
+        cur.execute(
+            "insert into t_second_message(parent_user_id,second_desc,second_goods_id,second_date,child_user_id,to_rid) value(%s,%s,%s,%s,%s,%s)",
+            [message_id, send_review, goods_id, now_time, user_id_, reply_id])
+        second_message_id = cur.lastrowid
+        conn.commit()
+        # cur.execute("select * from t_second_message where second_message_id=%s", [second_message_id, ])
+        # second_message_lst = cur.fetchone()
+        rr = """<dl>
+                                    <dd style="margin-left: 75px;height: 50px;">
+                                        <input type="text" id="child_user_id" value="{0}" hidden>
+                                        <img src="{1}" alt="" height="40" width="40">
+                                        <div style="margin-left: 45px;position: relative;top: -50px;"><a
+                                                href="" style="color: #2d64b3"
+                                                class="c_name_{2}">{3}</a>:
+                                            <span style="color: #333333;font-size: 14px">{4}</span>
+                                            <div><span style="color: #a3a3a3">{5}</span>
+                                                <a name="abc">1</a>
+                                                <input id="review" class="c_review_{6}"
+                                                       type="button" value="回复"
+                                                       onclick="c_review({7})">
+                                            </div>
+                                        </div>
+                                    </dd>
+                                   </dl>
+                               """
+        rr = rr.format(child_user["user_id"], child_user["user_imgurl"], second_message_id, username, send_review,
+                       now_time,
+                       second_message_id, second_message_id)
+        return HttpResponse(json.dumps({"msg": rr}))
+    else:
+        login_state = "未登录"
+        r_error = 'need_login'
+        href = '/login/?href=/goods_detail/?goods=' + str(goods_id)  # get方法#号
+        return HttpResponse(json.dumps({"msg": r_error, "href": href}))
 
 
 def goods_detail_ajax(request):
     pass
 
+
+def search(request):
+    global b
+    if request.method == "GET":
+        return render(request, "search.html")
+    else:
+        one = request.POST.get("search_one")
+        print(one)
+        # 数据库操作获取ID
+        id = '1'
+        b = '/goods_detail/?goods=' + id
+        print(b)
+        return redirect("/tiaozhuan/")
 
 # 商品分类展示
 def goods_list(request):
@@ -369,10 +509,8 @@ def goods_list(request):
 
 
 # 发布商品
-@get_token
-def publish(request,token):
-    return render(request, 'publish.html',{'token': token})
-
+def publish(request):
+    return render(request, 'publish.html')
 
 # 估价
 def assess(request):
@@ -381,6 +519,7 @@ def assess(request):
 
 # 拍卖首页
 def auction_index(request):
+<<<<<<< HEAD
     id = request.session.get('user_id')
     print(id)
     list1=[]
@@ -411,6 +550,14 @@ def auction_index(request):
         return render(request, "auction_index.html", locals())
     else:
         return HttpResponseRedirect('/login/')
+=======
+    sql = 'select * from test_auction'
+    cursor.execute(sql)
+    auction_goods = cursor.fetchall()
+    print(auction_goods)
+
+    return render(request, 'auction_index.html', {'auction_goods': auction_goods})
+>>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 
 
 # 历史拍卖
@@ -473,12 +620,18 @@ def release_auction(request):
     else:
         return HttpResponseRedirect('/login/')
 
+<<<<<<< HEAD
 #*****************************************发布拍卖提交处理*************************************
 #用户点击发布拍卖的时候的逻辑判断和数据库操作
+=======
+
+# 发布拍卖提交处理
+>>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 def publish_auction(request):
     global error
     user_id= request.session.get('user_id')
     if request.method == 'POST':
+<<<<<<< HEAD
         title=request.POST.get('title')
         desc= request.POST.get('desc')
         floorprice= request.POST.get('floorprice')
@@ -523,21 +676,66 @@ def publish_auction(request):
                 return HttpResponse(json.dumps({"msg": error}))
             elif str(floorprice).isdigit()==False or str(floorpremium).isdigit()==False:
                 error='price_error'
+=======
+        title = request.POST.get('title')
+        desc = request.POST.get('desc')
+        floorprice = request.POST.get('floorprice')
+        floorpremium = request.POST.get("floorpremium")
+        end_date = request.POST.get("end_date")
+        start_date = request.POST.get("start_date")
+        category = request.POST.get("category")
+        postage = request.POST.get("postage")
+        list1 = []
+        print(title, desc, floorprice, floorpremium, end_date, start_date, category, postage)
+        if title and desc and floorpremium and floorprice and end_date and start_date and category and postage:
+            if len(title) >= 6 and floorpremium < floorprice and str(floorprice).isdigit() == True and str(
+                    floorpremium).isdigit() == True:
+                error = "ok"
+                try:
+                    cursor.execute("insert into test_agoods(goods_title) values(%s)", [title])
+                    new_id = cursor.lastrowid
+                    con.commit()
+                    sql = "insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
+                          "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
+                          "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)", [new_id, title, desc, floorprice,
+                                                                     "../static/Images/goods/goods003.jpg",
+                                                                     floorpremium, start_date, end_date, 200,
+                                                                     int(postage)]
+                    cursor.execute(sql)
+                    con.commit()
+                except:
+                    con.rollback()
+                    error = "sql_error"
+                    print("数据库插入错误！")
                 return HttpResponse(json.dumps({"msg": error}))
-            elif int(floorpremium)>=int(floorprice):
-                error='floorpremium_error'
+            elif len(title) < 6:
+                error = 'title.length_error'
+                return HttpResponse(json.dumps({"msg": error}))
+            elif str(floorprice).isdigit() == False or str(floorpremium).isdigit() == False:
+                error = 'price_error'
+>>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
+                return HttpResponse(json.dumps({"msg": error}))
+            elif int(floorpremium) >= int(floorprice):
+                error = 'floorpremium_error'
                 return HttpResponse(json.dumps({"msg": error}))
 
         else:
-            error='less_error'
+            error = 'less_error'
             return HttpResponse(json.dumps({"msg": error}))
 
+<<<<<<< HEAD
 
 #发布拍卖成功
 def release_auction_ok(request):
     return render(request,'release_auction_ok.html')
+=======
+>>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 
+# 发布拍卖成功
+def release_auction_ok(request):
+    return render(request, 'release_auction_ok.html')
 
+<<<<<<< HEAD
 #*******************************返回用户的发布记录**************************************
 def my_release_record(request):
     return_title=request.GET.get("id") #根据传回来的id 来判断返回的值
@@ -606,6 +804,26 @@ def calculate_price(request):
     else:
         count_price=int(price)+int(permium)
         return HttpResponse(count_price)
+=======
+# 购买拍卖页面
+def buy_auction(request):
+    id = request.GET.get("id")
+
+    cursor.execute("select * from test_auction where auction_goods_id=%s", [id, ])
+    one_goods = cursor.fetchall()
+
+    return render(request, 'buy_auction.html', {"one_goods": one_goods})
+
+
+# 计算拍卖的总价
+def calculate_price(request):
+    price = request.POST.get('price')
+    permium = request.POST.get('permium')
+
+    count_price = int(price) + int(permium)
+    return HttpResponse(count_price)
+
+>>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 # 用户中心
 def user_center(request):
     return render(request, 'user_center.html')
@@ -631,9 +849,14 @@ def evaluate(request):
     return render(request, 'evaluate.html')
 
 
-# 我的评价
-def my_evaluate(request):
-    return render(request, 'my_evaluate.html')
+# 我收到的评价
+def my_evaluate_get(request):
+    return render(request, 'my_evaluate_get.html')
+
+
+# 给他人的评价
+def my_evaluate_give(request):
+    return render(request, 'my_evaluate_give.html')
 
 
 # 宝贝留言
@@ -642,15 +865,6 @@ def leave_message(request):
 
 
 # 修改信息
-def modify_information(request):
-    return render(request, 'modify_information.html')
-
-
-@get_token
-def test_qiniu(request, token):
-    return render(request, '7cow.html', {'token': token})
-
-
 def callback(request):
     if request.method == 'GET':
         key_json_base64 = request.GET.get('upload_ret')
@@ -658,9 +872,20 @@ def callback(request):
         print(key_json)
         key_dict = json.loads(key_json)
         key = key_dict['key']
-        print(key)
         return HttpResponse('pgwecu7z4.bkt.clouddn.com/' + key + '-haima.shuiy')
-    else:
-        # json_result = json.loads(postBody)
-        # print(json_result)
-        return HttpResponse("POST")
+
+# 上传图片所需要的token
+def gettokendata(request):
+    index = request.POST.get('index')
+    from qiniu import Auth
+    access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
+    secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
+    q = Auth(access_key, secret_key)
+    bucket_name = 'haima'
+    key = None
+    policy = {
+        "scope": "haima",
+        "returnBody": '{"key": $(key), "index": "' + index + '"}',
+    }
+    token = q.upload_token(bucket_name, key, 3600, policy)
+    return HttpResponse(token)

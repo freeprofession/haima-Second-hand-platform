@@ -43,12 +43,8 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl">{{ username }} 欢迎来到海马二手商城!</div>
         <div class="fr">
-            <div class="login_info fl">
-                欢迎您：<em>{{ username }}</em>
-                <a href="javascript:;" class="quit">退出</a>
-            </div>
             <div class="login_btn fl">
                 <a href="/login/?href=/goods_detail/?goods={{ goods_id }}">登录</a>
                 <span>|</span>
@@ -306,8 +302,8 @@
                 </ul>
             </div>
             <div style="margin: 5px;text-align: center">
-                <input type="button" value="卖家信息" id="check_detail">
-                <input type="button" value="私聊卖家" id="check_detail">
+                <input type="button" value="卖家信息" id="check_detail" class="opsale">
+                <input type="button" value="私聊卖家" id="communication" class="opsale">
             </div>
         </div>
 
@@ -334,6 +330,11 @@
                 {% for key,value in p_comment_dict.items %}
                     <dl style="margin-bottom: 25px;border: 1px solid white">
                         <dd class="hismessages">
+                            {#获取父级回复ID#}
+                            {#                            <input type="text" id="get_goods_id" value="{{ value.message_goods_id }}" hidden>#}
+                            {#                            <input type="text" id="get_parent_id" value="{{ value.message_user_id }}" hidden>#}
+                            {#                            <input type="text" id="get_message_id" value="{{ value.message_id }}" hidden>#}
+                            {#----------------------------------------------------------#}
                             <img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45">
                             <div class="messages" style="height: 30px;line-height: 30px;">
                                 <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
@@ -349,25 +350,33 @@
                         <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
                             {% for item in value.child_message %}
                                 <dl>
-                                    <dd style="margin-left: 75px;height: 50px;">
+                                    <dd style="margin-left: 75px;height: 45px;width:972px;background-color: #f7f8fa;">
+                                        <input type="text" id="child_user_id_{{ item.second_message_id }}"
+                                               value="{{ item.child_user_id }}" hidden>
                                         <img src="{{ item.user_imgurl }}" alt="" height="40" width="40">
                                         <div style="margin-left: 45px;position: relative;top: -50px;"><a
-                                                href="" style="color: #2d64b3">{{ item.user_name }}</a>:
-                                            <span style="color: #333333;font-size: 14px">{{ item.second__desc }}</span>
+                                                href="" style="color: #2d64b3"
+                                                class="c_name_{{ item.second_message_id }}">{{ item.user_name }}</a>:
+                                            <span style="color: #333333;font-size: 14px">{{ item.second_desc }}</span>
                                             <div><span style="color: #a3a3a3">{{ item.second_date }}</span>
-                                                <input id="review" type="button" value="回复">
+                                                <input id="review" class="c_review_{{ item.second_message_id }}"
+                                                       type="button" value="回复"
+                                                       onclick="c_review({{ item.second_message_id }})">
                                             </div>
                                         </div>
                                     </dd>
                                 </dl>
+
                             {% endfor %}
+                            <a href="" class="append_{{ value.message_id }}"></a>
                             <dd>
-                                <textarea name="" id="" cols="150" rows="2" style="margin-left: 72px"></textarea>
-                                <input type="button" value="发 表"
+                                <textarea name="" id="get_child_review_{{ value.message_id }}" cols="150" rows="2"
+                                          style="margin-left: 72px"></textarea>
+                                <input type="button" class="send_{{ value.message_id }}" value="发 表"
                                        style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
                             </dd>
                         </div>
-                        <div class="newline"><img src="../static/Images/lineH_1.gif" height="1" width="1"/></div>
+                        <div class="newline"></div>
                     </dl>
                 {% endfor %}
                 <dl>
@@ -413,6 +422,8 @@
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+    var get_message_id = 0;
+    var rip_id = 0
     $(document).ready(function () {
         $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
         $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
@@ -435,14 +446,55 @@
 </script>
 <script>
     function review(id) {
+        get_message_id = id;
         if ($(".review_" + id).val() == "回复") {
             $(".review_" + id).val("收起回复");
             $(".hidreview_" + id).show();
+            $(".send_" + get_message_id).click(function () {
+                message_id = id;
+                child_review = $('#get_child_review_' + get_message_id).val();
+                {#child_user_id = $('#child_user_id').val();#}
+                {#parent_id = $("#get_parent_id").val()#}
+                {#goods_id = $("#get_goods_id").val()#}
+                reply_id = rip_id;
+                $.post('/review_ajax/', {
+                    'child_review': child_review,
+                    {#'child_user_id': child_user_id,#}
+                    "message_id": message_id,
+                    "reply_id": reply_id,
+                    {#"goods_id": goods_id,#}
+                }, function (data) {
+                    if (data.msg === 'need_login') {
+                        top.location.href = data.href
+                    } else {
+                        $(".append_" + get_message_id).append(data.msg)
+                    }
+                }, 'json')
+
+            })
+            for (i = 0; i < 10; i++) {
+                if (i == id) {
+                    $(".hidreview_" + id).show(500);
+                }
+                else {
+                    $(".hidreview_" + i).hide(500);
+                    $(".review_" + i).val("回复");
+                }
+            }
+
         }
         else {
             $(".review_" + id).val("回复");
-            $(".hidreview_" + id).hide();
+            $(".hidreview_" + id).hide(500);
         }
+    }
+
+    function c_review(c_id) {
+        rip_id = c_id
+        var c_name = $(".c_name_" + c_id).text();
+        var input_ = document.getElementById("get_child_review_" + get_message_id);
+        input_.style.fontFamily = "Microsoft YaHei"
+        input_.value = "回复" + c_name + ":"
     }
 </script>
 </body>
