@@ -170,7 +170,7 @@
         </div>
         <div class="type_select">
             <label>保证金:</label>
-            <span>{{ i.attribute.auction_goods_margin }}</span>
+            <span id="acution_goods_margin">{{ i.attribute.auction_goods_margin }}</span>
         </div>
              <div class="type_select">
             <label>当前价格</label>
@@ -209,6 +209,10 @@
               <div class="type_select">
                         <label>总计:</label>
                         <span id="buy_auction_goods_price">0</span>
+                </div>
+               <div class="type_select">
+                        <label>需先支付保证金:</label>
+                        <span >{{ i.attribute.auction_goods_margin }}</span>
                 </div>
               <div class="type_select">
                   <label>请输入支付密码:</label>
@@ -371,6 +375,7 @@
     })
     $("#shutdown").click(function () {
         $("#buy_now_message").hide()
+        window.location.reload();
 
     })
     $("#shutdown_error").click(function () {
@@ -378,6 +383,7 @@
 
     })
     $("#confirm_buy").click(function () {
+        margin=$("#acution_goods_margin").text();
         permium = $("#auction_premium").val();
         floorprice=$("#floorprice").text();
         pay_password=$("#pay_password").val();
@@ -392,14 +398,50 @@
                     "old_price":old_price,
                     "goods_id":goods_id,
                     "pay_password":pay_password,
+                    "margin":margin,
                 }
-                ,function (date) {
-                    if(date.msg="pay_password_error")
-                    {
-                        $("#pay_error").show()
-                        $("#pay_error").text("密码长度错误")
-                    }
+                ,function (data) {
+                switch (data.msg)
+                {
+                    case "no_pay_password":
+                           $('#pay_error').html(function () {
 
+                            document.getElementById('pay_error').style.display='block';
+                            document.getElementById('pay_error').innerText = "请输入支付密码";
+                            });
+                        break;
+                    case "no_user_password":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "您还未设置支付密码，请前往个人中心设置";
+                            });
+
+                        break;
+                    case "pay_password_length":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "密码长度不能少于六位数";
+                            });
+                        break;
+                    case "diferent_password":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "支付密码错误";
+                            });
+                        break;
+                    case "money_less":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "账户余额不足";
+                            });
+                        break;
+                     case "pay_ok":
+                           location.href = '/buy_auction_ok/'
+                        break;
+
+
+
+                }
                 }
                 ,'json'
             )
