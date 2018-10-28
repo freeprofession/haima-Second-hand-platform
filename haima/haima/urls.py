@@ -39,14 +39,10 @@ urlpatterns = [
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
-<<<<<<< HEAD
-=======
     path('review_ajax/', view.review_ajax),
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
     # -------------------------
-
->>>>>>> c54509e19295837ec0600bed25b65c8d3d791885
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
@@ -70,9 +66,4 @@ urlpatterns = [
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
-<<<<<<< HEAD
-=======
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
->>>>>>> c54509e19295837ec0600bed25b65c8d3d791885
 ]

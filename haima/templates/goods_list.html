@@ -207,13 +207,10 @@
 
 <div class="main_list clearfix">
     <div class="sort_bar">
-        <input type="button" value="综合" class="sort_btn sort_active">
-        <form action="/goods_list/" method="post">
-            <input type="submit" value="价格(升)" class="sort_btn" name="sort_price_btn" id="sort_price_btn">
-            <input type="hidden" value="" name="sort_price_hid" id="sort_price_hid">
-        </form>
-        <input type="button" value="时间" class="sort_btn">
-        <input type="button" value="信用" class="sort_btn">
+        <span class="sort_btn0 sort_active0"><a href="?q={{ question }}&page={{ pg }}">综合</a></span>
+        <span class="sort_btn sort_active1" onclick="active({{ sort_method }})"><a href="?q={{ question }}&page={{ pg }}&sort_method=1">价格升序</a></span>
+        <span class="sort_btn sort_active2" onclick="active({{ sort_method }})"><a href="?q={{ question }}&page={{ pg }}&sort_method=2">价格降序</a></span>
+        <span class="sort_btn sort_active4" onclick="active({{ sort_method }})"><a href="?q={{ question }}&page={{ pg }}&sort_method=3">信用</a></span>
         <div class="sortdiv">
             <input type="text" placeholder="¥" class="sort">
             <span>-</span>
@@ -238,21 +235,21 @@
     <div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
-            <a href="?q={{ question }}&page={{ contacts.previous_page_number }}">上一页</a>
+            <a href="?q={{ question }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}">上一页</a>
         {% endif %}
         {% for pg in contacts.paginator.page_range %}
             {% if pg == contacts.number %}
                 <span class="active">
-                    <a href="?q={{ question }}&page={{ pg }}">{{ pg }}</a>
+                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}">{{ pg }}</a>
                 </span>
             {% else %}
                 <span>
-                    <a href="?q={{ question }}&page={{ pg }}">{{ pg }}</a>
+                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}">{{ pg }}</a>
                 </span>
             {% endif %}
         {% endfor %}
         {% if contacts.has_next %}
-            <a href="?q={{ question }}&page={{ contacts.next_page_number }}">下一页</a>
+            <a href="?q={{ question }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}">下一页</a>
         {% endif %}
     </span>
     </div>
@@ -283,22 +280,25 @@
         });
     </script>
     <script>
-        $(".sort_btn").click(function () {
-            $(".sort_btn").removeClass("sort_active");
-            $(this).addClass("sort_active")
-        })
+        /* $(".sort_btn").click(function () {
+             $(".sort_btn").removeClass("sort_active");
+             $(this).addClass("sort_active")
+         }) */
     </script>
     <script>
-        $("#sort_price_btn").click(function () {
-            if ($("#sort_price_btn").val() == "价格(升)") {
-                $("#sort_price_hid").val("价格(升)")
-                $("#sort_price_btn").val("价格(降)");
-            }
-            else {
-                $("#sort_price_hid").val("价格(降)")
-                $("#sort_price_btn").val("价格(升)");
-            }
-        })
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        var sort_method = GetQueryString("sort_method");
+        if (sort_method != null && sort_method.toString().length >= 1) {
+            $(".sort_active" + sort_method).addClass('sort_active');
+            $(".sort_btn0").css({"color":"#000","background-color":"#fbf3f3"});
+        }
     </script>
+</div>
 </body>
 </html>

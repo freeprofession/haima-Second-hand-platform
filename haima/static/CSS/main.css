@@ -1117,6 +1117,16 @@ label:hover {
     color: #000;
     background-color: #fbf3f3;
 }
+.sort_btn0 {
+    border: 0px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 20px;
+    float: left;
+    background-color: #f80000;
+    color: #fff;
+}
 
 .sort_bar .sort_btn:hover {
     cursor: pointer;
