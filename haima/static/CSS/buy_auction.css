@@ -427,7 +427,7 @@ html,body
     top: 200px;
     left: 600px;
     width: 350px;
-    height: 250px;
+
     background-color: #16bcbd;
     display: none;
 }
@@ -436,7 +436,17 @@ html,body
 }
 #price_error{
     display: none;
+
 }
 #shutdown_error{
     float: right;
+}
+#confirm_buy{
+    width: 100px;
+}
+#pay_error{
+ display: none;
+ padding-left: 50px;
+    font-size: 14px;
+    color: red;
 }

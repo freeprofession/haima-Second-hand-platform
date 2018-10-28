@@ -53,7 +53,7 @@ urlpatterns = [
     # path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
-<<<<<<< HEAD
+
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
     path('buy_auction/',view.buy_auction),
@@ -61,14 +61,11 @@ urlpatterns = [
     path('calculate_price/',view.calculate_price),
     #返回用户的拍卖发布历史记录
     path("my_release_record/",view.my_release_record),
+    #用户输完价格确认竞拍
+    path("confirm_buy/",view.confirm_buy),
 
 
 
 
-=======
-    path('publish_auction/', view.publish_auction),
-    path('buy_auction/', view.buy_auction),
-    #实时计算拍卖总价的路径
-    path('calculate_price/',view.calculate_price),
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
+
 ]

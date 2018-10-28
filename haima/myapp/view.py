@@ -1,14 +1,12 @@
 import pymysql
 import redis
-<<<<<<< HEAD
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import base64
 
 
 
-=======
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 import base64
 
 r = redis.Redis(host='47.100.200.132', port='6379')
@@ -519,7 +517,7 @@ def assess(request):
 
 # 拍卖首页
 def auction_index(request):
-<<<<<<< HEAD
+
     id = request.session.get('user_id')
     print(id)
     list1=[]
@@ -550,14 +548,7 @@ def auction_index(request):
         return render(request, "auction_index.html", locals())
     else:
         return HttpResponseRedirect('/login/')
-=======
-    sql = 'select * from test_auction'
-    cursor.execute(sql)
-    auction_goods = cursor.fetchall()
-    print(auction_goods)
 
-    return render(request, 'auction_index.html', {'auction_goods': auction_goods})
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 
 
 # 历史拍卖
@@ -620,18 +611,16 @@ def release_auction(request):
     else:
         return HttpResponseRedirect('/login/')
 
-<<<<<<< HEAD
+
 #*****************************************发布拍卖提交处理*************************************
 #用户点击发布拍卖的时候的逻辑判断和数据库操作
-=======
 
-# 发布拍卖提交处理
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
+
 def publish_auction(request):
     global error
     user_id= request.session.get('user_id')
     if request.method == 'POST':
-<<<<<<< HEAD
+
         title=request.POST.get('title')
         desc= request.POST.get('desc')
         floorprice= request.POST.get('floorprice')
@@ -676,44 +665,7 @@ def publish_auction(request):
                 return HttpResponse(json.dumps({"msg": error}))
             elif str(floorprice).isdigit()==False or str(floorpremium).isdigit()==False:
                 error='price_error'
-=======
-        title = request.POST.get('title')
-        desc = request.POST.get('desc')
-        floorprice = request.POST.get('floorprice')
-        floorpremium = request.POST.get("floorpremium")
-        end_date = request.POST.get("end_date")
-        start_date = request.POST.get("start_date")
-        category = request.POST.get("category")
-        postage = request.POST.get("postage")
-        list1 = []
-        print(title, desc, floorprice, floorpremium, end_date, start_date, category, postage)
-        if title and desc and floorpremium and floorprice and end_date and start_date and category and postage:
-            if len(title) >= 6 and floorpremium < floorprice and str(floorprice).isdigit() == True and str(
-                    floorpremium).isdigit() == True:
-                error = "ok"
-                try:
-                    cursor.execute("insert into test_agoods(goods_title) values(%s)", [title])
-                    new_id = cursor.lastrowid
-                    con.commit()
-                    sql = "insert into test_auction(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_floorprice," \
-                          "auction_goods_imgurl,auction_goods_floorpremium,auction_goods_startdate,auction_goods_enddate,auction_goods_margin,auction_goods_postage) " \
-                          "values (%d,%s,%s,%d,%s,%d,%s,%s,%d,%d)", [new_id, title, desc, floorprice,
-                                                                     "../static/Images/goods/goods003.jpg",
-                                                                     floorpremium, start_date, end_date, 200,
-                                                                     int(postage)]
-                    cursor.execute(sql)
-                    con.commit()
-                except:
-                    con.rollback()
-                    error = "sql_error"
-                    print("数据库插入错误！")
-                return HttpResponse(json.dumps({"msg": error}))
-            elif len(title) < 6:
-                error = 'title.length_error'
-                return HttpResponse(json.dumps({"msg": error}))
-            elif str(floorprice).isdigit() == False or str(floorpremium).isdigit() == False:
-                error = 'price_error'
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
+
                 return HttpResponse(json.dumps({"msg": error}))
             elif int(floorpremium) >= int(floorprice):
                 error = 'floorpremium_error'
@@ -723,19 +675,12 @@ def publish_auction(request):
             error = 'less_error'
             return HttpResponse(json.dumps({"msg": error}))
 
-<<<<<<< HEAD
+
 
 #发布拍卖成功
 def release_auction_ok(request):
     return render(request,'release_auction_ok.html')
-=======
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 
-# 发布拍卖成功
-def release_auction_ok(request):
-    return render(request, 'release_auction_ok.html')
-
-<<<<<<< HEAD
 #*******************************返回用户的发布记录**************************************
 def my_release_record(request):
     return_title=request.GET.get("id") #根据传回来的id 来判断返回的值
@@ -767,7 +712,7 @@ def my_release_record(request):
         return render(request, 'my_auction.html',locals())
 
 
-#******************************************购买拍卖页面************************************8
+#******************************************购买拍卖页面**********************************************
 #用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
     id = request.session.get('user_id')
@@ -780,6 +725,7 @@ def buy_auction(request):
         goods_id = request.GET.get("id")
         cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
         goods_messge = cur.fetchone()
+        goods_user_id=goods_messge["auction_goods_user_id"]
         cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
         goods_auction_message = cur.fetchone()
         dict1["goods"] = goods_messge
@@ -794,36 +740,43 @@ def buy_auction(request):
 
 #***********************************************计算拍卖的总价******************************************************
 def calculate_price(request):
-    price=request.POST.get('price')
+    price=request.POST.get('old_price')
     permium=request.POST.get('permium')
     floormium=request.POST.get("floormium")
-    print(price)
-    print(permium)
-    if permium<floormium or permium>price:
-        return HttpResponse("输入的加价有误")
+    goods_user_id= request.POST.get("goods_user_id")
+    floorprice=request.POST.get("floorprice")
+    id=request.session.get("user_id")
+    if permium<floormium or  permium> floorprice:
+        return HttpResponse("你输入的加价有误")
+    if int(id)==int(goods_user_id):
+        return HttpResponse("不可购买自己的商品")#判断商品的发布者id和当前用户的id是不是一样
     else:
         count_price=int(price)+int(permium)
         return HttpResponse(count_price)
-=======
-# 购买拍卖页面
-def buy_auction(request):
-    id = request.GET.get("id")
 
-    cursor.execute("select * from test_auction where auction_goods_id=%s", [id, ])
-    one_goods = cursor.fetchall()
+#******************************************用户输入价格完成确认竞拍*********************************************88
+def confirm_buy(request):
+    buy_user_id=request.session.get("user_id")
+    print("购买者id：",buy_user_id)
+    floorprice=request.POST.get("floorprice")
+    old_price=request.POST.get("old_price")
+    goods_id=request.POST.get("goods_id")
+    price=request.POST.get("price")
+    permium=request.POST.get("permium")
+    pay_password=request.POST.get("pay_password")
+    global error
+    cur.execute("select user_pay_password from t_user where user_id=%s",[buy_user_id])
+    user_pay_password=cur.fetchone()
+    if buy_user_id:
+        pass
+    else:
+        error="pay_password_error2"
+        return HttpResponse(json.dumps({"msg": error}))
+    if len(pay_password)<6:
+        error="pay_password_error"
+        return HttpResponse(json.dumps({"msg": error}))
 
-    return render(request, 'buy_auction.html', {"one_goods": one_goods})
 
-
-# 计算拍卖的总价
-def calculate_price(request):
-    price = request.POST.get('price')
-    permium = request.POST.get('permium')
-
-    count_price = int(price) + int(permium)
-    return HttpResponse(count_price)
-
->>>>>>> b62fb970b05ffb59d5482216a7a7beaa0d40655a
 # 用户中心
 def user_center(request):
     return render(request, 'user_center.html')
