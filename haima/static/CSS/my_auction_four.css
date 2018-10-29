@@ -129,7 +129,17 @@ html,body
 	border: 0px;
 	border-radius: 5px;
 }
-
-#shutdown{
-
+#four div{
+    float: left;
+}
+#four{
+    margin-left: 250px;
+    width: 1100px;
+    height: 440px;
+}
+#big{
+    margin-top: 20px;
+}
+#title{
+    margin-left: 100px;
 }
