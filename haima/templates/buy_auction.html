@@ -435,6 +435,12 @@
                             document.getElementById('pay_error').innerText = "账户余额不足";
                             });
                         break;
+                    case "same_user_buy":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "此商品正在被你竞拍";
+                            });
+                        break;
                      case "pay_ok":
                            location.href = '/buy_auction_ok/'
                         break;

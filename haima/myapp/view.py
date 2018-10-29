@@ -703,7 +703,7 @@ def my_auction(request):
 
 
 # ******************************************发布拍卖*****************************************
-# 进入发布拍卖页面就是把他的名字显示出来
+# 进入发布拍卖页面把他的名字显示出来
 def release_auction(request):
     id = request.session.get('user_id')
     if id:
@@ -797,13 +797,14 @@ def release_auction_ok(request):
 
 
 # *******************************返回用户的发布记录**************************************
-def my_release_record(request):
+def my_auction_all(request):
+    user_id = request.session.get("user_id")
     return_title = request.GET.get("id")  # 根据传回来的id 来判断返回的值
     print(type(return_title))
     print(return_title)
+    #如果用户点击的是第一个按钮。返回用户的发布记录
     if return_title == "one":
         list1 = []
-        user_id = request.session.get("user_id")
         print(user_id)
         cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s",
                     [user_id])
@@ -825,6 +826,14 @@ def my_release_record(request):
             list1.append(dict1)
         print("查询成功")
         return render(request, 'my_auction.html', locals())
+    if return_title == "two":
+        pass
+    if return_title == "three":
+        pass
+    if return_title == "four":
+        cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s",
+                    [user_id])
+
 
 
 
@@ -879,18 +888,19 @@ def confirm_buy(request):
     buy_user_id=request.session.get("user_id")#用户的
     floorprice=request.POST.get("floorprice")#商品的底价
     old_price=request.POST.get("old_price")#商品被这个用户竞拍前的价格
+    print(old_price)
     goods_id=request.POST.get("goods_id")#商品的id
     price=request.POST.get("price")#商品加价现在的价格
     permium=request.POST.get("permium")#商品的加价
     margin=request.POST.get("margin")#商品的保证金
     cur.execute("select user_money from t_user where user_id=%s",[buy_user_id])
     user_money=cur.fetchone()["user_money"]
+    cur.execute("select auction_goods_count from t_auction_attribute where auction_goods_id=%s", [goods_id])
+    auction_goods_count=cur.fetchone()["auction_goods_count"]
     pay_password=request.POST.get("pay_password")
     global error
     cur.execute("select user_pay_password from t_user where user_id=%s",[buy_user_id])
     user_pay_password=cur.fetchone()["user_pay_password"]
-    print(user_pay_password)
-    print(type(pay_password))
     if user_pay_password:
         if pay_password:
             if len(pay_password)<6:
@@ -919,18 +929,46 @@ def confirm_buy(request):
                                 new_user_money = float(user_money) - float(margin)
                                 cur.execute("update t_user set user_money=%s where user_id=%s",
                                             [new_user_money, buy_user_id])
+                                print("扣钱成功")
                                 #这里是将上一个竞拍者的保证金退给他
-                                cur.execute("select user_money from t_user where user_id=%s", [buy_user_id])
-                                return_money=cur.fetchone()["user_money"]+margin
+                                cur.execute("select user_money from t_user where user_id=%s", [goods_buyuser_id])
+                                return_money=cur.fetchone()["user_money"]+float(margin)
                                 cur.execute("update t_user set user_money=%s where user_id=%s",
                                             [return_money, goods_buyuser_id])
+                                print("退钱成功")
+                                #更新拍卖商品的属性
+                                auction_goods_count+=1
+                                cur.execute("update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",[auction_goods_count,price,buy_user_id,goods_id])
+                                print("更新成功")
 
+                                #更新商品的拍卖属性以后需要生成一条拍卖记录
+                                cur.execute("insert into t_auction_record (auction_goods_id,auction_goods_premium,auction_goods_floorprice,auction_goods_price,auction_goods_count,\
+                                                                auction_goods_buyuser_id,auction_goods_oldprice)values (%s,%s,%s,%s,%s,%s,%s)",
+                                            [goods_id, permium, floorprice, price, auction_goods_count, buy_user_id,
+                                             old_price])
+                                print("插入拍卖记录成功")
 
-
+                        else:#如果上一个竞拍者的id不存在
+                            new_user_money = float(user_money) - float(margin)
+                            cur.execute("update t_user set user_money=%s where user_id=%s",
+                                        [new_user_money, buy_user_id])
+                            print("扣钱成功2")
+                            # 更新拍卖商品的属性
+                            auction_goods_count += 1
+                            cur.execute(
+                                "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
+                                [auction_goods_count, price, buy_user_id,goods_id])
+                            print("更新拍卖成功2")
+                            # 更新商品的拍卖属性以后需要生成一条拍卖记录
+                            cur.execute("insert into t_auction_record (auction_goods_id,auction_goods_premium,auction_goods_floorprice,auction_goods_price,auction_goods_count,\
+                                auction_goods_buyuser_id,auction_goods_oldprice)values (%s,%s,%s,%s,%s,%s,%s)",[goods_id,permium,floorprice,price,auction_goods_count,buy_user_id,old_price])
+                            print("插入记录成功2")
                         con.commit()
+                        print("竞拍成功")
 
-                    except:
-                        print("数据库错误")
+                    except Exception as e:
+                        print(e)
+
                     error="pay_ok"
                     return HttpResponse(json.dumps({"msg": error}))
 

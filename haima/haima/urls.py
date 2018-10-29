@@ -62,8 +62,8 @@ urlpatterns = [
     path('buy_auction/',view.buy_auction),
     #实时计算拍卖总价的路径
     path('calculate_price/',view.calculate_price),
-    #返回用户的拍卖发布历史记录
-    path("my_release_record/",view.my_release_record),
+    #返回用户的全部拍卖记录
+    path("my_auction_all/",view.my_auction_all),
     #用户输完价格确认竞拍
     path("confirm_buy/",view.confirm_buy),
     #用户支付成功以后的跳转
