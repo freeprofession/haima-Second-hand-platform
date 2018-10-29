@@ -207,16 +207,25 @@
 
 <div class="main_list clearfix">
     <div class="sort_bar">
-        <span class="sort_btn0 sort_active0"><a href="?q={{ question }}&page={{ pg }}">综合</a></span>
-        <span class="sort_btn sort_active1" onclick="active({{ sort_method }})"><a href="?q={{ question }}&page={{ pg }}&sort_method=1">价格升序</a></span>
-        <span class="sort_btn sort_active2" onclick="active({{ sort_method }})"><a href="?q={{ question }}&page={{ pg }}&sort_method=2">价格降序</a></span>
-        <span class="sort_btn sort_active4" onclick="active({{ sort_method }})"><a href="?q={{ question }}&page={{ pg }}&sort_method=3">信用</a></span>
-        <div class="sortdiv">
-            <input type="text" placeholder="¥" class="sort">
-            <span>-</span>
-            <input type="text" placeholder="¥" class="sort">
-            <input type="button" value="确定" id="sortok">
-        </div>
+        <span class="sort_btn0 sort_active0"><a
+                href="?q={{ question }}&page={{ pg }}&price_low={{ price_low }}&price_high={{ price_high }}">综合</a></span>
+        <span class="sort_btn sort_active1" onclick="active({{ sort_method }})"><a
+                href="?q={{ question }}&page={{ pg }}&sort_method=1&price_low={{ price_low }}&price_high={{ price_high }}">价格升序</a></span>
+        <span class="sort_btn sort_active2" onclick="active({{ sort_method }})"><a
+                href="?q={{ question }}&page={{ pg }}&sort_method=2&price_low={{ price_low }}&price_high={{ price_high }}">价格降序</a></span>
+        <span class="sort_btn sort_active4" onclick="active({{ sort_method }})"><a
+                href="?q={{ question }}&page={{ pg }}&sort_method=3&price_low={{ price_low }}&price_high={{ price_high }}">信用</a></span>
+        <form action="/goods_list/" method="get">
+            <div class="sortdiv">
+                <input type="hidden" name="q" value="{{ question }}">
+                <input type="hidden" name="page" value="{{ pg }}">
+                <input type="hidden" name="sort_method" value="{{ sort_method }}">
+                <input type="text" placeholder="¥" class="sort" name="price_low">
+                <span>-</span>
+                <input type="text" placeholder="¥" class="sort" name="price_high">
+                <input type="submit" value="确定" id="sortok">
+            </div>
+        </form>
     </div>
     <ul class="goods_type_list clearfix">
         {% for goods in contacts %}
@@ -235,21 +244,21 @@
     <div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
-            <a href="?q={{ question }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}">上一页</a>
+            <a href="?q={{ question }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">上一页</a>
         {% endif %}
         {% for pg in contacts.paginator.page_range %}
             {% if pg == contacts.number %}
                 <span class="active">
-                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}">{{ pg }}</a>
+                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
             {% else %}
                 <span>
-                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}">{{ pg }}</a>
+                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
             {% endif %}
         {% endfor %}
         {% if contacts.has_next %}
-            <a href="?q={{ question }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}">下一页</a>
+            <a href="?q={{ question }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">下一页</a>
         {% endif %}
     </span>
     </div>
@@ -296,7 +305,7 @@
         var sort_method = GetQueryString("sort_method");
         if (sort_method != null && sort_method.toString().length >= 1) {
             $(".sort_active" + sort_method).addClass('sort_active');
-            $(".sort_btn0").css({"color":"#000","background-color":"#fbf3f3"});
+            $(".sort_btn0").css({"color": "#000", "background-color": "#fbf3f3"});
         }
     </script>
 </div>

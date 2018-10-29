@@ -3437,9 +3437,8 @@ label:hover {
 }
 
 #sortok {
-    height: 20px;
     line-height: 20px;
-    width: 40px;
+    padding: 5px 10px;
     margin-left: 10px;
     text-align: center;
     border-radius: 2px;
@@ -3454,7 +3453,7 @@ label:hover {
 
 .sortdiv {
     width: 200px;
-    margin-left: 300px;
+    margin-left: 320px;
 }
 
 .sortdiv1 {

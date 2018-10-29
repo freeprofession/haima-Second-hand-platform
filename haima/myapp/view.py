@@ -286,12 +286,30 @@ def goods_list(request):
                 sql = "select * from goods_test where goods_id = %d" % goods_id
                 cur.execute(sql)
                 goods = cur.fetchone()
-                goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
-                goods_lst.append(goods)
+                # 价格筛选
+                if request.GET.get("price_low") and request.GET.get("price_high"):
+                    price_low = int(request.GET.get("price_low"))
+                    price_high = int(request.GET.get("price_high"))
+                    if price_low <= goods['goods_price'] <= price_high:
+                        goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+                        goods_lst.append(goods)
+                if request.GET.get("price_low") and request.GET.get("price_high") == "":
+                    print(11111)
+                    price_low = int(request.GET.get("price_low"))
+                    if price_low <= goods['goods_price']:
+                        goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+                        goods_lst.append(goods)
+                if request.GET.get("price_high") and request.GET.get("price_low") == "":
+                    price_high = int(request.GET.get("price_high"))
+                    if goods['goods_price'] <= price_high:
+                        goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+                        goods_lst.append(goods)
+                if request.GET.get("price_high") == "" and request.GET.get("price_low") == "":
+                    goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+                    goods_lst.append(goods)
 
             # 排序方式
             sort_method = request.GET.get('sort_method')
-            print(sort_method, type(sort_method))
             if sort_method == '1':
                 goods_lst.sort(key=lambda x: x['goods_price'])
             if sort_method == '2':
@@ -309,6 +327,8 @@ def goods_list(request):
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 contacts = paginator.page(paginator.num_pages)
             return render(request, 'goods_list.html', locals())
+
+
 # --------------------------------------------------------------------------------------
 
 # 用户中心——————————————————————
