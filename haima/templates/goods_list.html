@@ -40,8 +40,12 @@
     <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100" id="haima"></a>
     <div class="search_wrap fl">
         <div class="search_con">
-            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-            <input type="button" class="input_btn fr" name="" value="搜索">
+            <form action="/goods_list/" method="get">
+                <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+                <input type="hidden" name="price_low" value="{{ price_low }}">
+                <input type="hidden" name="price_high" value="{{ price_high }}">
+                <input type="submit" class="input_btn fr" name="" value="搜  索">
+            </form>
         </div>
     </div>
 
@@ -189,7 +193,6 @@
             </ul>
         </div>
 
-
         <ul class="navlist fl">
             <li><a href="/haima/">首页</a></li>
             <li><a href="/publish/">发布闲置</a></li>
@@ -227,10 +230,10 @@
             </div>
         </form>
     </div>
-    <ul class="goods_type_list clearfix">
+    <ul class="goods_type_list clearfix" id="goods_type_ul">
         {% for goods in contacts %}
             <li>
-                <a href="detail.html"><img src="{{ goods.img_url }}"></a>
+                <a href="detail.html"><img src="{{ goods.goods_imgurl }}"></a>
                 <h4><a href="detail.html">{{ goods.goods_title }}</a></h4>
                 <div class="operate">
                     <span class="prize">￥{{ goods.goods_price }}</span>
@@ -307,6 +310,24 @@
             $(".sort_active" + sort_method).addClass('sort_active');
             $(".sort_btn0").css({"color": "#000", "background-color": "#fbf3f3"});
         }
+    </script>
+    <script>
+        function keyLight(id, key, Color) {
+            var oDiv = document.getElementById(id),
+                oChilds = oDiv.childNodes,
+                Color = Color || "red",
+                sKey = "<span style='color: " + Color + ";'>" + key + "</span>",
+                rStr = new RegExp(key, "g");
+            for (var i = 0; i < oChilds.length - 1; i++) {
+                if (oChilds[i].nodeType == 3 && /\s/.test(oChilds[i].nodeValue)) {  //删除空白的节点
+                    oChilds[i].parentNode.removeChild(oChilds[i]);
+                }
+                oChilds[i].innerHTML = oChilds[i].innerHTML.replace(rStr, sKey);  //替换key
+            }
+        }
+        {% for keys in question_word %}
+            keyLight('goods_type_ul', "{{ keys }}");
+        {% endfor %}
     </script>
 </div>
 </body>

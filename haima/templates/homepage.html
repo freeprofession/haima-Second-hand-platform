@@ -45,7 +45,9 @@
         <div class="search_con">
             <form action="/goods_list/" method="get">
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
-                <input type="button" class="input_btn fr" name="search" value="搜  索">
+                <input type="hidden" name="price_low" value="{{ price_low }}">
+                <input type="hidden" name="price_high" value="{{ price_high }}">
+                <input type="submit" class="input_btn fr" value="搜  索">
             </form>
         </div>
     </div>
@@ -334,7 +336,7 @@
         <div id="guess">
             <ul class="item-type">
                 <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
-                                                        id="guess1">猜你喜欢</a></li>
+                                                       >猜你喜欢</a></li>
                 <li class="nav" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
                 <li class="nav" id="guess3"><a href="" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
             </ul>
@@ -466,7 +468,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="#" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="#">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -511,7 +513,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="#" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="#">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -554,7 +556,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods=1" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="/goods_detail/?goods=1" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="/goods_detail/?goods=1">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
