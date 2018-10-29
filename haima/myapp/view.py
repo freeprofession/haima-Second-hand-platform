@@ -70,8 +70,14 @@ def homepage(request):
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
         [user_id, ])
     collection_list = cur.fetchall()
+<<<<<<< HEAD
     # for goods in goods_list:
     #     goods['img_url'] = img.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+=======
+    #这里报错了我先注释一下
+    # for goods in goods_list:
+    #     goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
     return render(request, 'homepage.html', locals())
 
 
@@ -239,7 +245,7 @@ def register_ajax(request):
                     conn.commit()
                     r.delete(phone)
                     code_error = 'register_ok'  # 注册成功，跳转
-                    request.session['username'] = username
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        request.session['username'] = username
                     return HttpResponse(json.dumps({"msg": code_error}))
                 elif user_error == "用户名已存在":
                     code_error = 'user_exists'  # 用户名存在
@@ -677,9 +683,7 @@ def auction_index(request):
             dict1["goods"] = goods_messge
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
-        print(username)
-        print(username["user_name"])
-        print(list1)
+
         return render(request, "auction_index.html", locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -729,7 +733,7 @@ def my_auction(request):
             print(goods_auction_message["auction_goods_floorprice"])
             list1.append(dict1)
         print("查询成功")
-        return render(request, 'my_auction.html', locals())
+        return render(request, 'my_auction_one.html', locals())
     else:
         return HttpResponseRedirect('/login/')
 
@@ -826,9 +830,10 @@ def release_auction_ok(request):
     return render(request, 'release_auction_ok.html')
 
 
-# *******************************返回用户的发布记录**************************************
-def my_auction_all(request):
+# **********************************************************返回用户的我的拍卖中心的我的发布界面**************************************
+def my_auction_one(request):
     user_id = request.session.get("user_id")
+<<<<<<< HEAD
     return_title = request.GET.get("id")  # 根据传回来的id 来判断返回的值
     print(type(return_title))
     print(return_title)
@@ -863,6 +868,80 @@ def my_auction_all(request):
     if return_title == "four":
         cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s",
                     [user_id])
+=======
+    list1 = []
+    print(user_id)
+    cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s",
+                [user_id])
+    message = cur.fetchall()
+    id_list = []
+    for i in message:
+        id_list.append(i["release_auction_goods_id"])
+    for goods_id in id_list:
+        dict1 = {}
+        cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
+        goods_messge = cur.fetchone()
+        cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
+        goods_auction_message = cur.fetchone()
+        # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
+        # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
+        dict1["goods"] = goods_messge
+        dict1["attribute"] = goods_auction_message
+        print(goods_auction_message["auction_goods_floorprice"])
+        list1.append(dict1)
+    print("查询成功")
+    return render(request, 'my_auction_one.html', locals())
+
+
+
+# **********************************************************返回用户的我的拍卖中心我拍卖的界面**************************************
+#这个显示的他正在拍卖中的商品
+def my_auction_two(request):
+    user_id = request.session.get("user_id")
+
+    pass
+
+
+
+# **********************************************************返回用户的我的拍卖中心我拍卖的界面**************************************
+def my_auction_three(request):
+    pass
+
+
+
+# **********************************************************返回用户的我的拍卖中心我的竞拍的界面**************************************
+def my_auction_four(request):
+    user_id = request.session.get("user_id")
+    #先找到该用户的所有竞拍记录
+    cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
+                [user_id])
+    record_id_dict=cur.fetchall()
+    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
+                [user_id])
+    goods_record_list=cur.fetchall()
+    goods_list=[]
+    goods_info_list=[]
+    #这里是通过竞拍记录id找到商品id
+    for i in record_id_dict:
+        cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",[i["auction_record_id"]])
+        goods_list.append(cur.fetchone()["auction_goods_id"])
+    for i in goods_list:
+        cur.execute("select * from t_auction_goods where auction_goods_id=%s",[i])
+        info=cur.fetchone()
+        goods_info_list.append(info)
+    list4=[]
+    for i in range(len(goods_record_list)):
+        dict1={}
+        dict1["record"]=goods_record_list[i]
+        dict1["goods"]=goods_info_list[i]
+        list4.append(dict1)
+    print(list4)
+    return render(request, 'my_auction_four.html', locals())
+
+        
+
+
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
 
 
 # ******************************************购买拍卖页面**********************************************
@@ -891,6 +970,7 @@ def buy_auction(request):
 
 # ***********************************************计算拍卖的总价******************************************************
 def calculate_price(request):
+<<<<<<< HEAD
     price = request.POST.get('old_price')
     permium = request.POST.get('permium')
     floormium = request.POST.get("floormium")
@@ -898,6 +978,16 @@ def calculate_price(request):
     floorprice = request.POST.get("floorprice")
     id = request.session.get("user_id")
     if permium < floormium or permium > floorprice:
+=======
+    price=request.POST.get('old_price')
+    permium=request.POST.get('permium')
+    floormium=request.POST.get("floormium")
+    goods_user_id= request.POST.get("goods_user_id")
+    floorprice=request.POST.get("floorprice")
+    id=request.session.get("user_id")
+    print(floormium,permium,floorprice)
+    if int(permium)<int(floormium) or  int(permium)>int( floorprice):
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
         return HttpResponse("你输入的加价有误")
     if int(id) == int(goods_user_id):
         return HttpResponse("不可购买自己的商品")  # 判断商品的发布者id和当前用户的id是不是一样
@@ -906,8 +996,17 @@ def calculate_price(request):
         return HttpResponse(count_price)
 
 
+<<<<<<< HEAD
 # ******************************************用户输入价格完成确认竞拍*********************************************
 # 这里主要是对用户输入的支付密码做判断
+=======
+
+
+
+
+#******************************************用户输入价格完成确认竞拍*********************************************
+#这里主要是对用户输入的支付密码做判断，然后在对表进行更新插入
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
 def confirm_buy(request):
     buy_user_id = request.session.get("user_id")  # 用户的
     floorprice = request.POST.get("floorprice")  # 商品的底价
@@ -968,6 +1067,15 @@ def confirm_buy(request):
                                     "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
+                                cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",[goods_id])
+                                record_dict=cur.fetchall()
+                                if record_dict:
+                                    record_list=[]
+                                    for i in record_dict:
+                                        record_list.append(i["auction_record_id"])
+                                    record_maxid=max(record_list)
+                                    cur.execute("update t_auction_record set auction_goods_state=%s where auction_record_id=%s",['0',record_maxid])
+
 
                                 # 更新商品的拍卖属性以后需要生成一条拍卖记录
                                 cur.execute("insert into t_auction_record (auction_goods_id,auction_goods_premium,auction_goods_floorprice,auction_goods_price,auction_goods_count,\
@@ -1010,7 +1118,11 @@ def confirm_buy(request):
         return HttpResponse(json.dumps({"msg": error}))
 
 
+<<<<<<< HEAD
 # ******************************用户竞拍成功******************************************
+=======
+#****************************************************************用户竞拍成功******************************************
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 

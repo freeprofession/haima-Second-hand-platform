@@ -61,6 +61,7 @@ urlpatterns = [
     # path('modify_information/', view.modify_information),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
+<<<<<<< HEAD
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),
@@ -72,4 +73,27 @@ urlpatterns = [
     path("confirm_buy/", view.confirm_buy),
     # 用户支付成功以后的跳转
     path("buy_auction_ok/", view.buy_auction_ok),
+=======
+
+    path('publish_auction/',view.publish_auction),
+    path('release_auction_ok/',view.release_auction_ok),
+    path('buy_auction/',view.buy_auction),
+    #实时计算拍卖总价的路径
+    path('calculate_price/',view.calculate_price),
+    #返回用户的全部拍卖记录
+    path("my_auction_one/",view.my_auction_one),
+    path("my_auction_two/",view.my_auction_two),
+    path("my_auction_three/",view.my_auction_three),
+    path("my_auction_four/",view.my_auction_four),
+    #用户输完价格确认竞拍
+    path("confirm_buy/",view.confirm_buy),
+    #用户支付成功以后的跳转
+    path("buy_auction_ok/",view.buy_auction_ok),
+
+
+
+
+
+
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
 ]

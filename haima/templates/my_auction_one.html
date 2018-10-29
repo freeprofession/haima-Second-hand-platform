@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的发布</title>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" href="../static/CSS/my_auction.css">
+      <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/my_auction.js"></script>
+</head>
+<body onload="timer()">
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">{{ username.user_name }}欢迎来到海马二手商城!</div>
+        <div class="fr">
+            <div class="login_btn fl">
+                <a href="/login/?href=/my_auction/" target="_blank">登录</a>
+                <span>|</span>
+                <a href="/register/">注册</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/haima/">首页</a>
+                <span>|</span>
+                <a href="/user_center/">用户中心</a>
+                <span>|</span>
+                <a href="" id="my_order">我的订单</a>
+                <span>|</span>
+                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar_con">
+    <div class="navbar">
+        <h1 class="fl">商品分类</h1>
+        <ul class="navlist fl">
+            <li><a href="">首页</a></li>
+            <li><a href="">发布闲置</a></li>
+            <li><a href="">拍卖</a></li>
+            <li><a href="">二手估价</a></li>
+            <li><a href="">我的闲置</a></li>
+        </ul>
+    </div>
+</div>
+<div class="Navigation_information">
+    <div id="auction_Navigation">
+        <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
+        <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
+        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+    </div>
+    <div id="auction_classification">
+        <div>拍卖分类：</div>
+        <div><a href="">手机</a></div>
+        <div><a href="">相机</a></div>
+        <div><a href="">电脑</a></div>
+        <div><a href="">外设</a></div>
+    </div>
+
+</div>
+<hr>
+<div id="auction_select">
+    <a href="/my_auction_one/"><button id="auction_one" value="one">我发布的</button></a>
+    <a href="/my_auction_two/"><button id="auction_two" value="two">我拍卖的</button></div></a>
+    <a href="/my_auction_three/"><button id="auction_three" value="three">我成交的</button></a>
+    <a href="/my_auction_four/"><button id="auction_four" value="four">我竞拍的</button></a>
+</div>
+<div id="my_auction_goods">
+    {% for i in list1 %}
+    <div id="one" >
+        <div>
+            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="360px" width="400px">
+        </div>
+         <div id="auction_goods_desc">
+             <div id="title" style="font-size:25px">
+                 {{ i.goods.auction_goods_title }}
+
+             </div>
+             <br>
+             <div id="auction_messige">
+                <div id="auction_messige_desc" >
+                    <div>开始时间：<span id="acution_goods_start_time">{{ i.attribute.start_date }}</span></div>
+                    <br>
+                    <div>结束时间：<span id="acution_goods_end_time">{{ i.attribute.start_date }}</span></div>
+                    <br>
+                    <div>保证金：<span>200</span>元</div>
+                    <br>
+                    <div>单次加价最低：<span id="auction_goods_premium">{{ i.attribute.auction_goods_floorpremium }}</span></div>
+                    <br>
+                    <div>商品底价：<span id="auction_goods_floorprice">{{ i.attribute.auction_goods_floorprice }}</span></div>
+                    <br>
+                    <div>当前价格：<span id="acution_goods_start_time">{{ i.attribute.auction_goods_price }}</span></div>
+                    <br>
+                    <div>当前竞拍者：<span id="acution_goods_start_time">张三</span></div>
+                    <br>
+                    <div>距离拍卖结束:<span id = "timer"></span></div>
+                    <br>
+                    <div style="padding-left: 300px;">
+                        <button>
+                            结束拍卖
+                        </button>
+                    </div>
+                </div>
+             </div>
+         </div>
+    </div>
+    {% endfor %}
+
+</body>
+
+</html>
