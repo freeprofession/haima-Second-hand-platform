@@ -73,7 +73,7 @@ html, body {
 .search_wrap {
     width: 618px;
     height: 60px;
-    margin: 34px 0 0 124px;
+    margin: 34px 0 0 44px;
 }
 
 .search_con {
@@ -133,7 +133,7 @@ html, body {
     width: 200px;
     height: 32px;
     position: absolute;
-    top: 62px;
+    top: 64px;
     left: 50%;
     margin-left: 400px;
     z-index: 9997;
@@ -1107,16 +1107,32 @@ label:hover {
     background-color: #fbf3f3
 }
 
-.sort_bar a {
+.sort_btn {
+    border: 0px;
     display: block;
     height: 30px;
     line-height: 30px;
     padding: 0 20px;
     float: left;
-    color: #000
+    color: #000;
+    background-color: #fbf3f3;
+}
+.sort_btn0 {
+    border: 0px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 20px;
+    float: left;
+    background-color: #f80000;
+    color: #fff;
 }
 
-.sort_bar .active {
+.sort_bar .sort_btn:hover {
+    cursor: pointer;
+}
+
+.sort_active {
     background-color: #f80000;
     color: #fff;
 }
@@ -1197,7 +1213,7 @@ label:hover {
     margin: 30px auto;
 }
 
-.pagenation a {
+.pagenation span {
     display: inline-block;
     border: 1px solid #d2d2d2;
     background-color: #f8f6f7;
@@ -3438,7 +3454,7 @@ label:hover {
 
 .sortdiv {
     width: 200px;
-    margin-left: 250px;
+    margin-left: 300px;
 }
 
 .sortdiv1 {

@@ -152,6 +152,10 @@
             <label>开始时间：</label>
             <span id="startdate">{{ i.attribute.start_date }}</span>
         </div>
+        <div class="type_select" style="display: none">
+            <label>开始时间：</label>
+            <span id="goods_id">{{ i.goods.auction_goods_id }}</span>
+        </div>
         <div class="type_select">
             <label>结束时间:</label>
             <span id="enddate">{{ i.attribute.end_date }}</span>
@@ -166,12 +170,18 @@
         </div>
         <div class="type_select">
             <label>保证金:</label>
-            <span>{{ i.attribute.auction_goods_margin }}</span>
+            <span id="acution_goods_margin">{{ i.attribute.auction_goods_margin }}</span>
         </div>
              <div class="type_select">
             <label>当前价格</label>
             <span id="old_price">{{ i.attribute.auction_goods_price }}</span>
         </div>
+            </div>
+        <div class="type_select" style="display: none">
+            <label>这里是隐藏的这个商品的用户id</label>
+            <span id="goods_user_id">{{ i.goods.auction_goods_user_id}}</span>
+        </div>
+
 
         <div class="type_select">
             <label>输入竞拍加价:</label>
@@ -185,7 +195,7 @@
     </div>
 
         <div id="buy_now_message">
-            <button id="shutdown">
+            <button id="shutdown" >
                 关闭
             </button>
                 <div class="type_select">
@@ -200,12 +210,26 @@
                         <label>总计:</label>
                         <span id="buy_auction_goods_price">0</span>
                 </div>
+               <div class="type_select">
+                        <label>需先支付保证金:</label>
+                        <span >{{ i.attribute.auction_goods_margin }}</span>
+                </div>
+              <div class="type_select">
+                  <label>请输入支付密码:</label>
+                    <input type="text" maxlength="6" id="pay_password">
+                </div>
 
                 <div class="type_select">
-                        <button>确认竞拍</button>
+                    <button id="confirm_buy">确认竞拍</button>
                 </div>
+
+                <div id="pay_error">
+                    竞拍错误
+                </div>
+
+
             </div>
-        <div id="price_error">
+        <div id="price_error" onclick="javascript:window.location.reload() ">
             <button id="shutdown_error">
                 关闭
             </button>
@@ -307,29 +331,30 @@
 {#拍卖总价的计算#}
 <script>
     $(function () {
-        $("#auction_premium").change(function () {
-            permium = $("#auction_premium").val();
-            price = $("#old_price").text();
-            floormium = $("#floor_premium").text();
-
-            $.post('/calculate_price/',
+        $("#auction_premium").blur(function () {
+            $.ajax(
                 {
-                    "floormium": floormium,
-                    'price': price,
-                    'permium': permium,
-                }, function (data) {
-                    $('#auction_goods_price').html(function () {
-
-
+                    url:'/calculate_price/',
+                    type:'post',
+                    dataType:'text',
+                    data:{
+                        permium :$("#auction_premium").val(),
+                        goods_user_id:$("#goods_user_id").text(),
+                        old_price : $("#old_price").text(),
+                        floorprice:$("#floorprice").text(),
+                        floormium : $("#floor_premium").text(),
+                    },
+                    success:function (data) {
                         document.getElementById('auction_goods_price').innerText = data;
                         document.getElementById('buy_auction_goods_price').innerText = data;
+                    }
 
-                    })
                 }
             )
 
         })
     })
+
 </script>
 <script>
     $("#buy_btn").click(function () {
@@ -350,10 +375,76 @@
     })
     $("#shutdown").click(function () {
         $("#buy_now_message").hide()
+        window.location.reload();
 
     })
     $("#shutdown_error").click(function () {
         $("#price_error").hide()
+
+    })
+    $("#confirm_buy").click(function () {
+        margin=$("#acution_goods_margin").text();
+        permium = $("#auction_premium").val();
+        floorprice=$("#floorprice").text();
+        pay_password=$("#pay_password").val();
+        old_price= $("#old_price").text();
+        price=$("#buy_auction_goods_price").text();
+        goods_id=$("#goods_id").text();
+            $.post('/confirm_buy/',
+                {
+                    "floorprice": floorprice,
+                    'price': price,
+                    'permium': permium,
+                    "old_price":old_price,
+                    "goods_id":goods_id,
+                    "pay_password":pay_password,
+                    "margin":margin,
+                }
+                ,function (data) {
+                switch (data.msg)
+                {
+                    case "no_pay_password":
+                           $('#pay_error').html(function () {
+
+                            document.getElementById('pay_error').style.display='block';
+                            document.getElementById('pay_error').innerText = "请输入支付密码";
+                            });
+                        break;
+                    case "no_user_password":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "您还未设置支付密码，请前往个人中心设置";
+                            });
+
+                        break;
+                    case "pay_password_length":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "密码长度不能少于六位数";
+                            });
+                        break;
+                    case "diferent_password":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "支付密码错误";
+                            });
+                        break;
+                    case "money_less":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "账户余额不足";
+                            });
+                        break;
+                     case "pay_ok":
+                           location.href = '/buy_auction_ok/'
+                        break;
+
+
+
+                }
+                }
+                ,'json'
+            )
 
     })
 </script>
