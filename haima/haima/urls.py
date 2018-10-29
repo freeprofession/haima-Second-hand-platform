@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from myapp import view
 
-# from django.views.generic.base import RedirectView
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path("", view.homepage),
@@ -54,9 +54,21 @@ urlpatterns = [
     path('evaluate/', view.evaluate),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
+
+    path('leave_message/', view.leave_message),
+    path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     # path('modify_information/', view.modify_information),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
+<<<<<<< HEAD
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的拍卖发布历史记录
+    path("my_release_record/", view.my_release_record),
+    path('publish_auction/', view.publish_auction),
+    path('calculate_price/', view.calculate_price),
+=======
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
     path('buy_auction/',view.buy_auction),
@@ -74,4 +86,5 @@ urlpatterns = [
 
 
 
+>>>>>>> 69e4d510350cfc012a17331459396a8f7634924d
 ]

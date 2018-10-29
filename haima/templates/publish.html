@@ -5,13 +5,12 @@
     <title>海马商城-发布</title>
     <script type="text/javascript" src="https://unpkg.com/qiniu-js@2.5.1/dist/qiniu.min.js"></script>
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="../static/JS/qiniu.js"></script>
+{#    <script type="text/javascript" src="../static/JS/qiniu.js"></script>#}
     <script type="text/javascript" src="../static/JS/moxie.min.js"></script>
-    <script type="text/javascript" src="../static/JS/plupload.full.min.js"></script>
+{#    <script type="text/javascript" src="../static/JS/plupload.full.min.js"></script>#}
     <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
-    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/CSS/font-style.css">
     <style type="text/css">
         #js-pre {
@@ -119,9 +118,7 @@
     </div>
     <br>
     <div id="publish_goods" class="pub">
-        <form action="http://upload.qiniup.com/" method="post" enctype="multipart/form-data">
-            <input name="token" type="hidden"
-                   value="{{ token }}">
+        <form action="/pub_success/" method="post" enctype="multipart/form-data" id="pub_goods">
             <table border="0">
                 <tr>
                     <td>宝贝标题：</td>
@@ -237,10 +234,9 @@
     }
 </style>
 <div id="background" class="background" style="display: none; "></div>
-<div id="progressBar" class="progressBar" style="display: none; ">数据加载中，请稍等...</div>
+<div id="progressBar" class="progressBar" style="display: none; ">数据提交中，请稍等...</div>
 
 
-<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="../static/JS/F_File1.2.js"></script>
 <script type="text/javascript">
     $(function () {

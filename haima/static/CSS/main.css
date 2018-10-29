@@ -524,7 +524,7 @@ html, body {
 
 .group_name {
     width: 80px;
-    text-align: right;
+    text-align: left;
     font-size: 14px;
     line-height: 24px;
     font-weight: bold;
