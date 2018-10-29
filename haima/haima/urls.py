@@ -42,8 +42,9 @@ urlpatterns = [
     path('review_ajax/', view.review_ajax),
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
+    path('leave_message/', view.leave_message),
+    path('lower_goods/',view.lower_goods),
     # -------------------------
-
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
