@@ -1,12 +1,3 @@
-/*
- * 基于张鑫旭多文件上传修改的多文件上传系统 http://www.zhangxinxu.com/wordpress/?p=1923
- * @author (范彪)
-*/
-
-/*
- * 多文件预览,上传,删除
- * @param  obj {obj} 文件上传的设置
- */
 var index = 0;
 var dex = new Array();
 
@@ -149,12 +140,12 @@ FFile.prototype = {
     },
     //文件上传
     funUploadFile: function () {
-        for (var i = 0, file; file = this.FileSet.fileFilter[i]; i++) {
-            console.log(dex)
-
-        }
+        console.log(dex);
         var ajaxbg = $("#background,#progressBar");
         ajaxbg.show();
+
+        var form = document.getElementById('pub_goods');
+        form.submit();
 
         // var self = this;
         // for (var i = 0, file; file = this.FileSet.fileFilter[i]; i++) {

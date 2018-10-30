@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>海马商城-首页</title>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../static/JS/guess.js"></script>
+</head>
+<body>
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="fr">
+            <div class="login_btn fl">
+                <a href="/login/">登录</a>
+                <span>|</span>
+                <a href="/register/">注册</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/haima/">首页</a>
+                <span>|</span>
+                <a href="/user/">用户中心</a>
+                <span>|</span>
+                <a href="" id="my_order">我的订单</a><br>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="order_show">
+    <ul>
+        <li><a href="/my_sale/">我出售的</a></li>
+        <li><a href="/my_buy/">我购买的</a></li>
+    </ul>
+</div>
+<div style="height: 104px">
+    <a href="/haima/" class="logo fl" style="margin-left: 600px"><img src="../static/Images/haima3.png" width="200"
+                                                                      height="100"></a>
+</div>
+<div id="user_info">
+    <div id="user_info2" class="clearfix">
+        <div>
+            <span><img src="../static/Images/user.gif" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7"
+                       width="80" height="80"></span>
+        </div>
+        <div id="user_info3">
+            <span>用户名：杰克辣舞</span><br>
+            <span>注册时间：2018-10-29</span><br>
+            <span>居住地：苏州&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实名：已认证</span>
+        </div>
+        <div id="user_info4">
+            <ul>
+                <li>用户已加入海马二手交易平台 <span>712</span> 天</li>
+                <li>卖出商品 <span>5</span> 件</li>
+                <li>共收到用户评价 <span>0</span> 次</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="credit_select">
+    <ul class="credit_select_ul">
+        <li id="credit_select_li1"><span class="credit_active nav credit_select_span1">动 态</span></li>
+        <li id="credit_select_li2"><span class="nav credit_select_span2">评 论(0)</span></li>
+        <li id="credit_select_li3"><span class="nav credit_select_span3">发 布</span></li>
+    </ul>
+</div>
+<div id="credit_select_show">
+    <div id="c1" style="display: block">
+        <ul class="credit_select_show_ul">
+            <li class="credit_select_show_li">
+                <span class="credit_time">2018-10-29</span>
+                <dl class="credit_select_show_dl">
+                    <dt>发布了 4 个宝贝</dt>
+                    <dd>
+                        <ul>
+                            <li class="clearfix credit_detail_li">
+                                <a href=""><img src="../static/Images/cat.jpg" alt="" height="90" width="90"></a>
+                                <a href="" class="credit_goods_title">卖猫</a>
+                                <span class="credit_goods_price">¥ 998</span>
+                            </li>
+                        </ul>
+                    </dd>
+                    <dd>
+                        <ul>
+                            <li class="clearfix credit_detail_li">
+                                <a href=""><img src="../static/Images/cat.jpg" alt="" height="90" width="90"></a>
+                                <a href="" class="credit_goods_title">卖猫</a>
+                                <span class="credit_goods_price">¥ 998</span>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    <div id="c2" style="display: none">
+        <ul class="credit_select_show_ul">
+            <li class="credit_select_show_li">
+                <span class="credit_time">2018-10-29</span>
+                <dl class="credit_select_show_dl">
+                    <dd>2</dd>
+                    <dd>2</dd>
+                    <dd>2</dd>
+                    <dd>2</dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    <div id="c3" style="display: none">
+        <ul class="credit_select_show_ul">
+            <li class="credit_select_show_li">
+                <span class="credit_time">2018-10-29</span>
+                <dl class="credit_select_show_dl">
+                    <dd style="background-color: #f8f8f8">
+                        <ul>
+                            <li class="clearfix">
+                                <a href="../static/Images/cat.jpg"></a>
+                                <a href="">卖猫</a>
+                                <span>¥ 998</span>
+                            </li>
+                        </ul>
+                    </dd>
+                    <dd>2</dd>
+                    <dd>2</dd>
+                    <dd>2</dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：0512-****888 苏ICP备*******8号</p>
+</div>
+</body>
+<script>
+    $(".nav").mouseover(function () {
+        $(".nav").removeClass("credit_active");
+        $(this).addClass("credit_active")
+    })
+    $(".credit_select_span1").mouseover(function () {
+        $("#c1").show()
+        $("#c2").hide()
+        $("#c3").hide()
+    })
+    $(".credit_select_span2").mouseover(function () {
+        $("#c1").hide()
+        $("#c2").show()
+        $("#c3").hide()
+    })
+    $(".credit_select_span3").mouseover(function () {
+        $("#c1").hide()
+        $("#c2").hide()
+        $("#c3").show()
+    })
+</script>
+</html>

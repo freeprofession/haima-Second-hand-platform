@@ -44,8 +44,12 @@
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
         <div class="search_con">
-            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-            <input type="button" class="input_btn fr" name="" value="搜  索">
+            <form action="/goods_list/" method="get">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                <input type="hidden" name="price_low" value="{{ price_low }}">
+                <input type="hidden" name="price_high" value="{{ price_high }}">
+                <input type="submit" class="input_btn fr" value="搜  索">
+            </form>
         </div>
     </div>
 
@@ -102,33 +106,40 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1">
-                <a href="/goods_list/?" class="main_type">手机</a><a href="#" class="child_type">华为</a><a href="#"
-                                                                                                        class="child_type">苹果</a><a
-                    href="#" class="child_type">小米</a><a href="#" class="child_type">oppo</a>
+                <a href="/goods_list/?" class="main_type">手机</a><a href="#" class="child_type">手机壳</a><a href="#"
+                                                                                                         class="child_type">充电器</a><a
+                    href="#" class="child_type">耳机</a><a href="#" class="child_type">数据线</a>
             </div>
             <div class="level2">
                 <div class="list_group">
-                    <div class="group_name fl">手机通讯 &gt;</div>
+                    <div class="group_name fl">品牌 &gt;</div>
                     <div class="group_detail fl">
-                        <a href="#">手机</a>
-                        <a href="#">对讲机</a>
-                        <a href="#">以旧换新</a>
-                        <a href="#">手机维修</a>
+                        <a href="#">华为</a>
+                        <a href="#">小米</a>
+                        <a href="#">苹果</a>
+                        <a href="#">vivo</a>
+                        <a href="#">oppo</a>
+                        <a href="#">魅族</a>
+                        <a href="#">努比亚</a>
+                        <a href="#">三星</a>
+                        <a href="#">一加</a>
+                        <a href="#">诺基亚</a>
+                        <a href="#">HTC</a>
+                        <a href="#">摩托罗拉</a>
+                        <a href="#">中兴</a>
+                        <a href="#">联想</a>
+                        <a href="#">索爱</a>
+                        <a href="#">LG</a>
                     </div>
                 </div>
                 <div class="list_group">
-                    <div class="group_name fl">运营商 &gt;</div>
+                    <div class="group_name fl">配件 &gt;</div>
                     <div class="group_detail fl">
-                        <a href="#">合约机</a>
-                        <a href="#">选号码</a>
-                        <a href="#">固话宽带</a>
-                        <a href="#">办套餐</a>
-                        <a href="#">充话费/流量</a>
-                        <a href="#">中国电信</a>
-                        <a href="#">中国移动</a>
-                        <a href="#">中国联通</a>
-                        <a href="#">京东通信</a>
-                        <a href="#">170选号</a>
+                        <a href="#">手机壳</a>
+                        <a href="#">充电器</a>
+                        <a href="#">电池</a>
+                        <a href="#">耳机</a>
+                        <a href="#">数据线</a>
                     </div>
                 </div>
             </div>
@@ -136,41 +147,76 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/computer.png" alt="" height="30" width="15" class="pic1">
-                <a href="#" class="main_type">电脑</a>
+                <a href="#" class="main_type">电脑</a><a href="#" class="child_type">笔记本</a><a href="#"
+                                                                                             class="child_type">台式机</a><a
+                    href="#" class="child_type">平板电脑</a>
             </div>
             <div class="level2">
                 <div class="list_group">
                     <div class="group_name fl">电脑 &gt;</div>
                     <div class="group_detail fl">
-                        <a href="#">曲面电视</a>
-                        <a href="#">超薄电视</a>
-                        <a href="#">HDR电视</a>
-                        <a href="#">OLED电视</a>
-                        <a href="#">4K超清电视</a>
-                        <a href="#">人工智能电视</a>
-                        <a href="#">55英寸</a>
-                        <a href="#">65英寸</a>
+                        <a href="#">笔记本</a>
+                        <a href="#">平板电脑</a>
+                        <a href="#">台式机整机</a>
+                    </div>
+                    <div class="group_name fl">外设 &gt;</div>
+                    <div class="group_detail fl">
+                        <a href="#">显示器</a>
+                        <a href="#">鼠标</a>
+                        <a href="#">CPU</a>
+                        <a href="#">主板</a>
+                        <a href="#">显卡</a>
+                        <a href="#">内存</a>
+                        <a href="#">硬盘</a>
+                        <a href="#">电源</a>
+                        <a href="#">声卡</a>
+                        <a href="#">网卡</a>
+                        <a href="#">散热器</a>
+                        <a href="#">U盘</a>
+                        <a href="#">闪存卡</a>
+                        <a href="#">移动硬盘</a>
                     </div>
                 </div>
-            </div>
-        </li>
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/camera.png" alt="" height="30" width="15" class="pic1">
-                <a href="#" class="main_type">相机</a>
+                <a href="#" class="main_type">摄影</a><a href="#" class="child_type">相机</a><a href="#" class="child_type">单反</a><a
+                    href="#" class="child_type">摄像机</a><a href="#" class="child_type">微单</a>
             </div>
             <div class="level2">
                 <div class="list_group">
-                    <div class="group_name fl">家具 &gt;</div>
+                    <div class="group_name fl">品牌 &gt;</div>
                     <div class="group_detail fl">
-                        <a href="#">曲面电视</a>
-                        <a href="#">超薄电视</a>
-                        <a href="#">HDR电视</a>
-                        <a href="#">OLED电视</a>
-                        <a href="#">4K超清电视</a>
-                        <a href="#">人工智能电视</a>
-                        <a href="#">55英寸</a>
-                        <a href="#">65英寸</a>
+                        <a href="#">佳能</a>
+                        <a href="#">尼康</a>
+                        <a href="#">索尼</a>
+                        <a href="#">宾得</a>
+                        <a href="#">松下</a>
+                        <a href="#">富士</a>
+                        <a href="#">三星</a>
+                        <a href="#">奥林巴斯</a>
+                        <a href="#">适马</a>
+                        <a href="#">徕卡</a>
+                        <a href="#">明基</a>
+                        <a href="#">爱国者</a>
+                    </div>
+                </div>
+                <div class="list_group">
+                    <div class="group_name fl">相机 &gt;</div>
+                    <div class="group_detail fl">
+                        <a href="#">相机</a>
+                        <a href="#">镜头</a>
+                        <a href="#">单反</a>
+                        <a href="#">摄像</a>
+                        <a href="#">胶片</a>
+                        <a href="#">微单</a>
+                        <a href="#">闪光灯</a>
+                        <a href="#">卡西欧</a>
+                        <a href="#">拍立得</a>
+                        <a href="#">三脚架</a>
+                        <a href="#">相机包</a>
+                        <a href="#">美颜神器</a>
+
                     </div>
                 </div>
             </div>
@@ -178,13 +224,39 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/game.png" alt="" height="30" width="15" class="pic1">
-                <a href="#" class="main_type">外设</a>
+                <a href="#" class="main_type">电玩随声听</a><a href="#" class="child_type">MP3</a><a href="#"
+                                                                                                class="child_type">PSP</a><a
+                    href="#"
+                    class="child_type">iPod</a>
             </div>
             <div class="level2">
                 <div class="list_group">
-                    <div class="group_name fl">男装 &gt;</div>
+                    <div class="group_name fl">随身听 &gt;</div>
                     <div class="group_detail fl">
-                        <a href="#">男装</a>
+                        <a href="#">MP3</a>
+                        <a href="#">MP4</a>
+                        <a href="#">MP5</a>
+                        <a href="#">录音笔</a>
+                        <a href="#">iPod</a>
+                        <a href="#">索尼视听</a>
+                        <a href="#">爱国者</a>
+                        <a href="#">纽曼</a>
+                        <a href="#">飞利浦</a>
+                        <a href="#">三星</a>
+                        <a href="#">清华紫光</a>
+                    </div>
+                </div>
+                <div class="list_group">
+                    <div class="group_name fl">游戏机 &gt;</div>
+                    <div class="group_detail fl">
+                        <a href="#">Wii</a>
+                        <a href="#">PSP</a>
+                        <a href="#">PS3</a>
+                        <a href="#">xbox</a>
+                        <a href="#">游戏软件</a>
+                        <a href="#">酷比魔方</a>
+                        <a href="#">索尼电玩</a>
+                        <a href="#">任天堂</a>
                     </div>
                 </div>
             </div>
@@ -192,13 +264,24 @@
         <li class="newli" style="border-bottom: 0px">
             <div class="level1">
                 <img src="../static/Images/pad.png" alt="" height="30" width="15" class="pic1">
-                <a href="#" class="main_type">平板</a>
+                <a href="#" class="main_type">其他</a><a href="#" class="child_type">充电宝</a><a href="#"
+                                                                                             class="child_type">支架</a><a
+                    href="#"
+                    class="child_type">车载充电器</a>
             </div>
             <div class="level2">
                 <div class="list_group">
-                    <div class="group_name fl">男装 &gt;</div>
+                    <div class="group_name fl">其他 &gt;</div>
                     <div class="group_detail fl">
-                        <a href="#">男装</a>
+                        <a href="#">充电宝</a>
+                        <a href="#">底座</a>
+                        <a href="#">支架</a>
+                        <a href="#">车载充电器</a>
+                        <a href="#">电脑包</a>
+                        <a href="#">取卡针</a>
+                        <a href="#">音响</a>
+                        <a href="#">基站</a>
+                        <a href="#">路由器</a>
                     </div>
                 </div>
             </div>
@@ -255,7 +338,7 @@
         <div id="guess">
             <ul class="item-type">
                 <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
-                                                        id="guess1">猜你喜欢</a></li>
+                                                       >猜你喜欢</a></li>
                 <li class="nav" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
                 <li class="nav" id="guess3"><a href="" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
             </ul>
@@ -387,7 +470,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="#" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="#">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -432,7 +515,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="#" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="#">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -475,8 +558,8 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods=0" class="goods_pic"><img src="{{ goods.img_url }}"></a>
-                        <h4><a href="/goods_detail/?goods=0">{{ goods.goods_title }}</a></h4>
+                        <a href="/goods_detail/?goods=1" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
+                        <h4><a href="/goods_detail/?goods=1">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
                 {% endfor %}
