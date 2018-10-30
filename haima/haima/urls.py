@@ -78,5 +78,8 @@ urlpatterns = [
     path("confirm_buy/",view.confirm_buy),
     #用户支付成功以后的跳转
     path("buy_auction_ok/",view.buy_auction_ok),
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
 ]

@@ -62,9 +62,8 @@
 
 <div id="credit_select">
     <ul class="credit_select_ul">
-        <li id="credit_select_li1"><span class="credit_active nav credit_select_span1">动 态</span></li>
+        <li id="credit_select_li1"><span class="credit_active nav credit_select_span1">发 布</span></li>
         <li id="credit_select_li2"><span class="nav credit_select_span2">评 论(0)</span></li>
-        <li id="credit_select_li3"><span class="nav credit_select_span3">发 布</span></li>
     </ul>
 </div>
 <div id="credit_select_show">
@@ -97,36 +96,44 @@
         </ul>
     </div>
     <div id="c2" style="display: none">
-        <ul class="credit_select_show_ul">
-            <li class="credit_select_show_li">
-                <span class="credit_time">2018-10-29</span>
-                <dl class="credit_select_show_dl">
-                    <dd>2</dd>
-                    <dd>2</dd>
-                    <dd>2</dd>
-                    <dd>2</dd>
-                </dl>
+        <ul class="release-goods-list">
+            <li class="comment-data-item clearfix">
+                <div class="cell">
+                    <div class="user-infor">
+                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
+                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
+                        <span class="post-name">小可爱</span>
+                    </div>
+
+                </div>
+                <div class="comment-data cell" style="padding-top: 20px">
+                    <span><i class="tb-rate-ico ico-rate2" title="好评"></i></span><br>
+                    <span style="text-overflow: ellipsis;">很好很棒666</span><br><br>
+                    <span>2018-10-30</span>
+                </div>
+                <div class="cell" style="padding-top: 20px;">
+                    <span><a href="" class="desct2">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京321313212313132</a></span><br><br>
+                    <span class="credit_goods_price">¥ 998</span>
+                </div>
             </li>
-        </ul>
-    </div>
-    <div id="c3" style="display: none">
-        <ul class="credit_select_show_ul">
-            <li class="credit_select_show_li">
-                <span class="credit_time">2018-10-29</span>
-                <dl class="credit_select_show_dl">
-                    <dd style="background-color: #f8f8f8">
-                        <ul>
-                            <li class="clearfix">
-                                <a href="../static/Images/cat.jpg"></a>
-                                <a href="">卖猫</a>
-                                <span>¥ 998</span>
-                            </li>
-                        </ul>
-                    </dd>
-                    <dd>2</dd>
-                    <dd>2</dd>
-                    <dd>2</dd>
-                </dl>
+            <li class="comment-data-item clearfix">
+                <div class="cell">
+                    <div class="user-infor">
+                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
+                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
+                        <span class="post-name">小可爱</span>
+                    </div>
+
+                </div>
+                <div class="comment-data cell" style="padding-top: 20px">
+                    <span><i class="tb-rate-ico ico-rate2" title="好评"></i></span><br>
+                    <span style="text-overflow: ellipsis;">很好很棒666</span><br><br>
+                    <span>2018-10-30</span>
+                </div>
+                <div class="cell" style="padding-top: 20px">
+                    <span><a href="">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京</a></span><br><br>
+                    <span class="credit_goods_price">¥ 998</span>
+                </div>
             </li>
         </ul>
     </div>
@@ -153,17 +160,10 @@
     $(".credit_select_span1").mouseover(function () {
         $("#c1").show()
         $("#c2").hide()
-        $("#c3").hide()
     })
     $(".credit_select_span2").mouseover(function () {
         $("#c1").hide()
         $("#c2").show()
-        $("#c3").hide()
-    })
-    $(".credit_select_span3").mouseover(function () {
-        $("#c1").hide()
-        $("#c2").hide()
-        $("#c3").show()
     })
 </script>
 </html>
