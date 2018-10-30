@@ -237,7 +237,8 @@ def register_ajax(request):
                     conn.commit()
                     r.delete(phone)
                     code_error = 'register_ok'  # 注册成功，跳转
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        request.session['username'] = username
+
+                    request.session['username'] = username
                     return HttpResponse(json.dumps({"msg": code_error}))
                 elif user_error == "用户名已存在":
                     code_error = 'user_exists'  # 用户名存在
@@ -795,6 +796,7 @@ def release_auction_ok(request):
 
 
 # **********************************************************返回用户的我的拍卖中心的我的发布界面**************************************
+#这里主要是显示他的发布记录
 def my_auction_one(request):
     user_id = request.session.get("user_id")
     list1 = []
@@ -817,6 +819,7 @@ def my_auction_one(request):
         dict1["attribute"] = goods_auction_message
         print(goods_auction_message["auction_goods_floorprice"])
         list1.append(dict1)
+    print(list1)
     print("查询成功")
     return render(request, 'my_auction_one.html', locals())
 
@@ -826,14 +829,50 @@ def my_auction_one(request):
 #这个显示的他正在拍卖中的商品
 def my_auction_two(request):
     user_id = request.session.get("user_id")
+    list2=[]
+    cur.execute("select auction_goods_id from t_auction_goods where auction_goods_user_id=%s",[user_id])
+    goods_id_dict=cur.fetchall()
+    goods_id_list=[]
+    goods_list=[]
+    attribute_list=[]
+    buy_name_list=[]
+    #这里是找到这个人所有正在拍卖的商品
+    for i in goods_id_dict:
+        goods_id_list.append(i["auction_goods_id"])
+    #找到商品的拍卖属性和基本属性,同时找到商品竞拍者的名字
+    for i in goods_id_list:
+        cur.execute("select * from t_auction_goods where auction_goods_id=%s",[i])
+        goods=cur.fetchone()
+        goods_list.append(goods)
+        cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [i])
+        attribute=cur.fetchone()
+        attribute_list.append(attribute)
+        cur.execute("select auction_goods_buyuser_id from t_auction_attribute where auction_goods_id=%s", [i])
+        buy_user_id=cur.fetchone()["auction_goods_buyuser_id"]
+        if buy_user_id and buy_user_id>0:
+            cur.execute("select user_name from t_user where user_id=%s",[buy_user_id])
+            buy_name=cur.fetchone()
+            buy_name_list.append(buy_name)
 
-    pass
+        else:
+            dict2={"user_name":"无"}
+            buy_name_list.append(dict2)
 
+
+    for i in range(len(goods_id_list)):
+        dict1={}
+        dict1["goods"]=goods_list[i]
+        dict1["attribute"]=attribute_list[i]
+        dict1["buyname"]=buy_name_list[i]
+        list2.append(dict1)
+    print(list2)
+    return render(request, 'my_auction_two.html', locals())
 
 
 # **********************************************************返回用户的我的拍卖中心我拍卖的界面**************************************
 def my_auction_three(request):
-    pass
+    return render(request, 'my_auction_two.html', locals())
+
 
 
 
@@ -849,10 +888,12 @@ def my_auction_four(request):
     goods_record_list=cur.fetchall()
     goods_list=[]
     goods_info_list=[]
+    goods_buyuser_name_list=[]
     #这里是通过竞拍记录id找到商品id
     for i in record_id_dict:
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",[i["auction_record_id"]])
         goods_list.append(cur.fetchone()["auction_goods_id"])
+
     for i in goods_list:
         cur.execute("select * from t_auction_goods where auction_goods_id=%s",[i])
         info=cur.fetchone()
@@ -862,6 +903,7 @@ def my_auction_four(request):
         dict1={}
         dict1["record"]=goods_record_list[i]
         dict1["goods"]=goods_info_list[i]
+
         list4.append(dict1)
     print(list4)
     return render(request, 'my_auction_four.html', locals())
