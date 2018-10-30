@@ -558,8 +558,8 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods=1" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
-                        <h4><a href="/goods_detail/?goods=1">{{ goods.goods_title }}</a></h4>
+                        <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
+                        <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
                 {% endfor %}

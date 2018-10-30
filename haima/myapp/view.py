@@ -56,24 +56,20 @@ def get_token(func):
 def homepage(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
-    # 用户信息---------------------------
     if username:
-        cur.execute("select * from t_user where user_id=%s", [user_id, ])  # 全表搜索，待建立索引
-        user_info = cur.fetchone()
-        user_img = user_info['user_imgurl']
-        login_status = "欢迎：" + username
-        href = "/user_center/"
+        login_status = username
     else:
-        # 收藏--------------------------
-        # cur.execute("select * from t_user_collection where collection_user_id=%s", [user_id, ])
-        cur.execute(
-            'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
-            [user_id, ])
-        collection_list = cur.fetchall()
-        # 这里报错了我先注释一下
-        # for goods in goods_list:
-        #     goods['img_url'] = r.srandmember(goods['goods_id'], 1)[0].decode('utf-8')
-        return render(request, 'homepage.html', locals())
+        login_status = "未登录"
+    sql = "select * from t_goods limit 0,10"
+    cur.execute(sql)
+    goods_list = cur.fetchall()
+    # 收藏--------------------------
+    # cur.execute("select * from t_user_collection where collection_user_id=%s", [user_id, ])
+    cur.execute(
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        [user_id, ])
+    collection_list = cur.fetchall()
+    return render(request, 'homepage.html', locals())
 
 
 def homepage_ajax(request):
