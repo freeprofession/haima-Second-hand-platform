@@ -560,7 +560,8 @@ def review_ajax(request):
                 if check_child_name_2['user_name'] == child_name[0]:
                     rule2 = r':(.*)'
                     print('ture')
-                    send_review = "@" + child_name[0] + ': ' + re.findall(rule2, child_review)[0]
+                    send_review = "@" + child_name[0] + ':  ' + \
+                                  re.findall(rule2, child_review)[0]
                     reply_id = reply_id1
                 else:
                     send_review = child_review
@@ -1131,11 +1132,6 @@ def confirm_buy(request):
 
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
-
-
-# 用户中心
-def user_center(request):
-    return render(request, 'user_center.html')
 
 
 # 我出售的
