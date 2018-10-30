@@ -169,6 +169,8 @@ def login_ajax(request):
                 if return_url:
                     if return_url == "http://127.0.0.1:8000/register_ok/":
                         return_url = "/haima/"
+                    elif return_url == "http://127.0.0.1:8000/register/":
+                        return_url = "/haima/"
                     else:
                         pass
                 else:
@@ -245,12 +247,18 @@ def register_ajax(request):
             if check_code:  # 手机验证码待定！
                 check_code = check_code.decode('utf8')
                 if user_error == "" and check_all == 'true':
-                    cur.execute("insert into t_user(user_name,user_password,user_phone) values(%s,%s,%s)",
-                                [username, password, phone])
+                    now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+                    cur.execute(
+                        "insert into t_user(user_name,user_password,user_phone,user_startdate) values(%s,%s,%s,%s)",
+                        [username, password, phone, now_time])
                     # print(username, email, phone, password)
                     con.commit()
                     r.delete(phone)
                     code_error = 'register_ok'  # 注册成功，跳转
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
                     request.session['username'] = username
                     return HttpResponse(json.dumps({"msg": code_error}))
                 elif user_error == "用户名已存在":
@@ -370,8 +378,63 @@ def user_center(request):
 
 # 用户信誉-----------------------------------
 def user_credit(request):
-    return render(request, 'user_credit.html')
+    user_id = request.session.get('user_id')
+    user_credit_id = request.GET.get('user_credit_id')
+    # 判断是否登陆-------------------------------
+    if user_id:
+        # 判断是否为本人进入
+        print(user_id, user_credit_id)
+        if str(user_credit_id) == str(user_id):
+            return redirect("/user_center/")
+        else:
+            # -用户信息
+            cur.execute("select * from t_user where user_id=%s ", [user_credit_id, ])
+            user_info = cur.fetchall()
+            # 计算天数------------------
+            day_ = user_info[0]["user_startdate"]
+            now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+            d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
+            d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
+            day_count = d2 - d1
+            # -累计卖出-----------------
+            # -收到的评价-------------------
+            # -正在发布的商品----------------
+            cur.execute("select * from t_goods where user_id=%s and goods_state=%s", [user_credit_id, 0])
+            goods_list = cur.fetchall()
+            goods = {}
 
+            # lst = []
+            # for item in goods_list:
+            #     date = item.get('release_date')
+            #     if item["release_date"] == date:
+            #         lst.append(item)
+            #     goods[date] = lst
+            # goods_count = len(goods_list)
+            for item in goods_list:
+                date = item.get('release_date')
+                goods[date] = ""
+
+            for j in goods:
+                lst = []
+                count = 0
+                for item in goods_list:
+                    if j == item['release_date']:
+                        count += 1
+                        lst.append(item)
+                # count_ = {"count": count}
+                # lst.insert(0, count_)
+                for i in lst:
+                    i["count"] = str(count) + " 件商品"
+                    break
+                goods[j] = lst
+
+            print(goods)
+            return render(request, "user_credit.html", locals())
+    else:
+        return redirect('/login/')
+
+
+# _____________________________________________________________-
 
 # 商品界面设置
 def goods_detail(request):
@@ -390,6 +453,12 @@ def goods_detail(request):
     print(username, user_id, goods_id, goods_list)
     seller_id = goods_list[0]['user_id']  # 获取卖家ID
     goods_state = goods_list[0]['goods_state']  # 商品状态
+    # 获取商品图片
+    img_list = []
+    for item in img.lrange(goods_id, 0, 4):
+        item = item.decode("utf-8")
+        img_list.append(item)
+    print(img_list)
 
     # 判断是否为发布人进去页面---------------------
     if user_id == seller_id:
@@ -453,14 +522,16 @@ def goods_detail(request):
             cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
             print(count, goods_id, "商品浏览记录")
         # 用户浏览记录
-        cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
-        user_browse = cur.fetchone()
-        if user_browse:
-            cur.execute("update t_user_browse set browse_date=%s where browse_goods_id=%s and browse_user_id=%s",
-                        [now_time, goods_id, user_id])
-        else:
-            cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
-                        [user_id, now_time, goods_id])
+        if seller_id != user_id:
+            cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s",
+                        [user_id, goods_id])
+            user_browse = cur.fetchone()
+            if user_browse:
+                cur.execute("update t_user_browse set browse_date=%s where browse_goods_id=%s and browse_user_id=%s",
+                            [now_time, goods_id, user_id])
+            else:
+                cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
+                            [user_id, now_time, goods_id])
         con.commit()
     else:
         login_status = '未登录'
@@ -572,7 +643,8 @@ def review_ajax(request):
                 if check_child_name_2['user_name'] == child_name[0]:
                     rule2 = r':(.*)'
                     print('ture')
-                    send_review = "@" + child_name[0] + ': ' + re.findall(rule2, child_review)[0]
+                    send_review = "@" + child_name[0] + ':  ' + \
+                                  re.findall(rule2, child_review)[0]
                     reply_id = reply_id1
                 else:
                     send_review = child_review
@@ -999,7 +1071,10 @@ def my_auction_four(request):
     record_id_dict = cur.fetchall()
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
     goods_record_list = cur.fetchall()
     goods_list = []
     goods_info_list = []
@@ -1009,17 +1084,23 @@ def my_auction_four(request):
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
         goods_list.append(cur.fetchone()["auction_goods_id"])
-
     for i in goods_list:
         cur.execute("select * from t_auction_goods where auction_goods_id=%s", [i])
         info = cur.fetchone()
         goods_info_list.append(info)
     list4 = []
+<<<<<<< HEAD
     for i in range(len(goods_record_list)):
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
         list4.append(dict1)
+=======
+    dict1 = {}
+    dict1["record"] = goods_record_list[i]
+    dict1["goods"] = goods_info_list[i]
+    list4.append(dict1)
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
     print(list4)
     return render(request, 'my_auction_four.html', locals())
 
@@ -1070,6 +1151,10 @@ def calculate_price(request):
     print(permium)
     if permium < floormium or permium > price:
         return HttpResponse("输入的加价有误")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
     else:
         count_price = int(price) + int(permium)
         return HttpResponse(count_price)
@@ -1162,12 +1247,23 @@ def confirm_buy(request):
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
 
+<<<<<<< HEAD
+=======
+                                cur.execute(
+                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
+                                    [goods_id])
+
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
 
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
                                 record_dict = cur.fetchall()
                                 if record_dict:
                                     record_list = []
@@ -1221,6 +1317,16 @@ def confirm_buy(request):
 
 # ****************************************************************用户竞拍成功******************************************
 
+<<<<<<< HEAD
+=======
+
+def buy_auction_ok(request):
+    return render(request, 'buy_auction_goods_ok.html')
+
+
+# ****************************************************************用户竞拍成功******************************************
+
+>>>>>>> 94f347e6c086326906e62462c4199ef435dda338
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 

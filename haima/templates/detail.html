@@ -228,11 +228,9 @@
     <div class="down" id="down">
         <table style="margin-left: 1.5px">
             <tr>
-                <td><img src="../static/images/game.png"></td>
-                <td><img src="../static/images/camera.png"/></td>
-                <td><img src="../static/images/computer.png"/></td>
-                <td><img src="../static/images/pad.jpg"/></td>
-                <td><img src="../static/images/phone.png"/></td>
+                {% for img in img_list %}
+                <td><img src="{{ img }}"></td>
+                {% endfor %}
             </tr>
         </table>
     </div>
@@ -302,7 +300,9 @@
                     </ul>
                 </div>
                 <div style="margin: 5px;text-align: center">
-                    <a href="{{ item.user_id }}"><input type="button" value="卖家信息" id="check_detail" class="opsale"></a>
+                    <a href="/user_credit/?user_credit_id={{ item.user_id }}"><input type="button" value="卖家信息"
+                                                                                     id="check_detail"
+                                                                                     class="opsale"></a>
                     <input type="button" value="私聊卖家" id="communication" class="opsale">
                 </div>
             {% endfor %}
