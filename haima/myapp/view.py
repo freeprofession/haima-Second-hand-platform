@@ -1,5 +1,8 @@
 import pymysql
-import redis
+import time
+
+st_time = time.localtime(time.time())
+loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -13,7 +16,6 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import pymysql
 import redis
 import json
-import time
 import random
 import re
 import datetime
@@ -684,6 +686,31 @@ def publish(request):
     return render(request, 'publish.html')
 
 
+def pub_success(request):
+    title = request.POST.get('title')
+    category = request.POST.get('type')
+    price = float(request.POST.get('price'))
+    postage = request.POST.get('postage')
+    desc = request.POST.get('desc')
+    filelist = json.loads(request.POST.get('filelist'))
+    address = '江苏苏州 吴江区'
+    appearance = '4'
+    if desc:
+        pass
+    else:
+        desc = '该卖家比较懒，还没有商品描述'
+    for i in filelist:
+        print(i)
+    sql = "INSERT INTO t_goods(`user_id`,`release_date`,`goods_title`,`goods_desc`,`goods_price`,`goods_category_id`,`goods_imgurl`,`goods_address`,`goods_appearance`) \
+                                                                   VALUES ('%s','%s','%s','%s','%f','%s','%s','%s','%s')" % \
+          (
+          1, loc_time, title,desc, price, category, "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0], address, appearance)
+    cur.execute(sql)
+    con.commit()
+    print(title, category, price, postage, filelist)
+    return HttpResponse("FROM")
+
+
 # 估价
 def assess(request):
     return render(request, 'assess.html')
@@ -875,10 +902,6 @@ def release_auction_ok(request):
 # **********************************************************返回用户的我的拍卖中心的我的发布界面**************************************
 def my_auction_one(request):
     user_id = request.session.get("user_id")
-<<<<<<< HEAD
-
-=======
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
     list1 = []
     print(user_id)
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s",
@@ -947,12 +970,9 @@ def my_auction_four(request):
     print(list4)
     return render(request, 'my_auction_four.html', locals())
 
-<<<<<<< HEAD
-=======
 
 # ******************************************购买拍卖页面**********************************************
 
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
 
 # 用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
@@ -979,7 +999,6 @@ def buy_auction(request):
 
 # ***********************************************计算拍卖的总价******************************************************
 def calculate_price(request):
-<<<<<<< HEAD
     price = request.POST.get('old_price')
     permium = request.POST.get('permium')
     floormium = request.POST.get("floormium")
@@ -991,7 +1010,6 @@ def calculate_price(request):
         return HttpResponse("你输入的加价有误")
     if int(id) == int(goods_user_id):
         return HttpResponse("不可购买自己的商品")  # 判断商品的发布者id和当前用户的id是不是一样
-=======
     price = request.POST.get('price')
     permium = request.POST.get('permium')
     floormium = request.POST.get("floormium")
@@ -999,14 +1017,12 @@ def calculate_price(request):
     print(permium)
     if permium < floormium or permium > price:
         return HttpResponse("输入的加价有误")
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
+
     else:
         count_price = int(price) + int(permium)
         return HttpResponse(count_price)
 
 
-<<<<<<< HEAD
-=======
 # 购买拍卖页面
 def buy_auction(request):
     id = request.session.get('user_id')
@@ -1030,7 +1046,6 @@ def buy_auction(request):
         return HttpResponseRedirect('/login/')
 
 
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
 # ******************************************用户输入价格完成确认竞拍*********************************************
 # 这里主要是对用户输入的支付密码做判断，然后在对表进行更新插入
 
@@ -1094,14 +1109,13 @@ def confirm_buy(request):
                                     "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
-<<<<<<< HEAD
+
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
-=======
+
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
                                 record_dict = cur.fetchall()
                                 if record_dict:
                                     record_list = []
@@ -1155,10 +1169,7 @@ def confirm_buy(request):
     # ****************************************************************用户竞拍成功******************************************
 
 
-<<<<<<< HEAD
 # ****************************************************************用户竞拍成功******************************************
-=======
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
