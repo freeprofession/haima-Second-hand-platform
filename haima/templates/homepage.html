@@ -310,19 +310,16 @@
     <div id="mid">
         <div id="user_message">
             <div>
-                <div id="image" style="width:80px;height:80px;">
-                    <img src="{{ user_img }}" height="80px" width="80px">
-                </div>
-                <div id="pic">
-                    <label for="file"><a href="{{ href }}"><img src="../static/Images/addpic.jpg" height="80px" width="80px"></a></label>
-                    <input type="file" id="file" name="" style="display: none"/>
+                <div id="image">
+                    <img src="{{ user_imgurl.user_imgurl }}" height="80px" width="80px">
                 </div>
             </div>
             <div id="wel">
                 <br>
-                <span style="font-size: 20px"><b><span style="color: #3eb8e9"><a href="{{ href }}">{{ login_status }}</a></span></b></span><br><br>
+                <span style="font-size: 20px"><b><span style="color: #3eb8e9"><a
+                        href="{{ href }}">{{ login_status }}</a></span></b></span><br><br>
 
-                <span style="font-size: 22px"><b>你可能感兴趣</b></span>
+                <span style="font-size: 22px"><b>您可能感兴趣</b></span>
             </div>
             <br>
             <div class="box">
@@ -338,7 +335,7 @@
         <div id="guess">
             <ul class="item-type">
                 <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
-                                                       >猜你喜欢</a></li>
+                >猜你喜欢</a></li>
                 <li class="nav" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
                 <li class="nav" id="guess3"><a href="" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
             </ul>
@@ -558,7 +555,8 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
+                        <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img
+                                src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>

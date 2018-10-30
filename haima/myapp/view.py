@@ -60,8 +60,19 @@ def homepage(request):
     user_id = request.session.get('user_id')
     if username:
         login_status = username
+        cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
+        user_imgurl = cur.fetchone()
+        if user_imgurl['user_imgurl'] == None:
+            cur.execute("update t_user set user_imgurl = %s where user_id = %s",
+                        ['../static/Images/default_hp.jpg', user_id])
+            con.commit()
+            cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
+            user_imgurl = cur.fetchone()
+
     else:
         login_status = "未登录"
+        user_imgurl = {}
+        user_imgurl['user_imgurl'] = '../static/Images/default_hp.jpg'
     sql = "select * from t_goods limit 0,10"
     cur.execute(sql)
     goods_list = cur.fetchall()
@@ -1065,6 +1076,8 @@ def calculate_price(request):
         return HttpResponse("你输入的加价有误")
     if int(id) == int(goods_user_id):
         return HttpResponse("不可购买自己的商品")  # 判断商品的发布者id和当前用户的id是不是一样
+<<<<<<< HEAD
+=======
     price = request.POST.get('price')
     permium = request.POST.get('permium')
     floormium = request.POST.get("floormium")
@@ -1072,6 +1085,7 @@ def calculate_price(request):
     print(permium)
     if permium < floormium or permium > price:
         return HttpResponse("输入的加价有误")
+>>>>>>> d2b935d1e9768f616ec63bb92f65a16075ea47ce
 
     else:
         count_price = int(price) + int(permium)
@@ -1164,6 +1178,12 @@ def confirm_buy(request):
                                     "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
+<<<<<<< HEAD
+                                cur.execute(
+                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
+                                    [goods_id])
+
+=======
 
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
@@ -1171,6 +1191,7 @@ def confirm_buy(request):
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
+>>>>>>> d2b935d1e9768f616ec63bb92f65a16075ea47ce
                                 record_dict = cur.fetchall()
                                 if record_dict:
                                     record_list = []
@@ -1221,17 +1242,16 @@ def confirm_buy(request):
         error = "no_user_password"
         return HttpResponse(json.dumps({"msg": error}))
 
-    # ****************************************************************用户竞拍成功******************************************
 
+<<<<<<< HEAD
+# ****************************************************************用户竞拍成功******************************************
+
+=======
 
 # ****************************************************************用户竞拍成功******************************************
+>>>>>>> d2b935d1e9768f616ec63bb92f65a16075ea47ce
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
-
-
-# 用户中心
-def user_center(request):
-    return render(request, 'user_center.html')
 
 
 # 我出售的
@@ -1274,9 +1294,14 @@ def my_evaluate_give(request):
     return render(request, 'my_evaluate_give.html')
 
 
-# 宝贝留言
+# 宝贝留言_买家
 def leave_message(request):
     return render(request, 'leave_message.html')
+
+
+# 宝贝留言_卖家
+def leave_message_two(request):
+    return render(request, 'leave_message_two.html')
 
 
 # 修改信息
