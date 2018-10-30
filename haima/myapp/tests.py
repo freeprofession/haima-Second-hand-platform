@@ -137,6 +137,5 @@ for d in b:
 lst = []
 for j in c_comment_dict:
     lst.append(c_comment_dict[j])
-    c_comment_dict[j] = ''
 print(c_comment_dict)
 
