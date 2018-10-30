@@ -44,7 +44,8 @@ urlpatterns = [
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
     path('leave_message/', view.leave_message),
-    path('lower_goods/',view.lower_goods),
+    path('leave_message_two/', view.leave_message_two),
+    path('lower_goods/', view.lower_goods),
     # -------------------------
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
@@ -60,26 +61,22 @@ urlpatterns = [
 
     path('leave_message/', view.leave_message),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
-    # path('modify_information/', view.modify_information),
+    path('modify_information/', view.modify_information),
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
 
-    path('publish_auction/',view.publish_auction),
-    path('release_auction_ok/',view.release_auction_ok),
-    path('buy_auction/',view.buy_auction),
-    #实时计算拍卖总价的路径
-    path('calculate_price/',view.calculate_price),
-    #返回用户的全部拍卖记录
-    path("my_auction_one/",view.my_auction_one),
-    path("my_auction_two/",view.my_auction_two),
-    path("my_auction_three/",view.my_auction_three),
-    path("my_auction_four/",view.my_auction_four),
-    #用户输完价格确认竞拍
-    path("confirm_buy/",view.confirm_buy),
-    #用户支付成功以后的跳转
-    path("buy_auction_ok/",view.buy_auction_ok),
-<<<<<<< HEAD
-=======
-
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
+    path('publish_auction/', view.publish_auction),
+    path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的全部拍卖记录
+    path("my_auction_one/", view.my_auction_one),
+    path("my_auction_two/", view.my_auction_two),
+    path("my_auction_three/", view.my_auction_three),
+    path("my_auction_four/", view.my_auction_four),
+    # 用户输完价格确认竞拍
+    path("confirm_buy/", view.confirm_buy),
+    # 用户支付成功以后的跳转
+    path("buy_auction_ok/", view.buy_auction_ok),
 ]
