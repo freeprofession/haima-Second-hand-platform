@@ -238,10 +238,6 @@ def register_ajax(request):
                     con.commit()
                     r.delete(phone)
                     code_error = 'register_ok'  # 注册成功，跳转
-<<<<<<< HEAD
-
-=======
->>>>>>> 34b26d2d0e99e58e2884a6280e323e71beabd1a9
                     request.session['username'] = username
                     return HttpResponse(json.dumps({"msg": code_error}))
                 elif user_error == "用户名已存在":
@@ -966,7 +962,7 @@ def my_auction_two(request):
             buy_name_list.append(dict2)
 
 
-<<<<<<< HEAD
+
     for i in range(len(goods_id_list)):
         dict1={}
         dict1["goods"]=goods_list[i]
@@ -977,8 +973,7 @@ def my_auction_two(request):
     return render(request, 'my_auction_two.html', locals())
 
 
-=======
->>>>>>> 34b26d2d0e99e58e2884a6280e323e71beabd1a9
+
 # **********************************************************返回用户的我的拍卖中心我拍卖的界面**************************************
 def my_auction_three(request):
     return render(request, 'my_auction_two.html', locals())
@@ -994,18 +989,17 @@ def my_auction_four(request):
     record_id_dict = cur.fetchall()
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
-<<<<<<< HEAD
     goods_record_list=cur.fetchall()
     goods_list=[]
     goods_info_list=[]
     goods_buyuser_name_list=[]
     #这里是通过竞拍记录id找到商品id
-=======
+
     goods_record_list = cur.fetchall()
     goods_list = []
     goods_info_list = []
     # 这里是通过竞拍记录id找到商品id
->>>>>>> 34b26d2d0e99e58e2884a6280e323e71beabd1a9
+
     for i in record_id_dict:
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
@@ -1017,16 +1011,16 @@ def my_auction_four(request):
         goods_info_list.append(info)
     list4 = []
     for i in range(len(goods_record_list)):
-<<<<<<< HEAD
+
         dict1={}
         dict1["record"]=goods_record_list[i]
         dict1["goods"]=goods_info_list[i]
 
-=======
+
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
->>>>>>> 34b26d2d0e99e58e2884a6280e323e71beabd1a9
+
         list4.append(dict1)
     print(list4)
     return render(request, 'my_auction_four.html', locals())
