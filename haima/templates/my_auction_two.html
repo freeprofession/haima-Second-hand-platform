@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>我的拍卖</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
-    <link rel="stylesheet" href="../static/CSS/my_auction.css">
+    <link rel="stylesheet" href="../static/CSS/my_auction_two.css">
       <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/my_auction.js"></script>
 </head>
@@ -83,7 +83,7 @@
                     <br>
                     <div>结束时间：<span id="acution_goods_end_time">{{ i.attribute.start_date }}</span></div>
                     <br>
-                    <div>保证金：<span>200</span>元</div>
+                    <div>保证金：<span>{{ i.attributr.auction_goods_margin }}</span>元</div>
                     <br>
                     <div>单次加价最低：<span id="auction_goods_premium">{{ i.attribute.auction_goods_floorpremium }}</span></div>
                     <br>
@@ -91,7 +91,7 @@
                     <br>
                     <div>当前价格：<span id="acution_goods_start_time">{{ i.attribute.auction_goods_price }}</span></div>
                     <br>
-                    <div>当前竞拍者：<span id="acution_goods_start_time">张三</span></div>
+                    <div>当前竞拍者：<span id="acution_goods_start_time">{{ i.buyname.user_name }}</span></div>
                     <br>
                     <div>距离拍卖结束:<span id = "timer"></span></div>
                     <br>
