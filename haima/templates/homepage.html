@@ -28,6 +28,7 @@
                 <span>|</span>
                 <a href="" id="my_order">我的订单</a>
                 <span>|</span>
+
                 <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
             </div>
         </div>
@@ -45,7 +46,9 @@
         <div class="search_con">
             <form action="/goods_list/" method="get">
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
-                <input type="button" class="input_btn fr" name="search" value="搜  索">
+                <input type="hidden" name="price_low" value="{{ price_low }}">
+                <input type="hidden" name="price_high" value="{{ price_high }}">
+                <input type="submit" class="input_btn fr" value="搜  索">
             </form>
         </div>
     </div>
@@ -308,16 +311,17 @@
         <div id="user_message">
             <div>
                 <div id="image" style="width:80px;height:80px;">
-                    <img src="../static/Images/user.gif" height="80px" width="80px">
+                    <img src="{{ user_img }}" height="80px" width="80px">
                 </div>
                 <div id="pic">
-                    <label for="file"><img src="../static/Images/addpic.jpg" height="80px" width="80px"></label>
+                    <label for="file"><a href="{{ href }}"><img src="../static/Images/addpic.jpg" height="80px" width="80px"></a></label>
                     <input type="file" id="file" name="" style="display: none"/>
                 </div>
             </div>
             <div id="wel">
                 <br>
-                <span style="font-size: 20px"><b>欢迎！ {{ login_status }}</b></span><br><br>
+                <span style="font-size: 20px"><b><span style="color: #3eb8e9"><a href="{{ href }}">{{ login_status }}</a></span></b></span><br><br>
+
                 <span style="font-size: 22px"><b>你可能感兴趣</b></span>
             </div>
             <br>
@@ -334,7 +338,7 @@
         <div id="guess">
             <ul class="item-type">
                 <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
-                                                        id="guess1">猜你喜欢</a></li>
+                                                       >猜你喜欢</a></li>
                 <li class="nav" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
                 <li class="nav" id="guess3"><a href="" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
             </ul>
@@ -466,7 +470,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="#" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="#">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -511,7 +515,7 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="#" class="goods_pic"><img src="{{ goods.img_url }}"></a>
+                        <a href="#" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
                         <h4><a href="#">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -554,8 +558,8 @@
             <ul class="goods_list fl">
                 {% for goods in goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods=1" class="goods_pic"><img src="{{ goods.img_url }}"></a>
-                        <h4><a href="/goods_detail/?goods=1">{{ goods.goods_title }}</a></h4>
+                        <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img src="{{ goods.goods_imgurl }}"></a>
+                        <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
                 {% endfor %}

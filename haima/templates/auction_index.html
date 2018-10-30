@@ -70,7 +70,7 @@
 </div>
 <div class="Navigation_information">
     <div id="auction_Navigation">
-        <a href="/my_auction/"><button id="my_auction">我的拍卖</button></a>
+        <a href="/my_auction_one/"><button id="my_auction">我的拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
         <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
     </div>
@@ -113,7 +113,7 @@
                     <div id="auction_button" >
                        <a href="/buy_auction/?id={{ i.goods.auction_goods_id }}"><button id="go_buy">马上去拍</button></a>
                         <div id="auction_wantbuy_persons">
-                        <span>1234</span>人想要
+                        <span>{{ i.attribute.auction_goods_count }}</span>人想要
                         </div>
                     </div>
 

@@ -145,7 +145,7 @@
         <h3>{{ i.goods.auction_goods_title }}</h3>
         <div class="prize_bar">
         <span class="show_pirze">¥<em>{{ i.attribute.auction_goods_price }}</em></span>
-        <a href="" class="goods_judge">12人竞拍过</a>
+        <a href="" class="goods_judge">{{ i.attribute.auction_goods_count }}次加价过</a>
         </div>
         <div class="goods_num clearfix">
         <div class="type_select">
@@ -433,6 +433,12 @@
                            $('#pay_error').html(function () {
                                document.getElementById('pay_error').style.display='block'
                             document.getElementById('pay_error').innerText = "账户余额不足";
+                            });
+                        break;
+                    case "same_user_buy":
+                           $('#pay_error').html(function () {
+                               document.getElementById('pay_error').style.display='block'
+                            document.getElementById('pay_error').innerText = "此商品正在被你竞拍";
                             });
                         break;
                      case "pay_ok":
