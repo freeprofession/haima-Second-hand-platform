@@ -197,7 +197,7 @@ FFile.prototype = {
         if (self.FileSet.upButton) {
             $(self.FileSet.upButton).on('click', function (e) {
                 if (dex.length == 0) {
-                    alert('请选择商品图片')
+                    alert('请添加商品图片')
                     return
                 }
                 self.funUploadFile(e);

@@ -38,6 +38,14 @@ INSTALLED_APPS = [
     'myapp.apps.MyappConfig',
     'captcha',
 ]
+CAPTCHA_OUTPUT_FORMAT = '%(image)s %(text_field)s %(hidden_field)s '
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null',  # 没有样式
+                           # 'captcha.helpers.noise_arcs', # 线
+                           # 'captcha.helpers.noise_dots', # 点
+                           )
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+# 验证码时间
+CAPTCHA_TIMEOUT = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

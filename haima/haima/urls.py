@@ -36,12 +36,15 @@ urlpatterns = [
     path('auction_index/', view.auction_index),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
+    path('user_credit/', view.user_credit),  # 用户信誉
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
     path('review_ajax/', view.review_ajax),
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
+    path('leave_message/', view.leave_message),
+    path('lower_goods/',view.lower_goods),
     # -------------------------
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
@@ -54,12 +57,17 @@ urlpatterns = [
     path('evaluate/', view.evaluate),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
-
+    # 获取图片上传token
+    path('gettokendata/', view.gettokendata),
     path('leave_message/', view.leave_message),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     # path('modify_information/', view.modify_information),
-    path('publish_auction/', view.publish_auction),
-    path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的拍卖发布历史记录
+    path("my_release_record/", view.my_release_record),
+
 
     path('publish_auction/',view.publish_auction),
     path('release_auction_ok/',view.release_auction_ok),
@@ -75,10 +83,5 @@ urlpatterns = [
     path("confirm_buy/",view.confirm_buy),
     #用户支付成功以后的跳转
     path("buy_auction_ok/",view.buy_auction_ok),
-
-
-
-
-
 
 ]

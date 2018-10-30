@@ -43,7 +43,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">{{ username }} 欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red">{{ login_status }}</span> 欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/?href=/goods_detail/?goods={{ goods_id }}">登录</a>
@@ -54,7 +54,7 @@
                 <span>|</span>
                 <a href="/haima/">首页</a>
                 <span>|</span>
-                <a href="/user/">用户中心</a>
+                <a href="/user_center/">用户中心</a>
                 <span>|</span>
                 <a href="" id="my_order">我的订单</a><br>
             </div>
@@ -80,28 +80,20 @@
     <div class="guest_cart fr">
         <a href="#" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
-
         <ul class="cart_goods_show">
-            <li>
-                <img src="Images/goods/goods001.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>4</div>
-            </li>
-            <li>
-                <img src="Images/goods/goods002.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>5</div>
-            </li>
-            <li>
-                <img src="Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
-            <li>
-                <img src="Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
+            {% if not collection_list %}
+                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                     alt="" height="100">
+                你没有收藏任何商品
+            {% else %}
+                {% for value in collection_list %}
+                    <li>
+                        <img src="{{ value.goods_imgurl }}" alt="商品图片">
+                        <h4>{{ value.goods_title }}</h4>
+                        <div><span style="color: red"></span>{{ value.goods_price }}</div>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 </div>
@@ -258,7 +250,7 @@
             <h3>{{ goods.goods_title }}</h3>
             <div class="prize_bar">
                 <span class="show_pirze">¥<em>{{ goods.goods_price }}</em></span>
-                <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览</a>
+                <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览 {{ collection_count }}</a>
             </div>
             <div class="goods_num clearfix">
                 <div class="type_select">
@@ -278,33 +270,50 @@
                     <span>免运费</span>
                 </div>
                 <div class="operate_btn">
-                    <a href="javascript:;" class="buy_btn">立即购买</a>
-                    <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+                    {% if  seller_in == "no_seller" and goods_state == "0" %}
+                        <a href="javascript:;" class="buy_btn">立即购买</a>
+                        <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+                    {% elif seller_in == "no_seller" and goods_state == "1" %}
+                        <a href="javascript:;" class="buy_btn">已经出售</a>
+                    {% elif seller_in == "no_seller" and goods_state == "2" %}
+                        <img src="../static/Images/lower_goods.png" alt="" height="80" width="400">
+                        {#                        <a href="javascript:" class="buy_btn" style="color: #2d64b3">已经下架</a>#}
+                    {% elif seller_in == "seller_in" and goods_state == "0" %}
+                        <a href="javascript:;" class="buy_btn" id="lower_goods">下架商品</a>
+                        <a href="javascript:;" class="add_cart" id="modify_goods">修改商品</a>
+                    {% elif seller_in == "seller_in" and goods_state == "1" %}
+                        <a href="javascript:;" class="add_cart">已经出售</a>
+                    {% elif seller_in == "seller_in" and goods_state == "2" %}
+                        <a href="javascript:;" class="buy_btn" style="color: #5e5e5e ">已经下架</a>
+                        <a href="javascript:;" class="add_cart" id="on_shelf" style="color: red">重新上架</a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
         </div>
         <div class="detail_right" id="user_detail">
-            <div class="info_detail">
-                <div><img src="../static/Images/user.gif" alt="" height="45" width="45"></div>
-                <div><a href="" style="font-size: 16px;">JQlove</a></div>
-                <br>
-                <div><span title="已实名认证" class="user-verify"></span></div>
-            </div>
-            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
-                <div><p>男</p>
-                    <p>注册时间：2018-10-24</p></div>
-            </div>
-            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
-                <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
-                <ul>
-                    <li><span>卖家评分： </span><strong>-</strong> 分</li>
-                </ul>
-            </div>
-            <div style="margin: 5px;text-align: center">
-                <input type="button" value="卖家信息" id="check_detail" class="opsale">
-                <input type="button" value="私聊卖家" id="communication" class="opsale">
-            </div>
+            {% for item in seller_info %}
+                <div class="info_detail">
+                    <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                    <div><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    <br>
+                    <div><span title="已实名认证" class="user-verify"></span></div>
+                </div>
+                <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                    <div><p>男</p>
+                        <p>注册时间：{{ item.user_startdate }}</p></div>
+                </div>
+                <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                    <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
+                    <ul>
+                        <li><span>卖家评分：</span><strong>{{ item.user_credit }}</strong> 分</li>
+                    </ul>
+                </div>
+                <div style="margin: 5px;text-align: center">
+                    <a href="{{ item.user_id }}"><input type="button" value="卖家信息" id="check_detail" class="opsale"></a>
+                    <input type="button" value="私聊卖家" id="communication" class="opsale">
+                </div>
+            {% endfor %}
         </div>
 
     </div>
@@ -452,28 +461,35 @@
         if ($(".review_" + id).val() == "回复") {
             $(".review_" + id).val("收起回复");
             $(".hidreview_" + id).show();
-            $(".send_" + get_message_id).click(function () {
-                message_id = id;
-                child_review = $('#get_child_review_' + get_message_id).val();
-                {#child_user_id = $('#child_user_id').val();#}
-                {#parent_id = $("#get_parent_id").val()#}
-                {#goods_id = $("#get_goods_id").val()#}
-                reply_id = rip_id;
-                $.post('/review_ajax/', {
-                    'child_review': child_review,
-                    {#'child_user_id': child_user_id,#}
-                    "message_id": message_id,
-                    "reply_id": reply_id,
-                    {#"goods_id": goods_id,#}
-                }, function (data) {
-                    if (data.msg === 'need_login') {
-                        top.location.href = data.href
-                    } else {
-                        $(".append_" + get_message_id).append(data.msg)
-                    }
-                }, 'json')
+            if ("{{ goods_state }}" == "0") {
+                $(".send_" + get_message_id).click(function () {
+                    message_id = id;
+                    child_review = $('#get_child_review_' + get_message_id).val();
+                    {#child_user_id = $('#child_user_id').val();#}
+                    {#parent_id = $("#get_parent_id").val()#}
+                    {#goods_id = $("#get_goods_id").val()#}
+                    reply_id = rip_id;
+                    $.post('/review_ajax/', {
+                        'child_review': child_review,
+                        {#'child_user_id': child_user_id,#}
+                        "message_id": message_id,
+                        "reply_id": reply_id,
+                        {#"goods_id": goods_id,#}
+                    }, function (data) {
+                        if (data.msg === 'need_login') {
+                            top.location.href = data.href
+                        } else {
+                            $(".append_" + get_message_id).append(data.msg)
+                        }
+                    }, 'json')
 
-            })
+                });
+            } else {
+                $(".send_" + get_message_id).hide()
+                $('#get_child_review_' + get_message_id).hide()
+
+            }
+
             for (i = 0; i < 10; i++) {
                 if (i == id) {
                     $(".hidreview_" + id).show(500);
@@ -492,34 +508,43 @@
     }
 
     function c_review(c_id) {
+        rip_id = c_id
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
         input_.value = "回复" + c_name + ":"
     }
 
+    //留言
     $(function () {
-        $("#pub_text").click(function () {
-            Published = $('#Published').val();
-            goods_id = $('#goods_id').val();
-            url_ = location.href;
-            $.post('/lea_message/', {
-                'Published': Published,
-                'goods_id': goods_id,
-                'url_': url_
-            }, function (data) {
-                if (data.msg === 'need_login') {
-                    top.location.href = data.href
-                } else {
-                    top.location.href = data.href
-                }
-            }, 'json')
+        if ("{{ goods_state }}" == "0") {
 
-        })
+            $("#pub_text").click(function () {
+                Published = $('#Published').val();
+                goods_id = $('#goods_id').val();
+                url_ = location.href;
+                $.post('/lea_message/', {
+                    'Published': Published,
+                    'goods_id': goods_id,
+                    'url_': url_
+                }, function (data) {
+                    if (data.msg === 'need_login') {
+                        top.location.href = data.href
+                    } else {
+                        top.location.href = data.href
+                    }
+                }, 'json')
 
+            })
+        }
+        else {
+            $('#Published').hide()
+            $('#pub_text').hide()
+        }
     });
+    //商品收藏
     $(function () {
-        $("#add_cart").click(function () {
+        $("#add_cart").one("click", function () {
             goods_id = $('#goods_id').val();
             $.post('/collection/', {
                 {#'Published': Published,#}
@@ -529,6 +554,8 @@
                 if (data.msg === '您已收藏过改商品') {
                     {#$("#add_cart").css("background", "grey").text("已收藏")#}
                     $("#add_cart").attr('disabled', true)
+
+                    $("#add_cart").css("background", "#F75009").text("已收藏")
                     alert("您已收藏过改商品")
                 } else if (data.msg === 'need_login') {
                     top.location.href = data.href
@@ -541,6 +568,63 @@
         })
 
     });
+    //下架商品
+    $(function () {
+        $("#lower_goods").one("click", function () {
+            goods_id = $('#goods_id').val();
+            $.post('/lower_goods/', {
+                {#'Published': Published,#}
+                'goods_id': goods_id,
+                'state': "lower"
+                {#'url_': url_#}
+            }, function (data) {
+                if (data.msg === '下架成功') {
+                    {#$("#add_cart").css("background", "grey").text("已收藏")#}
+                    $("#lower_goods").css("background", "#847D7B").text("已下架")
+                    $("#modify_goods").hide()
+                    top.location.href = data.href
+                    {#$(".send_" + get_message_id).hide()#}
+                    {#$('#get_child_review_' + get_message_id).hide()#}
+                    {#$('#Published').hide()#}
+                    {#$('#pub_text').hide()#}
+                    alert("下架成功")
+                } else {
+                    alert("下架失败")
+                }
+            }, 'json')
+
+        })
+
+    });
+    //上架
+    $(function () {
+        $("#on_shelf").one("click", function () {
+            goods_id = $('#goods_id').val();
+            $.post('/lower_goods/', {
+                {#'Published': Published,#}
+                'goods_id': goods_id,
+                'state': "shelf"
+                {#'url_': url_#}
+            }, function (data) {
+                if (data.msg === '上架成功') {
+                    {#$("#add_cart").css("background", "grey").text("已收藏")#}
+                    $("#lower_goods").css("background", "#847D7B").text("已下架")
+                    $("#modify_goods").hide()
+                    top.location.href = data.href
+                    {#$(".send_" + get_message_id).hide()#}
+                    {#$('#get_child_review_' + get_message_id).hide()#}
+                    {#$('#Published').hide()#}
+                    {#$('#pub_text').hide()#}
+                    alert("上架成功")
+                } else {
+                    alert("上架失败")
+                }
+            }, 'json')
+
+        })
+
+    });
+
 </script>
 </body>
 </html>

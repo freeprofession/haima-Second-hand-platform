@@ -10,6 +10,21 @@
 <div class="header_con">
     <div class="header">
         <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
+<<<<<<< HEAD
+            <div class="login_btn fl">
+                <a href="/login/">登录</a>
+                <span>|</span>
+                <a href="/register/">注册</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/haima/">首页</a>
+                <span>|</span>
+                <a href="/user/">用户中心</a>
+                <span>|</span>
+                <a href="" id="my_order">我的订单</a><br>
+            </div>
+=======
 
         <div class="login_btn fl">
             <a href="/login/">登录</a>
@@ -24,6 +39,7 @@
             <span>|</span>
             <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
 
+>>>>>>> c4039382641e6977aa29598a4e7027ab67092c1a
         </div>
     </div>
 </div>
@@ -88,17 +104,23 @@
         <h3 class="common_title2">最近浏览</h3>
         <div class="has_view_list">
             <ul class="goods_type_list clearfix">
-                {% for item in browse_list %}
-                    <li>
-                        <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}"></a>
-                        <h4><a href="detail.html">{{ item.goods_title }}</a></h4>
-                        <div class="operate">
-                            <span class="prize">{{ item.goods_price }}</span>
-                            <span class="unit">{{ item.browse_date }}</span>
-                            <a href="#" class="add_goods" title="加入购物车"></a>
-                        </div>
-                    </li>
-                {% endfor %}
+                {% if not browse_list %}
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                         alt="" height="100">
+                    你没有收藏任何商品
+                {% else %}
+                    {% for item in browse_list %}
+                        <li>
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}"></a>
+                            <h4><a href="/goods_detail/?goods={{ item.goods_id }}">{{ item.goods_title }}</a></h4>
+                            <div class="operate">
+                                <span class="prize">￥：{{ item.goods_price }}</span>
+                                <p class="unit">{{ item.browse_date }}</p>
+                                <a href="#" class="add_goods" title="加入购物车"></a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
     </div>
