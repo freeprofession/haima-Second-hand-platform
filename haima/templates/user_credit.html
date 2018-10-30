@@ -40,24 +40,27 @@
                                                                       height="100"></a>
 </div>
 <div id="user_info">
-    <div id="user_info2" class="clearfix">
-        <div>
-            <span><img src="../static/Images/user.gif" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7"
+    {% for item in user_info %}
+        <div id="user_info2" class="clearfix">
+            <div>
+            <span><img src="{{ item.user_imgurl }}" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7"
                        width="80" height="80"></span>
+            </div>
+            <div id="user_info3">
+                <span>用户名：{{ item.user_name }}</span><br>
+                <span>注册时间：{{ item.user_startdate }}</span><br>
+                <span>居住地：{{ item.user_address }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实名：已认证</span>
+            </div>
+
+            <div id="user_info4">
+                <ul>
+                    <li>用户已加入海马二手交易平台 <span>{{ day_count }}</span> 天</li>
+                    <li>卖出商品 <span>5</span> 件</li>
+                    <li>共收到用户评价 <span>0</span> 次</li>
+                </ul>
+            </div>
         </div>
-        <div id="user_info3">
-            <span>用户名：杰克辣舞</span><br>
-            <span>注册时间：2018-10-29</span><br>
-            <span>居住地：苏州&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实名：已认证</span>
-        </div>
-        <div id="user_info4">
-            <ul>
-                <li>用户已加入海马二手交易平台 <span>712</span> 天</li>
-                <li>卖出商品 <span>5</span> 件</li>
-                <li>共收到用户评价 <span>0</span> 次</li>
-            </ul>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
 <div id="credit_select">
@@ -70,28 +73,26 @@
     <div id="c1" style="display: block">
         <ul class="credit_select_show_ul">
             <li class="credit_select_show_li">
-                <span class="credit_time">2018-10-29</span>
-                <dl class="credit_select_show_dl">
-                    <dt>发布了 4 个宝贝</dt>
-                    <dd>
-                        <ul>
-                            <li class="clearfix credit_detail_li">
-                                <a href=""><img src="../static/Images/cat.jpg" alt="" height="90" width="90"></a>
-                                <a href="" class="credit_goods_title">卖猫</a>
-                                <span class="credit_goods_price">¥ 998</span>
-                            </li>
-                        </ul>
-                    </dd>
-                    <dd>
-                        <ul>
-                            <li class="clearfix credit_detail_li">
-                                <a href=""><img src="../static/Images/cat.jpg" alt="" height="90" width="90"></a>
-                                <a href="" class="credit_goods_title">卖猫</a>
-                                <span class="credit_goods_price">¥ 998</span>
-                            </li>
-                        </ul>
-                    </dd>
-                </dl>
+                {% for key,value in goods.items %}
+                    <span class="credit_time">{{ key }}</span>
+                    <dl class="credit_select_show_dl">
+                        {% for item in value %}
+                            <span style="color:crimson;font-size: large">{{ item.count }}</span>
+                            <dd>
+                                {#                            {% for item in value %}#}
+                                <ul>
+                                    <li class="clearfix credit_detail_li">
+                                        <a href=""><img src="{{ item.goods_imgurl }}" alt="" height="90"
+                                                        width="90"></a>
+                                        <a href="" class="credit_goods_title">{{ item.goods_title }}</a>
+                                        <span class="credit_goods_price">{{ item.goods_price }}</span>
+                                    </li>
+                                </ul>
+                                {#                            {% endfor %}#}
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                {% endfor %}
             </li>
         </ul>
     </div>
@@ -112,7 +113,8 @@
                     <span>2018-10-30</span>
                 </div>
                 <div class="cell" style="padding-top: 20px;">
-                    <span><a href="" class="desct2">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京321313212313132</a></span><br><br>
+                    <span><a href=""
+                             class="desct2">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京321313212313132</a></span><br><br>
                     <span class="credit_goods_price">¥ 998</span>
                 </div>
             </li>

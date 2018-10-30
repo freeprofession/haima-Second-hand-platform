@@ -30,13 +30,15 @@ urlpatterns = [
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
-    path('user_center/', view.user_center),
     path('publish/', view.publish),
     path('assess/', view.assess),
     path('auction_index/', view.auction_index),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
+    # 用户中心--------------------------------------
+    path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
+    path('my_collection/', view.my_collection),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -44,7 +46,7 @@ urlpatterns = [
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
     path('leave_message/', view.leave_message),
-    path('lower_goods/',view.lower_goods),
+    path('lower_goods/', view.lower_goods),
     # -------------------------
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
@@ -53,7 +55,6 @@ urlpatterns = [
     path('test/', view.text_message),
     path('test_ajax', view.test_ajax),
     path('my_auction/', view.my_auction),
-    path('my_collection/', view.my_collection),
     path('evaluate/', view.evaluate),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
@@ -64,22 +65,19 @@ urlpatterns = [
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
 
-    path('publish_auction/',view.publish_auction),
-    path('release_auction_ok/',view.release_auction_ok),
-    path('buy_auction/',view.buy_auction),
-    #实时计算拍卖总价的路径
-    path('calculate_price/',view.calculate_price),
-    #返回用户的全部拍卖记录
-    path("my_auction_one/",view.my_auction_one),
-    path("my_auction_two/",view.my_auction_two),
-    path("my_auction_three/",view.my_auction_three),
-    path("my_auction_four/",view.my_auction_four),
-    #用户输完价格确认竞拍
-    path("confirm_buy/",view.confirm_buy),
-    #用户支付成功以后的跳转
-    path("buy_auction_ok/",view.buy_auction_ok),
-<<<<<<< HEAD
-=======
+    path('publish_auction/', view.publish_auction),
+    path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的全部拍卖记录
+    path("my_auction_one/", view.my_auction_one),
+    path("my_auction_two/", view.my_auction_two),
+    path("my_auction_three/", view.my_auction_three),
+    path("my_auction_four/", view.my_auction_four),
+    # 用户输完价格确认竞拍
+    path("confirm_buy/", view.confirm_buy),
+    # 用户支付成功以后的跳转
+    path("buy_auction_ok/", view.buy_auction_ok),
 
->>>>>>> 3b7b91bd2dffbf71e7815838e5dc2a6bc888545a
 ]
