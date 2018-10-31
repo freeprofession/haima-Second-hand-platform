@@ -40,7 +40,7 @@
 
     </style>
 </head>
-<body>
+<body onload="href()">
 <div class="header_con">
     <div class="header">
         <div class="welcome fl"><span style="color: red">{{ login_status }}</span> 欢迎来到海马二手商城!</div>
@@ -232,12 +232,12 @@
 </div>
 
 <div class="goods_detail_con clearfix">
-    <div class="up fl" id="up"><img src="../static/images/goods_450.jpg"></div>
+    <div class="up fl" id="up"><img src=""></div>
     <div class="down" id="down">
         <table>
             <tr>
                 {% for img in img_list %}
-                <td><img src="{{ img }}"></td>
+                    <td><img src="{{ img }}"></td>
                 {% endfor %}
             </tr>
         </table>
@@ -344,9 +344,14 @@
                             {#                            <input type="text" id="get_parent_id" value="{{ value.message_user_id }}" hidden>#}
                             {#                            <input type="text" id="get_message_id" value="{{ value.message_id }}" hidden>#}
                             {#----------------------------------------------------------#}
-                            <img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45">
+                            <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45"></a>
                             <div class="messages" style="height: 30px;line-height: 30px;">
-                                <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
+                                {% if seller_id == value.user_id %}
+                                    <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}<span
+                                            style="color: red">(卖家)</span>:</a>
+                                {% else %}
+                                    <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
+                                {% endif %}
                                 <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
                             </div>
                             <br>
@@ -362,11 +367,15 @@
                                     <dd style="margin-left: 75px;height: 45px;width:972px;background-color: #f7f8fa;">
                                         <input type="text" id="child_user_id_{{ item.second_message_id }}"
                                                value="{{ item.child_user_id }}" hidden>
-                                        <img src="{{ item.user_imgurl }}" alt="" height="40" width="40">
-                                        <div style="margin-left: 45px;position: relative;top: -50px;"><a
-                                                href="" style="color: #2d64b3"
-                                                class="c_name_{{ item.second_message_id }}">{{ item.user_name }}</a>:
-                                            <span style="color: #333333;font-size: 14px">{{ item.second_desc }}</span>
+                                        <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="40" width="40"></a>
+                                        <div style="margin-left: 45px;position: relative;top: -50px;">
+                                            <a href="/user_credit/?user_credit_id={{ item.child_user_id }}" style="color: #2d64b3"
+                                               class="c_name_{{ item.second_message_id }}">{{ item.user_name }}&nbsp;</a>
+                                            {% if item.child_user_id == seller_id %}
+                                                <span style="color:green;font-size: 14px;">{{ item.second_desc }}</span>
+                                            {% else %}
+                                                <span style="color: #333333;font-size: 14px">{{ item.second_desc }}</span>
+                                            {% endif %}
                                             <div><span style="color: #a3a3a3">{{ item.second_date }}</span>
                                                 <input id="review" class="c_review_{{ item.second_message_id }}"
                                                        type="button" value="回复"
@@ -390,9 +399,9 @@
                 {% endfor %}
                 <dl>
                     <dd>
-                        <img class="message" src="../static/Images/user.gif" alt="" height="30" width="30"
+                        <img class="message" src="{{ user_imgurl }}" alt="" height="30" width="30"
                              style="border-radius: 50%;border: 1px solid grey">
-                        <div class="message" style="height: 30px;line-height: 30px;">JQlove</div>
+                        <div class="message" style="height: 30px;line-height: 30px;">{{ login_status }}</div>
                     </dd>
                     <dd>
                         <textarea name="get_Published" id="Published" cols="180" rows="4"></textarea>
@@ -463,27 +472,33 @@
             $(".hidreview_" + id).show();
             if ("{{ goods_state }}" == "0") {
                 $(".send_" + get_message_id).click(function () {
-                    message_id = id;
-                    child_review = $('#get_child_review_' + get_message_id).val();
-                    {#child_user_id = $('#child_user_id').val();#}
-                    {#parent_id = $("#get_parent_id").val()#}
-                    {#goods_id = $("#get_goods_id").val()#}
-                    reply_id = rip_id;
-                    $.post('/review_ajax/', {
-                        'child_review': child_review,
-                        {#'child_user_id': child_user_id,#}
-                        "message_id": message_id,
-                        "reply_id": reply_id,
-                        {#"goods_id": goods_id,#}
-                    }, function (data) {
-                        if (data.msg === 'need_login') {
-                            top.location.href = data.href
+                        message_id = id;
+                        child_review = $('#get_child_review_' + get_message_id).val();
+                        var check = $('#get_child_review_' + get_message_id).val()
+                        {#child_user_id = $('#child_user_id').val();#}
+                        {#parent_id = $("#get_parent_id").val()#}
+                        {#goods_id = $("#get_goods_id").val()#}
+                        reply_id = rip_id;
+                        if (check == "") {
+                            return false
                         } else {
-                            $(".append_" + get_message_id).append(data.msg)
+                            $.post('/review_ajax/', {
+                                'child_review': child_review,
+                                {#'child_user_id': child_user_id,#}
+                                "message_id": message_id,
+                                "reply_id": reply_id,
+                                {#"goods_id": goods_id,#}
+                            }, function (data) {
+                                if (data.msg === 'need_login') {
+                                    top.location.href = data.href
+                                } else {
+                                    $(".append_" + get_message_id).append(data.msg)
+                                }
+                            }, 'json')
                         }
-                    }, 'json')
 
-                });
+                    }
+                );
             } else {
                 $(".send_" + get_message_id).hide()
                 $('#get_child_review_' + get_message_id).hide()
@@ -518,30 +533,36 @@
     //留言
     $(function () {
         if ("{{ goods_state }}" == "0") {
-
             $("#pub_text").click(function () {
-                Published = $('#Published').val();
-                goods_id = $('#goods_id').val();
-                url_ = location.href;
-                $.post('/lea_message/', {
-                    'Published': Published,
-                    'goods_id': goods_id,
-                    'url_': url_
-                }, function (data) {
-                    if (data.msg === 'need_login') {
-                        top.location.href = data.href
+                    Published = $('#Published').val();
+                    var check = $('#Published').val();
+                    goods_id = $('#goods_id').val();
+                    url_ = location.href;
+                    if (check == "") {
+                        return false
                     } else {
-                        top.location.href = data.href
+                        $.post('/lea_message/', {
+                            'Published': Published,
+                            'goods_id': goods_id,
+                            'url_': url_
+                        }, function (data) {
+                            if (data.msg === 'need_login') {
+                                top.location.href = data.href
+                            } else {
+                                top.location.href = data.href
+                            }
+                        }, 'json')
                     }
-                }, 'json')
 
-            })
+                }
+            )
         }
         else {
             $('#Published').hide()
             $('#pub_text').hide()
         }
-    });
+    })
+    ;
     //商品收藏
     $(function () {
         $("#add_cart").one("click", function () {
@@ -626,5 +647,17 @@
     });
 
 </script>
+<script>
+    {#function href() {#}
+    {#    if ('{{ href }}' != "") {#}
+    {#        alert#}
+    {#       document.getElementsByClassName("tab_content").click();#}
+    {##}
+    {#    }#}
+    {##}
+    {
+    #}#}
+</script>
+<a name="abc"></a>
 </body>
 </html>

@@ -165,27 +165,27 @@ a = "2018-1-21"
 
 # 返回两个变量相差的值，就是相差天数
 # 结果:47
-cur.execute("select * from t_goods where user_id=%s and goods_state=%s", [1, 0])
-goods_list = cur.fetchall()
-goods = {}
-lst = []
-count_list = {}
-for item in goods_list:
-    date = item.get('release_date')
-    goods[date] = ""
-    count_list[date] = ""
-for j in goods:
-    lst = []
-    count = 0
-    for item in goods_list:
-        if j == item['release_date']:
-            count += 1
-            lst.append(item)
-        for i in lst:
-            i["count"] = count
-            break
-    goods[j] = lst
-print(goods)
+# cur.execute("select * from t_goods where user_id=%s and goods_state=%s", [1, 0])
+# goods_list = cur.fetchall()
+# goods = {}
+# lst = []
+# count_list = {}
+# for item in goods_list:
+#     date = item.get('release_date')
+#     goods[date] = ""
+#     count_list[date] = ""
+# for j in goods:
+#     lst = []
+#     count = 0
+#     for item in goods_list:
+#         if j == item['release_date']:
+#             count += 1
+#             lst.append(item)
+#         for i in lst:
+#             i["count"] = count
+#             break
+#     goods[j] = lst
+# print(goods)
 # goods_ = {}
 # print(goods)
 # for j in goods_:
@@ -203,3 +203,14 @@ print(goods)
 #     goods[date] = lst
 #     goods["count"] = count
 # print(goods)
+# cur.execute(
+#     'select * from t_second_message inner join t_user on child_user_id=user_id inner join t_goods on second_goods_id=goods_id where to_rid=%s ',
+#     [1, ])
+# review_list = cur.fetchall()
+# print(review_list)
+day_ = "2018-10-31"
+now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
+d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
+d3 = str(d1 - d2)
+print(d3.split(" ")[0])

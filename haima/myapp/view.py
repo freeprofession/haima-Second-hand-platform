@@ -55,6 +55,18 @@ def get_token(func):
     return in_func
 
 
+# 登录状态检查，装饰器
+def login_required(function):
+    def check_login_status(request):
+        user_id = request.session.get('user_id')
+        if user_id:
+            return function(request)
+        else:
+            return HttpResponseRedirect('/login/')
+
+    return check_login_status
+
+
 def homepage(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
@@ -351,6 +363,7 @@ def goods_list(request):
 
 
 # 用户中心——————————————————————
+@login_required
 def user_center(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
@@ -372,8 +385,10 @@ def user_center(request):
 
 
 # 用户信誉-----------------------------------
+@login_required
 def user_credit(request):
     user_id = request.session.get('user_id')
+    username = request.session.get('username')
     user_credit_id = request.GET.get('user_credit_id')
     # 判断是否登陆-------------------------------
     if user_id:
@@ -390,7 +405,11 @@ def user_credit(request):
             now_time = datetime.datetime.now().strftime('%Y-%m-%d')
             d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
             d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
-            day_count = d2 - d1
+            d3 = str(d2 - d1)
+            if d3.split(" ")[0] == "0:00:00":
+                day_count = 0
+            else:
+                day_count = d3.split(" ")[0]
             # -累计卖出-----------------
             # -收到的评价-------------------
             # -正在发布的商品----------------
@@ -453,7 +472,7 @@ def goods_detail(request):
     for item in img.lrange(goods_id, 0, 4):
         item = item.decode("utf-8")
         img_list.append(item)
-    print(img_list)
+    print("商品图片地址", img_list)
 
     # 判断是否为发布人进去页面---------------------
     if user_id == seller_id:
@@ -470,7 +489,7 @@ def goods_detail(request):
     # cur.execute("select count(*) from test where id=1")成交记录
     # ------------------------------------
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
-    print(username, user_id, goods_id, seller_id, now_time)
+    # print(username, user_id, goods_id, seller_id, now_time)
     goods_desc = goods_list[0]['goods_desc']  # 商品详细介绍
     cur.execute('select * from t_user right join t_message on user_id = message_user_id')
     message_list = cur.fetchall()  # 留言
@@ -492,7 +511,7 @@ def goods_detail(request):
         id = d.get('message_id')
         p_comment_dict[id] = d
     # lst = {}
-    print(4444444444444444, p_comment_dict)
+    # print(4444444444444444, p_comment_dict)
     for i in p_comment_dict:
         lst = []
         for j in c_comment_dict:
@@ -506,10 +525,14 @@ def goods_detail(request):
     # print(p_comment_dict)
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
     if username:  # 登录后才记录，浏览记录
+        cur.execute("select user_imgurl from t_user where user_id=%s", [user_id])
+        user_imgurl = cur.fetchone()["user_imgurl"]
+        print("图片", user_imgurl)
+
         login_status = username
         cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
         browse = cur.fetchone()
-        print(browse, "检查")
+        # print(browse, "检查")
         if browse is None:
             count = goods_list[0]['goods_browse_count']
             count += 1
@@ -530,6 +553,8 @@ def goods_detail(request):
         con.commit()
     else:
         login_status = '未登录'
+        user_imgurl = '../static/Images/default_hp.jpg'
+    href = 1
 
     return render(request, "detail.html", locals())
 
@@ -546,6 +571,7 @@ def text_message(request):
         id = d.get('second_message_id')
         c_comment_dict[id] = d
     p_comment_dict = {}
+
     for d in a:
         id = d.get('message_user_id')
         p_comment_dict[id] = d
@@ -652,6 +678,7 @@ def review_ajax(request):
         else:
             reply_id = reply_id__["message_user_id"]
             send_review = child_review
+
         # 储存数据
         user_id_ = str(user_id)
         print(send_review, goods_id, now_time, user_id, rp_user_id)
@@ -1341,14 +1368,30 @@ def my_evaluate_give(request):
     return render(request, 'my_evaluate_give.html')
 
 
-# 宝贝留言_买家
+# 收到的回复
+@login_required
 def leave_message(request):
-    return render(request, 'leave_message.html')
+    user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    cur.execute(
+        'select * from t_second_message inner join t_user on child_user_id=user_id inner join t_goods on second_goods_id=goods_id '
+        'where to_rid=%s order by second_message_id desc',
+        [user_id, ])
+    review_list = cur.fetchall()
+    return render(request, 'leave_message.html', locals())
 
 
-# 宝贝留言_卖家
+# 我的回复
+@login_required
 def leave_message_two(request):
-    return render(request, 'leave_message_two.html')
+    user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    cur.execute(
+        'select * from t_second_message inner join t_user on to_rid=user_id inner join t_goods on second_goods_id=goods_id '
+        'where child_user_id=%s order by second_message_id desc',
+        [user_id, ])
+    my_review_list = cur.fetchall()
+    return render(request, 'leave_message_two.html', locals())
 
 
 # 修改信息
