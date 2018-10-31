@@ -84,58 +84,122 @@ tt = """            <div class="reply">
 #                                         </div>
 #                                     </dd>
 #                                 </dl>"""
-tt = [{'second_message_id': 1, 'parent_user_id': '6', 'second_desc': '爱你哦', 'second_goods_id': '1',
-       'second_date': '2018-10-26 11:05:07', 'child_user_id': '1', 'to_rid': '1', 'user_id': 1, 'user_name': 'jqlove',
-       'user_password': '123456',
-       'user_imgurl': 'http://img.crawler.qq.com/lolwebvideo/20170802165439/c91a5a13e7bff101a4a75aecc191b075/0',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': '2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
-      {'second_message_id': 2, 'parent_user_id': '1', 'second_desc': '爱我的哇啊切 ', 'second_goods_id': '1',
-       'second_date': '2018-10-26 11:16:11', 'child_user_id': '1', 'to_rid': '1', 'user_id': 1, 'user_name': 'jqlove',
-       'user_password': '123456',
-       'user_imgurl': 'http://img.crawler.qq.com/lolwebvideo/20170802165439/c91a5a13e7bff101a4a75aecc191b075/0',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': '2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
-      {'second_message_id': 3, 'parent_user_id': '2', 'second_desc': '挨打的而且', 'second_goods_id': '1',
-       'second_date': '2018-10-26 11:16:19', 'child_user_id': '1', 'to_rid': '2', 'user_id': 1, 'user_name': 'jqlove',
-       'user_password': '123456',
-       'user_imgurl': 'http://img.crawler.qq.com/lolwebvideo/20170802165439/c91a5a13e7bff101a4a75aecc191b075/0',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': '2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
-      {'second_message_id': 4, 'parent_user_id': '1', 'second_desc': '回复jqlovejqlovejqlovejqlove:nmsl',
-       'second_goods_id': '1', 'second_date': '2018-10-26 11:17:02', 'child_user_id': '2', 'to_rid': '1', 'user_id': 2,
-       'user_name': 'clearlove', 'user_password': '123456',
-       'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
-      {'second_message_id': 5, 'parent_user_id': '2', 'second_desc': '?W?Das\nD  as a ', 'second_goods_id': '1',
-       'second_date': '2018-10-26 11:17:31', 'child_user_id': '2', 'to_rid': '2', 'user_id': 2,
-       'user_name': 'clearlove', 'user_password': '123456',
-       'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
-      {'second_message_id': 6, 'parent_user_id': '3', 'second_desc': 'ada qrqqerqtq', 'second_goods_id': '1',
-       'second_date': '2018-10-26 11:17:36', 'child_user_id': '2', 'to_rid': '3', 'user_id': 2,
-       'user_name': 'clearlove', 'user_password': '123456',
-       'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
-      {'second_message_id': 7, 'parent_user_id': '1', 'second_desc': 'sxada  dasdas ', 'second_goods_id': '1',
-       'second_date': '2018-10-26 11:18:05', 'child_user_id': '2', 'to_rid': '1', 'user_id': 2,
-       'user_name': 'clearlove', 'user_password': '123456',
-       'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
-       'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
-       'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'}]
+# tt = [{'second_message_id': 1, 'parent_user_id': '6', 'second_desc': '爱你哦', 'second_goods_id': '1',
+#        'second_date': '2018-10-26 11:05:07', 'child_user_id': '1', 'to_rid': '1', 'user_id': 1, 'user_name': 'jqlove',
+#        'user_password': '123456',
+#        'user_imgurl': 'http://img.crawler.qq.com/lolwebvideo/20170802165439/c91a5a13e7bff101a4a75aecc191b075/0',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': '2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
+#       {'second_message_id': 2, 'parent_user_id': '1', 'second_desc': '爱我的哇啊切 ', 'second_goods_id': '1',
+#        'second_date': '2018-10-26 11:16:11', 'child_user_id': '1', 'to_rid': '1', 'user_id': 1, 'user_name': 'jqlove',
+#        'user_password': '123456',
+#        'user_imgurl': 'http://img.crawler.qq.com/lolwebvideo/20170802165439/c91a5a13e7bff101a4a75aecc191b075/0',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': '2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
+#       {'second_message_id': 3, 'parent_user_id': '2', 'second_desc': '挨打的而且', 'second_goods_id': '1',
+#        'second_date': '2018-10-26 11:16:19', 'child_user_id': '1', 'to_rid': '2', 'user_id': 1, 'user_name': 'jqlove',
+#        'user_password': '123456',
+#        'user_imgurl': 'http://img.crawler.qq.com/lolwebvideo/20170802165439/c91a5a13e7bff101a4a75aecc191b075/0',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': '2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
+#       {'second_message_id': 4, 'parent_user_id': '1', 'second_desc': '回复jqlovejqlovejqlovejqlove:nmsl',
+#        'second_goods_id': '1', 'second_date': '2018-10-26 11:17:02', 'child_user_id': '2', 'to_rid': '1', 'user_id': 2,
+#        'user_name': 'clearlove', 'user_password': '123456',
+#        'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
+#       {'second_message_id': 5, 'parent_user_id': '2', 'second_desc': '?W?Das\nD  as a ', 'second_goods_id': '1',
+#        'second_date': '2018-10-26 11:17:31', 'child_user_id': '2', 'to_rid': '2', 'user_id': 2,
+#        'user_name': 'clearlove', 'user_password': '123456',
+#        'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
+#       {'second_message_id': 6, 'parent_user_id': '3', 'second_desc': 'ada qrqqerqtq', 'second_goods_id': '1',
+#        'second_date': '2018-10-26 11:17:36', 'child_user_id': '2', 'to_rid': '3', 'user_id': 2,
+#        'user_name': 'clearlove', 'user_password': '123456',
+#        'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'},
+#       {'second_message_id': 7, 'parent_user_id': '1', 'second_desc': 'sxada  dasdas ', 'second_goods_id': '1',
+#        'second_date': '2018-10-26 11:18:05', 'child_user_id': '2', 'to_rid': '1', 'user_id': 2,
+#        'user_name': 'clearlove', 'user_password': '123456',
+#        'user_imgurl': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540203476459&di=4e89eef785b6e15ddc965e80e15fcdfb&imgtype=0&src=http%3A%2F%2Fwww.gamemei.com%2Fbackground%2Fuploads%2Fallimg%2F20160525%2F1464153091927021.jpg',
+#        'user_phone': '17779137404', 'user_nickname': '0', 'user_startdate': ' 2018-10-22', 'user_money': 100.0,
+#        'user_state': 0, 'user_credit': 0, 'user_address': '灵石路'}]
+#
+# cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
+#             [1, ])
+# b = cur.fetchall()
+# c_comment_dict = {}
+# for d in b:
+#     id = d.get('second_message_id')
+#     c_comment_dict[id] = d
+# lst = []
+# for j in c_comment_dict:
+#     lst.append(c_comment_dict[j])
+# print(c_comment_dict)
+import datetime
+import time
 
-cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
-            [1, ])
-b = cur.fetchall()
-c_comment_dict = {}
-for d in b:
-    id = d.get('second_message_id')
-    c_comment_dict[id] = d
+a = "2018-1-21"
+# www = a.strftime('%Y-%m-%d')
+# print(a)
+# result_time = ptime.strftime('%Y-%m-%d')
+# now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+# result_time1 = a
+# d1 = datetime.datetime.strptime(result_time1, "%Y-%m-%d")
+#
+# result_time2 = now_time
+# d2 = datetime.datetime.strptime(result_time2, "%Y-%m-%d")
+# #
+# d = str(d2 - d1)
+# s=[]
+# s=d.split(" ")
+# print(d, s)
+# day = now_time.split("-")
+# day_ = a.split("-")
+# year = int(day[0]) * 365 - int(day_[0])
+# mon = int(day[1]) - int(day_[1])
+# day1 = int(day[2]) - int(day_[2])
+# print(year, mon, day1)
+
+# 返回两个变量相差的值，就是相差天数
+# 结果:47
+cur.execute("select * from t_goods where user_id=%s and goods_state=%s", [1, 0])
+goods_list = cur.fetchall()
+goods = {}
 lst = []
-for j in c_comment_dict:
-    lst.append(c_comment_dict[j])
-print(c_comment_dict)
+count_list = {}
+for item in goods_list:
+    date = item.get('release_date')
+    goods[date] = ""
+    count_list[date] = ""
+for j in goods:
+    lst = []
+    count = 0
+    for item in goods_list:
+        if j == item['release_date']:
+            count += 1
+            lst.append(item)
+        for i in lst:
+            i["count"] = count
+            break
+    goods[j] = lst
+print(goods)
+# goods_ = {}
+# print(goods)
+# for j in goods_:
+#     for item in goods:
+#         if goods[item]["release_date"] == j:
+#             print(goods[item]["release_date"], j)
+#             goods_[j].append(goods[item])
+# print(goods_)
 
+# for item in goods_list:
+#     date = item.get('release_date')
+#     if item["release_date"] == date:
+#         count = +1
+#         lst.append(item)
+#     goods[date] = lst
+#     goods["count"] = count
+# print(goods)

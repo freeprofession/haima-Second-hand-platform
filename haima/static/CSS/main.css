@@ -1243,7 +1243,6 @@ label:hover {
 
 .up img {
     width: 400px;
-    height: 400px;
 }
 
 #detail_user .detail_right {
@@ -1267,6 +1266,7 @@ label:hover {
 }
 
 .info_detail {
+    margin-top: 6px;
     height: 50px;
     border-bottom: 1px solid #ededed;
 }
