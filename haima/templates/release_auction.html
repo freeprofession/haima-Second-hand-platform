@@ -10,10 +10,10 @@
 <head>
     <meta charset="UTF-8">
     <title>历史拍卖场</title>
-
+    <script type="text/javascript" src="https://unpkg.com/qiniu-js@2.5.1/dist/qiniu.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" href="../static/CSS/release_auction.css">
-      <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/main.js"></script>
     <script type="text/javascript" src="../static/JS/release_auction.js"></script>
 </head>
@@ -54,9 +54,15 @@
 </div>
 <div class="Navigation_information">
     <div id="auction_Navigation">
-        <a href="/my_auction_one/"><button id="my_auction">我的拍卖</button></a>
-        <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/histroy_auction/"><button id="histroy_auction">历史拍卖</button></a>
+        <a href="/my_auction_one/">
+            <button id="my_auction">我的拍卖</button>
+        </a>
+        <a href="/auction_index/">
+            <button id="now_auction">正在拍卖</button>
+        </a>
+        <a href="/histroy_auction/">
+            <button id="histroy_auction">历史拍卖</button>
+        </a>
     </div>
     <div id="auction_classification">
         <div>拍卖分类：</div>
@@ -69,11 +75,12 @@
 <hr>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/images/haima1.png" width="180" height="60"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/release_auction/" style="color: #ff8800">发布拍卖</a></div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/release_auction/" style="color: #ff8800">发布拍卖</a>
+    </div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/assess/" style="color: #666">一键估价</a>&nbsp;&nbsp;&nbsp;&nbsp;|
     </div>
 </div>
-<div id="publish" >
+<div id="publish">
     <div id="publish_header">
         <span>描述你的宝贝</span>
     </div>
@@ -83,16 +90,16 @@
             <table border="0">
                 <tr>
                     <td>宝贝标题：</td>
-                    <td><input type="text"  id="goods_title" ></td>
+                    <td><input type="text" id="goods_title"></td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>开始时间：</td>
-                    <td><input type="date" id="start_date" ></td>
-                 </tr>
+                    <td><input type="date" id="start_date"></td>
+                </tr>
                 <tr>
                     <td>结束时间：</td>
                     <td><input type="date" id="end_date"></td>
-                 </tr>
+                </tr>
                 <tr>
                     <td>类型：</td>
                     <td><select style="width: 200px" id="goods_category">
@@ -111,7 +118,7 @@
                         <input type="text" id="goods_floorprice">
                     </td>
                 </tr>
-                   <tr>
+                <tr>
                     <td>最低加价：</td>
                     <td>
                         <input type="text" id="goods_floorpremium">
@@ -140,12 +147,13 @@
                     <td><textarea name="" id="goods_desc" cols="100" rows="8"></textarea></td>
                 </tr>
             </table>
+            <input type="text" name="filelist" id="filelist" style="display:none;">
             <div>
-                <button type="button" id="publish_button" >确认发布</button>
+                <button type="button" id="publish_button">确认发布</button>
             </div>
         </form>
         <div id="error_message">
-          dshsiuhgisu
+            dshsiuhgisu
         </div>
     </div>
     <div class="pub" id="rule">
@@ -156,24 +164,24 @@
         </div>
     </div>
 </div>
-<div class="footer"  style="clear: both;">
-        <div class="foot_link">
-            <a href="#">关于我们</a>
-            <span>|</span>
-            <a href="#">联系我们</a>
-            <span>|</span>
-            <a href="#">招聘人才</a>
-            <span>|</span>
-            <a href="#">友情链接</a>
-        </div>
-        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
-        <p>电话：0512-****888 苏ICP备*******8号</p>
+<div class="footer" style="clear: both;">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 
 
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="../static/JS/F_File1.2.js"></script>
+<script type="text/javascript" src="../static/JS/F_File1.1.js"></script>
 <script type="text/javascript">
     /*等比例缩放图片的函数
          *param{object} ImgD 需要缩放的图片
@@ -206,76 +214,24 @@
 
     $(function () {
         $("#publish_button").click(function () {
-            title = $('#goods_title').val();
-            desc=$('#goods_desc').val();
-            floorpremium=$('#goods_floorpremium').val();
-            floorprice=$('#goods_floorprice').val();
-            start_date=$('#start_date').val();
-            end_date=$('#end_date').val();
-            category=$('#goods_category').val();
-            postage=$('#postage').val();
-                $.post('/publish_auction/', {
-                'title': title,
-                'desc': desc,
-                'floorpremium' :floorpremium,
-                'floorprice' :floorprice,
-                'end_date':end_date,
-                'start_date':start_date,
-                'category':category,
-                'postage':postage,
-
-            }, function (data) {
-                    if (data.msg === 'ok') {
-                        location.href = '/release_auction_ok/'
-                    } else if (data.msg === 'title.length_error') {
-                        $('#error_message').html(function () {
-
-                            document.getElementById('error_message').style.display='block'
-                            document.getElementById('error_message').innerText = "标题不得少于6位数";
-                        })
-                    } else if (data.msg === 'less_error') {
-
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '必须全部输入';
-                        })
-
-                    }  else if (data.msg === 'price_error') {
-                          $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '商品最低加价和底价必须为整数';
-
-                        })
-                    }
-                    else if (data.msg === 'floorpremium_error') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '商品最低加价不得高于商品底价';
-
-                        })
-
-                    }
-                       else if (data.msg === 'sql_error') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '数据库错误请重试';
-
-                        })
-
-                    }
-                      else if (data.msg === 'time_error') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '发布时间有误';
-
-                        })
-
-                    }
-                },'json')
 
         })
-        })
+    })
 
+</script>
+<script type="text/javascript">
+    $(function () {
+        var f = new FFile({
+            name: 'fuck',								//唯一名,用来与其他文件区分
+            fileInput: '#js-file',				//html file控件
+            upButton: '#publish_button',					//提交按钮
+            pre: '#js-pre',									//预览地址
+            url: '/test_img/',									//ajax地址
+            onSuccess: function (res) {
+                console.log(res)
+            },	//文件全部上传完毕时
+        })
+    })
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@
     <style type="text/css">
         div.up {
             width: 350px;
-            height: 300px;
+            height: 360px;
             background: #CCCCCC;
             overflow: hidden;
         }
@@ -21,7 +21,7 @@
 
         #down img {
             width: 65px;
-            height: 100px;
+            height: 80px;
             border: 1px solid #505450;
             opacity: 0.3;
             filter: alpha(opacity=30);
@@ -223,18 +223,10 @@
     </div>
 </div>
 
-<div class="breadcrumb">
-    <a href="#">全部分类</a>
-    <span>></span>
-    <a href="#">笔记本</a>
-    <span>></span>
-    <a href="#">mac电脑</a>
-</div>
-
 <div class="goods_detail_con clearfix">
     <div class="up fl" id="up"><img src=""></div>
     <div class="down" id="down">
-        <table>
+        <table style="margin-left: 1.5px">
             <tr>
                 {% for img in img_list %}
                     <td><img src="{{ img }}"></td>
@@ -317,7 +309,7 @@
         </div>
 
     </div>
-    <div class="main_wrap clearfix">
+    <div class="main_wrap clearfix" style="margin-top: 480px">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
@@ -337,7 +329,7 @@
             <div class="tab_content">
                 <p id="leave_message_head">留言：</p>
                 {% for key,value in p_comment_dict.items %}
-                    <dl style="margin-bottom: 25px;border: 1px solid white">
+                    <dl style="margin-bottom: 10px;border: 1px solid #eeeeee">
                         <dd class="hismessages">
                             {#获取父级回复ID#}
                             {#                            <input type="text" id="get_goods_id" value="{{ value.message_goods_id }}" hidden>#}
@@ -367,6 +359,7 @@
                                     <dd style="margin-left: 75px;height: 45px;width:972px;background-color: #f7f8fa;">
                                         <input type="text" id="child_user_id_{{ item.second_message_id }}"
                                                value="{{ item.child_user_id }}" hidden>
+
                                         <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="40" width="40"></a>
                                         <div style="margin-left: 45px;position: relative;top: -50px;">
                                             <a href="/user_credit/?user_credit_id={{ item.child_user_id }}" style="color: #2d64b3"
@@ -389,7 +382,7 @@
                             <a href="" class="append_{{ value.message_id }}"></a>
                             <dd>
                                 <textarea name="" id="get_child_review_{{ value.message_id }}" cols="150" rows="2"
-                                          style="margin-left: 72px"></textarea>
+                                          style="margin-left: 72px" onkeyup="checkLength(this,102)"></textarea>
                                 <input type="button" class="send_{{ value.message_id }}" value="发 表"
                                        style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
                             </dd>
@@ -404,7 +397,7 @@
                         <div class="message" style="height: 30px;line-height: 30px;">{{ login_status }}</div>
                     </dd>
                     <dd>
-                        <textarea name="get_Published" id="Published" cols="180" rows="4"></textarea>
+                        <textarea name="get_Published" id="Published" cols="180" rows="4" onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
                         <input type="text" value="{{ goods_id }}" id="goods_id" hidden>
                     </dd>
                     <dd style="padding-left: 1070px">
@@ -469,7 +462,7 @@
         get_message_id = id;
         if ($(".review_" + id).val() == "回复") {
             $(".review_" + id).val("收起回复");
-            $(".hidreview_" + id).show();
+            $(".hidreview_" + id).show(500);
             if ("{{ goods_state }}" == "0") {
                 $(".send_" + get_message_id).click(function () {
                         message_id = id;
@@ -500,8 +493,8 @@
                     }
                 );
             } else {
-                $(".send_" + get_message_id).hide()
-                $('#get_child_review_' + get_message_id).hide()
+                $(".send_" + get_message_id).hide(500)
+                $('#get_child_review_' + get_message_id).hide(500)
 
             }
 
@@ -645,7 +638,22 @@
         })
 
     });
-
+</script>
+<script>
+    var checkLength = function (dom, maxLength) {
+        var l = 0;
+        for (var i = 0; i < dom.value.length; i++) {
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l += 2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0, i);
+                break;
+            }
+        }
+    };
 </script>
 <script>
     {#function href() {#}

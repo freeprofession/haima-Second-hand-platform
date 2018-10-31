@@ -94,6 +94,8 @@ def homepage(request):
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
         [user_id, ])
     collection_list = cur.fetchall()
+    cur.execute("select * from t_goods order by goods_id desc limit 5")
+    newest_list = cur.fetchall()
     return render(request, 'homepage.html', locals())
 
 
@@ -265,7 +267,6 @@ def register_ajax(request):
                     con.commit()
                     r.delete(phone)
                     code_error = 'register_ok'  # 注册成功，跳转
-
                     request.session['username'] = username
                     return HttpResponse(json.dumps({"msg": code_error}))
                 elif user_error == "用户名已存在":
@@ -1096,7 +1097,15 @@ def my_auction_four(request):
     goods_record_list = cur.fetchall()
     goods_list = []
     goods_info_list = []
+    goods_buyuser_name_list = []
     # 这里是通过竞拍记录id找到商品id
+
+    goods_record_list = cur.fetchall()
+    goods_list = []
+    goods_info_list = []
+    # 这里是通过竞拍记录id找到商品id
+
+
     for i in record_id_dict:
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
@@ -1106,10 +1115,29 @@ def my_auction_four(request):
         info = cur.fetchone()
         goods_info_list.append(info)
     list4 = []
+
+    for i in range(len(goods_record_list)):
+        dict1 = {}
+        dict1["record"] = goods_record_list[i]
+        dict1["goods"] = goods_info_list[i]
+
+        dict1 = {}
+        dict1["record"] = goods_record_list[i]
+        dict1["goods"] = goods_info_list[i]
+
+
+    for i in range(len(goods_record_list)):
+        dict1 = {}
+        dict1["record"] = goods_record_list[i]
+        dict1["goods"] = goods_info_list[i]
+
+        list4.append(dict1)
+
     dict1 = {}
     dict1["record"] = goods_record_list[i]
     dict1["goods"] = goods_info_list[i]
     list4.append(dict1)
+
     print(list4)
     return render(request, 'my_auction_four.html', locals())
 
@@ -1153,12 +1181,16 @@ def calculate_price(request):
         return HttpResponse("你输入的加价有误")
     if int(id) == int(goods_user_id):
         return HttpResponse("不可购买自己的商品")  # 判断商品的发布者id和当前用户的id是不是一样
+
     price = request.POST.get('price')
     permium = request.POST.get('permium')
     floormium = request.POST.get("floormium")
     print(price)
     print(permium)
     if permium < floormium or permium > price:
+
+        pass
+
         return HttpResponse("输入的加价有误")
 
     else:
@@ -1253,9 +1285,11 @@ def confirm_buy(request):
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
 
+
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
+
 
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
@@ -1318,11 +1352,13 @@ def confirm_buy(request):
 # ****************************************************************用户竞拍成功******************************************
 
 
+
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
 
 # ****************************************************************用户竞拍成功******************************************
+
 
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
@@ -1396,7 +1432,18 @@ def leave_message_two(request):
 
 # 修改信息
 def modify_information(request):
-    return render(request, 'modify_information.html')
+    if request.method == 'GET':
+        return render(request, 'modify_information.html')
+    else:
+        nickname = request.POST.get('nickname')
+        shen = request.POST.get('cmbProvince')
+        shi = request.POST.get('cmbCity')
+        xian = request.POST.get('cmbArea')
+        img = request.POST.get('img')
+        date = request.POST.get('date')
+        sex = request.POST.get('sex')
+        print(nickname,shen, shi, xian, img, date, sex)
+        return render(request, 'modify_information.html')
 
 
 def callback(request):
@@ -1412,6 +1459,8 @@ def callback(request):
 # 上传图片所需要的token
 def gettokendata(request):
     index = request.POST.get('index')
+    if index == None:
+        index = '1'
     from qiniu import Auth
     access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
     secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
