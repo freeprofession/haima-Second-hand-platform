@@ -121,11 +121,11 @@ $("#order_show").hover(function () {
 })
 
 //上传头像
-document.getElementById('file').onchange = function () {
-    var imgFile = this.files[0];
-    var fr = new FileReader();
-    fr.onload = function () {
-        document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
-    };
-    fr.readAsDataURL(imgFile);
-};
+// document.getElementById('file').onchange = function () {
+//     var imgFile = this.files[0];
+//     var fr = new FileReader();
+//     fr.onload = function () {
+//         document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+//     };
+//     fr.readAsDataURL(imgFile);
+// };
