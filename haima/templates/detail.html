@@ -336,21 +336,43 @@
                             {#                            <input type="text" id="get_parent_id" value="{{ value.message_user_id }}" hidden>#}
                             {#                            <input type="text" id="get_message_id" value="{{ value.message_id }}" hidden>#}
                             {#----------------------------------------------------------#}
-                            <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45"></a>
-                            <div class="messages" style="height: 30px;line-height: 30px;">
-                                {% if seller_id == value.user_id %}
-                                    <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}<span
-                                            style="color: red">(卖家)</span>:</a>
-                                {% else %}
-                                    <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
-                                {% endif %}
-                                <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
-                            </div>
-                            <br>
-                            <div style="position: relative;left: -90px">
-                                <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <input id="review" type="button" value="回复" class="review_{{ value.message_id }}"
-                                       onclick="review({{ value.message_id }})">
+                            {#                            <div class="clearfix">#}
+                            {#                                <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages"#}
+                            {#                                                                                                src="{{ value.user_imgurl }}"#}
+                            {#                                                                                                alt="" height="45"#}
+                            {#                                                                                                width="45"></a>#}
+                            {#                                <div class="messages" style="height: 30px;line-height: 30px;">#}
+                            {#                                    {% if seller_id == value.user_id %}#}
+                            {#                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}"#}
+                            {#                                           style="color: #2d64b3;font-size: 16px">{{ value.user_name }}<span#}
+                            {#                                                style="color: red">(卖家)</span>:</a>#}
+                            {#                                    {% else %}#}
+                            {#                                        <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>#}
+                            {#                                    {% endif %}#}
+                            {#                                    <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>#}
+                            {#                                </div>#}
+                            {#                                <div style="position: relative;top: -7px">#}
+                            {#                                    <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>#}
+                            {#                                    <input id="review" type="button" value="回复" class="review_{{ value.message_id }}"#}
+                            {#                                           onclick="review({{ value.message_id }})">#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            <div class="clearfix">
+                                <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45"></a>
+                                <div class="messages" style="height: 30px;line-height: 30px;">
+                                    {% if seller_id == value.user_id %}
+                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:<span style="color: red">(卖家)</span></a>
+                                    {% else %}
+                                    <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
+                                    {% endif %}
+                                    <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
+                                    <div style="position: relative;top: -7px">
+                                        <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <input id="review" type="button" value="回复"
+                                               class="review_{{ value.message_id }}"
+                                               onclick="review({{ value.message_id }})">
+                                    </div>
+                                </div>
                             </div>
                         </dd>
                         <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
@@ -360,9 +382,11 @@
                                         <input type="text" id="child_user_id_{{ item.second_message_id }}"
                                                value="{{ item.child_user_id }}" hidden>
 
-                                        <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="40" width="40"></a>
+                                        <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"><img
+                                                src="{{ item.user_imgurl }}" alt="" height="40" width="40"></a>
                                         <div style="margin-left: 45px;position: relative;top: -50px;">
-                                            <a href="/user_credit/?user_credit_id={{ item.child_user_id }}" style="color: #2d64b3"
+                                            <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"
+                                               style="color: #2d64b3"
                                                class="c_name_{{ item.second_message_id }}">{{ item.user_name }}&nbsp;</a>
                                             {% if item.child_user_id == seller_id %}
                                                 <span style="color:green;font-size: 14px;">{{ item.second_desc }}</span>
@@ -397,7 +421,8 @@
                         <div class="message" style="height: 30px;line-height: 30px;">{{ login_status }}</div>
                     </dd>
                     <dd>
-                        <textarea name="get_Published" id="Published" cols="180" rows="4" onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
+                        <textarea name="get_Published" id="Published" cols="180" rows="4"
+                                  onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
                         <input type="text" value="{{ goods_id }}" id="goods_id" hidden>
                     </dd>
                     <dd style="padding-left: 1070px">
