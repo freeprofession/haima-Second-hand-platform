@@ -44,7 +44,7 @@
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
         <div class="search_con">
-            <form action="/goods_list/" method="get">
+            <form action="/goods_list/" method="get" target="_blank">
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
                 <input type="hidden" name="price_low" value="{{ price_low }}">
                 <input type="hidden" name="price_high" value="{{ price_high }}">
@@ -106,7 +106,7 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1">
-                <a href="/goods_list/?" class="main_type">手机</a><a href="#" class="child_type">手机壳</a><a href="#"
+                <a href="/goods_list/?q=手机&price_low=&price_high=" class="main_type">手机</a><a href="#" class="child_type">手机壳</a><a href="#"
                                                                                                          class="child_type">充电器</a><a
                     href="#" class="child_type">耳机</a><a href="#" class="child_type">数据线</a>
             </div>
@@ -333,11 +333,11 @@
             </div>
         </div>
         <div id="guess">
-            <ul class="item-type">
+            <ul class="item-type" style="margin-left: 25px">
                 <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
                 >猜你喜欢</a></li>
-                <li class="nav" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
-                <li class="nav" id="guess3"><a href="" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
+                <li class="nav" id="guess2"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
+                <li class="nav" id="guess3"><a href="/goods_list/?q=同城交易&price_low=&price_high=" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
             </ul>
         </div>
         <div id="ctn">

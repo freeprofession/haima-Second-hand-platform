@@ -203,9 +203,8 @@
     </div>
 </div>
 
-<div class="breadcrumb">
-    <span>已选条件：</span>
-    <span>所有与“{{ question }}”相关的宝贝</span>
+<div id="breadcrumb">
+    <span style="font-size: 14px;color: #403511">{{ prompt }}</span>
 </div>
 
 <div class="main_list clearfix">
@@ -327,7 +326,9 @@
         }
         {% for keys in question_word %}
             keyLight('goods_type_ul', "{{ keys }}");
+            keyLight('breadcrumb', "{{ keys }}");
         {% endfor %}
+         keyLight('breadcrumb', "{{ user_address }}");
     </script>
 </div>
 </body>

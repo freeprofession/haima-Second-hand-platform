@@ -6,10 +6,10 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-    <style type="text/css">
+     <style type="text/css">
         div.up {
             width: 350px;
-            height: 360px;
+            height: 400px;
             background: #CCCCCC;
             overflow: hidden;
         }
@@ -21,9 +21,9 @@
 
         #down img {
             width: 65px;
-            height: 80px;
+            height: 70px;
             border: 1px solid #505450;
-            opacity: 0.3;
+            opacity: 0.6;
             filter: alpha(opacity=30);
         }
 
@@ -39,6 +39,7 @@
         }
 
     </style>
+
 </head>
 <body onload="href()">
 <div class="header_con">
@@ -224,7 +225,11 @@
 </div>
 
 <div class="goods_detail_con clearfix">
-    <div class="up fl" id="up"><img src=""></div>
+    <div class="up fl left" id="up">
+        <img src="">
+        <span></span>
+    </div>
+    <div class="zoom left"></div>
     <div class="down" id="down">
         <table style="margin-left: 1.5px">
             <tr>
@@ -309,7 +314,7 @@
         </div>
 
     </div>
-    <div class="main_wrap clearfix" style="margin-top: 480px">
+    <div class="main_wrap clearfix" style="margin-top: 500px">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
@@ -464,10 +469,13 @@
     </div>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
+
+<script>
     var get_message_id = 0;
     var rip_id = 0
+<<<<<<< HEAD
     var button_list = {{ button_list }}
         $(document).ready(function () {
             $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
@@ -490,6 +498,9 @@
     })
 </script>
 <script>
+=======
+
+>>>>>>> e32cbcd049a6f0850a0befdf0552e7ab3bafab51
     function review(id) {
         get_message_id = id;
         if ($(".review_" + id).val() == "回复") {
@@ -671,6 +682,8 @@
 
     });
 </script>
+<<<<<<< HEAD
+=======
 <script>
     var checkLength = function (dom, maxLength) {
         var l = 0;
@@ -699,5 +712,6 @@
     #}#}
 </script>
 <a name="abc"></a>
+>>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
 </body>
 </html>
