@@ -9,7 +9,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马商城!</div>
+        <div class="welcome fl"><span style="color: red"> {{ username }}</span>欢迎来到海马商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -35,9 +35,9 @@
 </div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message/" style="color: #ff8800">买家留言</a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message/" style="color: #ff8800">收到回复</a>
     </div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_two/" style="color: #666">卖家留言</a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_two/" style="color: #666">我的回复</a>
     </div>
 </div>
 
@@ -57,86 +57,39 @@
     </div>
     <div id="c2">
         <ul class="release-goods-list" style="margin-left: 220px">
-            <li class="comment-data-item clearfix" style="height: 120px;">
-                <div class="cell">
-                    <div class="user-infor">
-                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
-                        <span class="post-name">小可爱</span>
-                    </div>
-                </div>
-                <div class="comment-data cell" style="padding-top: 30px">
-                    <span class="line2">很好很棒666</span><br>
-                    <span>2018-10-30</span>
-                </div>
-                <div class="cell" style="padding-right: 20px">
-                    <img src="../static/images/goods/goods001.jpg" alt="" width="80px" height="80px">
-                </div>
-                <div class="cell" style="padding-top: 30px">
-                    <span class="line2"><a href="">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京</a></span><br>
-                    <span class="credit_goods_price">¥ 998</span>
-                </div>
-            </li>
-            <li class="comment-data-item clearfix" style="height: 120px;">
-                <div class="cell">
-                    <div class="user-infor">
-                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
-                        <span class="post-name">小可爱</span>
-                    </div>
-                </div>
-                <div class="comment-data cell" style="padding-top: 30px">
-                    <span class="line2">很好很棒666</span><br>
-                    <span>2018-10-30</span>
-                </div>
-                <div class="cell" style="padding-right: 20px">
-                    <img src="../static/images/goods/goods001.jpg" alt="" width="80px" height="80px">
-                </div>
-                <div class="cell" style="padding-top: 30px">
-                    <span class="line2"><a href="">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京</a></span><br>
-                    <span class="credit_goods_price">¥ 998</span>
-                </div>
-            </li>
-            <li class="comment-data-item clearfix" style="height: 120px;">
-                <div class="cell">
-                    <div class="user-infor">
-                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
-                        <span class="post-name">小可爱</span>
-                    </div>
-                </div>
-                <div class="comment-data cell" style="padding-top: 30px">
-                    <span class="line2">很好很棒666</span><br>
-                    <span>2018-10-30</span>
-                </div>
-                <div class="cell" style="padding-right: 20px">
-                    <img src="../static/images/goods/goods001.jpg" alt="" width="80px" height="80px">
-                </div>
-                <div class="cell" style="padding-top: 30px">
-                    <span class="line2"><a href="">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京</a></span><br>
-                    <span class="credit_goods_price">¥ 998</span>
-                </div>
-            </li>
-            <li class="comment-data-item clearfix" style="height: 120px;">
-                <div class="cell">
-                    <div class="user-infor">
-                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
-                        <span class="post-name">小可爱</span>
-                    </div>
-                </div>
-                <div class="comment-data cell" style="padding-top: 30px">
-                    <span class="line2">很好很棒666</span><br>
-                    <span>2018-10-30</span>
-                </div>
-                <div class="cell" style="padding-right: 20px">
-                    <img src="../static/images/goods/goods001.jpg" alt="" width="80px" height="80px">
-                </div>
-                <div class="cell" style="padding-top: 30px">
-                    <span class="line2"><a href="">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</a></span><br>
-                    <span class="credit_goods_price">¥ 998</span>
-                </div>
-            </li>
+            {% for item in review_list %}
+                {% if user_id != item.user_id %}
+                    <li class="comment-data-item clearfix" style="height: 120px;">
+                        <div class="cell">
+                            <div class="user-infor">
+                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img
+                                src="{{ item.user_imgurl }}" alt="" height="40" width="40"
+                                style="border: 2px solid #e9e9e9;border-radius: 50%;"></a></span>
+                                <span class="post-name"><a
+                                        href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                        style="color: blue">{{ item.user_name }}</a></span>
+                            </div>
+                        </div>
+                        <div class="comment-data cell" style="padding-top: 30px">
+                            {#                        {% if user_id != item.user_id %}#}
+                            {#                            <span class="line2" style="color: #5e5e5e"><u>{{ item.second_desc }}</u>&nbsp;<span style="color: red">@自己</span></span><br>#}
+                            {#                        {% else %}#}
+                            <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}#abc" style="color: #5e5e5e">{{ item.second_desc }}</a></span><br>
+                            {#                        {% endif %}#}
+                            <span>{{ item.second_date }}</span>
+                        </div>
+                        <div class="cell" style="padding-right: 20px">
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}" alt=""
+                                                                                    width="80px" height="80px"></a>
+                        </div>
+                        <div class="cell" style="padding-top: 30px">
+                <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}"
+                                       style="color: dodgerblue">{{ item.goods_title }}</a></span><br>
+                            <span class="credit_goods_price">{{ item.goods_price }}</span>
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
         </ul>
     </div>
 </div>

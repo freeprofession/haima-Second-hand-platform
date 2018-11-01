@@ -40,6 +40,8 @@ urlpatterns = [
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
+    path('leave_message/', view.leave_message),
+    path('leave_message_two/', view.leave_message_two),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -62,16 +64,26 @@ urlpatterns = [
     path('my_evaluate_give/', view.my_evaluate_give),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata),
-    path('leave_message/', view.leave_message),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
+<<<<<<< HEAD
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
 
+=======
+    path('modify_information/', view.modify_information),
+    path('modify_information/', view.modify_information), # 修改信息
+    # path('modify_information/', view.modify_information),
+>>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
     # 返回用户的拍卖发布历史记录
     path("my_release_record/", view.my_release_record),
+<<<<<<< HEAD
+=======
+
+
+
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),
@@ -86,4 +98,21 @@ urlpatterns = [
     path("confirm_buy/", view.confirm_buy),
     # 用户支付成功以后的跳转
     path("buy_auction_ok/", view.buy_auction_ok),
+
+>>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
+    path('publish_auction/', view.publish_auction),
+    path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
+    # 实时计算拍卖总价的路径
+    path('calculate_price/', view.calculate_price),
+    # 返回用户的全部拍卖记录
+    path("my_auction_one/", view.my_auction_one),
+    path("my_auction_two/", view.my_auction_two),
+    path("my_auction_three/", view.my_auction_three),
+    path("my_auction_four/", view.my_auction_four),
+    # 用户输完价格确认竞拍
+    path("confirm_buy/", view.confirm_buy),
+    # 用户支付成功以后的跳转
+    path("buy_auction_ok/", view.buy_auction_ok),
+
 ]

@@ -11,7 +11,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"> {{ username }}</span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -82,9 +82,9 @@
                                 {#                            {% for item in value %}#}
                                 <ul>
                                     <li class="clearfix credit_detail_li">
-                                        <a href=""><img src="{{ item.goods_imgurl }}" alt="" height="90"
+                                        <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}" alt="" height="90"
                                                         width="90"></a>
-                                        <a href="" class="credit_goods_title">{{ item.goods_title }}</a>
+                                        <a href="/goods_detail/?goods={{ item.goods_id }}" class="credit_goods_title">{{ item.goods_title }}</a>
                                         <span class="credit_goods_price">{{ item.goods_price }}</span>
                                     </li>
                                 </ul>
