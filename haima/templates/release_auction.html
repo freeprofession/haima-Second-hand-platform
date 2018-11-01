@@ -271,6 +271,14 @@
                         })
 
                     }
+                     else if (data.msg === 'margin_errorr') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '余额不足以缴纳拍卖所需的保证金';
+
+                        })
+
+                    }
                 },'json')
 
         })

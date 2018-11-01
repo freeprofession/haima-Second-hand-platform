@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from myapp import view
 
+
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path("", view.homepage),
+
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -44,7 +45,7 @@ urlpatterns = [
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
     path('leave_message/', view.leave_message),
-    path('lower_goods/',view.lower_goods),
+    path('lower_goods/', view.lower_goods),
     # -------------------------
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
@@ -69,19 +70,27 @@ urlpatterns = [
     path("my_release_record/", view.my_release_record),
 
 
-    path('publish_auction/',view.publish_auction),
-    path('release_auction_ok/',view.release_auction_ok),
-    path('buy_auction/',view.buy_auction),
+    path('publish_auction/', view.publish_auction),
+    path('release_auction_ok/', view.release_auction_ok),
+    path('buy_auction/', view.buy_auction),
     #实时计算拍卖总价的路径
-    path('calculate_price/',view.calculate_price),
+    path('calculate_price/', view.calculate_price),
     #返回用户的全部拍卖记录
-    path("my_auction_one/",view.my_auction_one),
-    path("my_auction_two/",view.my_auction_two),
-    path("my_auction_three/",view.my_auction_three),
-    path("my_auction_four/",view.my_auction_four),
+    path("my_auction_one/", view.my_auction_one),
+    path("my_auction_two/", view.my_auction_two),
+
+    path("my_auction_four/", view.my_auction_four),
     #用户输完价格确认竞拍
-    path("confirm_buy/",view.confirm_buy),
+    path("confirm_buy/", view.confirm_buy),
     #用户支付成功以后的跳转
-    path("buy_auction_ok/",view.buy_auction_ok),
+    path("buy_auction_ok/", view.buy_auction_ok),
+    #提前结束拍卖
+    path("end_auction/", view.end_auction),
+    #普通商品的购买
+    path("goods_confirm_buy/", view.goods_confirm_buy),
+    #普通商品购买成功
+    path("buy_goods_ok/", view.buy_goods_ok),
+    #拍卖时间结束的判断
+    path("Determine_auction_date/", view.Determine_auction_date),
 
 ]

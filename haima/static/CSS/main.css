@@ -1480,6 +1480,21 @@ label:hover {
     top: -1px;
     height: 35px;
 }
+#buy_now_message{
+    width: 400px;
+    height: 300px;
+    background-color: #16bcbd;
+    position: fixed;
+    left: 30%;
+    top: 30%;
+    z-index: 9999999999;
+    display: none;
+
+
+}
+#shutdown_buy_now_message{
+    float: right;
+}
 
 .tab_content {
     display: none;
