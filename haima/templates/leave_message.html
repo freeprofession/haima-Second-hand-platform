@@ -57,7 +57,7 @@
     </div>
     <div id="c2">
         <ul class="release-goods-list" style="margin-left: 220px">
-            {% for item in review_list %}
+            {% for item in contacts %}
                 {% if user_id != item.user_id %}
                     <li class="comment-data-item clearfix" style="height: 120px;">
                         <div class="cell">
@@ -74,7 +74,39 @@
                             {#                        {% if user_id != item.user_id %}#}
                             {#                            <span class="line2" style="color: #5e5e5e"><u>{{ item.second_desc }}</u>&nbsp;<span style="color: red">@自己</span></span><br>#}
                             {#                        {% else %}#}
-                            <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}#abc" style="color: #5e5e5e">{{ item.second_desc }}</a></span><br>
+                            <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}#abc"
+                                                   style="color: #5e5e5e">{{ item.second_desc }}</a></span><br>
+                            {#                        {% endif %}#}
+                            <span>{{ item.second_date }}</span>
+                        </div>
+                        <div class="cell" style="padding-right: 20px">
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}" alt=""
+                                                                                    width="80px" height="80px"></a>
+                        </div>
+                        <div class="cell" style="padding-top: 30px">
+                <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}"
+                                       style="color: dodgerblue">{{ item.goods_title }}</a></span><br>
+                            <span class="credit_goods_price">{{ item.goods_price }}</span>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="comment-data-item clearfix" style="height: 120px;">
+                        <div class="cell">
+                            <div class="user-infor">
+                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img
+                                src="{{ item.user_imgurl }}" alt="" height="40" width="40"
+                                style="border: 2px solid #e9e9e9;border-radius: 50%;"></a></span>
+                                <span class="post-name"><a
+                                        href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                        style="color: red">{{ item.user_name }}</a></span>
+                            </div>
+                        </div>
+                        <div class="comment-data cell" style="padding-top: 30px">
+                            {#                        {% if user_id != item.user_id %}#}
+                            {#                            <span class="line2" style="color: #5e5e5e"><u>{{ item.second_desc }}</u>&nbsp;<span style="color: red">@自己</span></span><br>#}
+                            {#                        {% else %}#}
+                            <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}#abc"
+                                                   style="color: red">{{ item.second_desc }}</a></span><br>
                             {#                        {% endif %}#}
                             <span>{{ item.second_date }}</span>
                         </div>
@@ -91,6 +123,27 @@
                 {% endif %}
             {% endfor %}
         </ul>
+    </div>
+    <div class="pagenation">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
     </div>
 </div>
 

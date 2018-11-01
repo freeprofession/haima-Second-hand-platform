@@ -523,6 +523,10 @@ def goods_detail(request):
                     lst.append(c_comment_dict[j])
                     c_comment_dict[j] = ''
         p_comment_dict[i]['child_message'] = lst
+    # 按钮列表
+    button_list = []
+    for i in p_comment_dict:
+        button_list.append(int(i))
     # print(p_comment_dict)
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
     if username:  # 登录后才记录，浏览记录
@@ -1105,7 +1109,6 @@ def my_auction_four(request):
     goods_info_list = []
     # 这里是通过竞拍记录id找到商品id
 
-
     for i in record_id_dict:
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
@@ -1124,7 +1127,6 @@ def my_auction_four(request):
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
-
 
     for i in range(len(goods_record_list)):
         dict1 = {}
@@ -1285,11 +1287,9 @@ def confirm_buy(request):
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
 
-
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
-
 
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
@@ -1350,7 +1350,6 @@ def confirm_buy(request):
 
 
 # ****************************************************************用户竞拍成功******************************************
-
 
 
 def buy_auction_ok(request):
@@ -1414,6 +1413,16 @@ def leave_message(request):
         'where to_rid=%s order by second_message_id desc',
         [user_id, ])
     review_list = cur.fetchall()
+    paginator = Paginator(review_list, 5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request, 'leave_message.html', locals())
 
 
@@ -1427,6 +1436,16 @@ def leave_message_two(request):
         'where child_user_id=%s order by second_message_id desc',
         [user_id, ])
     my_review_list = cur.fetchall()
+    paginator = Paginator(my_review_list, 5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request, 'leave_message_two.html', locals())
 
 
@@ -1442,7 +1461,9 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        print(nickname,shen, shi, xian, img, date, sex)
+        print(nickname, shen, shi, xian, img, date, sex)
+        imgurl = "pgwecu7z4.bkt.clouddn.com/" + img
+        print(imgurl)
         return render(request, 'modify_information.html')
 
 

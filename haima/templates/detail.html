@@ -358,12 +358,18 @@
                             {#                                </div>#}
                             {#                            </div>#}
                             <div class="clearfix">
-                                <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45"></a>
+                                <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages"
+                                                                                                src="{{ value.user_imgurl }}"
+                                                                                                alt="" height="45"
+                                                                                                width="45"></a>
                                 <div class="messages" style="height: 30px;line-height: 30px;">
                                     {% if seller_id == value.user_id %}
-                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:<span style="color: red">(卖家)</span></a>
+                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}"
+                                           style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:<span
+                                                style="color: red">(卖家)</span></a>
                                     {% else %}
-                                    <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
+                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}"
+                                           style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
                                     {% endif %}
                                     <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
                                     <div style="position: relative;top: -7px">
@@ -462,15 +468,16 @@
 <script type="text/javascript">
     var get_message_id = 0;
     var rip_id = 0
-    $(document).ready(function () {
-        $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
-        $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
-        $('#down img').hover(function () {
-            $('#down img').removeClass("change_image");//先清除所有选中
-            $(this).addClass("change_image");//当前图片选中
-            $('#up img').attr('src', $(this).attr('src'));//当前图片地址给#up img
+    var button_list = {{ button_list }}
+        $(document).ready(function () {
+            $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
+            $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
+            $('#down img').hover(function () {
+                $('#down img').removeClass("change_image");//先清除所有选中
+                $(this).addClass("change_image");//当前图片选中
+                $('#up img').attr('src', $(this).attr('src'));//当前图片地址给#up img
+            });
         });
-    });
 </script>
 <script>
     $(function () {
@@ -522,14 +529,14 @@
                 $('#get_child_review_' + get_message_id).hide(500)
 
             }
-
-            for (i = 0; i < 10; i++) {
-                if (i == id) {
+            var button_list = {{ button_list }}
+            for (i = 0;i<button_list.length; i++) {
+                if (button_list[i] == id) {
                     $(".hidreview_" + id).show(500);
                 }
                 else {
-                    $(".hidreview_" + i).hide(500);
-                    $(".review_" + i).val("回复");
+                    $(".hidreview_" + button_list[i]).hide(500);
+                    $(".review_" + button_list[i]).val("回复");
                 }
             }
 
