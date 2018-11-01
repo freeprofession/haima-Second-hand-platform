@@ -47,10 +47,7 @@ urlpatterns = [
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
     path('leave_message/', view.leave_message),
-<<<<<<< HEAD
     path('leave_message_two/', view.leave_message_two),
-=======
->>>>>>> 94f347e6c086326906e62462c4199ef435dda338
     path('lower_goods/', view.lower_goods),
     # -------------------------
     path('callback/', view.callback),
@@ -67,33 +64,14 @@ urlpatterns = [
     path('gettokendata/', view.gettokendata),
     path('leave_message/', view.leave_message),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
-<<<<<<< HEAD
-    path('modify_information/', view.modify_information), # 修改信息
-=======
-    # path('modify_information/', view.modify_information),
->>>>>>> 94f347e6c086326906e62462c4199ef435dda338
+    path('modify_information/', view.modify_information),  # 修改信息
+    path('modify_password/', view.modify_password),  # 修改密码
+
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
     # 返回用户的拍卖发布历史记录
     path("my_release_record/", view.my_release_record),
-<<<<<<< HEAD
-=======
-    path('publish_auction/', view.publish_auction),
-    path('release_auction_ok/', view.release_auction_ok),
-    path('buy_auction/', view.buy_auction),
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
-    # 返回用户的全部拍卖记录
-    path("my_auction_one/", view.my_auction_one),
-    path("my_auction_two/", view.my_auction_two),
-    path("my_auction_three/", view.my_auction_three),
-    path("my_auction_four/", view.my_auction_four),
-    # 用户输完价格确认竞拍
-    path("confirm_buy/", view.confirm_buy),
-    # 用户支付成功以后的跳转
-    path("buy_auction_ok/", view.buy_auction_ok),
->>>>>>> 94f347e6c086326906e62462c4199ef435dda338
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),

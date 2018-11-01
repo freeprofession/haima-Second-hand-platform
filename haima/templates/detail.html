@@ -6,10 +6,10 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-    <style type="text/css">
+     <style type="text/css">
         div.up {
             width: 350px;
-            height: 360px;
+            height: 400px;
             background: #CCCCCC;
             overflow: hidden;
         }
@@ -21,9 +21,9 @@
 
         #down img {
             width: 65px;
-            height: 80px;
+            height: 70px;
             border: 1px solid #505450;
-            opacity: 0.3;
+            opacity: 0.6;
             filter: alpha(opacity=30);
         }
 
@@ -39,6 +39,7 @@
         }
 
     </style>
+
 </head>
 <body>
 <div class="header_con">
@@ -224,12 +225,16 @@
 </div>
 
 <div class="goods_detail_con clearfix">
-    <div class="up fl" id="up"><img src=""></div>
+    <div class="up fl left" id="up">
+        <img src="">
+        <span></span>
+    </div>
+    <div class="zoom left"></div>
     <div class="down" id="down">
         <table style="margin-left: 1.5px">
             <tr>
                 {% for img in img_list %}
-                <td><img src="{{ img }}"></td>
+                    <td><img src="{{ img }}"></td>
                 {% endfor %}
             </tr>
         </table>
@@ -309,7 +314,7 @@
         </div>
 
     </div>
-    <div class="main_wrap clearfix" style="margin-top: 480px">
+    <div class="main_wrap clearfix" style="margin-top: 500px">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
@@ -348,7 +353,6 @@
                                                onclick="review({{ value.message_id }})">
                                     </div>
                                 </div>
-
                             </div>
                         </dd>
                         <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
@@ -390,7 +394,8 @@
                         <div class="message" style="height: 30px;line-height: 30px;">JQlove</div>
                     </dd>
                     <dd>
-                        <textarea name="get_Published" id="Published" cols="180" rows="4" onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
+                        <textarea name="get_Published" id="Published" cols="180" rows="4"
+                                  onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
                         <input type="text" value="{{ goods_id }}" id="goods_id" hidden>
                     </dd>
                     <dd style="padding-left: 1070px">
@@ -426,31 +431,13 @@
     </div>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
+
+<script>
     var get_message_id = 0;
     var rip_id = 0
-    $(document).ready(function () {
-        $('#up img').attr('src', $('#down img').eq(0).attr('src'));//打开即把第一张图地址给#up img
-        $('#down img').eq(0).addClass("change_image");//打开即把第一个缩略图选中
-        $('#down img').hover(function () {
-            $('#down img').removeClass("change_image");//先清除所有选中
-            $(this).addClass("change_image");//当前图片选中
-            $('#up img').attr('src', $(this).attr('src'));//当前图片地址给#up img
-        });
-    });
-</script>
-<script>
-    $(function () {
-        var $tab_btn = $('.detail_tab li');
-        var $tab_con = $('.tab_content');
-        $tab_btn.click(function () {
-            $(this).addClass('active').siblings().removeClass('active');
-            $tab_con.eq($(this).index()).addClass('current').siblings().removeClass('current');
-        })
-    })
-</script>
-<script>
+
     function review(id) {
         get_message_id = id;
         if ($(".review_" + id).val() == "回复") {
@@ -513,7 +500,6 @@
     //留言
     $(function () {
         if ("{{ goods_state }}" == "0") {
-
             $("#pub_text").click(function () {
                 Published = $('#Published').val();
                 goods_id = $('#goods_id').val();
@@ -619,22 +605,6 @@
         })
 
     });
-</script>
-<script>
-    var checkLength = function (dom, maxLength) {
-        var l = 0;
-        for (var i = 0; i < dom.value.length; i++) {
-            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
-                l += 2;
-            } else {
-                l++;
-            }
-            if (l > maxLength) {
-                dom.value = dom.value.substr(0, i);
-                break;
-            }
-        }
-    };
 </script>
 </body>
 </html>
