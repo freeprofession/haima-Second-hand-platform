@@ -40,6 +40,8 @@ urlpatterns = [
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
+    path('leave_message/', view.leave_message),
+    path('leave_message_two/', view.leave_message_two),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -47,9 +49,7 @@ urlpatterns = [
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
     path('leave_message/', view.leave_message),
-
     path('leave_message_two/', view.leave_message_two),
-
     path('lower_goods/', view.lower_goods),
     # -------------------------
     path('callback/', view.callback),
@@ -64,18 +64,10 @@ urlpatterns = [
     path('my_evaluate_give/', view.my_evaluate_give),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata),
-    path('leave_message/', view.leave_message),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
-
-
     path('modify_information/', view.modify_information),
-
-
     path('modify_information/', view.modify_information), # 修改信息
-
-
     # path('modify_information/', view.modify_information),
-
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
