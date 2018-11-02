@@ -1478,6 +1478,21 @@ label:hover {
     top: -1px;
     height: 35px;
 }
+#buy_now_message{
+    width: 400px;
+    height: 300px;
+    background-color: #16bcbd;
+    position: fixed;
+    left: 30%;
+    top: 30%;
+    z-index: 9999999999;
+    display: none;
+
+
+}
+#shutdown_buy_now_message{
+    float: right;
+}
 
 .tab_content {
     display: none;
@@ -3629,6 +3644,10 @@ label:hover {
 
 .release-goods-list .comment-data {
     float: left;
+<<<<<<< HEAD
+    width: 500px;
+}
+=======
     width: 400px;
 }
 
@@ -3675,6 +3694,9 @@ label:hover {
     background: -moz-linear-gradient(top, #f50, #ed4f00);
     background: -webkit-linear-gradient(top, #f50, #ed4f00);
 }
+<<<<<<< HEAD
+>>>>>>> 81d79905ab698256e6911be6117c430d42151268
+=======
 
 .left {
     float: left;
@@ -3709,3 +3731,4 @@ label:hover {
 
 
 
+>>>>>>> be225a1e3131f95b555284e2e8af83c8e1b29cf9

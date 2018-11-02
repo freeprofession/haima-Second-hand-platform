@@ -215,6 +215,46 @@
     $(function () {
         $("#publish_button").click(function () {
 
+<<<<<<< HEAD
+                        })
+                    }
+                    else if (data.msg === 'floorpremium_error') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '商品最低加价不得高于商品底价';
+
+                        })
+
+                    }
+                       else if (data.msg === 'sql_error') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '数据库错误请重试';
+
+                        })
+
+                    }
+                      else if (data.msg === 'time_error') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '发布时间有误';
+
+                        })
+
+                    }
+                     else if (data.msg === 'margin_errorr') {
+                        $('#error_message').html(function () {
+                            document.getElementById('error_message').style.display = 'block';
+                            document.getElementById('error_message').innerText = '余额不足以缴纳拍卖所需的保证金';
+
+                        })
+
+                    }
+                },'json')
+
+        })
+=======
+>>>>>>> 81d79905ab698256e6911be6117c430d42151268
         })
     })
 
