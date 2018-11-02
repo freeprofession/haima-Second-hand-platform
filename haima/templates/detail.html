@@ -9,7 +9,7 @@
     <style type="text/css">
         div.up {
             width: 350px;
-            height: 300px;
+            height: 360px;
             background: #CCCCCC;
             overflow: hidden;
         }
@@ -21,7 +21,7 @@
 
         #down img {
             width: 65px;
-            height: 100px;
+            height: 80px;
             border: 1px solid #505450;
             opacity: 0.3;
             filter: alpha(opacity=30);
@@ -40,7 +40,7 @@
 
     </style>
 </head>
-<body>
+<body onload="href()">
 <div class="header_con">
     <div class="header">
         <div class="welcome fl"><span style="color: red">{{ login_status }}</span> 欢迎来到海马二手商城!</div>
@@ -223,24 +223,14 @@
     </div>
 </div>
 
-<div class="breadcrumb">
-    <a href="#">全部分类</a>
-    <span>></span>
-    <a href="#">笔记本</a>
-    <span>></span>
-    <a href="#">mac电脑</a>
-</div>
-
 <div class="goods_detail_con clearfix">
-    <div class="up fl" id="up"><img src="../static/images/goods_450.jpg"></div>
+    <div class="up fl" id="up"><img src=""></div>
     <div class="down" id="down">
-        <table>
+        <table style="margin-left: 1.5px">
             <tr>
-                <td><img src="../static/images/game.png"></td>
-                <td><img src="../static/images/camera.png"/></td>
-                <td><img src="../static/images/computer.png"/></td>
-                <td><img src="../static/images/pad.jpg"/></td>
-                <td><img src="../static/images/phone.png"/></td>
+                {% for img in img_list %}
+                    <td><img src="{{ img }}"></td>
+                {% endfor %}
             </tr>
         </table>
     </div>
@@ -311,14 +301,16 @@
                     </ul>
                 </div>
                 <div style="margin: 5px;text-align: center">
-                    <a href="{{ item.user_id }}"><input type="button" value="卖家信息" id="check_detail" class="opsale"></a>
+                    <a href="/user_credit/?user_credit_id={{ item.user_id }}"><input type="button" value="卖家信息"
+                                                                                     id="check_detail"
+                                                                                     class="opsale"></a>
                     <input type="button" value="私聊卖家" id="communication" class="opsale">
                 </div>
             {% endfor %}
         </div>
 
     </div>
-    <div class="main_wrap clearfix">
+    <div class="main_wrap clearfix" style="margin-top: 480px">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
@@ -338,23 +330,50 @@
             <div class="tab_content">
                 <p id="leave_message_head">留言：</p>
                 {% for key,value in p_comment_dict.items %}
-                    <dl style="margin-bottom: 25px;border: 1px solid white">
+                    <dl style="margin-bottom: 10px;border: 1px solid #eeeeee">
                         <dd class="hismessages">
                             {#获取父级回复ID#}
                             {#                            <input type="text" id="get_goods_id" value="{{ value.message_goods_id }}" hidden>#}
                             {#                            <input type="text" id="get_parent_id" value="{{ value.message_user_id }}" hidden>#}
                             {#                            <input type="text" id="get_message_id" value="{{ value.message_id }}" hidden>#}
                             {#----------------------------------------------------------#}
-                            <img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45">
-                            <div class="messages" style="height: 30px;line-height: 30px;">
-                                <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
-                                <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
-                            </div>
-                            <br>
-                            <div style="position: relative;left: -90px">
-                                <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <input id="review" type="button" value="回复" class="review_{{ value.message_id }}"
-                                       onclick="review({{ value.message_id }})">
+                            {#                            <div class="clearfix">#}
+                            {#                                <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages"#}
+                            {#                                                                                                src="{{ value.user_imgurl }}"#}
+                            {#                                                                                                alt="" height="45"#}
+                            {#                                                                                                width="45"></a>#}
+                            {#                                <div class="messages" style="height: 30px;line-height: 30px;">#}
+                            {#                                    {% if seller_id == value.user_id %}#}
+                            {#                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}"#}
+                            {#                                           style="color: #2d64b3;font-size: 16px">{{ value.user_name }}<span#}
+                            {#                                                style="color: red">(卖家)</span>:</a>#}
+                            {#                                    {% else %}#}
+                            {#                                        <a href="" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>#}
+                            {#                                    {% endif %}#}
+                            {#                                    <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>#}
+                            {#                                </div>#}
+                            {#                                <div style="position: relative;top: -7px">#}
+                            {#                                    <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>#}
+                            {#                                    <input id="review" type="button" value="回复" class="review_{{ value.message_id }}"#}
+                            {#                                           onclick="review({{ value.message_id }})">#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            <div class="clearfix">
+                                <a href="/user_credit/?user_credit_id={{ value.user_id }}"><img class="messages" src="{{ value.user_imgurl }}" alt="" height="45" width="45"></a>
+                                <div class="messages" style="height: 30px;line-height: 30px;">
+                                    {% if seller_id == value.user_id %}
+                                        <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:<span style="color: red">(卖家)</span></a>
+                                    {% else %}
+                                    <a href="/user_credit/?user_credit_id={{ value.user_id }}" style="color: #2d64b3;font-size: 16px">{{ value.user_name }}:</a>
+                                    {% endif %}
+                                    <span style="color: #333333;font-size: 16px">{{ value.message_desc }}</span>
+                                    <div style="position: relative;top: -7px">
+                                        <span style="color: #a3a3a3">{{ value.message_date }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <input id="review" type="button" value="回复"
+                                               class="review_{{ value.message_id }}"
+                                               onclick="review({{ value.message_id }})">
+                                    </div>
+                                </div>
                             </div>
                         </dd>
                         <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
@@ -363,11 +382,18 @@
                                     <dd style="margin-left: 75px;height: 45px;width:972px;background-color: #f7f8fa;">
                                         <input type="text" id="child_user_id_{{ item.second_message_id }}"
                                                value="{{ item.child_user_id }}" hidden>
-                                        <img src="{{ item.user_imgurl }}" alt="" height="40" width="40">
-                                        <div style="margin-left: 45px;position: relative;top: -50px;"><a
-                                                href="" style="color: #2d64b3"
-                                                class="c_name_{{ item.second_message_id }}">{{ item.user_name }}</a>:
-                                            <span style="color: #333333;font-size: 14px">{{ item.second_desc }}</span>
+
+                                        <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"><img
+                                                src="{{ item.user_imgurl }}" alt="" height="40" width="40"></a>
+                                        <div style="margin-left: 45px;position: relative;top: -50px;">
+                                            <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"
+                                               style="color: #2d64b3"
+                                               class="c_name_{{ item.second_message_id }}">{{ item.user_name }}&nbsp;</a>
+                                            {% if item.child_user_id == seller_id %}
+                                                <span style="color:green;font-size: 14px;">{{ item.second_desc }}</span>
+                                            {% else %}
+                                                <span style="color: #333333;font-size: 14px">{{ item.second_desc }}</span>
+                                            {% endif %}
                                             <div><span style="color: #a3a3a3">{{ item.second_date }}</span>
                                                 <input id="review" class="c_review_{{ item.second_message_id }}"
                                                        type="button" value="回复"
@@ -381,7 +407,7 @@
                             <a href="" class="append_{{ value.message_id }}"></a>
                             <dd>
                                 <textarea name="" id="get_child_review_{{ value.message_id }}" cols="150" rows="2"
-                                          style="margin-left: 72px"></textarea>
+                                          style="margin-left: 72px" onkeyup="checkLength(this,102)"></textarea>
                                 <input type="button" class="send_{{ value.message_id }}" value="发 表"
                                        style="margin-left: 20px;position: relative;top: -10px;background-color: #ffda44;border: 0px;padding: 5px;border-radius: 2px">
                             </dd>
@@ -391,12 +417,13 @@
                 {% endfor %}
                 <dl>
                     <dd>
-                        <img class="message" src="../static/Images/user.gif" alt="" height="30" width="30"
+                        <img class="message" src="{{ user_imgurl }}" alt="" height="30" width="30"
                              style="border-radius: 50%;border: 1px solid grey">
-                        <div class="message" style="height: 30px;line-height: 30px;">JQlove</div>
+                        <div class="message" style="height: 30px;line-height: 30px;">{{ login_status }}</div>
                     </dd>
                     <dd>
-                        <textarea name="get_Published" id="Published" cols="180" rows="4"></textarea>
+                        <textarea name="get_Published" id="Published" cols="180" rows="4"
+                                  onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
                         <input type="text" value="{{ goods_id }}" id="goods_id" hidden>
                     </dd>
                     <dd style="padding-left: 1070px">
@@ -478,33 +505,39 @@
         get_message_id = id;
         if ($(".review_" + id).val() == "回复") {
             $(".review_" + id).val("收起回复");
-            $(".hidreview_" + id).show();
+            $(".hidreview_" + id).show(500);
             if ("{{ goods_state }}" == "0") {
                 $(".send_" + get_message_id).click(function () {
-                    message_id = id;
-                    child_review = $('#get_child_review_' + get_message_id).val();
-                    {#child_user_id = $('#child_user_id').val();#}
-                    {#parent_id = $("#get_parent_id").val()#}
-                    {#goods_id = $("#get_goods_id").val()#}
-                    reply_id = rip_id;
-                    $.post('/review_ajax/', {
-                        'child_review': child_review,
-                        {#'child_user_id': child_user_id,#}
-                        "message_id": message_id,
-                        "reply_id": reply_id,
-                        {#"goods_id": goods_id,#}
-                    }, function (data) {
-                        if (data.msg === 'need_login') {
-                            top.location.href = data.href
+                        message_id = id;
+                        child_review = $('#get_child_review_' + get_message_id).val();
+                        var check = $('#get_child_review_' + get_message_id).val()
+                        {#child_user_id = $('#child_user_id').val();#}
+                        {#parent_id = $("#get_parent_id").val()#}
+                        {#goods_id = $("#get_goods_id").val()#}
+                        reply_id = rip_id;
+                        if (check == "") {
+                            return false
                         } else {
-                            $(".append_" + get_message_id).append(data.msg)
+                            $.post('/review_ajax/', {
+                                'child_review': child_review,
+                                {#'child_user_id': child_user_id,#}
+                                "message_id": message_id,
+                                "reply_id": reply_id,
+                                {#"goods_id": goods_id,#}
+                            }, function (data) {
+                                if (data.msg === 'need_login') {
+                                    top.location.href = data.href
+                                } else {
+                                    $(".append_" + get_message_id).append(data.msg)
+                                }
+                            }, 'json')
                         }
-                    }, 'json')
 
-                });
+                    }
+                );
             } else {
-                $(".send_" + get_message_id).hide()
-                $('#get_child_review_' + get_message_id).hide()
+                $(".send_" + get_message_id).hide(500)
+                $('#get_child_review_' + get_message_id).hide(500)
 
             }
 
@@ -536,30 +569,36 @@
     //留言
     $(function () {
         if ("{{ goods_state }}" == "0") {
-
             $("#pub_text").click(function () {
-                Published = $('#Published').val();
-                goods_id = $('#goods_id').val();
-                url_ = location.href;
-                $.post('/lea_message/', {
-                    'Published': Published,
-                    'goods_id': goods_id,
-                    'url_': url_
-                }, function (data) {
-                    if (data.msg === 'need_login') {
-                        top.location.href = data.href
+                    Published = $('#Published').val();
+                    var check = $('#Published').val();
+                    goods_id = $('#goods_id').val();
+                    url_ = location.href;
+                    if (check == "") {
+                        return false
                     } else {
-                        top.location.href = data.href
+                        $.post('/lea_message/', {
+                            'Published': Published,
+                            'goods_id': goods_id,
+                            'url_': url_
+                        }, function (data) {
+                            if (data.msg === 'need_login') {
+                                top.location.href = data.href
+                            } else {
+                                top.location.href = data.href
+                            }
+                        }, 'json')
                     }
-                }, 'json')
 
-            })
+                }
+            )
         }
         else {
             $('#Published').hide()
             $('#pub_text').hide()
         }
-    });
+    })
+    ;
     //商品收藏
     $(function () {
         $("#add_cart").one("click", function () {
@@ -642,9 +681,9 @@
         })
 
     });
-
 </script>
 <script>
+
     $("#buy_now").click(function () {
         $("#buy_now_message").show()
         price=$("#goods_price").text();
@@ -703,11 +742,40 @@
                         break;
                 }
             }
-            ,'json')
+        ,'json')
 
     })
 
 </script>
+
+=======
+    var checkLength = function (dom, maxLength) {
+        var l = 0;
+        for (var i = 0; i < dom.value.length; i++) {
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l += 2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0, i);
+                break;
+            }
+        }
+    };
+
+<script>
+    {#function href() {#}
+    {#    if ('{{ href }}' != "") {#}
+    {#        alert#}
+    {#       document.getElementsByClassName("tab_content").click();#}
+    {##}
+    {#    }#}
+    {##}
+    {
+    #}#}
+</script>
+<a name="abc"></a>
 
 </body>
 </html>

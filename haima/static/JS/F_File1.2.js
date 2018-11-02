@@ -1,5 +1,6 @@
 var index = 0;
 var dex = new Array();
+var fileArray = new Array();
 
 
 function FFile(obj) {
@@ -26,13 +27,20 @@ function FFile(obj) {
                 };
                 var observer = {
                     next(res) {
-                        // console.log(res.total.percent);
+                        console.log(res.total.percent);
+                        var ajaxbg = $("#background,#progressBar");
+                        ajaxbg.show();
                     },
                     error(err) {
+                        console.log(err)
 
                     },
                     complete(res) {
-                        // console.log(res)
+                        var ajaxbg = $("#background,#progressBar");
+                        ajaxbg.hide();
+                        console.log(res)
+                        fileArray[res['index']] = res['key']
+                        console.log(fileArray[res['index']])
                     }
                 }
                 if (file.type.indexOf("image") == 0) {
@@ -140,13 +148,33 @@ FFile.prototype = {
     },
     //文件上传
     funUploadFile: function () {
-        console.log(dex);
-        var ajaxbg = $("#background,#progressBar");
-        ajaxbg.show();
-
+        var postArray = [];
+        // var ajaxbg = $("#background,#progressBar");
+        // ajaxbg.show();
         var form = document.getElementById('pub_goods');
+        for (var i = 0; i < dex.length; i++) {
+            j = dex[i]
+            console.log(fileArray[j])
+            postArray.push(fileArray[j])
+        }
+        var filelist = document.getElementById('filelist');
+        console.log(JSON.stringify(postArray))
+        filelist.value = JSON.stringify(postArray)
+
+        // console.log(dex);
+        // console.log(fileArray)
+        // console.log(postArray)
         form.submit();
 
+        // $.ajax({
+        //     type: "POST",
+        //     url: '/pub_success/',
+        //     data: $('#pub_goods').serialize(),
+        //     success: function (data) {
+        //     },
+        //     error: function (data) {
+        //     }
+        // });
         // var self = this;
         // for (var i = 0, file; file = this.FileSet.fileFilter[i]; i++) {
         //     (function (file) {
@@ -173,7 +201,8 @@ FFile.prototype = {
         //     })(file);
         // }
 
-    },
+    }
+    ,
 
     init: function () {
         var self = this;
@@ -196,11 +225,13 @@ FFile.prototype = {
         //上传按钮提交
         if (self.FileSet.upButton) {
             $(self.FileSet.upButton).on('click', function (e) {
-                if (dex.length == 0) {
-                    alert('请添加商品图片')
-                    return
+                if (checkform()) {
+                    if (dex.length == 0) {
+                        alert('请添加商品图片')
+                        return
+                    }
+                    self.funUploadFile(e);
                 }
-                self.funUploadFile(e);
             })
         }
     }

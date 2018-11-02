@@ -11,19 +11,20 @@
     <div class="header">
         <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
 
-            <div class="login_btn fl">
-                <a href="/login/">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a><br>
-            </div>
+
+        <div class="login_btn fl">
+            <a href="/login/">登录</a>
+            <span>|</span>
+            <a href="/register/">注册</a>
+        </div>
+        <div class="user_link fl">
+            <span>|</span>
+            <a href="/haima/">首页</a>
+            <span>|</span>
+            <a href="/user/">用户中心</a>
+            <span>|</span>
+            <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
+
 
         </div>
     </div>
@@ -65,7 +66,7 @@
                     <ul class="user_info_list">
                         <li><span>用户名：</span>{{ user.user_name }}</li>
                         <li><span>手机号：</span>{{ user.user_phone }}</li>
-                        <li><span>Email：</span>demo@demo.com</li>
+                        <li><span>余额：</span>{{ user.user_money }}</li>
                     </ul>
                 </div>
                 <div>
@@ -88,7 +89,7 @@
 
         <h3 class="common_title2">最近浏览</h3>
         <div class="has_view_list">
-            <ul class="goods_type_list clearfix">
+            <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
                 {% if not browse_list %}
                     <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                          alt="" height="100">

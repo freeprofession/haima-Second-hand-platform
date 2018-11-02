@@ -129,13 +129,13 @@
                 </tr>
                 <tr>
                     <td>类型：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">手机</option>
-                        <option value="computer">电脑</option>
-                        <option value="pad">平板</option>
-                        <option value="camera">相机</option>
-                        <option value="game">外设</option>
-                        <option value="other">其他</option>
+                    <td><select style="width: 200px" name="type">
+                        <option value="1">手机</option>
+                        <option value="2">电脑</option>
+                        <option value="3">平板</option>
+                        <option value="4">相机</option>
+                        <option value="5">外设</option>
+                        <option value="6">其他</option>
                     </select></td>
                 </tr>
 
@@ -148,9 +148,9 @@
                 </tr>
                 <tr>
                     <td>包邮：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">是</option>
-                        <option value="computer">否</option>
+                    <td><select style="width: 200px" name="postage">
+                        <option value="0">是</option>
+                        <option value="1">否</option>
                     </select></td>
                 </tr>
                 <tr>
@@ -175,6 +175,7 @@
                     <td><textarea name="" id="" cols="100" rows="8" placeholder="商品描述不低于10个字"></textarea></td>
                 </tr>
             </table>
+            <input type="text" name="filelist" id="filelist" style="display:none;">
             <div>
                 <input type="button" id="publish_button" value="发布">
             </div>
