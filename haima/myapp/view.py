@@ -13,7 +13,6 @@ con = pymysql.connect(host='47.100.200.132', user='user', password='123456', dat
 cur = con.cursor(pymysql.cursors.DictCursor)
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-import pymysql
 import redis
 import json
 import random
@@ -28,31 +27,33 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
-img = redis.Redis(host="47.100.200.132", port=6379, db=2)
-category = redis.Redis(host="47.100.200.132", port=6379, db=3)
-cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
+img = redis.Redis(host="47.100.200.132", port=6379, db=2)  # 商品图片
+category = redis.Redis(host="47.100.200.132", port=6379, db=3)  # 商品分类
+cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)  # 分词搜索
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 
 
-def get_token(func):
-    def in_func(request):
-        from qiniu import Auth
-        access_key = 'ln1sRuRjLvxs_7jjVckQcauIN4dieFvtcWd8zjQF'
-        secret_key = 'YogFj8XEOnZOfkapjAL2UuMmtujVEONBJRbowx-p'
-        q = Auth(access_key, secret_key)
-        bucket_name = 'haima'
-        key = None
-        policy = {
-            "scope": "haima",
-            # "returnBody":
-            # 'callbackUrl': 'http://g1.xmgc360.com/callback/',
-            # 'callbackBody': 'filename=$(fname)&filesize=$(fsize)&"key"=$(key)',
-            # 'returnUrl': 'http://g1.xmgc360.com/callback/'
-            # 'persistentOps':'imageView2/1/w/200/h/200'
-        }
-        token = q.upload_token(bucket_name, key, 3600, policy)
-        return func(request, token)
-
-    return in_func
+def send_sms(request):
+    from urllib import request as rq
+    phone = request.POST.get('phone')
+    identify = random.randint(100000, 999999)
+    print(phone)
+    textmod = {"sid": "5e7761804d551f3d6184322133855f37",
+               "token": "3e877f5f0eaee4b6eb75597db115d720",
+               "appid": "60de937cff7d4a458ab4a0404468abd3",
+               "templateid": "393404",
+               "param": identify,
+               "mobile": phone,
+               "uid": phone}
+    textmod = json.dumps(textmod).encode(encoding='utf-8')
+    header_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko',
+                   "Content-Type": "application/json"}
+    req = rq.Request(url='https://open.ucpaas.com/ol/sms/sendsms', data=textmod, headers=header_dict)
+    res = rq.urlopen(req)
+    res = res.read().decode('utf-8')
+    print(res)
+    sms.set(phone, identify, 180)
+    return HttpResponse(json.dumps(res))
 
 
 # 登录状态检查，装饰器
@@ -1117,10 +1118,7 @@ def my_auction_four(request):
     record_id_dict = cur.fetchall()
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
-<<<<<<< HEAD
 
-=======
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     goods_record_list = cur.fetchall()
     goods_list = []
     goods_info_list = []
@@ -1132,7 +1130,6 @@ def my_auction_four(request):
     goods_info_list = []
     # 这里是通过竞拍记录id找到商品id
 
-
     for i in record_id_dict:
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
@@ -1142,8 +1139,6 @@ def my_auction_four(request):
         info = cur.fetchone()
         goods_info_list.append(info)
     list4 = []
-<<<<<<< HEAD
-=======
 
     for i in range(len(goods_record_list)):
         dict1 = {}
@@ -1154,23 +1149,18 @@ def my_auction_four(request):
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
 
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     for i in range(len(goods_record_list)):
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
 
         list4.append(dict1)
-<<<<<<< HEAD
-=======
 
     dict1 = {}
     dict1["record"] = goods_record_list[i]
     dict1["goods"] = goods_info_list[i]
     list4.append(dict1)
 
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     print(list4)
     return render(request, 'my_auction_four.html', locals())
 
@@ -1225,10 +1215,7 @@ def calculate_price(request):
         pass
 
         return HttpResponse("输入的加价有误")
-<<<<<<< HEAD
-=======
 
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     else:
         count_price = int(price) + int(permium)
         return HttpResponse(count_price)
@@ -1320,17 +1307,14 @@ def confirm_buy(request):
                                     "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
-<<<<<<< HEAD
-                                cur.execute(
-                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
-                                    [goods_id])
-=======
-
 
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
 
+                                cur.execute(
+                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
+                                    [goods_id])
 
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
@@ -1339,7 +1323,6 @@ def confirm_buy(request):
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
 
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
                                 record_dict = cur.fetchall()
                                 if record_dict:
                                     record_list = []
@@ -1393,17 +1376,11 @@ def confirm_buy(request):
 
 # ****************************************************************用户竞拍成功******************************************
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
 
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
 
-<<<<<<< HEAD
-=======
 # ****************************************************************用户竞拍成功******************************************
 
 
@@ -1411,7 +1388,6 @@ def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
 
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
 # 我出售的
 def my_sale(request):
     return render(request, 'my_sale.html')
@@ -1490,7 +1466,7 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        print(nickname,shen, shi, xian, img, date, sex)
+        print(nickname, shen, shi, xian, img, date, sex)
         return render(request, 'modify_information.html')
 
 
