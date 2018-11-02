@@ -80,7 +80,6 @@ def homepage(request):
             con.commit()
             cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
             user_imgurl = cur.fetchone()
-
     else:
         login_status = "未登录"
         user_imgurl = {}
@@ -304,64 +303,90 @@ def register_ok(request):
 # 搜索跳转到商品列表-------------------------------------------
 def goods_list(request):
     value_list = []
+    start_list = []
     goods_lst = []
     if request.method == 'GET':
         question = request.GET.get('q')
-        question_word = jieba.cut(question)
-        question_word = list(question_word)
-        if len(question_word) != 1:
-            question_word.insert(0, question)
-        count = 0
-        for key in question_word:
-            if cut_words.smembers(key):
-                count += 1
-                bvalue_list = list(cut_words.smembers(key))
-                for value in bvalue_list:
-                    value = int(value.decode('utf-8'))
-                    if value not in value_list:
-                        value_list.append(value)
-                for goods_id in value_list:
-                    sql = "select * from t_goods where goods_id = %d" % goods_id
-                    cur.execute(sql)
-                    goods = cur.fetchone()
-                    # 价格筛选
-                    if request.GET.get("price_low") and request.GET.get("price_high"):
-                        price_low = int(request.GET.get("price_low"))
-                        price_high = int(request.GET.get("price_high"))
-                        if price_low <= goods['goods_price'] <= price_high:
-                            goods_lst.append(goods)
-                    if request.GET.get("price_low") and request.GET.get("price_high") == "":
-                        price_low = int(request.GET.get("price_low"))
-                        if price_low <= goods['goods_price']:
-                            goods_lst.append(goods)
-                    if request.GET.get("price_high") and request.GET.get("price_low") == "":
-                        price_high = int(request.GET.get("price_high"))
-                        if goods['goods_price'] <= price_high:
-                            goods_lst.append(goods)
-                    if request.GET.get("price_high") == "" and request.GET.get("price_low") == "":
-                        goods_lst.append(goods)
-        if count == 0:
-            return render(request, 'register_ok.html')
+        if question == '全新闲置':
+            prompt = '以下商品为本平台最新上架商品，只显示最新的60条哟！'
+            cur.execute("select * from t_goods order by goods_id desc limit 60")
+            goods_lst = cur.fetchall()
+        elif question == '同城交易':
+            if request.session.get('user_id'):
+                user_id = request.session.get('user_id')
+                cur.execute("select user_address from t_user where user_id = %s", [user_id])
+                user_address_dict = cur.fetchone()
+                user_address = user_address_dict['user_address']
+                if user_address:
+                    cur.execute("select * from t_goods where goods_address = %s", [user_address, ])
+                    goods_lst = cur.fetchall()
+                    prompt = '以下商品为' + user_address + '地区同城的商品，如需要查询其他地区请在用户中心中修改居住地'
+                else:
+                    prompt = '亲还没有设置居住地看不到同城商品哟！请在用户中心设置'
+            else:
+                return redirect('/user_center/')
         else:
-            # 排序方式
-            sort_method = request.GET.get('sort_method')
-            if sort_method == '1':
-                goods_lst.sort(key=lambda x: x['goods_price'])
-            if sort_method == '2':
-                goods_lst.sort(key=lambda x: x['goods_price'], reverse=True)
+            question_word = jieba.cut(question)
+            question_word = list(question_word)
+            if len(question_word) != 1:
+                question_word.insert(0, question)
+            count = 0
+            for key in question_word:
+                if cut_words.smembers(key):
+                    count += 1
+                    bvalue_list = list(cut_words.smembers(key))
+                    for value in bvalue_list:
+                        value = int(value.decode('utf-8'))
+                        if value not in value_list:
+                            value_list.append(value)
+                    for goods_id in value_list:
+                        sql = "select * from t_goods where goods_id = %d" % goods_id
+                        cur.execute(sql)
+                        goods = cur.fetchone()
+                        goods_lst.append(goods)
+            prompt = '已选条件： 所有与' + question + '相关的宝贝'
+            if count == 0:
+                return render(request, 'register_ok.html')
 
-            # 分页
-            paginator = Paginator(goods_lst, 18)
-            page = request.GET.get('page')
-            try:
-                contacts = paginator.page(page)
-            except PageNotAnInteger:
-                # If page is not an integer, deliver first page.
-                contacts = paginator.page(1)
-            except EmptyPage:
-                # If page is out of range (e.g. 9999), deliver last page of results.
-                contacts = paginator.page(paginator.num_pages)
-            return render(request, 'goods_list.html', locals())
+        # 价格筛选
+        if request.GET.get("price_low") and request.GET.get("price_high"):
+            price_low = int(request.GET.get("price_low"))
+            price_high = int(request.GET.get("price_high"))
+            for goods in goods_lst:
+                if price_low <= goods['goods_price'] <= price_high:
+                    start_list.append(goods)
+            goods_lst = start_list
+        if request.GET.get("price_low") and request.GET.get("price_high") == "":
+            price_low = int(request.GET.get("price_low"))
+            for goods in goods_lst:
+                if price_low <= goods['goods_price']:
+                    start_list.append(goods)
+            goods_lst = start_list
+        if request.GET.get("price_high") and request.GET.get("price_low") == "":
+            price_high = int(request.GET.get("price_high"))
+            for goods in goods_lst:
+                if goods['goods_price'] <= price_high:
+                    start_list.append(goods)
+            goods_lst = start_list
+
+        sort_method = request.GET.get('sort_method')
+        if sort_method == '1':
+            goods_lst.sort(key=lambda x: x['goods_price'])
+        if sort_method == '2':
+            goods_lst.sort(key=lambda x: x['goods_price'], reverse=True)
+
+        # 分页
+        paginator = Paginator(goods_lst, 18)
+        page = request.GET.get('page')
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            contacts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            contacts = paginator.page(paginator.num_pages)
+        return render(request, 'goods_list.html', locals())
 
 
 # 用户中心——————————————————————
@@ -369,7 +394,6 @@ def goods_list(request):
 def user_center(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
-    print(username)
     if username:
         # 用户信息------------------
         cur.execute("select * from t_user where user_name=%s", [username, ])
@@ -380,6 +404,7 @@ def user_center(request):
             [user_id, ])
         # cur.execute("select * from t_user_browse where browse_user_id=%s", [user_id, ])
         browse_list = cur.fetchall()
+<<<<<<< HEAD
         #这里需要返回他的购买和出售数量，从order_success 订单成功表去查
         cur.execute("select * from t_order_success where buy_user_id=%s",[user_id])
         dict1=cur.fetchall()
@@ -389,6 +414,8 @@ def user_center(request):
 
 
         print(user_info, browse_list, 77777777777777777777)
+=======
+>>>>>>> be225a1e3131f95b555284e2e8af83c8e1b29cf9
         return render(request, 'user_center.html', locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -532,6 +559,10 @@ def goods_detail(request):
                     lst.append(c_comment_dict[j])
                     c_comment_dict[j] = ''
         p_comment_dict[i]['child_message'] = lst
+    # 按钮列表
+    button_list = []
+    for i in p_comment_dict:
+        button_list.append(int(i))
     # print(p_comment_dict)
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
     if username:  # 登录后才记录，浏览记录
@@ -1206,6 +1237,7 @@ def my_auction_four(request):
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
     record_id_dict = cur.fetchall()
+<<<<<<< HEAD
     #找到用户的订单
     cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s",[user_id])
     order_dict=cur.fetchall()
@@ -1214,6 +1246,22 @@ def my_auction_four(request):
     list3=[]
     list4=[]
     # 这里是通过竞拍记录id找到商品id
+=======
+    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
+                [user_id])
+
+    goods_record_list = cur.fetchall()
+    goods_list = []
+    goods_info_list = []
+    goods_buyuser_name_list = []
+    # 这里是通过竞拍记录id找到商品id
+
+    goods_record_list = cur.fetchall()
+    goods_list = []
+    goods_info_list = []
+    # 这里是通过竞拍记录id找到商品id
+
+>>>>>>> be225a1e3131f95b555284e2e8af83c8e1b29cf9
     for i in record_id_dict:
         dict1={}
         #这里拿到拍卖记录表的状态
@@ -1224,6 +1272,7 @@ def my_auction_four(request):
             print(i)
             cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
+<<<<<<< HEAD
             goods_id=cur.fetchone()["auction_goods_id"]
             cur.execute("select *  from t_auction_record where auction_record_id=%s",
                         [i["auction_record_id"]])
@@ -1296,6 +1345,38 @@ def my_auction_four(request):
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
 
+=======
+        goods_list.append(cur.fetchone()["auction_goods_id"])
+    for i in goods_list:
+        cur.execute("select * from t_auction_goods where auction_goods_id=%s", [i])
+        info = cur.fetchone()
+        goods_info_list.append(info)
+    list4 = []
+
+
+    for i in range(len(goods_record_list)):
+        dict1 = {}
+        dict1["record"] = goods_record_list[i]
+        dict1["goods"] = goods_info_list[i]
+
+        dict1 = {}
+        dict1["record"] = goods_record_list[i]
+        dict1["goods"] = goods_info_list[i]
+
+
+    for i in range(len(goods_record_list)):
+        dict1 = {}
+        dict1["record"] = goods_record_list[i]
+        dict1["goods"] = goods_info_list[i]
+
+        list4.append(dict1)
+
+
+    dict1 = {}
+    dict1["record"] = goods_record_list[i]
+    dict1["goods"] = goods_info_list[i]
+    list4.append(dict1)
+>>>>>>> be225a1e3131f95b555284e2e8af83c8e1b29cf9
     print(list4)
 
     return render(request, 'my_auction_four.html', locals())
@@ -1432,6 +1513,17 @@ def confirm_buy(request):
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
 
+<<<<<<< HEAD
+=======
+
+                                cur.execute(
+                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
+                                    [goods_id])
+
+                                cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
+                                            [goods_id])
+
+>>>>>>> be225a1e3131f95b555284e2e8af83c8e1b29cf9
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
@@ -1492,6 +1584,7 @@ def confirm_buy(request):
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
+<<<<<<< HEAD
 
 
 #**********************************************************提前结束拍卖*************************************************
@@ -1542,6 +1635,9 @@ def end_auction(request):
         con.commit()
     return redirect("/my_auction_one/")
 
+=======
+# ****************************************************************用户竞拍成功******************************************
+>>>>>>> be225a1e3131f95b555284e2e8af83c8e1b29cf9
 
 
 
@@ -1681,6 +1777,16 @@ def leave_message(request):
         'where to_rid=%s order by second_message_id desc',
         [user_id, ])
     review_list = cur.fetchall()
+    paginator = Paginator(review_list, 5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request, 'leave_message.html', locals())
 
 
@@ -1694,6 +1800,16 @@ def leave_message_two(request):
         'where child_user_id=%s order by second_message_id desc',
         [user_id, ])
     my_review_list = cur.fetchall()
+    paginator = Paginator(my_review_list, 5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request, 'leave_message_two.html', locals())
 
 
@@ -1709,8 +1825,14 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        print(nickname,shen, shi, xian, img, date, sex)
+        print(nickname, shen, shi, xian, img, date, sex)
+        imgurl = "pgwecu7z4.bkt.clouddn.com/" + img
+        print(imgurl)
         return render(request, 'modify_information.html')
+
+
+def modify_password(request):
+    return render(request, 'modify_password.html')
 
 
 def callback(request):
