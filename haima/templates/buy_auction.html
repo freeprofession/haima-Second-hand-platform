@@ -229,13 +229,17 @@
 
 
             </div>
-        <div id="price_error" onclick="javascript:window.location.reload() ">
-            <button id="shutdown_error">
+        <div id="price_error" >
+            <button id="shutdown_error" onclick="javascript:window.location.reload() ">
                 关闭
             </button>
-            <div>
-                必须输入正确的价格
+            <br>
+            <div  style="font-size: 16px; color: white;margin-top: 70px;">
+                必须输入正确的价格!
             </div>
+            <span style="color: white;float: right;margin-top: 60px;">
+                海马平台温馨提示
+            </span>
         </div>
 
 
@@ -444,6 +448,7 @@
                      case "pay_ok":
                            location.href = '/buy_auction_ok/'
                         break;
+
 
 
 

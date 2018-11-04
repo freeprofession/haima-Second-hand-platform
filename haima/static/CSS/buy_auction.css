@@ -427,8 +427,10 @@ html,body
     top: 200px;
     left: 600px;
     width: 350px;
+    background-color: #2e3846;
+    border: #ffda44 solid 7px;
+    border-radius: 15px;
 
-    background-color: #16bcbd;
     display: none;
 }
 #shutdown{
@@ -436,6 +438,16 @@ html,body
 }
 #price_error{
     display: none;
+    width: 300px;
+    height: 200px;
+    position: fixed;
+    top: 30%;
+    left: 35%;
+    background-color: #2e3846;
+    border: #ffda44 solid 7px;
+    border-radius: 15px;
+
+
 
 }
 #shutdown_error{

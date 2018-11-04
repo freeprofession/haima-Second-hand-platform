@@ -3,15 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>发布拍卖</title>
+   <style type="text/css">
+       #js-pre {
+            width: 500px;
+            height: 100px;
+
+        }
+
+        #js-pre:after {
+            content: '';
+            display: block;
+            height: 0;
+            visibility: hidden;
+            clear: both;
+        }
+
+        #show_pic div {
+            float: left;
+        }
+
+        .img-box {
+            float: left;
+        }
+
+        .img-border {
+            position: relative;
+            box-sizing: border-box;
+            height: 100px;
+            width: 100px;
+            border: 1px solid #ccc
+        }
+
+        .js-upload_delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .red {
+            font-size: 20px;
+            color: #ffda44;
+        }
+       img {
+            height: 100px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>历史拍卖场</title>
+    <title>发布拍卖</title>
     <script type="text/javascript" src="https://unpkg.com/qiniu-js@2.5.1/dist/qiniu.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+     <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../static/CSS/release_auction.css">
     <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/main.js"></script>
@@ -35,7 +81,7 @@
                 <span>|</span>
                 <a href="" id="my_order">我的订单</a>
                 <span>|</span>
-                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
+                <a href="" id="my_order">留言 </a>
             </div>
         </div>
     </div>
@@ -182,83 +228,83 @@
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="../static/JS/F_File1.1.js"></script>
-<script type="text/javascript">
-    /*等比例缩放图片的函数
-         *param{object} ImgD 需要缩放的图片
-         *param{number} iwidth 预计图片的宽度
-         *param{number} iheight 预计的图片的高度
-         */
-    function DrawImage(ImgD, iwidth, iheight) {
-        var image = new Image();//新建一个image
-        image.src = ImgD.src;//新建的image与传入的image关联,便于调整传入图片的比例
-        if (image.width > 0 && image.height > 0) {//如果传入图片大于预计图片大小进行等比例缩放 否则不进行能比例缩放
-            if (image.width / image.height >= iwidth / iheight) {
-                if (image.width > iwidth) {//如果宽度大于预计,基于宽度进行等比例缩放
-                    ImgD.width = iwidth;
-                    ImgD.height = (image.height * iwidth) / image.width;
-                } else {
-                    ImgD.width = image.width;
-                    ImgD.height = image.height;
-                }
-            } else {
-                if (image.height > iheight) {//如果传入图片高度大于预计,则基于高度进行等比例缩放
-                    ImgD.height = iheight;
-                    ImgD.width = (image.width * iheight) / image.height;
-                } else {
-                    ImgD.width = image.width;
-                    ImgD.height = image.height;
-                }
-            }
-        }
-    }
-
-    $(function () {
-        $("#publish_button").click(function () {
-
-<<<<<<< HEAD
-                        })
-                    }
-                    else if (data.msg === 'floorpremium_error') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '商品最低加价不得高于商品底价';
-
-                        })
-
-                    }
-                       else if (data.msg === 'sql_error') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '数据库错误请重试';
-
-                        })
-
-                    }
-                      else if (data.msg === 'time_error') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '发布时间有误';
-
-                        })
-
-                    }
-                     else if (data.msg === 'margin_errorr') {
-                        $('#error_message').html(function () {
-                            document.getElementById('error_message').style.display = 'block';
-                            document.getElementById('error_message').innerText = '余额不足以缴纳拍卖所需的保证金';
-
-                        })
-
-                    }
-                },'json')
-
-        })
-=======
->>>>>>> 81d79905ab698256e6911be6117c430d42151268
-        })
-    })
-
-</script>
+{#<script type="text/javascript">#}
+{#    /*等比例缩放图片的函数#}
+{#         *param{object} ImgD 需要缩放的图片#}
+{#         *param{number} iwidth 预计图片的宽度#}
+{#         *param{number} iheight 预计的图片的高度#}
+{#         */#}
+{#    function DrawImage(ImgD, iwidth, iheight) {#}
+{#        var image = new Image();//新建一个image#}
+{#        image.src = ImgD.src;//新建的image与传入的image关联,便于调整传入图片的比例#}
+{#        if (image.width > 0 && image.height > 0) {//如果传入图片大于预计图片大小进行等比例缩放 否则不进行能比例缩放#}
+{#            if (image.width / image.height >= iwidth / iheight) {#}
+{#                if (image.width > iwidth) {//如果宽度大于预计,基于宽度进行等比例缩放#}
+{#                    ImgD.width = iwidth;#}
+{#                    ImgD.height = (image.height * iwidth) / image.width;#}
+{#                } else {#}
+{#                    ImgD.width = image.width;#}
+{#                    ImgD.height = image.height;#}
+{#                }#}
+{#            } else {#}
+{#                if (image.height > iheight) {//如果传入图片高度大于预计,则基于高度进行等比例缩放#}
+{#                    ImgD.height = iheight;#}
+{#                    ImgD.width = (image.width * iheight) / image.height;#}
+{#                } else {#}
+{#                    ImgD.width = image.width;#}
+{#                    ImgD.height = image.height;#}
+{#                }#}
+{#            }#}
+{#        }#}
+{#    }#}
+{##}
+{#    $(function () {#}
+{#        $("#publish_button").click(function () {#}
+{##}
+{#<<<<<<< HEAD#}
+{#                        })#}
+{#                    }#}
+{#                    else if (data.msg === 'floorpremium_error') {#}
+{#                        $('#error_message').html(function () {#}
+{#                            document.getElementById('error_message').style.display = 'block';#}
+{#                            document.getElementById('error_message').innerText = '商品最低加价不得高于商品底价';#}
+{##}
+{#                        })#}
+{##}
+{#                    }#}
+{#                       else if (data.msg === 'sql_error') {#}
+{#                        $('#error_message').html(function () {#}
+{#                            document.getElementById('error_message').style.display = 'block';#}
+{#                            document.getElementById('error_message').innerText = '数据库错误请重试';#}
+{##}
+{#                        })#}
+{##}
+{#                    }#}
+{#                      else if (data.msg === 'time_error') {#}
+{#                        $('#error_message').html(function () {#}
+{#                            document.getElementById('error_message').style.display = 'block';#}
+{#                            document.getElementById('error_message').innerText = '发布时间有误';#}
+{##}
+{#                        })#}
+{##}
+{#                    }#}
+{#                     else if (data.msg === 'margin_errorr') {#}
+{#                        $('#error_message').html(function () {#}
+{#                            document.getElementById('error_message').style.display = 'block';#}
+{#                            document.getElementById('error_message').innerText = '余额不足以缴纳拍卖所需的保证金';#}
+{##}
+{#                        })#}
+{##}
+{#                    }#}
+{#                },'json')#}
+{##}
+{#        })#}
+{#=======#}
+{#>>>>>>> 81d79905ab698256e6911be6117c430d42151268#}
+{#        })#}
+{#    })#}
+{##}
+{#</script>#}
 <script type="text/javascript">
     $(function () {
         var f = new FFile({
