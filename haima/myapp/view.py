@@ -29,11 +29,11 @@ from myapp import AI_assess
 
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
-<<<<<<< HEAD
 img = redis.Redis(host="47.100.200.132", port=6379, db=2)
 category = redis.Redis(host="47.100.200.132", port=6379, db=3)
 cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
 auction_img= redis.Redis(host="47.100.200.132", port=6379, db=5)
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 
 
 def get_token(func):
@@ -56,11 +56,7 @@ def get_token(func):
         return func(request, token)
 
     return in_func
-=======
-img = redis.Redis(host="47.100.200.132", port=6379, db=2)  # 商品图片
-category = redis.Redis(host="47.100.200.132", port=6379, db=3)  # 商品分类
-cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)  # 分词搜索
-sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
+
 
 
 def send_sms(request):
@@ -84,7 +80,7 @@ def send_sms(request):
     print(res)
     sms.set(phone, identify, 180)
     return HttpResponse(json.dumps(res))
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
+
 
 
 # 登录状态检查，装饰器
@@ -448,10 +444,6 @@ def user_center(request):
         if dict1:
             buy_conut=len(dict1)
         print(user_info, browse_list, 77777777777777777777)
-<<<<<<< HEAD
-=======
-
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
         return render(request, 'user_center.html', locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -1332,19 +1324,7 @@ def my_auction_four(request):
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
     record_id_dict = cur.fetchall()
-<<<<<<< HEAD
-    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
-                [user_id])
 
-    goods_record_list = cur.fetchall()
-    goods_list = []
-    goods_info_list = []
-    goods_buyuser_name_list = []
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
     #找到用户的订单
     cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s",[user_id])
     order_dict=cur.fetchall()
@@ -1354,24 +1334,8 @@ def my_auction_four(request):
     list4=[]
     list5=[]
     list6=[]
->>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
-    # 这里是通过竞拍记录id找到商品id
-<<<<<<< HEAD
-=======
-    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
-                [user_id])
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
 
-    goods_list = []
 
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
-
-=======
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
->>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
     for i in record_id_dict:
         dict1={}
         #这里拿到拍卖记录表的状态
@@ -1383,10 +1347,7 @@ def my_auction_four(request):
             print(i)
             cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
-<<<<<<< HEAD
 
-=======
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
             goods_id=cur.fetchone()["auction_goods_id"]
             cur.execute("select *  from t_auction_record where auction_record_id=%s",
                         [i["auction_record_id"]])
@@ -1430,7 +1391,7 @@ def my_auction_four(request):
             cur.execute("select auction_order_state from t_auction_order where auction_order_id=%s",[id])
             x=cur.fetchone()
             order_state=x["auction_order_state"]
-<<<<<<< HEAD
+
             #这里待支付尾款的
             if order_state==0:
                 dict1={}
@@ -1453,44 +1414,7 @@ def my_auction_four(request):
                 else:
                     dict1["state"] ="待发货"
                 dict1["goods"] = goods_message
-=======
-            #这里表示超过时间没有支付尾款的
-            if order_state==1:
-                pass
-            #这里表示支付完成的
-            if order_state==2:
-                pass
-    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
-                [user_id])
 
-    goods_list.append(cur.fetchone()["auction_goods_id"])
-    for i in goods_list:
-        cur.execute("select * from t_auction_goods where auction_goods_id=%s", [i])
-        info = cur.fetchone()
-        goods_info_list.append(info)
-    list4 = []
-<<<<<<< HEAD
-
-=======
->>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
-    for i in range(len(goods_record_list)):
-        dict1 = {}
-        dict1["record"] = goods_record_list[i]
-        dict1["goods"] = goods_info_list[i]
-
-<<<<<<< HEAD
-        list4.append(dict1)
-
-=======
-        dict1 = {}
-        dict1["record"] = goods_record_list[i]
-        dict1["goods"] = goods_info_list[i]
-
-    for i in range(len(goods_record_list)):
-        dict1 = {}
-        dict1["record"] = goods_record_list[i]
-        dict1["goods"] = goods_info_list[i]
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
 
                 dict1["attribute"] = attribute
                 dict1["order"] = order_messge

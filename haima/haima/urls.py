@@ -66,26 +66,16 @@ urlpatterns = [
     # 获取图片上传token
     path('gettokendata/', view.gettokendata),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
-<<<<<<< HEAD
 
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
 
-=======
-    path('modify_information/', view.modify_information),  # 修改信息
-    path('modify_password/', view.modify_password),  # 修改密码
-    path('modify_password/', view.modify_password),  # 修改密码
-    path('modify_information/', view.modify_information),  # 修改信息
-    # path('modify_information/', view.modify_information),
->>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
     # 返回用户的拍卖发布历史记录
     path("my_release_record/", view.my_release_record),
-<<<<<<< HEAD
 
-=======
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),
@@ -99,12 +89,8 @@ urlpatterns = [
     path("confirm_buy/", view.confirm_buy),
     # 用户支付成功以后的跳转
     path("buy_auction_ok/", view.buy_auction_ok),
-<<<<<<< HEAD
 
-    #提前结束拍卖
-=======
     # 提前结束拍卖
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
     path("end_auction/", view.end_auction),
     # 普通商品的购买
     path("goods_confirm_buy/", view.goods_confirm_buy),
@@ -112,10 +98,7 @@ urlpatterns = [
     path("buy_goods_ok/", view.buy_goods_ok),
     # 拍卖时间结束的判断
     path("Determine_auction_date/", view.Determine_auction_date),
-<<<<<<< HEAD
 
-=======
->>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),
@@ -126,28 +109,17 @@ urlpatterns = [
     path("my_auction_two/", view.my_auction_two),
     path("my_auction_three/", view.my_auction_three),
     path("my_auction_four/", view.my_auction_four),
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
-    # 用户输完价格确认竞拍
-    path("confirm_buy/", view.confirm_buy),
-    # 用户支付成功以后的跳转
-    path("buy_auction_ok/", view.buy_auction_ok),
-<<<<<<< HEAD
-    #普通商品收货
-    path("confirm_goods/",view.confirm_goods),
-    #拍卖商品竞拍成功后，支付尾款
-    path("pay_auction_money/",view.pay_auction_money),
-    #支付拍卖尾款成功
-    path("pay_auction_money_ok/",view.pay_auction_money_ok),
-    #拍卖商品发货
-    path("delivery/",view.delivery),
-    #拍卖商品收货
-    path("confirm_auction_goods/",view.confirm_auction_goods),
 
-=======
-    path("send_sms/", view.send_sms),
     # 普通商品收货
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品竞拍成功后，支付尾款
     path("pay_auction_money/", view.pay_auction_money),
->>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
+    # 支付拍卖尾款成功
+    path("pay_auction_money_ok/", view.pay_auction_money_ok),
+    # 拍卖商品发货
+    path("delivery/", view.delivery),
+    # 拍卖商品收货
+    path("confirm_auction_goods/", view.confirm_auction_goods),
+    path("send_sms/", view.send_sms),
+
 ]
