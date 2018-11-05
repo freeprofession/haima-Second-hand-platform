@@ -94,7 +94,7 @@
                 <span>|</span>
                 <a href="/haima/">首页</a>
                 <span>|</span>
-                <a href="/user/">用户中心</a>
+                <a href="/user_center/">用户中心</a>
                 <span>|</span>
                 <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
             </div>
@@ -282,67 +282,70 @@
 <div class="goods_detail_con clearfix">
     <div class="up fl" id="up"><img src="../static/images/goods_450.jpg"></div>
     <div class="down" id="down">
-        <table>
+        <table style="margin-left: 1.5px">
             <tr>
-                <td><img src="../static/images/game.png"></td>
-                <td><img src="../static/images/camera.png"/></td>
-                <td><img src="../static/images/computer.png"/></td>
-                <td><img src="../static/images/pad.jpg"/></td>
-                <td><img src="../static/images/phone.png"/></td>
+                {% for img in img_list %}
+                    <td><img src="{{ img }}"></td>
+                {% endfor %}
             </tr>
         </table>
     </div>
     <div id="detail_user">
-        <div class="goods_detail_list fr" style="position: relative;right: 350px">
-            <h3>Apple MacBook Pro 13.3英寸笔记本</h3>
-            <div class="prize_bar">
-                <span class="show_pirze">¥<em>11388.00</em></span>
-                <a href="" class="goods_judge">449人浏览</a>
-            </div>
-            <div class="goods_num clearfix">
-                <div class="type_select">
-                    <label>成色：</label>
-                    <span>全新</span>
+        {% for goods in goods_list %}
+            <div id="goods_detail_list fr" class="detail_right">
+                <h3>{{ goods.goods_title }}</h3>
+                <div class="prize_bar">
+                    <span class="show_pirze">¥<em>{{ goods.goods_price }}</em></span>
+                    <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览 {{ collection_count }}</a>
                 </div>
-                <div class="type_select">
-                    <label>所在地:</label>
-                    <span>北京</span>
+                <div class="goods_num clearfix">
+                    <div class="type_select">
+                        <label>成色：</label>
+                        <span>全新</span>
+                    </div>
+                    <div class="type_select">
+                        <label>所在地:</label>
+                        <span>{{ goods.goods_address }}</span>
+                    </div>
+                    <div class="type_select">
+                        <label>发布日期:</label>
+                        <span>{{ goods.release_date }}</span>
+                    </div>
+                    <div class="type_select">
+                        <label>快递:</label>
+                        <span>免运费</span>
+                    </div>
+                    <div class="operate_btn">
+                        <hr>
+                    </div>
                 </div>
-                <div class="type_select">
-                    <label>发布日期:</label>
-                    <span>2018-10-22</span>
+            </div>
+        {% endfor %}
+        <div class="detail_right" id="user_detail">
+            {% for item in seller_info %}
+                <div class="info_detail">
+                    <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                    <div><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    <br>
+                    <div><span title="已实名认证" class="user-verify"></span></div>
                 </div>
-                <div class="type_select">
-                    <label>快递:</label>
-                    <span>免运费</span>
+                <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                    <div><p>男</p>
+                        <p>注册时间：{{ item.user_startdate }}</p></div>
                 </div>
-                <div class="operate_btn">
-                    <a href="javascript:;" class="buy_btn">立即购买</a>
-                    <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
+                <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
+                    <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
+                    <ul>
+                        <li><span>卖家评分：</span><strong>{{ item.user_credit }}</strong> 分</li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <div class="detail_right" id="user_detail" style="position: relative;left: 500px">
-            <div class="info_detail">
-                <div><img src="../static/Images/user.gif" alt="" height="45" width="45"></div>
-                <div><a href="" style="font-size: 16px;">JQlove</a></div>
-                <br>
-                <div><span title="已实名认证" class="user-verify"></span></div>
-            </div>
-            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
-                <div><p>男</p>
-                    <p>注册时间：2018-10-24</p></div>
-            </div>
-            <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
-                <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
-                <ul>
-                    <li><span>卖家评分： </span><strong>-</strong> 分</li>
-                </ul>
-            </div>
-            <div style="margin: 5px;text-align: center">
-                <input type="button" value="卖家信息" id="check_detail">
-                <input type="button" value="私聊卖家" id="check_detail">
-            </div>
+                <div style="margin: 5px;text-align: center">
+                    <a href="/user_credit/?user_credit_id={{ item.user_id }}"><input type="button" value="卖家信息"
+                                                                                     id="check_detail"
+                                                                                     class="opsale"></a>
+                    <input type="button" value="私聊卖家" id="communication" class="opsale">
+                </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -351,91 +354,122 @@
             <a href="" name="evalua"></a>
             <ul class="detail_tab clearfix">
                 <li class="active">评价</li>
-                <li>卖家历史评价</li>
+                <li>商品详情</li>
             </ul>
             <div class="tab_content current">
-                <form action="">
-                    <table border="0" id="eva" align="center">
-                        <tr>
-                            <td><label><input type="radio" value="" name="evaluate" checked>好评</label></td>
-                            <td><label><input type="radio" value="" name="evaluate">中评</label></td>
-                            <td><label><input type="radio" value="" name="evaluate">差评</label></td>
-                        </tr>
-                        <tr>
-                            <td>卖家态度：</td>
-                            <td colspan="2">
-                                <div class="mark">
-                                    <ul>
-                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>宝贝情况：</td>
-                            <td colspan="2">
-                                <div class="mark">
-                                    <ul>
-                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>发货速度：</td>
-                            <td colspan="2">
-                                <div class="mark">
-                                    <ul>
-                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
-                                        </li>
-                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+
+                <table border="0" id="eva" align="center">
+                    <tr>
+                        <td><label><input type="radio" value="" name="evaluate" checked>好评</label></td>
+                        <td><label><input type="radio" value="" name="evaluate">中评</label></td>
+                        <td><label><input type="radio" value="" name="evaluate">差评</label></td>
+                    </tr>
+                    <tr>
+                        <td>卖家态度：</td>
+                        <td colspan="2">
+                            <div class="mark">
+                                <ul>
+                                    <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>宝贝情况：</td>
+                        <td colspan="2">
+                            <div class="mark">
+                                <ul>
+                                    <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;"
+                                                                                         class="dd">2</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;"
+                                                                                         class="dd">4</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;"
+                                                                                         class="dd">6</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;"
+                                                                                         class="dd">8</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;"
+                                                                                         class="dd">10</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>发货速度：</td>
+                        <td colspan="2">
+                            <div class="mark">
+                                <ul>
+                                    <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                    </li>
+                                    <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                {% if eva_state == 0 %}
                     <dl style="margin-bottom: 25px">
                         <dt>对本次交易的感受：</dt>
+                        <dd>评价：<input type="text" id="dddddddd"></dd>
                         <dd>
-                            <textarea name="" id="" cols="180" rows="4"></textarea>
+                            <textarea name="" id="evaluate_text" cols="180" rows="4"></textarea>
                         </dd>
                         <dd style="padding-left: 1070px">
-                            <button>提交评论</button>
+                            <input type="button" id="submit" value="提交评论">
                         </dd>
                     </dl>
-                </form>
+                {% else %}
+                    {% if customer == "buy" %}
+                        {% for item in buy_desc_list %}
+                            <dl style="margin-bottom: 25px">
+                                <dt>{{ item.buyer_evaluation }}</dt>
+                                <dd>评价：{{ item.buy_state }}</dd>
+                                <dd>
+                                    {{ item.buyer_desc }}
+                                </dd>
+                            </dl>
+                        {% endfor %}
+                    {% else %}
+                        {% for item in sell_desc_list %}
+                            <dl style="margin-bottom: 25px">
+                                <dt>{{ item.seller_evaluation }}</dt>
+                                <dd>评价：{{ item.sell_state }}</dd>
+                                <dd>
+                                    {{ item.seller_desc }}
+                                </dd>
+                            </dl>
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endif %}
+
             </div>
             <div class="tab_content">
                 <dl>
                     <dd>
                         <p style="text-indent: 2em">
-                            卖家信用：100。。。。卖家信用：100卖家信用：100。。。。卖家信用：100。。。。卖家信用：100。。。。卖家信用：100卖家信用：100。。。
-                            。卖家信用：100。。。。卖家信用：100。。。。卖家信用：100卖家信用：100。。。。卖家信用：100卖家信用：1卖家信用：100。。。。卖家信用：100卖家信用：1
+                            {{ goods_desc }}
                         </p>
                     </dd>
                 </dl>
@@ -501,6 +535,30 @@
             after = after.next();
         }
     })
+</script>
+{#异步#}
+<script>
+    $(function () {
+        $("#submit").click(function () {
+            evaluate_text = $('#evaluate_text').val();
+            dddddddd = $('#dddddddd').val();
+            customer ={{ customer }};
+            order_id ={{ order_id }};
+            $.post('/evaluate_ajax/', {
+                'evaluate_text': evaluate_text,
+                "dddddddd": dddddddd,
+                "order_id": order_id,
+                "customer": customer,
+            }, function (data) {
+                if (data.msg === 'success') {
+                    window.location.reload()
+                }
+            }, 'json')
+
+        })
+
+    });
+
 </script>
 </body>
 </html>

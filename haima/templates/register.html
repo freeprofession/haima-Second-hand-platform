@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../static/CSS/main.css">
     <link rel="stylesheet" href="../static/CSS/reset.css">
     <script type="text/javascript" src="../static/JS/register.js"></script>
@@ -84,23 +83,47 @@
 </div>
 </body>
 <script>
+    var countdown = 60;
+
+    function settime(obj) {
+        if (countdown == 0) {
+            obj.removeAttribute("disabled");
+            obj.value = "免费获取验证码";
+            countdown = 60;
+            return;
+        } else {
+            obj.setAttribute("disabled", true);
+            obj.value = "重新发送(" + countdown + ")";
+            countdown--;
+        }
+        setTimeout(function () {
+                settime(obj)
+            }
+            , 1000)
+    }
+
     {#验证码发送：#}
     $(function () {
         $("#get_code").click(function () {
             var phone = $("#phone").val()
-            console.log(phone)
-            $.ajax({
-                type: "POST",
-                url: "/send_sms/",
-                data: {phone: phone},
-                dataType: "json",
-                success: function (data) {
-                    console.log(data)
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                },
-            })
+            if (phone) {
+                if (checkPhone()) {
+                    console.log(phone)
+                    settime($("#get_code")[0])
+                    $.ajax({
+                        type: "POST",
+                        url: "/send_sms/",
+                        data: {phone: phone},
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data)
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            console.log(XMLHttpRequest, textStatus, errorThrown)
+                        },
+                    })
+                }
+            }
         })
     })
     {#用户名验证：#}
