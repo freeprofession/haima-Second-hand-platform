@@ -231,3 +231,16 @@ padding-top: 10px;
     text-align: center;
     margin-top: 10px;
 }
+#img_left{
+	position: fixed;
+	left: 20px;
+	top: 40%;
+}
+#img_right{
+	position: fixed;
+	right: 20px;
+	top: 35%;
+	width: 180px;
+	height: 350px;
+	border: #ffda44 solid 1px;
+}
