@@ -865,11 +865,13 @@ def publish(request):
 
 
 def pub_success(request):
+    user_id = request.session.get('user_id')
     title = request.POST.get('title')
     category = request.POST.get('type')
     price = float(request.POST.get('price'))
     postage = request.POST.get('postage')
     desc = request.POST.get('desc')
+    appearance = request.POST.get('apperance')
     filelist = json.loads(request.POST.get('filelist'))
     address = '江苏苏州 吴江区'
     appearance = '4'
@@ -887,7 +889,7 @@ def pub_success(request):
     cur.execute(sql)
     con.commit()
     print(title, category, price, postage, filelist)
-    return HttpResponse("FROM")
+    return HttpResponse("publish success 页面还没写")
 
 
 # 估价
