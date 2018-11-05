@@ -161,7 +161,6 @@ FFile.prototype = {
         var filelist = document.getElementById('filelist');
         console.log(JSON.stringify(postArray))
         filelist.value = JSON.stringify(postArray)
-
         title = $('#goods_title').val();
         desc = $('#goods_desc').val();
         floorpremium = $('#goods_floorpremium').val();
@@ -170,8 +169,8 @@ FFile.prototype = {
         end_date = $('#end_date').val();
         category = $('#goods_category').val();
         postage = $('#postage').val();
-        address=$("#filelist").val();
-        alert(address)
+        img_address=$("#filelist").val();
+
         $.post('/publish_auction/', {
             'title': title,
             'desc': desc,
@@ -181,6 +180,7 @@ FFile.prototype = {
             'start_date': start_date,
             'category': category,
             'postage': postage,
+            "img_address":img_address,
 
         }, function (data) {
             if (data.msg === 'ok') {

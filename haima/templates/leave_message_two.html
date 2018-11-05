@@ -38,7 +38,8 @@
     <div class="sub_page_name fl ">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message/" style="color: #666">收到回复</a></div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_two/" style="color: #ff8800">我的回复</a>
     </div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_tree/" style="color: #ff8800">商品留言</a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_tree/"
+                                                              style="color: #ff8800">商品留言</a>
     </div>
 </div>
 
@@ -58,7 +59,7 @@
     </div>
     <div id="c2">
         <ul class="release-goods-list" style="margin-left: 220px">
-            {% for item in my_review_list %}
+            {% for item in contacts %}
                 <li class="comment-data-item clearfix" style="height: 120px;">
                     <div class="cell">
                         <div class="user-infor">
@@ -92,6 +93,27 @@
                 </li>
             {% endfor %}
         </ul>
+    </div>
+    <div class="pagenation">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
     </div>
 </div>
 

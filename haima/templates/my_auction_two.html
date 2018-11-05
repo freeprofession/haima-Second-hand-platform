@@ -61,8 +61,8 @@
 <hr>
 <div id="auction_select">
      <a href="/my_auction_one/"><button id="auction_one" value="one">我发布的</button></a>
-    <a href="/my_auction_two/"><button id="auction_two" value="two">我拍卖的</button></div></a>
-    <a href="/my_auction_three/"><button id="auction_three" value="three">我成交的</button></a>
+    <a href="/my_auction_two/"><button id="auction_two" value="two">我拍卖的</button></a>
+
     <a href="/my_auction_four/"><button id="auction_four" value="four">我竞拍的</button></a>
 </div>
 <div id="my_auction_goods">
@@ -93,10 +93,11 @@
                     <br>
                     <div>当前竞拍者：<span id="acution_goods_start_time">{{ i.buyname.user_name }}</span></div>
                     <br>
+                    <span id="goods_id">{{ i.goods_auction_goods_id }}</span>
                     <div>距离拍卖结束:<span id = "timer"></span></div>
                     <br>
                     <div style="padding-left: 300px;">
-                        <button>
+                        <button id="end_auction">
                             结束拍卖
                         </button>
                     </div>
@@ -105,7 +106,45 @@
          </div>
     </div>
     {% endfor %}
-
+<div id="end_auction_message">
+    <button id="shutdown_end_auction_message">
+        关闭
+    </button>
+    <br>
+    <div>
+        你确定要提前结束拍卖吗？
+        <br>
+        这样你将不会退还你的保证金并扣减您的信用积分
+    </div>
+    <br>
+    <div>
+   <button id="end_auction_ok">
+        确定结束
+    </button>
+        </a>
+        </div>
+</div>
 </body>
+<script>
+    $("#end_auction").click(function () {
+        $("#end_auction_message").show()
+    })
+    $("#shutdown_end_auction_message").click(function () {
+        $("#buy_now_message").hide()
+        window.location.reload();
 
+    })
+    $("#end_auction_ok").click(function () {
+        goods_id=$("#goods_id").text();
+        $.post("/end_auction/",
+            {
+                "goods_id":goods_id,
+            }
+            ,function (data) {
+                location.href = '/my_auction_one/'
+            }
+
+        )
+    })
+</script>
 </html>

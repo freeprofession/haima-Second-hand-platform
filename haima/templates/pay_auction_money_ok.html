@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>发布拍卖商品成功</title>
+    <title>支付成功</title>
      <script type="text/javascript" src="/static/js/register_ok.js"></script>
 </head>
 <body>
 <div align="center">
-    <h3 style="color: brown">发布拍卖成功</h3>
+    <h3 style="color: brown">\付款成功，等待卖家发货</h3>
     <p>
-        <b id="second">5</b>秒后回到拍卖<a href="/my_auction_one/">点击跳转</a>
+        <b id="second">5</b>秒后回到首页<a href="/my_auction_four/">点击跳转</a>
     </p>
 </div>
 <script type="text/javascript">
@@ -21,7 +21,7 @@
         t -= 1;
         document.getElementById('second').innerHTML = t;
         if (t == 0) {
-            location.href = '/my_auction_one/';
+            location.href = '/my_auction_four/';
         }
         //每秒执行一次,showTime()
         setTimeout("showTime()", 1000);
