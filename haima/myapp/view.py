@@ -24,6 +24,8 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from myapp import phone_model
+from myapp import AI_assess
 
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
@@ -94,6 +96,10 @@ def homepage(request):
     user_id = request.session.get('user_id')
     if username:
         login_status = username
+        cur.execute(
+            "select * from t_goods where goods_address = (select user_address from t_user where user_id = %s) order by rand() limit 5",
+            [user_id, ])
+        same_city_list = cur.fetchall()
         cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
         user_imgurl = cur.fetchone()
         if user_imgurl['user_imgurl'] == None:
@@ -850,7 +856,9 @@ def goods_detail_ajax(request):
 
 # 发布商品
 def publish(request):
-    return render(request, 'publish.html')
+    if request.method == 'POST':
+        price = int(request.POST.get('price_hid').replace('¥', ''))
+    return render(request, 'publish.html', locals())
 
 
 def pub_success(request):
@@ -882,6 +890,38 @@ def pub_success(request):
 # 估价
 def assess(request):
     return render(request, 'assess.html')
+
+
+# 估计ajax
+def assess_ajax(request):
+    assess_list = []
+    brand = request.POST.get('brand')
+    model = request.POST.get('model')
+    brand, model = phone_model.Phone_model(brand, model)
+    assess_list.append(brand)
+    assess_list.append(model)
+    configuration = request.POST.get('configuration')
+    IS, volume = configuration.split('+')
+    IS = int(re.findall(r"\d+\.?\d*", IS)[0])
+    volume = int(re.findall(r"\d+\.?\d*", volume)[0])
+    assess_list.append(IS)
+    assess_list.append(volume)
+    color = int(request.POST.get('color'))
+    assess_list.append(color)
+    GT = int(request.POST.get('GT'))
+    assess_list.append(GT)
+    face = int(request.POST.get('face'))
+    assess_list.append(face)
+    maintain = int(request.POST.get('maintain'))
+    assess_list.append(maintain)
+    UT = int(request.POST.get('UT'))
+    assess_list.append(UT)
+    print(assess_list)
+    price = AI_assess.assess_price(assess_list)[0]
+    price = '¥' + str(int(price))
+    print(price)
+    time.sleep(1)
+    return HttpResponse(json.dumps({"price": price}))
 
 
 # 拍卖首页
@@ -1281,6 +1321,19 @@ def my_auction_four(request):
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
     record_id_dict = cur.fetchall()
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
+                [user_id])
+
+    goods_record_list = cur.fetchall()
+    goods_list = []
+    goods_info_list = []
+    goods_buyuser_name_list = []
+=======
+<<<<<<< HEAD
+>>>>>>> af608055631636185d945b5386d63afb1f4ac379
 
     #找到用户的订单
     cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s",[user_id])
@@ -1291,6 +1344,7 @@ def my_auction_four(request):
     list4=[]
     list5=[]
     list6=[]
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
     # 这里是通过竞拍记录id找到商品id
 
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -1298,8 +1352,16 @@ def my_auction_four(request):
 
     goods_list = []
 
+<<<<<<< HEAD
+=======
 
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
+>>>>>>> af608055631636185d945b5386d63afb1f4ac379
     for i in record_id_dict:
         dict1={}
         #这里拿到拍卖记录表的状态
@@ -1394,11 +1456,19 @@ def my_auction_four(request):
         info = cur.fetchone()
         goods_info_list.append(info)
     list4 = []
+<<<<<<< HEAD
+
+=======
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
     for i in range(len(goods_record_list)):
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
 
+<<<<<<< HEAD
+        list4.append(dict1)
+
+=======
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
@@ -1461,6 +1531,7 @@ def my_auction_four(request):
     dict1["record"] = goods_record_list[i]
     dict1["goods"] = goods_info_list[i]
     list4.append(dict1)
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
     print(list4)
 
 
@@ -1608,6 +1679,8 @@ def confirm_buy(request):
                                     "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
+<<<<<<< HEAD
+=======
 
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
@@ -1619,6 +1692,7 @@ def confirm_buy(request):
 
                                 cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
                                             [goods_id])
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
 
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
@@ -1677,6 +1751,8 @@ def confirm_buy(request):
 
 # ****************************************************************用户竞拍成功******************************************
 
+<<<<<<< HEAD
+=======
 
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
@@ -1733,6 +1809,7 @@ def end_auction(request):
 
 # ****************************************************************用户竞拍成功******************************************
 
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
 
 
 
@@ -1920,8 +1997,11 @@ def modify_information(request):
         date = request.POST.get('date')
         sex = request.POST.get('sex')
         print(nickname, shen, shi, xian, img, date, sex)
+<<<<<<< HEAD
+=======
         imgurl = "pgwecu7z4.bkt.clouddn.com/" + img
         print(imgurl)
+>>>>>>> 4f7aaa064f8a013a8999f8ad2b7f132d97de98cf
         return render(request, 'modify_information.html')
 
 
