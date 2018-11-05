@@ -34,14 +34,19 @@ urlpatterns = [
     path('pub_success/', view.pub_success),
     path('assess/', view.assess),
     path('auction_index/', view.auction_index),
-    path('my_sale/', view.my_sale),
-    path('my_buy/', view.my_buy),
     # 用户中心--------------------------------------
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
+    path('user_lower_goods/', view.user_lower_goods),
+    path('my_sale_lower/', view.my_sale_lower),
+    path('my_sale/', view.my_sale),
+    path('my_buy/', view.my_buy),
+    path('my_sale_complete/',view.my_sale_complete),
+    path('my_evaluate_get/', view.my_evaluate_get),
+    path('my_evaluate_give/', view.my_evaluate_give),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -51,6 +56,8 @@ urlpatterns = [
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
     path('lower_goods/', view.lower_goods),
+    path('evaluate/', view.evaluate),
+    path('evaluate_ajax/',view.evaluate_ajax),
     # -------------------------
     path('callback/', view.callback),
     path('my_auction/', view.my_auction),
@@ -59,14 +66,11 @@ urlpatterns = [
     path('test/', view.text_message),
     path('test_ajax', view.test_ajax),
     path('my_auction/', view.my_auction),
-    path('evaluate/', view.evaluate),
-    path('my_evaluate_get/', view.my_evaluate_get),
-    path('my_evaluate_give/', view.my_evaluate_give),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata),
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_password/', view.modify_password),  # 修改密码
-    path('modify_information/', view.modify_information), # 修改信息
+    path('modify_information/', view.modify_information),  # 修改信息
     # path('modify_information/', view.modify_information),
 
     path('buy_auction/', view.buy_auction),
@@ -74,8 +78,6 @@ urlpatterns = [
     path('calculate_price/', view.calculate_price),
     # 返回用户的拍卖发布历史记录
     path("my_release_record/", view.my_release_record),
-
-
 
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
