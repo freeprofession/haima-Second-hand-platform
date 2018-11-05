@@ -106,8 +106,10 @@
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1">
-                <a href="/goods_list/?q=手机&price_low=&price_high=" class="main_type">手机</a><a href="#" class="child_type">手机壳</a><a href="#"
-                                                                                                         class="child_type">充电器</a><a
+                <a href="/goods_list/?q=手机&price_low=&price_high=" class="main_type">手机</a><a href="#"
+                                                                                              class="child_type">手机壳</a><a
+                    href="#"
+                    class="child_type">充电器</a><a
                     href="#" class="child_type">耳机</a><a href="#" class="child_type">数据线</a>
             </div>
             <div class="level2">
@@ -336,8 +338,10 @@
             <ul class="item-type" style="margin-left: 25px">
                 <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
                 >猜你喜欢</a></li>
-                <li class="nav" id="guess2"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank" onmouseover="change_div('dc2')">全新闲置</a></li>
-                <li class="nav" id="guess3"><a href="/goods_list/?q=同城交易&price_low=&price_high=" target="_blank" onmouseover="change_div('dc3')">同城交易</a></li>
+                <li class="nav" id="guess2"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank"
+                                               onmouseover="change_div('dc2')">全新闲置</a></li>
+                <li class="nav" id="guess3"><a href="/goods_list/?q=同城交易&price_low=&price_high=" target="_blank"
+                                               onmouseover="change_div('dc3')">同城交易</a></li>
             </ul>
         </div>
         <div id="ctn">
@@ -374,8 +378,10 @@
                 <ul>
                     {% for goods in newest_list %}
                         <li>
-                            <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}" class="goods_pic"></a>
-                            <h4><a href="/goods_detail/?goods={{ goods.goods_id }}" title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>
+                            <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"
+                                                                                     class="goods_pic"></a>
+                            <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"
+                                   title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>
                             </h4>
                             <div class="prize">¥ {{ goods.goods_price }}</div>
                         </li>
@@ -384,31 +390,16 @@
             </div>
             <div id="dc3" class="hold">
                 <ul>
-                    <li>
-                        <a href="#"><img src="../static/Images/goods/goods003.jpg" class="goods_pic"></a>
-                        <h4><a href="#" title="360手机 N6 Pro 全网通 6GB+128GB 极夜黑">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                        <div class="prize">¥ 6699.00</div>
-                    </li>
-                    <li>
-                        <a href="#"><img src="../static/Images/goods/goods002.jpg" class="goods_pic"></a>
-                        <h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                        <div class="prize">¥ 7788.00</div>
-                    </li>
-                    <li>
-                        <a href="#"><img src="../static/Images/goods/goods001.jpg" class="goods_pic"></a>
-                        <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                        <div class="prize">¥ 1988.00</div>
-                    </li>
-                    <li>
-                        <a href="#"><img src="../static/Images/goods/goods004.jpg" class="goods_pic"></a>
-                        <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                        <div class="prize">¥ 3688.00</div>
-                    </li>
-                    <li>
-                        <a href="#"><img src="../static/Images/goods/goods005.jpg" class="goods_pic"></a>
-                        <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                        <div class="prize">¥ 4288.80</div>
-                    </li>
+                    {% for goods in same_city_list %}
+                        <li>
+                            <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"
+                                                                                     class="goods_pic"></a>
+                            <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"
+                                   title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>
+                            </h4>
+                            <div class="prize">¥ {{ goods.goods_price }}</div>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

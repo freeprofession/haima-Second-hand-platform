@@ -11,6 +11,7 @@
     <div class="header">
         <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
 
+
         <div class="login_btn fl">
             <a href="/login/">登录</a>
             <span>|</span>
@@ -23,6 +24,7 @@
             <a href="/user/">用户中心</a>
             <span>|</span>
             <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
+
 
         </div>
     </div>
@@ -65,7 +67,7 @@
                     <ul class="user_info_list">
                         <li><span>用户名：</span>{{ user.user_name }}</li>
                         <li><span>手机号：</span>{{ user.user_phone }}</li>
-                        <li><span>Email：</span>demo@demo.com</li>
+                        <li><span>余额：</span>{{ user.user_money }}</li>
                     </ul>
                 </div>
                 <div>

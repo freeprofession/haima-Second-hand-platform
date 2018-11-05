@@ -143,3 +143,27 @@ html,body
 #title{
     margin-left: 100px;
 }
+#goods_state{
+
+}
+#pay_message{
+	display: none;
+	position: fixed;
+	top:30%;
+	left: 30%;
+	width: 300px;
+	height: 200px;
+	background-color: #16bcbd;
+}
+#shutdown{
+	float: right;
+}
+#info_message{
+	display: none;
+	width: 400px;
+	height: 300px;
+	position: fixed;
+	left: 40%;
+	top: 30%;
+	background: #16bcbd;
+}

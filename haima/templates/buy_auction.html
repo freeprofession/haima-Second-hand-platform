@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>购买拍卖商品</title>
-    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+
     <link rel="stylesheet" href="../static/CSS/buy_auction.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" href="../static/CSS/auction_index.css">
@@ -229,21 +229,25 @@
 
 
             </div>
-        <div id="price_error" onclick="javascript:window.location.reload() ">
-            <button id="shutdown_error">
+        <div id="price_error" >
+            <button id="shutdown_error" onclick="javascript:window.location.reload() ">
                 关闭
             </button>
-            <div>
-                必须输入正确的价格
+            <br>
+            <div  style="font-size: 16px; color: white;margin-top: 70px;">
+                必须输入正确的价格!
             </div>
+            <span style="color: white;float: right;margin-top: 60px;">
+                海马平台温馨提示
+            </span>
         </div>
 
 
 
 
     </div>
-        <div class="main_wrap clearfix">
-        <div class="wrap fr clearfix">
+        <div class="main_wrap2 clearfix" >
+        <div class="wrap fr clearfix" style="clear: both;float: left;">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
                 <li>拍卖须知</li>
@@ -444,6 +448,7 @@
                      case "pay_ok":
                            location.href = '/buy_auction_ok/'
                         break;
+
 
 
 
