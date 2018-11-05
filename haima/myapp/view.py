@@ -25,6 +25,8 @@ from myapp import forms
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from myapp import phone_model
+from myapp import AI_assess
 
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
@@ -72,6 +74,10 @@ def homepage(request):
     user_id = request.session.get('user_id')
     if username:
         login_status = username
+        cur.execute(
+            "select * from t_goods where goods_address = (select user_address from t_user where user_id = %s) order by rand() limit 5",
+            [user_id, ])
+        same_city_list = cur.fetchall()
         cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
         user_imgurl = cur.fetchone()
         if user_imgurl['user_imgurl'] == None:
@@ -814,7 +820,9 @@ def goods_detail_ajax(request):
 
 # 发布商品
 def publish(request):
-    return render(request, 'publish.html')
+    if request.method == 'POST':
+        price = int(request.POST.get('price_hid').replace('¥', ''))
+    return render(request, 'publish.html', locals())
 
 
 def pub_success(request):
@@ -846,6 +854,38 @@ def pub_success(request):
 # 估价
 def assess(request):
     return render(request, 'assess.html')
+
+
+# 估计ajax
+def assess_ajax(request):
+    assess_list = []
+    brand = request.POST.get('brand')
+    model = request.POST.get('model')
+    brand, model = phone_model.Phone_model(brand, model)
+    assess_list.append(brand)
+    assess_list.append(model)
+    configuration = request.POST.get('configuration')
+    IS, volume = configuration.split('+')
+    IS = int(re.findall(r"\d+\.?\d*", IS)[0])
+    volume = int(re.findall(r"\d+\.?\d*", volume)[0])
+    assess_list.append(IS)
+    assess_list.append(volume)
+    color = int(request.POST.get('color'))
+    assess_list.append(color)
+    GT = int(request.POST.get('GT'))
+    assess_list.append(GT)
+    face = int(request.POST.get('face'))
+    assess_list.append(face)
+    maintain = int(request.POST.get('maintain'))
+    assess_list.append(maintain)
+    UT = int(request.POST.get('UT'))
+    assess_list.append(UT)
+    print(assess_list)
+    price = AI_assess.assess_price(assess_list)[0]
+    price = '¥' + str(int(price))
+    print(price)
+    time.sleep(1)
+    return HttpResponse(json.dumps({"price": price}))
 
 
 # 拍卖首页
@@ -1117,10 +1157,7 @@ def my_auction_four(request):
     record_id_dict = cur.fetchall()
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
-<<<<<<< HEAD
 
-=======
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     goods_record_list = cur.fetchall()
     goods_list = []
     goods_info_list = []
@@ -1132,7 +1169,6 @@ def my_auction_four(request):
     goods_info_list = []
     # 这里是通过竞拍记录id找到商品id
 
-
     for i in record_id_dict:
         cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
                     [i["auction_record_id"]])
@@ -1142,35 +1178,14 @@ def my_auction_four(request):
         info = cur.fetchone()
         goods_info_list.append(info)
     list4 = []
-<<<<<<< HEAD
-=======
 
-    for i in range(len(goods_record_list)):
-        dict1 = {}
-        dict1["record"] = goods_record_list[i]
-        dict1["goods"] = goods_info_list[i]
-
-        dict1 = {}
-        dict1["record"] = goods_record_list[i]
-        dict1["goods"] = goods_info_list[i]
-
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     for i in range(len(goods_record_list)):
         dict1 = {}
         dict1["record"] = goods_record_list[i]
         dict1["goods"] = goods_info_list[i]
 
         list4.append(dict1)
-<<<<<<< HEAD
-=======
 
-    dict1 = {}
-    dict1["record"] = goods_record_list[i]
-    dict1["goods"] = goods_info_list[i]
-    list4.append(dict1)
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     print(list4)
     return render(request, 'my_auction_four.html', locals())
 
@@ -1225,10 +1240,7 @@ def calculate_price(request):
         pass
 
         return HttpResponse("输入的加价有误")
-<<<<<<< HEAD
-=======
 
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
     else:
         count_price = int(price) + int(permium)
         return HttpResponse(count_price)
@@ -1320,26 +1332,11 @@ def confirm_buy(request):
                                     "update t_auction_attribute set auction_goods_count=%s,auction_goods_price=%s,auction_goods_buyuser_id=%s where auction_goods_id=%s",
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
-<<<<<<< HEAD
-                                cur.execute(
-                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
-                                    [goods_id])
-=======
-
 
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
 
-
-                                cur.execute("select auction_record_id from t_auction_record where auction_goods_id=%s",
-                                            [goods_id])
-
-                                cur.execute(
-                                    "select auction_record_id from t_auction_record where auction_goods_id=%s",
-                                    [goods_id])
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
                                 record_dict = cur.fetchall()
                                 if record_dict:
                                     record_list = []
@@ -1393,25 +1390,11 @@ def confirm_buy(request):
 
 # ****************************************************************用户竞拍成功******************************************
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
 
 def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
 
-<<<<<<< HEAD
-=======
-# ****************************************************************用户竞拍成功******************************************
-
-
-def buy_auction_ok(request):
-    return render(request, 'buy_auction_goods_ok.html')
-
-
->>>>>>> 4de8f5ca56e48374ee3f7eafcd87f01da0d514e5
 # 我出售的
 def my_sale(request):
     return render(request, 'my_sale.html')
@@ -1490,7 +1473,7 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        print(nickname,shen, shi, xian, img, date, sex)
+        print(nickname, shen, shi, xian, img, date, sex)
         return render(request, 'modify_information.html')
 
 

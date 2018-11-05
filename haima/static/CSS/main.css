@@ -3289,7 +3289,7 @@ label:hover {
     height: 550px;
 }
 
-#assess form {
+#assess_goods {
     width: 798px;
     border: 1px solid #ffda44;
     margin-left: 180px;
@@ -3326,8 +3326,54 @@ label:hover {
     margin-left: 10px;
 }
 
-#review {
+#price_res {
+    background-color: #fff;
+    border: 5px solid rgb(0, 0, 0, .4);
+    height: 150px;
+    padding: 1px;
+    position: fixed;
+    top: 300px;
+    left: 732px;
+    width: 200px;
+    z-index: 5555;
+    border-radius: 8px;
+    display: none;
+}
+
+#close button {
+    border: none;
+    float: right;
+    background: none;
+}
+
+#close button:hover {
+    cursor: pointer;
+}
+
+#assess_sale input {
+    margin-top: 16px;
+    margin-left: 64px;
+    background-color: #ffda44;
     border: 0px;
+    padding: 4px 12px;
+    border-radius: 3px;
+}
+
+#price_res #p1 {
+    margin-top: 25px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#assess_price {
+    margin-top: 16px;
+    color: red;
+    font-size: 20px;
+    text-align: center;
+}
+
+#review {
+    border: 0;
     color: #919191;
     background-color: white;
     cursor: pointer;

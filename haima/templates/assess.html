@@ -5,7 +5,12 @@
     <title>海马商城-估价</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
-    <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+    <style>
+        table select {
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
 <div class="header_con">
@@ -60,106 +65,95 @@
     </div>
     <br>
     <div id="assess_goods" class="ass">
-        <form action="/assess/" method="post">
-            <table border="0">
-                <tr>
-                    <td>宝贝类型：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">手机</option>
-                        <option value="computer">电脑</option>
-                        <option value="pad">平板</option>
-                        <option value="camera">相机</option>
-                        <option value="game">外设</option>
-                        <option value="other">其他</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>宝贝品牌：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">手机</option>
-                        <option value="computer">电脑</option>
-                        <option value="pad">平板</option>
-                        <option value="camera">相机</option>
-                        <option value="game">外设</option>
-                        <option value="other">其他</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>宝贝型号：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">手机</option>
-                        <option value="computer">电脑</option>
-                        <option value="pad">平板</option>
-                        <option value="camera">相机</option>
-                        <option value="game">外设</option>
-                        <option value="other">其他</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>宝贝配置：</td>
-                    <td><select style="width: 200px">
-                        <option value="phone">手机</option>
-                        <option value="computer">电脑</option>
-                        <option value="pad">平板</option>
-                        <option value="camera">相机</option>
-                        <option value="game">外设</option>
-                        <option value="other">其他</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>外观情况：</td>
-                    <td>
-                        <select style="width: 200px">
-                            <option value="0">全新</option>
-                            <option value="1">九五成新以上</option>
-                            <option value="2">九成新以上</option>
-                            <option value="3">九成新以下</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>维修情况：</td>
-                    <td>
-                        <select style="width: 200px">
-                            <option value="0">无拆修</option>
-                            <option value="1">拆修三次以下</option>
-                            <option value="2">拆修三次以上</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>保修情况：</td>
-                    <td>
-                        <select style="width: 200px">
-                            <option value="0">未过保修期</option>
-                            <option value="1">过保修期</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>使用时间：</td>
-                    <td>
-                        <select style="width: 200px">
-                            <option value="0">未使用</option>
-                            <option value="1">一个月以内</option>
-                            <option value="2">三个月以内</option>
-                            <option value="3">半年以内</option>
-                            <option value="4">一年以内</option>
-                            <option value="5">一年以上</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>宝贝颜色：</td>
-                    <td>
-                        <input type="text">
-                    </td>
-                </tr>
-            </table>
-            <div>
-                <button id="assess_button">马上估价</button>
-            </div>
-        </form>
+        <table border="0">
+            <tr>
+                <td>宝贝类型：</td>
+                <td><select>
+                    <option value="phone">手机</option>
+                    <option value="computer">电脑</option>
+                    <option value="pad">平板</option>
+                    <option value="camera">相机</option>
+                    <option value="game">外设</option>
+                    <option value="other">其他</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>宝贝品牌：</td>
+                <td><select id="cmbBrand" name="cmbBrand"></select></td>
+            </tr>
+            <tr>
+                <td>宝贝型号：</td>
+                <td><select id="cmbModel" name="cmbModel" class="assess"></select></td>
+            </tr>
+            <tr>
+                <td>宝贝配置：</td>
+                <td><select id="cmbConfiguration" name="cmbConfiguration"></select></td>
+            </tr>
+            <tr>
+                <td>宝贝颜色：</td>
+                <td>
+                    <select name="" id="phone_color">
+                        <option value="1">白色</option>
+                        <option value="2">黑色</option>
+                        <option value="3">金色</option>
+                        <option value="4">灰色</option>
+                        <option value="5">银色</option>
+                        <option value="6">红色</option>
+                        <option value="7">蓝色</option>
+                        <option value="8">粉色</option>
+                        <option value="9">棕色</option>
+                        <option value="10">紫色</option>
+                        <option value="11">绿色</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>保修情况：</td>
+                <td>
+                    <select id="GT">
+                        <option value="0">未过保修期</option>
+                        <option value="1">过保修期</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>外观情况：</td>
+                <td>
+                    <select id="face">
+                        <option value="0">全新</option>
+                        <option value="1">九五成新以上</option>
+                        <option value="2">九成新以上</option>
+                        <option value="3">九成新以下</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>维修情况：</td>
+                <td>
+                    <select id="maintain">
+                        <option value="0">无拆修</option>
+                        <option value="1">有拆修情况</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>使用时间：</td>
+                <td>
+                    <select id="UT">
+                        <option value="0">未使用</option>
+                        <option value="1">三个月以内</option>
+                        <option value="2">半年以内</option>
+                        <option value="3">一年以内</option>
+                        <option value="4">一年以上</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+        <div>
+            <button id="assess_button">马上估价</button>
+        </div>
     </div>
     <div class="ass" id="ass_rule">
         <h1 style="font-size: x-large;text-align: center">平台估价说明</h1>
@@ -168,6 +162,20 @@
         </div>
     </div>
 </div>
+<div id="price_res" class="clearfix">
+    <div id="close">
+        <button id="close_fix">关闭</button>
+    </div>
+    <p id="p1">海马估价</p>
+    <p id="assess_price">正在估价请稍等...</p>
+    <form action="/publish/" method="post">
+        <input type="hidden" id="price_hid" name="price_hid">
+        <div id="assess_sale">
+            <input type="submit" value="卖了换钱">
+        </div>
+    </form>
+</div>
+
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>
@@ -183,5 +191,9 @@
 </div>
 
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/phone_type.js"></script>
+<script>
+    addressInit('cmbBrand', 'cmbModel', 'cmbConfiguration');
+</script>
 </body>
 </html>
