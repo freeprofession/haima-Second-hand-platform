@@ -208,9 +208,20 @@ a = "2018-1-21"
 #     [1, ])
 # review_list = cur.fetchall()
 # print(review_list)
-day_ = "2018-10-31"
-now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
-d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
-d3 = str(d1 - d2)
-print(d3.split(" ")[0])
+# day_ = "2018-10-31"
+# now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+# d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
+# d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
+# d3 = str(d1 - d2)
+# print(d3.split(" ")[0])
+cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
+            [1, 0])
+goods_list = cur.fetchall()
+print(goods_list)
+a=0
+for item in goods_list:
+    if item["goods_id"] == 0:
+        a = goods_list.index(item) - 1
+        print(goods_list[a])
+
+print(a)
