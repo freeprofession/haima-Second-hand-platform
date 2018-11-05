@@ -58,7 +58,6 @@ urlpatterns = [
     path('evaluate/', view.evaluate),
     path('evaluate_ajax/', view.evaluate_ajax),
     # -------------------------
-    path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
     path('release_auction/', view.release_auction),

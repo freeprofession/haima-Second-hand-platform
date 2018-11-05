@@ -2189,16 +2189,6 @@ def modify_password(request):
     return render(request, 'modify_password.html')
 
 
-def callback(request):
-    if request.method == 'GET':
-        key_json_base64 = request.GET.get('upload_ret')
-        key_json = base64.b64decode(key_json_base64).decode('utf-8')
-        print(key_json)
-        key_dict = json.loads(key_json)
-        key = key_dict['key']
-        return HttpResponse('pgwecu7z4.bkt.clouddn.com/' + key + '-haima.shuiy')
-
-
 # 上传图片所需要的token
 def gettokendata(request):
     index = request.POST.get('index')
