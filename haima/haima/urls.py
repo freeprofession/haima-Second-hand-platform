@@ -20,6 +20,7 @@ from myapp import view
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', view.homepage),
     path('haima/', view.homepage),
     path('login/', view.login),
