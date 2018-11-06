@@ -47,7 +47,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">{{ username.user_name }}欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/?href=/history_auction/" target="_blank">登录</a>
@@ -71,38 +71,15 @@
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
         <div class="search_con">
-            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-            <input type="button" class="input_btn fr" name="" value="搜索">
+            <form action="/goods_list/" method="get" target="_blank">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                <input type="hidden" name="price_low" value="{{ price_low }}">
+                <input type="hidden" name="price_high" value="{{ price_high }}">
+                <input type="submit" class="input_btn fr" value="搜  索">
+            </form>
         </div>
     </div>
-    <div class="guest_cart fr">
-        <a href="#" class="cart_name fl">我的收藏</a>
-        <div class="goods_count fl" id="show_count">15</div>
 
-        <ul class="cart_goods_show">
-            <li>
-                <img src="../static/Images/goods/goods001.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>4</div>
-                1
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods002.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>5</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
-        </ul>
-    </div>
 </div>
 <div class="Navigation_information">
     <div id="auction_Navigation">
@@ -132,11 +109,9 @@
     <div class="down" id="down">
         <table>
             <tr>
-                <td><img src="../static/images/game.png"></td>
-                <td><img src="../static/images/camera.png"/></td>
-                <td><img src="../static/images/computer.png"/></td>
-                <td><img src="../static/images/pad.jpg"/></td>
-                <td><img src="../static/images/phone.png"/></td>
+                {% for j in i.img %}
+                <td><img src={{ j }}></td>
+                {% endfor %}
             </tr>
         </table>
     </div>

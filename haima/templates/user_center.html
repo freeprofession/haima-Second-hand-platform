@@ -5,11 +5,12 @@
     <title>海马商城-用户中心</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <link rel="stylesheet" href="../static/CSS/user_center.css">
 </head>
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
 
 
         <div class="login_btn fl">
@@ -38,7 +39,6 @@
 </div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;个人信息</div>
 </div>
 
 <div class="main_con clearfix">
@@ -57,8 +57,6 @@
         </ul>
     </div>
     <div class="right_content clearfix">
-
-        <h3 class="common_title2">基本信息</h3>
         {% for user in user_info %}
             <div class="info_con clearfix">
                 <div><img src="{{ user.user_imgurl }}" alt="" width="80" height="80"></div>
@@ -68,6 +66,7 @@
                         <li><span>用户名：</span>{{ user.user_name }}</li>
                         <li><span>手机号：</span>{{ user.user_phone }}</li>
                         <li><span>余额：</span>{{ user.user_money }}</li>
+                        <li><button  id="top_up">充值</button></li>
                     </ul>
                 </div>
                 <div>
@@ -79,9 +78,8 @@
                 </div>
                 <div>
                     <ul class="user_info_list">
-                        <li><span>累计出售：</span>1</li>
-                        <li><span>累计购买：</span>1</li>
-                        <li><span>身份认证：</span>未认证</li>
+                        <li><span>累计出售：</span>{{ sell_count }}</li>
+                        <li><span>累计购买：</span>{{ buy_count }}</li>
                     </ul>
                 </div>
 
@@ -91,12 +89,12 @@
         <h3 class="common_title2">最近浏览</h3>
         <div class="has_view_list">
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
-                {% if not browse_list %}
+                {% if not contacts1 %}
                     <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                          alt="" height="100">
                     你没有收藏任何商品
                 {% else %}
-                    {% for item in browse_list %}
+                    {% for item in contacts1 %}
                         <li>
                             <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}"></a>
                             <h4><a href="/goods_detail/?goods={{ item.goods_id }}">{{ item.goods_title }}</a></h4>
@@ -110,9 +108,52 @@
                 {% endif %}
             </ul>
         </div>
+        <div class="pagenation">
+    <span class="step-links" style="margin-top: 1px">
+        {% if contacts1.has_previous %}
+            <a href="?page1={{ contacts1.previous_page_number }}"
+               style="font-size: large;color: #00bc6f"><< </a>
+        {% endif %}
+        <em style="font-size: 16px">第 <em
+                style="color: red">{{ contacts1.number }}</em> 页/总{{ contacts1.paginator.num_pages }}页</em>
+        {% if contacts1.has_next %}
+            <a href="?page1={{ contacts1.next_page_number }}" style="font-size: large;color: #00bc6f">>></a>
+        {% endif %}
+    </span>
+        </div>
     </div>
 </div>
+<div id="top_up_money">
+    <div style="float: right">
+        <button id="shutdown">关闭</button>
+    </div>
+{#    <form action="/top_up_money/"method="post">#}
+        <table id="money_table">
 
+            <tr>
+                <td><input type="radio" name="money" value="50" checked>50元</td>
+                <td><input type="radio" name="money" value="100">100元</td>
+                <td><input type="radio" name="money" value="200" >200元</td>
+            </tr>
+             <tr>
+                <td><input type="radio" name="money" value="500">500元</td>
+                <td><input type="radio" name="money" value="1000">1000元</td>
+                <td><input type="radio" name="money" value="2000" >2000元</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                 <span style="font-size: 16px;height: 20px;">输入自定义金额:<input type="text" id="input_money" name="input_money" style="width: 100px;height: 20px;"></span>
+                </td>
+            </tr>
+            <tr >
+                <td style="text-align: center;padding-top: 40px;" colspan="3">
+                    <input type="button" value="确定充值" id="cz" style="width: 80px;height: 25px;">
+                </td>
+            </tr>
+        </table>
+{#    </form>#}
+
+</div>
 
 <div class="footer">
     <div class="foot_link">
@@ -128,5 +169,37 @@
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
+    $("#cz").click(function () {
+       select_money=$("input[name='money']:checked").val();
+       input_money=$("#input_money").val();
+       if(input_money==''){
+           money=select_money
+       }
+       else{
+           money=input_money
+       }
+      $.post('/top_up_money/'
+      ,
+          {
+            "money":money,
+          }
+          ,function (data) {
+               location.href=data
+          })
+    });
+
+    $("#top_up").click(function () {
+          $("#top_up_money").show()
+            money=$("input[name='money']:checked").val();
+
+    });
+
+
+    $("#shutdown").click(function () {
+        $("#top_up_money").hide()
+    })
+</script>
 </body>
 </html>

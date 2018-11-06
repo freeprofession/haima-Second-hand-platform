@@ -11,7 +11,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl"><span style="color: red"> {{ username }}</span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -55,8 +55,8 @@
             <div id="user_info4">
                 <ul>
                     <li>用户已加入海马二手交易平台 <span>{{ day_count }}</span> 天</li>
-                    <li>卖出商品 <span>5</span> 件</li>
-                    <li>共收到用户评价 <span>0</span> 次</li>
+                    <li>卖出商品 <span>{{ count_order }}</span> 件</li>
+                    <li>共收到用户评价 <span>{{ count_eva }}</span> 次</li>
                 </ul>
             </div>
         </div>
@@ -66,7 +66,7 @@
 <div id="credit_select">
     <ul class="credit_select_ul">
         <li id="credit_select_li1"><span class="credit_active nav credit_select_span1">发 布</span></li>
-        <li id="credit_select_li2"><span class="nav credit_select_span2">评 论(0)</span></li>
+        <li id="credit_select_li2"><span class="nav credit_select_span2">评 论({{ count_eva }})</span></li>
     </ul>
 </div>
 <div id="credit_select_show">
@@ -82,9 +82,11 @@
                                 {#                            {% for item in value %}#}
                                 <ul>
                                     <li class="clearfix credit_detail_li">
-                                        <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}" alt="" height="90"
-                                                        width="90"></a>
-                                        <a href="/goods_detail/?goods={{ item.goods_id }}" class="credit_goods_title">{{ item.goods_title }}</a>
+                                        <a href="/goods_detail/?goods={{ item.goods_id }}"><img
+                                                src="{{ item.goods_imgurl }}" alt="" height="90"
+                                                width="90"></a>
+                                        <a href="/goods_detail/?goods={{ item.goods_id }}"
+                                           class="credit_goods_title">{{ item.goods_title }}</a>
                                         <span class="credit_goods_price">{{ item.goods_price }}</span>
                                     </li>
                                 </ul>
@@ -97,47 +99,45 @@
         </ul>
     </div>
     <div id="c2" style="display: none">
-        <ul class="release-goods-list">
-            <li class="comment-data-item clearfix">
-                <div class="cell">
-                    <div class="user-infor">
-                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
-                        <span class="post-name">小可爱</span>
-                    </div>
+        {% if not  eva_list %}
+            <p>暂时无评论</p>
+        {% else %}
+            <ul class="release-goods-list">
+                {% for item in eva_list %}
+                    <li class="comment-data-item clearfix">
+                        <div class="cell">
+                            <div class="user-infor">
+                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="40" width="40"
+                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></a></span>
+                                <span class="post-name"><a href="/user_credit/?user_credit_id={{ item.user_id }}" style="color: #2d64b3">{{ item.username }}</a></span>
+                            </div>
 
-                </div>
-                <div class="comment-data cell" style="padding-top: 20px">
-                    <span><i class="tb-rate-ico ico-rate2" title="好评"></i></span><br>
-                    <span style="text-overflow: ellipsis;">很好很棒666</span><br><br>
-                    <span>2018-10-30</span>
-                </div>
-                <div class="cell" style="padding-top: 20px;">
-                    <span><a href=""
-                             class="desct2">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京321313212313132</a></span><br><br>
-                    <span class="credit_goods_price">¥ 998</span>
-                </div>
-            </li>
-            <li class="comment-data-item clearfix">
-                <div class="cell">
-                    <div class="user-infor">
-                        <span class="post-avator"><img src="../static/Images/user.gif" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></span>
-                        <span class="post-name">小可爱</span>
-                    </div>
+                        </div>
+                        <div class="comment-data cell" style="padding-top: 20px">
+                            {% if item.eva_state == '0' %}
+                                <span>来至{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
+                                                                                      title="好评"></i></span><br>
+                            {% elif item.eva_state == '1' %}
+                                <span>来至{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate3"
+                                                                                      title="中评"></i></span>
+                            {% else %}
+                                <span>来至{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate4"
+                                                                                      title="差评"></i></span>
+                                <br>
+                            {% endif %}
+                            <span style="text-overflow: ellipsis;color: black">{{ item.desc }}</span><br><br>
+                            <span>{{ item.date }}</span>
+                        </div>
+                        <div class="cell" style="padding-top: 20px;padding-left: 300px">
+                    <span><a href="/goods_detail/?goods={{ item.goods_id }}"
+                             class="desct2" style="color: #2d64b3">{{ item.goods_name }}</a></span><br><br>
+                            <span class="credit_goods_price">{{ item.goods_price }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
 
-                </div>
-                <div class="comment-data cell" style="padding-top: 20px">
-                    <span><i class="tb-rate-ico ico-rate2" title="好评"></i></span><br>
-                    <span style="text-overflow: ellipsis;">很好很棒666</span><br><br>
-                    <span>2018-10-30</span>
-                </div>
-                <div class="cell" style="padding-top: 20px">
-                    <span><a href="">93新二手 Sony索尼 NEX-5N微单套机（16/2.8）909692 613620京</a></span><br><br>
-                    <span class="credit_goods_price">¥ 998</span>
-                </div>
-            </li>
-        </ul>
+            </ul>
+        {% endif %}
     </div>
 </div>
 <div class="footer">

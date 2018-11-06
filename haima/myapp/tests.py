@@ -214,14 +214,62 @@ a = "2018-1-21"
 # d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
 # d3 = str(d1 - d2)
 # print(d3.split(" ")[0])
-cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
-            [1, 0])
-goods_list = cur.fetchall()
-print(goods_list)
-a=0
-for item in goods_list:
-    if item["goods_id"] == 0:
-        a = goods_list.index(item) - 1
-        print(goods_list[a])
-
+# cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
+#             [1, 0])
+# goods_list = cur.fetchall()
+# print(goods_list)
+# a=0
+# for item in goods_list:
+#     if item["goods_id"] == 0:
+#         a = goods_list.index(item) - 1
+#         print(goods_list[a])
+#
+# print(a)
+# cur.execute("select * from t_order_success  where release_user_id=%s or buy_user_id=%s",
+#             [1, 1])
+# goods_list = cur.fetchall()
+# buy = []
+# mai = []
+# for i in goods_list:
+#     # print(i["order_id"])
+#     cur.execute("select * from t_evaluation  where evaluation_order_id=%s",
+#                 [i["order_id"], ])
+#     a = cur.fetchone()
+#     if i["release_user_id"] == 1:
+#         a["state"] = "卖家6666666666"
+#         buy.append(a)
+#     elif i["buy_user_id"] == 1:
+#         a["state"] = "买家++++++++++"
+#         buy.append(a)
+# #         print(1111)
+# # print(buy)
+# # print(goods_list)
+# cur.execute("select * from t_evaluation  where evaluation_order_id=%s",
+#             [10, ])
+# a = cur.fetchone()
+# cur.execute("select order_id from t_order_success where buy_user_id=%s or release_user_id=%s",
+#                         [1, 1])
+# order_id = cur.fetchall()
+# for i in order_id:
+#     print(i)
+# print(order_id)
+set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
+get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
+# cur.execute("select order_id from t_order_success where buy_user_id=%s or release_user_id=%s",
+#             [2, 2])
+# order_id = cur.fetchall()
+# eva_list = []
+# for id in order_id:
+#     one = {}
+#     key = str(2) + str(id["order_id"])
+#     a = get_eva.hgetall(key)
+#     for i in a:
+#         c = a[i].decode("utf-8")
+#         i = i.decode("utf-8")
+#         one[i]=c
+#     eva_list.append(one)
+# b = get_eva.hgetall(str(210))
+# w={}
+# print(eva_list)
+a=get_eva.hgetall('110')
 print(a)

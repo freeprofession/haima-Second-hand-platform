@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-     <style type="text/css">
+    <style type="text/css">
         div.up {
             width: 350px;
             height: 400px;
@@ -242,7 +242,7 @@
     <div id="detail_user">
         {% for goods in goods_list %}
             <div id="goods_detail_list fr" class="detail_right">
-            <h3>{{ goods.goods_title }}</h3>
+            <h3 id="goods_title">{{ goods.goods_title }}</h3>
             <div class="prize_bar">
                 <span class="show_pirze">¥<em id="goods_price">{{ goods.goods_price }}</em></span>
                 <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览 {{ collection_count }}</a>
@@ -256,7 +256,7 @@
                     <label>所在地:</label>
                     <span>{{ goods.goods_address }}</span>
                 </div>
-            <span id="goods_id">{{ goods.goods_id }}</span>
+            <span id="goods_id" style="display: none">{{ goods.goods_id }}</span>
                 <div class="type_select">
                     <label>发布日期:</label>
                     <span>{{ goods.release_date }}</span>
@@ -435,7 +435,7 @@
                     <dd>
                         <textarea name="get_Published" id="Published" cols="180" rows="4"
                                   onkeyup="checkLength(this,104)" style="margin-left: 10px"></textarea>
-                        <input type="text" value="{{ goods_id }}" id="goods_id" hidden>
+                        <input type="text" value="{{ goods_id }}" id="good_id" hidden>
                     </dd>
                     <dd style="padding-left: 1070px">
                         <input type="button" id="pub_text" value="发表">
@@ -469,14 +469,15 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
+<<<<<<< HEAD
 <div id="buy_now_message">
     <button id="shutdown_buy_now_message">关闭</button>
     <div class="type_select">
-            <label>商品价格:</label>
-            <span id="goods_price_show">0</span>
+        <label>商品价格:</label>
+        <span id="goods_price_show">0</span>
     </div>
     <div class="type_select">
-          <label>请输入支付密码:</label>
+        <label>请输入支付密码:</label>
         <input type="text" maxlength="6" id="pay_password">
     </div>
     <div class="type_select">
@@ -486,10 +487,29 @@
         竞拍错误
     </div>
 </div>
+
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
 
+    $("#buy_now").click(function () {
+        title=$("#goods_title").text();
+        price=$("#goods_price").text();
+        goods_id=$("#goods_id").text();
+        $.post("/page1/",
+            {
+                "title":title,
+                "price":price,
+                "goods_id":goods_id,
+            }
+            ,function(data)
+            {
+                location.href=data
+            }
+        )
+    })
+</script>
 <script>
     var get_message_id = 0;
     var rip_id = 0
@@ -554,8 +574,9 @@
                 $('#get_child_review_' + get_message_id).hide(500)
 
             }
-            var button_list = {{ button_list }}
-            for (i = 0;i<button_list.length; i++) {
+            var button_list =
+            {{ button_list }}
+            for (i = 0; i < button_list.length; i++) {
                 if (button_list[i] == id) {
                     $(".hidreview_" + id).show(500);
                 }
@@ -586,11 +607,13 @@
             $("#pub_text").click(function () {
                     Published = $('#Published').val();
                     var check = $('#Published').val();
-                    goods_id = $('#goods_id').val();
+                    goods_id = $('#good_id').val();
+                    alert(goods_id)
                     url_ = location.href;
                     if (check == "") {
                         return false
                     } else {
+
                         $.post('/lea_message/', {
                             'Published': Published,
                             'goods_id': goods_id,
@@ -599,7 +622,7 @@
                             if (data.msg === 'need_login') {
                                 top.location.href = data.href
                             } else {
-                                top.location.href = data.href
+                                location = location
                             }
                         }, 'json')
                     }
@@ -616,7 +639,7 @@
     //商品收藏
     $(function () {
         $("#add_cart").one("click", function () {
-            goods_id = $('#goods_id').val();
+            goods_id = $('#good_id').val();
             $.post('/collection/', {
                 {#'Published': Published,#}
                 'goods_id': goods_id,
@@ -697,10 +720,9 @@
     });
 </script>
 <script>
-
     $("#buy_now").click(function () {
         $("#buy_now_message").show()
-        price=$("#goods_price").text();
+        price = $("#goods_price").text();
         $("#goods_price_show").text(price);
     })
     $("#shutdown_buy_now_message").click(function () {
@@ -709,73 +731,72 @@
     })
 
     $("#goods_confirm_buy").click(function () {
-        pay_password=$("#pay_password").val();
-        goods_id=$("#goods_id").text();
-        price=$("#goods_price").text();
+        pay_password = $("#pay_password").val();
+        goods_id = $("#goods_id").text();
+        price = $("#goods_price").text();
         $.post("/goods_confirm_buy/",
             {
-                "pay_password":pay_password,
-                "goods_id":goods_id,
-                "price":price,
+                "pay_password": pay_password,
+                "goods_id": goods_id,
+                "price": price,
             }
-            ,function (data) {
-                switch (data.msg){
+            , function (data) {
+                switch (data.msg) {
 
                     case "no_pay_password":
-                           $('#pay_error').html(function () {
-                            document.getElementById('pay_error').style.display='block';
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block';
                             document.getElementById('pay_error').innerText = "您还没有设置支付密码请前往个人中心设置";
-                            });
+                        });
                         break;
                     case "pay_password_error":
 
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block';
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block';
                             document.getElementById('pay_error').innerText = "支付密码错误";
-                            });
+                        });
                         break;
                     case "pay_password_length_error":
 
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block';
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block';
                             document.getElementById('pay_error').innerText = "支付密码必须为六位";
-                            });
+                        });
                         break;
                     case "money_less_error":
 
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block';
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block';
                             document.getElementById('pay_error').innerText = "账户余额不足";
-                            });
+                        });
                         break;
                     case "pay_ok":
 
-                           $('#pay_error').html(function () {
+                        $('#pay_error').html(function () {
                             location.href = '/buy_goods_ok/'
-                            });
+                        });
                         break;
                 }
             }
-        ,'json')
+            , 'json')
 
-    })
 
 </script>
 
-    var checkLength = function (dom, maxLength) {
-        var l = 0;
-        for (var i = 0; i < dom.value.length; i++) {
-            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
-                l += 2;
-            } else {
-                l++;
-            }
-            if (l > maxLength) {
-                dom.value = dom.value.substr(0, i);
-                break;
-            }
-        }
-    };
+var checkLength = function (dom, maxLength) {
+var l = 0;
+for (var i = 0; i < dom.value.length; i++) {
+if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+l += 2;
+} else {
+l++;
+}
+if (l > maxLength) {
+dom.value = dom.value.substr(0, i);
+break;
+}
+}
+};
 
 <script>
 </script>
