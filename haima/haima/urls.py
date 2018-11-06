@@ -16,19 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from myapp import view
-
 from django.views.generic.base import RedirectView
 from myapp import cz
-
+from myapp import auction_pay
+from myapp import auction_buy
+from myapp import auction_sale
+from myapp import auction
 urlpatterns = [
-<<<<<<< HEAD
-path('', view.homepage),
-=======
+
+
+
     path('admin/', view.admin),
     path('admin_login/', view.admin_login),
     path('admin_goodslist/', view.admin_goodslist),
     path('', view.homepage),
->>>>>>> a199f49a9e8a0fe60ed629a0e76cfaa74e74216d
+
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -67,7 +69,7 @@ path('', view.homepage),
     path('evaluate_ajax/', view.evaluate_ajax),
     # -------------------------
     path('my_auction/', view.my_auction),
-    path('history_auction/', view.history_auction),
+    path('history_auction/', auction.history_auction),
     path('release_auction/', view.release_auction),
     path('test/', view.text_message),
     path('test_ajax', view.test_ajax),
@@ -104,26 +106,27 @@ path('', view.homepage),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
     # 返回用户的全部拍卖记录
-    path("my_auction_one/", view.my_auction_one),
+    path("my_auction_one/", auction_sale.my_auction_one),
     path("my_auction_two/", view.my_auction_two),
     path("my_auction_three/", view.my_auction_three),
-    path("my_auction_four/", view.my_auction_four),
+    path("my_auction_four/", auction_buy.my_auction_four),
     # 普通商品收货
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品竞拍成功后，支付尾款
-    path("pay_auction_money/", view.pay_auction_money),
-    # 支付拍卖尾款成功
-    path("pay_auction_money_ok/", view.pay_auction_money_ok),
+
     # 拍卖商品发货
     path("delivery/", view.delivery),
     # 拍卖商品收货
-    path("confirm_auction_goods/", view.confirm_auction_goods),
+    path("confirm_auction_goods/", auction.confirm_auction_goods),
     path("send_sms/", view.send_sms),
-<<<<<<< HEAD
+
     path('page1/', view.page1),
     path('page2/', view.page2),
     path('page3/', cz.page3),
     path('top_up_money/',cz.top_up_money),#充值
+    path('auction_money/',auction_pay.auction_money),
+    path('page4/', auction_pay.page4),
+
     # path('', view.homepage),
     # path('haima/', view.homepage),
     # path('login/', view.login),
@@ -246,6 +249,4 @@ path('', view.homepage),
     # # 拍卖商品竞拍成功后，支付尾款
     # path("pay_auction_money/", view.pay_auction_money),
 
-=======
->>>>>>> a199f49a9e8a0fe60ed629a0e76cfaa74e74216d
 ]

@@ -425,7 +425,7 @@ html,body
 #buy_now_message{
    position: fixed;
     top: 200px;
-    left: 600px;
+    left: 500px;
     width: 350px;
     background-color: #2e3846;
     border: #ffda44 solid 7px;
@@ -457,8 +457,19 @@ html,body
     width: 100px;
 }
 #pay_error{
- display: none;
- padding-left: 50px;
+    display: none;
+    padding-left: 50px;
     font-size: 14px;
     color: red;
+}
+#auction_goods_info{
+
+    width: 200px;
+    height: 400px;
+   border: #f3f3de solid 1px;
+    float: right;
+    margin: 0px;
+}
+#info_message_auction{
+
 }

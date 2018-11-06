@@ -1,5 +1,6 @@
 import pymysql
 import time
+import datetime
 from utils.pay import AliPay
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -10,9 +11,9 @@ def get_ali_object():
     app_id = "2016092000555548"  #  APPID （沙箱应用）
     # 支付完成后，支付偷偷向这里地址发送一个post请求，识别公网IP,如果是 192.168.20.13局域网IP ,支付宝找不到，def page2() 接收不到这个请求
     # notify_url = "http://47.94.172.250:8804/page2/"
-    notify_url = "http://127.0.0.1:8000/page3/"
+    notify_url = "http://127.0.0.1:8000/page4/"
     # 支付完成后，跳转的地址。
-    return_url = "http://127.0.0.1:8000/page3/"
+    return_url = "http://127.0.0.1:8000/page4/"
     merchant_private_key_path = "keys/app_private_2048.txt" # 应用私钥
     alipay_public_key_path = "keys/alipay_public_2048.txt"  # 支付宝公钥
     alipay = AliPay(
@@ -26,10 +27,11 @@ def get_ali_object():
     return alipay
 
 #前端跳转的支付页面
-def top_up_money(request):
+def auction_money(request):
     # 根据当前用户的配置，生成URL，并跳转。
-    money = request.POST.get('money')
-    request.session['cz_money'] = money
+    money = request.POST.get('price')
+    order_id=request.POST.get('order_id')
+    request.session['order_id'] = order_id
     alipay = get_ali_object()
     print(money)
      # 生成支付的url
@@ -44,7 +46,7 @@ def top_up_money(request):
     return HttpResponse(pay_url)
 
 
-def page3(request):
+def page4(request):
     alipay = get_ali_object()
     if request.method == "POST":
         # 检测是否支付成功
@@ -73,6 +75,16 @@ def page3(request):
 
     else:
         user_id = request.session.get("user_id")
+        cur.execute("select user_money from t_user where user_id=%s", [user_id])
+        user_money = cur.fetchone()["user_money"]
+        order_id=request.session.get("order_id")
+        print(order_id,user_id)
+        # 通过订单id找到商品id
+        cur.execute("select auction_order_goods_id from t_auction_order where  auction_order_id=%s", [order_id])
+        goods_id = cur.fetchone()["auction_order_goods_id"]
+        # 通过商品id找到保证金
+        cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s", [goods_id])
+        goods_margin = cur.fetchone()["auction_goods_margin"]
         params = request.GET.dict()
         sign = params.pop('sign', None)
         status = alipay.verify(params, sign)
@@ -81,14 +93,22 @@ def page3(request):
         print('==================结束==================')
         print("支付成功")
         try:
-            # 充值
-            money=request.session.get("cz_money")
-            cur.execute("select user_money from t_user where user_id=%s",[str(user_id)])
-            user_money=float(cur.fetchone()["user_money"])+float(money)
-            print(user_money)
-            cur.execute("update t_user set user_money=%s where user_id=%s",[str(user_money),str(user_id)])
-            con.commit()
+            user_money = user_money + goods_margin
+            # 付款以后把把保证金退还
+            cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, user_id])
+            # 将订单那个状态改成1
+            now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+            cur.execute("update t_auction_order set auction_order_state=%s,pay_money_date=%s where auction_order_id=%s",
+                        ["1",now_time ,order_id])
+            # 将商品记录表里的状态改成3,付款时间也改一下
+            print("订单修改完成")
+            cur.execute(
+                "update t_auction_goods_record set auction_goods_state=%s where auction_goods_id=%s",
+                ["3", goods_id])
 
+            print("操作完成")
+            con.commit()
         except Exception as e:
+            con.rollback()
             print(e)
-        return redirect("/user_center/")
+        return redirect("/my_auction_one/")

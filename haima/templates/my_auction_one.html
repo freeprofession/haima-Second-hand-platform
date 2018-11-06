@@ -11,7 +11,7 @@
 <body >
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/?href=/my_auction/" target="_blank">登录</a>
@@ -46,7 +46,7 @@
 <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
-        <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
+          <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
         <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
     </div>
     <div id="auction_classification">
@@ -62,8 +62,6 @@
 <div id="auction_select">
 
     <a href="/my_auction_one/"><button id="auction_one" value="one">我发布的</button></a>
-    <a href="/my_auction_two/"><button id="auction_two" value="two">我拍卖的</button></a>
-
     <a href="/my_auction_four/"><button id="auction_four" value="four">我竞拍的</button></a>
     <div>
         <span style="font-size: 14px; font-weight: bolder">商品状态选择:</span>
