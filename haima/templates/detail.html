@@ -242,7 +242,7 @@
     <div id="detail_user">
         {% for goods in goods_list %}
             <div id="goods_detail_list fr" class="detail_right">
-            <h3>{{ goods.goods_title }}</h3>
+            <h3 id="goods_title">{{ goods.goods_title }}</h3>
             <div class="prize_bar">
                 <span class="show_pirze">¥<em id="goods_price">{{ goods.goods_price }}</em></span>
                 <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览 {{ collection_count }}</a>
@@ -256,7 +256,7 @@
                     <label>所在地:</label>
                     <span>{{ goods.goods_address }}</span>
                 </div>
-            <span id="goods_id">{{ goods.goods_id }}</span>
+            <span id="goods_id" style="display: none">{{ goods.goods_id }}</span>
                 <div class="type_select">
                     <label>发布日期:</label>
                     <span>{{ goods.release_date }}</span>
@@ -469,27 +469,29 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
-<div id="buy_now_message">
-    <button id="shutdown_buy_now_message">关闭</button>
-    <div class="type_select">
-            <label>商品价格:</label>
-            <span id="goods_price_show">0</span>
-    </div>
-    <div class="type_select">
-          <label>请输入支付密码:</label>
-        <input type="text" maxlength="6" id="pay_password">
-    </div>
-    <div class="type_select">
-        <button id="goods_confirm_buy">确认竞拍</button>
-    </div>
-    <div id="pay_error" style="display: none">
-        竞拍错误
-    </div>
-</div>
+
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
 
+    $("#buy_now").click(function () {
+        title=$("#goods_title").text();
+        price=$("#goods_price").text();
+        goods_id=$("#goods_id").text();
+        $.post("/page1/",
+            {
+                "title":title,
+                "price":price,
+                "goods_id":goods_id,
+            }
+            ,function(data)
+            {
+                location.href=data
+            }
+        )
+    })
+</script>
 <script>
     var get_message_id = 0;
     var rip_id = 0
@@ -698,67 +700,7 @@
 </script>
 <script>
 
-    $("#buy_now").click(function () {
-        $("#buy_now_message").show()
-        price=$("#goods_price").text();
-        $("#goods_price_show").text(price);
-    })
-    $("#shutdown_buy_now_message").click(function () {
-        $("#buy_now_message").hide()
-        window.location.reload();
-    })
 
-    $("#goods_confirm_buy").click(function () {
-        pay_password=$("#pay_password").val();
-        goods_id=$("#goods_id").text();
-        price=$("#goods_price").text();
-        $.post("/goods_confirm_buy/",
-            {
-                "pay_password":pay_password,
-                "goods_id":goods_id,
-                "price":price,
-            }
-            ,function (data) {
-                switch (data.msg){
-
-                    case "no_pay_password":
-                           $('#pay_error').html(function () {
-                            document.getElementById('pay_error').style.display='block';
-                            document.getElementById('pay_error').innerText = "您还没有设置支付密码请前往个人中心设置";
-                            });
-                        break;
-                    case "pay_password_error":
-
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block';
-                            document.getElementById('pay_error').innerText = "支付密码错误";
-                            });
-                        break;
-                    case "pay_password_length_error":
-
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block';
-                            document.getElementById('pay_error').innerText = "支付密码必须为六位";
-                            });
-                        break;
-                    case "money_less_error":
-
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block';
-                            document.getElementById('pay_error').innerText = "账户余额不足";
-                            });
-                        break;
-                    case "pay_ok":
-
-                           $('#pay_error').html(function () {
-                            location.href = '/buy_goods_ok/'
-                            });
-                        break;
-                }
-            }
-        ,'json')
-
-    })
 
 </script>
 

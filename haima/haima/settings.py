@@ -133,3 +133,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+ALIPAY_APPID = "2016092000555548"
+ALIPAY_URL = "https://openapi.alipaydev.com/gateway.do"
