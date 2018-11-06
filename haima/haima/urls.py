@@ -21,7 +21,14 @@ from django.views.generic.base import RedirectView
 from myapp import cz
 
 urlpatterns = [
+<<<<<<< HEAD
 path('', view.homepage),
+=======
+    path('admin/', view.admin),
+    path('admin_login/', view.admin_login),
+    path('admin_goodslist/', view.admin_goodslist),
+    path('', view.homepage),
+>>>>>>> a199f49a9e8a0fe60ed629a0e76cfaa74e74216d
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -59,7 +66,6 @@ path('', view.homepage),
     path('evaluate/', view.evaluate),
     path('evaluate_ajax/', view.evaluate_ajax),
     # -------------------------
-    path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
     path('release_auction/', view.release_auction),
@@ -113,6 +119,7 @@ path('', view.homepage),
     # 拍卖商品收货
     path("confirm_auction_goods/", view.confirm_auction_goods),
     path("send_sms/", view.send_sms),
+<<<<<<< HEAD
     path('page1/', view.page1),
     path('page2/', view.page2),
     path('page3/', cz.page3),
@@ -239,4 +246,6 @@ path('', view.homepage),
     # # 拍卖商品竞拍成功后，支付尾款
     # path("pay_auction_money/", view.pay_auction_money),
 
+=======
+>>>>>>> a199f49a9e8a0fe60ed629a0e76cfaa74e74216d
 ]
