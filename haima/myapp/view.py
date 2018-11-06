@@ -1,6 +1,6 @@
 import pymysql
 import time
-
+from utils.pay import AliPay
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 
@@ -25,18 +25,26 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-from myapp import AI_assess
+# from myapp import AI_assess
+
 
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
 img = redis.Redis(host="47.100.200.132", port=6379, db=2)
 category = redis.Redis(host="47.100.200.132", port=6379, db=3)
 cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
+<<<<<<< HEAD
 auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
 sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
 get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
+
+auction_img= redis.Redis(host="47.100.200.132", port=6379, db=5)
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
+
+auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 
 
 def get_token(func):
@@ -486,6 +494,9 @@ def user_center(request):
         cur.execute("select * from t_order_success where release_user_id=%s", [user_id])
         dict2 = cur.fetchall()
         sell_count = len(dict2)
+        buy_conut = 0
+        if dict1:
+            buy_conut = len(dict1)
         print(user_info, browse_list, 77777777777777777777)
 
         return render(request, 'user_center.html', locals())
@@ -597,7 +608,7 @@ def user_credit(request):
 
 # _____________________________________________________________-
 
-# 商品界面设置
+# ******************************************************商品界面设置,返回商品详情***************************************
 def goods_detail(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
@@ -952,11 +963,13 @@ def publish(request):
 
 
 def pub_success(request):
+    user_id = request.session.get('user_id')
     title = request.POST.get('title')
     category = request.POST.get('type')
     price = float(request.POST.get('price'))
     postage = request.POST.get('postage')
     desc = request.POST.get('desc')
+    appearance = request.POST.get('apperance')
     filelist = json.loads(request.POST.get('filelist'))
     address = '江苏苏州 吴江区'
     appearance = '4'
@@ -974,7 +987,7 @@ def pub_success(request):
     cur.execute(sql)
     con.commit()
     print(title, category, price, postage, filelist)
-    return HttpResponse("FROM")
+    return HttpResponse("publish success 页面还没写")
 
 
 # 估价
@@ -1151,6 +1164,23 @@ def publish_auction(request):
                 for i in imgurl_list:
                     i = "http://pgwecu7z4.bkt.clouddn.com/" + i
                     print(i)
+                    auction_img.rpush(goods_id,i)
+                try:
+                    cur.execute(
+                        "insert into t_release_auction(release_auction_date,release_auction_goods_id,release_auction_user_id) values (%s,%s,%s)" \
+                        , [date_now, str(goods_id), str(user_id)])
+                    cur.execute("insert into t_auction_goods_record(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_imgurl,\
+                                                    auction_goods_user_id,auction_goods_category_id) values(%s,%s,%s,%s,%s,%s)",
+                                [str(goods_id),title, desc, imgurl, \
+                                 str(user_id), str(postage)])
+                    cur.execute("insert into t_auction_attribute (start_date,end_date,auction_goods_floorprice,auction_goods_floorpremium,\
+                                auction_goods_price,auction_goods_id) values (%s,%s,%s,%s,%s,%s)",
+                                [start_date, end_date, floorprice, floorpremium, floorprice, str(goods_id)])
+                    cur.execute("update t_user set user_money=%s where user_id=%s",[user_money,user_id])
+                    con.commit()
+                except Exception as e:
+                    con.rollback()
+                    print(e)
                     auction_img.rpush(goods_id, i)
                 cur.execute(
                     "insert into t_release_auction(release_auction_date,release_auction_goods_id,release_auction_user_id) values (%s,%s,%s)" \
@@ -1292,6 +1322,15 @@ def my_auction_one(request):
             # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
             dict1["goods"] = goods_message
             dict1["attribute"] = goods_auction_message
+            dict1["state"]="商品已经被竞拍成功等待买家付款"
+            print(goods_id)
+            cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",[goods_id])
+            buy_user_id=cur.fetchone()
+            print(buy_user_id)
+            # cur.execute("select user_name from t_user where user_id=%s",[buy_user_id["auction_order_buy_user_id"]])
+            # user_name=cur.fetchone()["user_name"]
+            # if user_name:
+            #     dict1["user_name"]=user_name
             dict1["state"] = "商品已经被竞拍成功等待买家付款"
             cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",
                         [goods_id])
@@ -1434,7 +1473,6 @@ def my_auction_four(request):
     goods_list = []
     goods_info_list = []
     goods_buyuser_name_list = []
-
     # 找到用户的订单
     cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s", [user_id])
     order_dict = cur.fetchall()
@@ -1445,15 +1483,33 @@ def my_auction_four(request):
     list5 = []
     list6 = []
     # 这里是通过竞拍记录id找到商品id
-
-    # <<<<<<< HEAD
-    # =======
+    #找到用户的订单
+    cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s",[user_id])
+    order_dict=cur.fetchall()
+    list1=[]
+    list2=[]
+    list3=[]
+    list4=[]
+    list5=[]
+    list6=[]
+    # 这里是通过竞拍记录id找到商品id
+#     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
+#                 [user_id])
+=======
+    # 找到用户的订单
+    cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s", [user_id])
+    order_dict = cur.fetchall()
+    list1 = []
+    list2 = []
+    list3 = []
+    list4 = []
+    list5 = []
+    list6 = []
+    # 这里是通过竞拍记录id找到商品id
     #     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
     #                 [user_id])
-    # >>>>>>> f4d504ed34f968dcb3ffc7488120befed846cd42
-
     goods_list = []
-
+    goods_list = []
     cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
 
@@ -1544,11 +1600,14 @@ def my_auction_four(request):
                 list3.append(dict1)
         # 这里表示支付完成的
         if order_state == 1:
+        #这里表示支付完成的
+        if order_state==1:
+        # 这里表示支付完成的
+        if order_state == 1:
             dict1 = {}
             cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s",
                         [i["auction_order_id"]])
             goods_id = cur.fetchone()["auction_order_goods_id"]
-
             cur.execute("select *  from t_auction_goods_record where auction_goods_id=%s",
                         [goods_id])
             goods_message = cur.fetchone()
@@ -1582,11 +1641,16 @@ def my_auction_four(request):
             cur.execute("select the_goods_state from t_auction_order where auction_order_id=%s",
                         [i["auction_order_id"]])
             dict1["goods"] = goods_message
-
             dict1["order"] = order_messge
             list6.append(dict1)
             pass
         print(list6)
+    #
+    # dict1 = {}
+    # dict1["record"] = goods_record_list[i]
+    # dict1["goods"] = goods_info_list[i]
+    # list4.append(dict1)
+    # print(list4)
         #
         # dict1 = {}
         # dict1["record"] = goods_record_list[i]
@@ -1605,11 +1669,16 @@ def buy_auction(request):
     id = request.session.get('user_id')
     dict1 = {}
     list1 = []
+    img_list=[]
     if id:
         cur.execute('select user_name from t_user where user_id=%s', [id])
         username = cur.fetchone()
         print(username)
         goods_id = request.GET.get("id")
+        for item in auction_img.lrange(goods_id, 0, 4):
+            item = item.decode("utf-8")
+            img_list.append(item)
+
         cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
         goods_messge = cur.fetchone()
         goods_user_id = goods_messge["auction_goods_user_id"]
@@ -1617,6 +1686,7 @@ def buy_auction(request):
         goods_auction_message = cur.fetchone()
         dict1["goods"] = goods_messge
         dict1["attribute"] = goods_auction_message
+        dict1["img"]=img_list
         list1.append(dict1)
         return render(request, 'buy_auction.html', locals())
     else:
@@ -1639,9 +1709,6 @@ def calculate_price(request):
     else:
         count_price = int(price) + int(permium)
         return HttpResponse(count_price)
-
-
-# 购买拍卖页面
 def buy_auction(request):
     id = request.session.get('user_id')
     dict1 = {}
@@ -1662,6 +1729,8 @@ def buy_auction(request):
         return render(request, 'buy_auction.html', locals())
     else:
         return HttpResponseRedirect('/login/')
+
+
 
 
 # ******************************************用户输入价格完成确认竞拍*********************************************
@@ -1728,6 +1797,7 @@ def confirm_buy(request):
                                     [auction_goods_count, price, buy_user_id, goods_id])
                                 print("更新成功")
 
+
                                 cur.execute(
                                     "select auction_record_id from t_auction_record where auction_goods_id=%s",
                                     [goods_id])
@@ -1790,7 +1860,14 @@ def buy_auction_ok(request):
     return render(request, 'buy_auction_goods_ok.html')
 
 
+
 # **********************************************************提前结束拍卖*************************************************
+
+#**********************************************************提前结束拍卖*************************************************
+
+
+# **********************************************************提前结束拍卖*************************************************
+
 def end_auction(request):
     user_id = request.session.get("user_id")
     goods_id = request.GET.get("id")
@@ -1838,6 +1915,9 @@ def end_auction(request):
         con.commit()
     return redirect("/my_auction_one/")
 
+
+
+#用户输入支付密码扣款完成
 
 # ****************************************************************用户竞拍成功******************************************
 
@@ -2114,6 +2194,29 @@ def my_buy_complete(request):
                 [user_id, ])
     order_success_list = cur.fetchall()
     return render(request, "my_buy_complete.html", locals())
+    user_id = request.session.get("user_id")
+    list1 = []
+    # 找到该用户的所有订单号,已经订单号里面的商品id
+    cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
+    order_dict = cur.fetchall()
+    if order_dict:
+        order_id_list = []
+        goods_id_list = []
+        for i in order_dict:
+            order_id_list.append(i["order_id"])
+            goods_id_list.append(i["order_goods_id"])
+        for i in range(len(order_id_list)):
+            dict1 = {}
+            cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
+            order_message = cur.fetchone()
+            cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
+            goods_message = cur.fetchone()
+            dict1["goods"] = goods_message
+            dict1["order"] = order_message
+            list1.append(dict1)
+
+    return render(request, 'my_buy.html', locals())
+
 
 
 # 我的收藏
@@ -2364,16 +2467,6 @@ def modify_password(request):
     return render(request, 'modify_password.html')
 
 
-def callback(request):
-    if request.method == 'GET':
-        key_json_base64 = request.GET.get('upload_ret')
-        key_json = base64.b64decode(key_json_base64).decode('utf-8')
-        print(key_json)
-        key_dict = json.loads(key_json)
-        key = key_dict['key']
-        return HttpResponse('pgwecu7z4.bkt.clouddn.com/' + key + '-haima.shuiy')
-
-
 # 上传图片所需要的token
 def gettokendata(request):
     index = request.POST.get('index')
@@ -2448,6 +2541,10 @@ def Determine_auction_date(request):
                         "select auction_record_id from t_auction_record where auction_goods_id=%s",
                         [i])
                     record_dict = cur.fetchall()
+                    cur.execute("insert into t_auction_order (auction_order_date,auction_order_goods_id,auction_order_fianl_price,\
+                                                    auction_order_buy_user_id) values (%s,%s,%s,%s)",
+                                [now_date, str(i), str(price), str(who_buy)])
+                    print("添加订单成功")
                     if record_dict:
                         record_list = []
                         for i in record_dict:
@@ -2567,8 +2664,6 @@ def pay_auction_money(request):
 # ********************************************返回支付拍卖成功的钱以后的跳转*********************************************
 def pay_auction_money_ok(request):
     return render(request, "pay_auction_money_ok.html")
-
-
 # *****************************************处理拍卖商品的发货************************************************************
 def delivery(request):
     courier_number = request.POST.get("courier_number")
@@ -2610,3 +2705,136 @@ def confirm_auction_goods(request):
         con.commit()
     except Exception as e:
         print(e)
+#支付宝支付
+
+def get_ali_object():
+    # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
+    app_id = "2016092000555548"  #  APPID （沙箱应用）
+
+    # 支付完成后，支付偷偷向这里地址发送一个post请求，识别公网IP,如果是 192.168.20.13局域网IP ,支付宝找不到，def page2() 接收不到这个请求
+    # notify_url = "http://47.94.172.250:8804/page2/"
+    notify_url = "http://127.0.0.1:8000/page2/"
+    # 支付完成后，跳转的地址。
+    return_url = "http://127.0.0.1:8000/page2/"
+    merchant_private_key_path = "keys/app_private_2048.txt" # 应用私钥
+    alipay_public_key_path = "keys/alipay_public_2048.txt"  # 支付宝公钥
+
+    alipay = AliPay(
+        appid=app_id,
+        app_notify_url=notify_url,
+        return_url=return_url,
+        app_private_key_path=merchant_private_key_path,
+        alipay_public_key_path=alipay_public_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥
+        debug=True,  # 默认False,
+    )
+    return alipay
+
+#前端跳转的支付页面
+def page1(request):
+    # 根据当前用户的配置，生成URL，并跳转。
+    money = request.POST.get('price')
+    title=request.POST.get('title')
+    alipay = get_ali_object()
+    goods_id=request.POST.get('goods_id')
+    request.session['goods_id'] = goods_id
+    # 生成支付的url
+    query_params = alipay.direct_pay(
+        subject=title,  # 商品简单描述
+        out_trade_no="x2" + str(time.time()),  # 用户购买的商品订单号（每次不一样） 20180301073422891
+        total_amount=money,  # 交易金额(单位: 元 保留俩位小数)
+
+    )
+    pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
+    print(pay_url)
+    return HttpResponse(pay_url)
+
+
+def page2(request):
+    alipay = get_ali_object()
+    if request.method == "POST":
+        # 检测是否支付成功
+        # 去请求体中获取所有返回的数据：状态/订单号
+        from urllib.parse import parse_qs
+        # name&age=123....
+        body_str = request.body.decode('utf-8')
+        post_data = parse_qs(body_str)
+        post_dict = {}
+        for k, v in post_data.items():
+            post_dict[k] = v[0]
+
+        # post_dict有10key： 9 ，1
+        sign = post_dict.pop('sign', None)
+        status = alipay.verify(post_dict, sign)
+        print('------------------开始------------------')
+        print('POST验证', status)
+        print(post_dict)
+        out_trade_no = post_dict['out_trade_no']
+
+        # 修改订单状态
+        # models.Order.objects.filter(trade_no=out_trade_no).update(status=2)
+        print('------------------结束------------------')
+        # 修改订单状态：获取订单号
+        return HttpResponse('POST返回')
+
+    else:
+        user_id = request.session.get("user_id")
+        goods_id=request.session.get("goods_id")
+        print(goods_id)
+        params = request.GET.dict()
+        sign = params.pop('sign', None)
+        status = alipay.verify(params, sign)
+        print('==================开始==================')
+        print('GET验证', status)
+        print('==================结束==================')
+        print("支付成功")
+        try:
+            # 生成商品订单
+            cur.execute("select user_id from t_goods where goods_id=%s", [goods_id])
+            release_user_id = cur.fetchone()["user_id"]
+            date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+            cur.execute("insert into t_order(release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s)",
+                        [str(release_user_id), str(user_id), date, str(goods_id)])
+            print("生成订单成功")
+            cur.execute("update t_goods set goods_state=%s where goods_id=%s", ["1", goods_id])
+            print("更新商品状态成功")
+            con.commit()
+
+        except Exception as e:
+            print(e)
+        return redirect("/haima/")
+
+def admin_session(func):
+    def in_func(request):
+        user = request.session.get('user')
+        if user:
+            return func(request, user)
+        else:
+            return redirect('/admin_login/')
+
+    return in_func
+
+
+def admin_login(request):
+    if request.method == "GET":
+        return render(request, 'admin_login.html')
+    else:
+        user = request.POST.get('user')
+        pwd = request.POST.get('pwd')
+        cur.execute("select * from t_admin where user=%s and pwd=%s", [user, pwd])
+        result = cur.fetchall()
+        if result:
+            request.session['user'] = user
+            return HttpResponse('login')
+        else:
+            return HttpResponse('')
+
+
+@admin_session
+def admin(request, user):
+    return render(request, 'admin.html', {'user': user})
+
+@admin_session
+def admin_goodslist(request, user):
+    return render(request, 'admin_goodslist.html', {'user': user})
+>>>>>>> a199f49a9e8a0fe60ed629a0e76cfaa74e74216d
+>>>>>>> 1026a71912a8ff0b3533af031d7b99e5a3bcbc3b

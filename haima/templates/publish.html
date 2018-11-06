@@ -6,10 +6,6 @@
     <script type="text/javascript" src="https://unpkg.com/qiniu-js@2.5.1/dist/qiniu.min.js"></script>
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../static/JS/publish_check.js"></script>
-    {#    <script type="text/javascript" src="../static/JS/qiniu.js"></script>#}
-    {#    <script type="text/javascript" src="../static/JS/moxie.min.js"></script>#}
-    {#    <script type="text/javascript" src="../static/JS/plupload.full.min.js"></script>#}
-    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/font-style.css">
@@ -70,7 +66,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -124,7 +120,8 @@
                 <tr>
                     <td>宝贝标题：</td>
                     <td><input type="text" name="title" placeholder="请输入商品标题" onblur="checktitle()">
-                        <div id="checktitle" style="float: right;font-size: 14px;color: red;display: none">宝贝标题不能为空</div>
+                        <div id="checktitle" style="float: right;font-size: 14px;color: red;display: none">宝贝标题不能为空
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -132,13 +129,20 @@
                     <td><select style="width: 200px" name="type">
                         <option value="1">手机</option>
                         <option value="2">电脑</option>
-                        <option value="3">平板</option>
-                        <option value="4">相机</option>
-                        <option value="5">外设</option>
-                        <option value="6">其他</option>
+                        <option value="3">摄影</option>
+                        <option value="4">电玩随声听</option>
+                        <option value="5">其他</option>
                     </select></td>
                 </tr>
-
+                <tr>
+                    <td>类型：</td>
+                    <td><select style="width: 200px" name="appearance">
+                        <option value="4">全新</option>
+                        <option value="3">九五新</option>
+                        <option value="2">九成新</option>
+                        <option value="1">八五新</option>
+                    </select></td>
+                </tr>
                 <tr>
                     <td>价格：</td>
                     <td>
@@ -172,7 +176,7 @@
                 </tr>
                 <tr>
                     <td>宝贝描述：</td>
-                    <td><textarea name="" id="" cols="100" rows="8" placeholder="商品描述不低于10个字"></textarea></td>
+                    <td><textarea name="desc" id="" cols="100" rows="8" placeholder="商品描述不低于10个字"></textarea></td>
                 </tr>
             </table>
             <input type="text" name="filelist" id="filelist" style="display:none;">
@@ -257,84 +261,5 @@
         })
     })
 </script>
-{#<script>#}
-{#    var imgscount = 0;#}
-{#    //引入Plupload 、qiniu.js后#}
-{#    var uploader1 = Qiniu.uploader({#}
-{#        runtimes: 'html5,flash,html4',    //上传模式,依次退化#}
-{#        browse_button: 'js-file',       //上传选择的点选按钮，**必需**#}
-{#        //uptoken_url: '/qiniu_token',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）#}
-{#        uptoken: '{{ token }}', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成#}
-{#        unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。#}
-{#        //save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理#}
-{#        domain: 'http://pgwecu7z4.bkt.clouddn.com/',   //bucket 域名，下载资源时用到，**必需**#}
-{#        get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token#}
-{#        container: 'container',           //上传区域DOM ID，默认是browser_button的父元素，#}
-{#        max_file_size: '10000000',           //最大文件体积限制#}
-{#        flash_swf_url: 'js/plupload/Moxie.swf',  //引入flash,相对路径#}
-{#        max_retries: 3,                   //上传失败最大重试次数#}
-{#        dragdrop: true,                   //开启可拖曳上传#}
-{#        drop_element: 'container',        //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传#}
-{#        chunk_size: '4m',                //分块上传时，每片的体积#}
-{#        auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传#}
-{#        init: {#}
-{#            'FilesAdded': function (up, files) {#}
-{#                plupload.each(files, function (file) {#}
-{#                    // 文件添加进队列后,处理相关的事情#}
-{#                });#}
-{##}
-{#            },#}
-{#            'BeforeUpload': function (up, file) {#}
-{#                // 每个文件上传前,处理相关的事情#}
-{#            },#}
-{#            'UploadProgress': function (up, file) {#}
-{#                // 每个文件上传时,处理相关的事情#}
-{#                console.log(file.percent + "%");#}
-{#            },#}
-{#            'FileUploaded': function (up, file, info) {#}
-{#                // 每个文件上传成功后,处理相关的事情#}
-{#                // 其中 info.response 是文件上传成功后，服务端返回的json，形式如#}
-{#                // {#}
-{#                //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",#}
-{#                //    "key": "gogopher.jpg"#}
-{#                //  }#}
-{#                // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html#}
-{#                imgscount++;#}
-{#                if (imgscount <= 9) {#}
-{##}
-{#                    var domain = up.getOption('domain');#}
-{##}
-{#                    var dataobj;#}
-{#                    if (typeof(info.response) == 'string') {#}
-{#                        var dataobj = JSON.parse(info.response);#}
-{#                    } else {#}
-{#                        var dataobj = info.response;#}
-{#                    }#}
-{##}
-{#                    var image_url = domain + dataobj['key'];#}
-{#                    var thumbimage_url = image_url + "?imageView2/1/w/100/h/100/q/75";#}
-{#                    //$("#pickfiles1").attr("src",thumbimage_url);#}
-{##}
-{#                    var imghtml = '<div style="margin-left: 9px;float: left;">\n' +#}
-{#                        '                                <img  src="' + thumbimage_url + '"/>\n' +#}
-{##}
-{#                        '                            </div>';#}
-{#                    $("#album_imgs").append(imghtml);#}
-{#                    console.log(image_url);#}
-{#                }#}
-{#            },#}
-{#            'Error': function (up, err, errTip) {#}
-{#                //上传出错时,处理相关的事情#}
-{#            },#}
-{#            'UploadComplete': function () {#}
-{##}
-{#            },#}
-{#            'Key': function (up, file) {#}
-{#                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数#}
-{#                // 该配置必须要在 unique_names: false , save_key: false 时才生效#}
-{#            }#}
-{#        }#}
-{#    });#}
-{#</script>#}
 </body>
 </html>

@@ -18,9 +18,14 @@ from django.urls import path, include
 from myapp import view
 
 from django.views.generic.base import RedirectView
+from myapp import cz
 
 urlpatterns = [
+    path('admin/', view.admin),
+    path('admin_login/', view.admin_login),
+    path('admin_goodslist/', view.admin_goodslist),
     path('', view.homepage),
+
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -55,13 +60,10 @@ urlpatterns = [
     path('review_ajax/', view.review_ajax),
     path('lea_message/', view.lea_message),
     path('collection/', view.collection),
-    path('leave_message/', view.leave_message),
-    path('leave_message_two/', view.leave_message_two),
     path('lower_goods/', view.lower_goods),
     path('evaluate/', view.evaluate),
     path('evaluate_ajax/', view.evaluate_ajax),
     # -------------------------
-    path('callback/', view.callback),
     path('my_auction/', view.my_auction),
     path('history_auction/', view.history_auction),
     path('release_auction/', view.release_auction),
@@ -69,13 +71,15 @@ urlpatterns = [
     path('test_ajax', view.test_ajax),
     path('my_auction/', view.my_auction),
     # 获取图片上传token
+
     path('gettokendata/', view.gettokendata), path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
+
+
+    path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
+
     path('modify_information/', view.modify_information),  # 修改信息
-    # path('modify_information/', view.modify_information),
-    path('modify_information/', view.modify_information),  # 修改信息
-    path('modify_password/', view.modify_password),  # 修改密码
-    path('modify_password/', view.modify_password),  # 修改密码
+
     path('modify_information/', view.modify_information),  # 修改信息
     # path('modify_information/', view.modify_information),
 
@@ -89,19 +93,13 @@ urlpatterns = [
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
-    # 返回用户的全部拍卖记录
-    path("my_auction_one/", view.my_auction_one),
-    path("my_auction_two/", view.my_auction_two),
-    path("my_auction_four/", view.my_auction_four),
     # 用户输完价格确认竞拍
     path("confirm_buy/", view.confirm_buy),
     # 用户支付成功以后的跳转
     path("buy_auction_ok/", view.buy_auction_ok),
-
     # 提前结束拍卖
     path("end_auction/", view.end_auction),
     # 普通商品的购买
-    path("goods_confirm_buy/", view.goods_confirm_buy),
     # 普通商品购买成功
     path("buy_goods_ok/", view.buy_goods_ok),
     # 拍卖时间结束的判断
@@ -116,6 +114,7 @@ urlpatterns = [
     path("my_auction_two/", view.my_auction_two),
     path("my_auction_three/", view.my_auction_three),
     path("my_auction_four/", view.my_auction_four),
+
     # 用户输完价格确认竞拍
     path("confirm_buy/", view.confirm_buy),
     # 用户支付成功以后的跳转
@@ -131,8 +130,17 @@ urlpatterns = [
     # 拍卖商品收货
     path("confirm_auction_goods/", view.confirm_auction_goods),
     path("send_sms/", view.send_sms),
+
     # 普通商品收货
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品竞拍成功后，支付尾款
     path("pay_auction_money/", view.pay_auction_money),
+    # 支付拍卖尾款成功
+    path("pay_auction_money_ok/", view.pay_auction_money_ok),
+    # 拍卖商品发货
+    path("delivery/", view.delivery),
+    # 拍卖商品收货
+    path("confirm_auction_goods/", view.confirm_auction_goods),
+    path("send_sms/", view.send_sms),
+
 ]

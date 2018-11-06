@@ -1,0 +1,22 @@
+#top_up_money{
+    width: 400px;
+    height: 300px;
+    background-color: black;
+    position: fixed;
+    top: 30%;
+    left: 40%;
+    color: white;
+    display: none;
+
+}
+td{
+    padding-top: 30px;
+    width: 100px;
+    height: 20px;
+    font-size: 16px;
+}
+#money_table{
+    margin-left: 30px;
+}
+
+

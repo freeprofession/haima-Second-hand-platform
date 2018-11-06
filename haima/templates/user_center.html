@@ -5,11 +5,12 @@
     <title>海马商城-用户中心</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <link rel="stylesheet" href="../static/CSS/user_center.css">
 </head>
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
 
 
         <div class="login_btn fl">
@@ -65,6 +66,7 @@
                         <li><span>用户名：</span>{{ user.user_name }}</li>
                         <li><span>手机号：</span>{{ user.user_phone }}</li>
                         <li><span>余额：</span>{{ user.user_money }}</li>
+                        <li><button  id="top_up">充值</button></li>
                     </ul>
                 </div>
                 <div>
@@ -121,7 +123,37 @@
         </div>
     </div>
 </div>
+<div id="top_up_money">
+    <div style="float: right">
+        <button id="shutdown">关闭</button>
+    </div>
+{#    <form action="/top_up_money/"method="post">#}
+        <table id="money_table">
 
+            <tr>
+                <td><input type="radio" name="money" value="50" checked>50元</td>
+                <td><input type="radio" name="money" value="100">100元</td>
+                <td><input type="radio" name="money" value="200" >200元</td>
+            </tr>
+             <tr>
+                <td><input type="radio" name="money" value="500">500元</td>
+                <td><input type="radio" name="money" value="1000">1000元</td>
+                <td><input type="radio" name="money" value="2000" >2000元</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                 <span style="font-size: 16px;height: 20px;">输入自定义金额:<input type="text" id="input_money" name="input_money" style="width: 100px;height: 20px;"></span>
+                </td>
+            </tr>
+            <tr >
+                <td style="text-align: center;padding-top: 40px;" colspan="3">
+                    <input type="button" value="确定充值" id="cz" style="width: 80px;height: 25px;">
+                </td>
+            </tr>
+        </table>
+{#    </form>#}
+
+</div>
 
 <div class="footer">
     <div class="foot_link">
@@ -137,5 +169,37 @@
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
+    $("#cz").click(function () {
+       select_money=$("input[name='money']:checked").val();
+       input_money=$("#input_money").val();
+       if(input_money==''){
+           money=select_money
+       }
+       else{
+           money=input_money
+       }
+      $.post('/top_up_money/'
+      ,
+          {
+            "money":money,
+          }
+          ,function (data) {
+               location.href=data
+          })
+    });
+
+    $("#top_up").click(function () {
+          $("#top_up_money").show()
+            money=$("input[name='money']:checked").val();
+
+    });
+
+
+    $("#shutdown").click(function () {
+        $("#top_up_money").hide()
+    })
+</script>
 </body>
 </html>

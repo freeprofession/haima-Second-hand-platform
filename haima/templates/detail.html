@@ -242,7 +242,7 @@
     <div id="detail_user">
         {% for goods in goods_list %}
             <div id="goods_detail_list fr" class="detail_right">
-            <h3>{{ goods.goods_title }}</h3>
+            <h3 id="goods_title">{{ goods.goods_title }}</h3>
             <div class="prize_bar">
                 <span class="show_pirze">¥<em id="goods_price">{{ goods.goods_price }}</em></span>
                 <a href="" class="goods_judge">{{ goods.goods_browse_count }}人浏览 {{ collection_count }}</a>
@@ -256,7 +256,7 @@
                     <label>所在地:</label>
                     <span>{{ goods.goods_address }}</span>
                 </div>
-                <span id="goods_id" hidden>{{ goods.goods_id }}</span>
+            <span id="goods_id" style="display: none">{{ goods.goods_id }}</span>
                 <div class="type_select">
                     <label>发布日期:</label>
                     <span>{{ goods.release_date }}</span>
@@ -469,6 +469,7 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
+<<<<<<< HEAD
 <div id="buy_now_message">
     <button id="shutdown_buy_now_message">关闭</button>
     <div class="type_select">
@@ -486,10 +487,29 @@
         竞拍错误
     </div>
 </div>
+
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
 
+    $("#buy_now").click(function () {
+        title=$("#goods_title").text();
+        price=$("#goods_price").text();
+        goods_id=$("#goods_id").text();
+        $.post("/page1/",
+            {
+                "title":title,
+                "price":price,
+                "goods_id":goods_id,
+            }
+            ,function(data)
+            {
+                location.href=data
+            }
+        )
+    })
+</script>
 <script>
     var get_message_id = 0;
     var rip_id = 0
@@ -700,7 +720,6 @@
     });
 </script>
 <script>
-
     $("#buy_now").click(function () {
         $("#buy_now_message").show()
         price = $("#goods_price").text();
@@ -761,7 +780,6 @@
             }
             , 'json')
 
-    })
 
 </script>
 
