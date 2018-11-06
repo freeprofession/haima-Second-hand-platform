@@ -38,7 +38,6 @@
 </div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;个人信息</div>
 </div>
 
 <div class="main_con clearfix">
@@ -57,8 +56,6 @@
         </ul>
     </div>
     <div class="right_content clearfix">
-
-        <h3 class="common_title2">基本信息</h3>
         {% for user in user_info %}
             <div class="info_con clearfix">
                 <div><img src="{{ user.user_imgurl }}" alt="" width="80" height="80"></div>
@@ -79,9 +76,8 @@
                 </div>
                 <div>
                     <ul class="user_info_list">
-                        <li><span>累计出售：</span>1</li>
-                        <li><span>累计购买：</span>1</li>
-                        <li><span>身份认证：</span>未认证</li>
+                        <li><span>累计出售：</span>{{ sell_count }}</li>
+                        <li><span>累计购买：</span>{{ buy_count }}</li>
                     </ul>
                 </div>
 
@@ -91,12 +87,12 @@
         <h3 class="common_title2">最近浏览</h3>
         <div class="has_view_list">
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
-                {% if not browse_list %}
+                {% if not contacts1 %}
                     <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                          alt="" height="100">
                     你没有收藏任何商品
                 {% else %}
-                    {% for item in browse_list %}
+                    {% for item in contacts1 %}
                         <li>
                             <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}"></a>
                             <h4><a href="/goods_detail/?goods={{ item.goods_id }}">{{ item.goods_title }}</a></h4>
@@ -109,6 +105,19 @@
                     {% endfor %}
                 {% endif %}
             </ul>
+        </div>
+        <div class="pagenation">
+    <span class="step-links" style="margin-top: 1px">
+        {% if contacts1.has_previous %}
+            <a href="?page1={{ contacts1.previous_page_number }}"
+               style="font-size: large;color: #00bc6f"><< </a>
+        {% endif %}
+        <em style="font-size: 16px">第 <em
+                style="color: red">{{ contacts1.number }}</em> 页/总{{ contacts1.paginator.num_pages }}页</em>
+        {% if contacts1.has_next %}
+            <a href="?page1={{ contacts1.next_page_number }}" style="font-size: large;color: #00bc6f">>></a>
+        {% endif %}
+    </span>
         </div>
     </div>
 </div>

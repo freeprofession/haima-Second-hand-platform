@@ -271,14 +271,6 @@
     </div>
 </div>
 
-<div class="breadcrumb">
-    <a href="#">全部分类</a>
-    <span>></span>
-    <a href="#">笔记本</a>
-    <span>></span>
-    <a href="#">mac电脑</a>
-</div>
-
 <div class="goods_detail_con clearfix">
     <div class="up fl" id="up"><img src="../static/images/goods_450.jpg"></div>
     <div class="down" id="down">
@@ -356,78 +348,78 @@
                 <li class="active">评价</li>
                 <li>商品详情</li>
             </ul>
-            <div class="tab_content current">
+            {% if eva_state == 0 %}
+                <div class="tab_content current">
 
-                <table border="0" id="eva" align="center">
-                    <tr>
-                        <td><label><input type="radio" value="" name="evaluate" checked>好评</label></td>
-                        <td><label><input type="radio" value="" name="evaluate">中评</label></td>
-                        <td><label><input type="radio" value="" name="evaluate">差评</label></td>
-                    </tr>
-                    <tr>
-                        <td>卖家态度：</td>
-                        <td colspan="2">
-                            <div class="mark">
-                                <ul>
-                                    <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>宝贝情况：</td>
-                        <td colspan="2">
-                            <div class="mark">
-                                <ul>
-                                    <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;"
-                                                                                         class="dd">2</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;"
-                                                                                         class="dd">4</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;"
-                                                                                         class="dd">6</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;"
-                                                                                         class="dd">8</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;"
-                                                                                         class="dd">10</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>发货速度：</td>
-                        <td colspan="2">
-                            <div class="mark">
-                                <ul>
-                                    <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
-                                    </li>
-                                    <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                {% if eva_state == 0 %}
+                    <table border="0" id="eva" align="center">
+                        <tr>
+                            <td><label><input type="radio" value="" name="evaluate" checked>好评</label></td>
+                            <td><label><input type="radio" value="" name="evaluate">中评</label></td>
+                            <td><label><input type="radio" value="" name="evaluate">差评</label></td>
+                        </tr>
+                        <tr>
+                            <td>卖家态度：</td>
+                            <td colspan="2">
+                                <div class="mark">
+                                    <ul>
+                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>宝贝情况：</td>
+                            <td colspan="2">
+                                <div class="mark">
+                                    <ul>
+                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;"
+                                                                                             class="dd">2</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;"
+                                                                                             class="dd">4</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;"
+                                                                                             class="dd">6</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;"
+                                                                                             class="dd">8</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;"
+                                                                                             class="dd">10</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>发货速度：</td>
+                            <td colspan="2">
+                                <div class="mark">
+                                    <ul>
+                                        <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">3</a><a href="javascript:;">4</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">5</a><a href="javascript:;">6</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">7</a><a href="javascript:;">8</a>
+                                        </li>
+                                        <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                     <dl style="margin-bottom: 25px">
                         <dt>对本次交易的感受：</dt>
                         <dd>评价：<input type="text" id="dddddddd"></dd>
@@ -435,15 +427,15 @@
                             <textarea name="" id="evaluate_text" cols="180" rows="4"></textarea>
                         </dd>
                         <dd style="padding-left: 1070px">
-                            <input type="button" id="submit" value="提交评论">
+                            <input type="button" id="sub" value="提交评论">
                         </dd>
                     </dl>
-                {% else %}
+                    {% else %}
                     {% if customer == "buy" %}
                         {% for item in buy_desc_list %}
                             <dl style="margin-bottom: 25px">
-                                <dt>{{ item.buyer_evaluation }}</dt>
-                                <dd>评价：{{ item.buy_state }}</dd>
+                                <dt>{{ item.buyer_evaluation_date }}</dt>
+                                {#                                <dd>评价：{{ item.buy_state }}</dd>#}
                                 <dd>
                                     {{ item.buyer_desc }}
                                 </dd>
@@ -452,8 +444,8 @@
                     {% else %}
                         {% for item in sell_desc_list %}
                             <dl style="margin-bottom: 25px">
-                                <dt>{{ item.seller_evaluation }}</dt>
-                                <dd>评价：{{ item.sell_state }}</dd>
+                                <dt>{{ item.seller_evaluation_date }}</dt>
+                                {#                                <dd>评价：{{ item.sell_state }}</dd>#}
                                 <dd>
                                     {{ item.seller_desc }}
                                 </dd>
@@ -462,9 +454,8 @@
 
                     {% endif %}
 
-                {% endif %}
-
-            </div>
+                </div>
+            {% endif %}
             <div class="tab_content">
                 <dl>
                     <dd>
@@ -539,11 +530,12 @@
 {#异步#}
 <script>
     $(function () {
-        $("#submit").click(function () {
+        $("#sub").click(function () {
+            alert("{{ customer }}")
             evaluate_text = $('#evaluate_text').val();
             dddddddd = $('#dddddddd').val();
-            customer ={{ customer }};
-            order_id ={{ order_id }};
+            customer = "{{ customer }}";
+            order_id = "{{ order_id }}";
             $.post('/evaluate_ajax/', {
                 'evaluate_text': evaluate_text,
                 "dddddddd": dddddddd,
@@ -551,7 +543,7 @@
                 "customer": customer,
             }, function (data) {
                 if (data.msg === 'success') {
-                    window.location.reload()
+                    location = location
                 }
             }, 'json')
 

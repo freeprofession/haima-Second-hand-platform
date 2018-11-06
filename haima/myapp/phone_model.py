@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("C:\\Users\\Administrator\\Desktop\\phone_model.csv")
+# df = pd.read_csv("C:\\Users\\Administrator\\Desktop\\phone_model.csv")
 
 
 def Phone_model(brand, model):
