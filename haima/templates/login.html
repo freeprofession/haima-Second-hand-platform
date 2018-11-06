@@ -29,10 +29,10 @@
                         <input type="password" name="pwd" class="pass_input" placeholder="请输入密码" id="password">
                         <div class="more_input clearfix">
                             <input id="hash" name="captcha_0" value="{{ hashkey }}" type="hidden">
-                            <input type="text" id="login_code" class="code_input">
+                            <input type="text" id="login_code" class="code_input" style="height: 27px">
                             {#                            <input type="button" id="code_refresh" value="genhuan">#}
-                            <img class="captcha" id="code_img" alt="captcha" src="{{ image_url }}">
-                            <span id="code_error" style="color: red">验证码错误区</span>
+                            <img class="captcha" id="code_img" alt="captcha" src="{{ image_url }}" style="border: 1px solid #ebebeb;margin-left: 18px;height: 30px;">
+                            <div id="code_error" style="color: red"></div>
                         </div>
                         <input type="button" name="" value="登 录" class="input_submit" id="login">
                     </form>

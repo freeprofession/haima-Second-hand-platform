@@ -204,7 +204,7 @@
 </div>
 
 <div id="breadcrumb">
-    <span style="font-size: 14px;color: #403511">{{ prompt }}</span>
+    <p style="font-size: 14px;">{{ prompt }}</p>
 </div>
 
 <div class="main_list clearfix">
@@ -232,8 +232,8 @@
     <ul class="goods_type_list clearfix" id="goods_type_ul">
         {% for goods in contacts %}
             <li>
-                <a href="detail.html"><img src="{{ goods.goods_imgurl }}"></a>
-                <h4><a href="detail.html">{{ goods.goods_title }}</a></h4>
+                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
+                <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                 <div class="operate">
                     <span class="prize">￥{{ goods.goods_price }}</span>
                     <span class="unit">台</span>
@@ -326,7 +326,7 @@
         }
         {% for keys in question_word %}
             keyLight('goods_type_ul', "{{ keys }}");
-            keyLight('breadcrumb', "{{ keys }}");
+            // keyLight('breadcrumb', "{{ keys }}");
         {% endfor %}
          keyLight('breadcrumb', "{{ user_address }}");
     </script>
