@@ -39,6 +39,81 @@ html, body {
     margin: 0 10px;
 }
 
+#for_psw {
+    height: 760px;
+    width: 1520px;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, .7);
+    display: none;
+}
+
+.popwin_title {
+    width: 394px;
+    height: 50px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    line-height: 50px;
+    background: #F5F5F5;
+    padding-left: 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #DDDDDD;
+    position: absolute;
+    z-index: 10002;
+    top: 200px;
+    left: 540px;
+}
+
+.popwin_content {
+    width: 374px;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    position: absolute;
+    z-index: 10002;
+    top: 250px;
+    left: 540px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.popwin_tips {
+    font-size: 16px;
+    color: #2776A4;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+
+.popwin_content input {
+    width: 200px;
+}
+
+#fgt_psw_yzm_btn {
+    width: 90px;
+    height: 20px;
+    line-height: 18px;
+    background-color: #0a6999;
+    border: 0px;
+    color: white;
+}
+
+.popwin_content button:hover {
+    cursor: pointer;
+}
+
+.btn_blue {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #0a6999;
+    color: white;
+    border-radius: 3px;
+    border: 0px;
+}
+
 .user_link ul {
     margin-top: -28px;
     margin-left: 160px;
@@ -678,9 +753,10 @@ label:hover {
     border-bottom: 3px solid #fc0 !important;
 }
 
-.hold ul{
+.hold ul {
     margin-left: 40px;
 }
+
 .hold ul li {
     height: 200px;
     width: 180px;
@@ -1480,7 +1556,8 @@ label:hover {
     top: -1px;
     height: 35px;
 }
-#buy_now_message{
+
+#buy_now_message {
     width: 400px;
     height: 300px;
     background-color: #16bcbd;
@@ -1490,9 +1567,9 @@ label:hover {
     z-index: 9999999999;
     display: none;
 
-
 }
-#shutdown_buy_now_message{
+
+#shutdown_buy_now_message {
     float: right;
 }
 
@@ -1629,11 +1706,12 @@ label:hover {
     font-size: 12px;
     text-indent: 22px;
     background: url(../images/QQ-weixin.png) left 7px no-repeat;
+    border: 0px;
 }
 
 .qq_login:hover, .weixin_login:hover, .register_btn:hover {
     color: #e3101e;
-    text-decoration: underline
+    cursor: pointer;
 }
 
 .weixin_login {
@@ -2393,17 +2471,20 @@ label:hover {
     color: #666;
     padding: 5px 10px
 }
-.lower1_btn{
-     display: inline-block;
+
+.lower1_btn {
+    display: inline-block;
     border: 1px solid #ddd;
     color: #666;
     padding: 5px 10px
 
 }
-.lower1_btn:hover{
+
+.lower1_btn:hover {
     cursor: pointer;
     background-color: #3eb8e9;
 }
+
 .popup_con {
     display: none;
 }
@@ -3751,7 +3832,6 @@ label:hover {
     background: -webkit-linear-gradient(top, #f50, #ed4f00);
 }
 
-
 .left {
     float: left;
 }
@@ -3781,7 +3861,8 @@ label:hover {
     z-index: 9999;
     display: none;
 }
-.error_mes{
+
+.error_mes {
     display: none;
     color: red;
     font-size: 13px;

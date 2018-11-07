@@ -164,8 +164,8 @@ def homepage(request):
     computer_list = cur.fetchall()
     cur.execute(
         "select goods_id,goods_title,goods_price,goods_imgurl from t_goods where goods_category_id = %s and goods_state = %s limit 10",
-        ['1', '0'])
-    phone_list = cur.fetchall()
+        ['3', '0'])
+    camera_list = cur.fetchall()
     # 收藏--------------------------
     # cur.execute("select * from t_user_collection where collection_user_id=%s", [user_id, ])
     cur.execute(
@@ -964,6 +964,7 @@ def goods_detail_ajax(request):
 
 # 发布商品
 def publish(request):
+    user_name = request.session.get('username')
     if request.method == 'POST':
         price = int(request.POST.get('price_hid').replace('¥', ''))
     return render(request, 'publish.html', locals())
@@ -978,7 +979,12 @@ def pub_success(request):
     desc = request.POST.get('desc')
     appearance = request.POST.get('apperance')
     filelist = json.loads(request.POST.get('filelist'))
-    address = '江苏苏州 吴江区'
+    cur.execute("select user_address from t_user where user_id =%s", [user_id, ])
+    user_address = cur.fetchone()
+    if user_address:
+        address = user_address["user_address"]
+    else:
+        address = '江苏苏州 吴江区'
     appearance = '4'
     if desc:
         pass
@@ -987,14 +993,19 @@ def pub_success(request):
     for i in filelist:
         print(i)
     sql = "INSERT INTO t_goods(`user_id`,`release_date`,`goods_title`,`goods_desc`,`goods_price`,`goods_category_id`,`goods_imgurl`,`goods_address`,`goods_appearance`) \
-                                                                   VALUES ('%s','%s','%s','%s','%f','%s','%s','%s','%s')" % \
+                                                                       VALUES ('%s','%s','%s','%s','%f','%s','%s','%s','%s')" % \
           (
-              1, loc_time, title, desc, price, category, "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0], address,
+              str(user_id), loc_time, title, desc, price, category, "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0],
+              address,
               appearance)
     cur.execute(sql)
+    last_id = cur.lastrowid
+    for file in filelist:
+        img.rpush(last_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
     con.commit()
     print(title, category, price, postage, filelist)
-    return HttpResponse("publish success 页面还没写")
+    href = '/goods_detail/?goods=' + str(last_id)
+    return HttpResponseRedirect(href)
 
 
 # 估价
@@ -1269,26 +1280,7 @@ def calculate_price(request):
 
 # 购买拍卖页面
 
-def buy_auction(request):
-    id = request.session.get('user_id')
-    dict1 = {}
-    list1 = []
-    if id:
-        cur.execute('select user_name from t_user where user_id=%s', [id])
-        username = cur.fetchone()
-        print(username)
-        goods_id = request.GET.get("id")
-        cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
-        goods_messge = cur.fetchone()
-        goods_user_id = goods_messge["auction_goods_user_id"]
-        cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-        goods_auction_message = cur.fetchone()
-        dict1["goods"] = goods_messge
-        dict1["attribute"] = goods_auction_message
-        list1.append(dict1)
-        return render(request, 'buy_auction.html', locals())
-    else:
-        return HttpResponseRedirect('/login/')
+
 
 
 # ******************************************用户输入价格完成确认竞拍*********************************************
@@ -1717,10 +1709,6 @@ def my_buy(request):
     cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
     order_list = cur.fetchall()
     print(order_list)
-<<<<<<< HEAD
-=======
-
->>>>>>> 91834e4d00776202605d1c71bec7caef5b0457cd
     return render(request, 'my_buy.html', locals())
 
 
@@ -1731,7 +1719,6 @@ def my_buy_complete(request):
                 [user_id, ])
     order_success_list = cur.fetchall()
     return render(request, "my_buy_complete.html", locals())
-
 
 
 # 我的收藏
@@ -2109,13 +2096,13 @@ def confirm_goods(request):
     goods_message = cur.fetchone()
     date = datetime.datetime.now().strftime('%Y-%m-%d')
     print(goods_message)
-    user_id=request.session.get('user_id')
+    user_id = request.session.get('user_id')
     # 把信息加到订单成功表：然后删除原来订单表里的数据
     try:
         cur.execute("insert into t_order_success (release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s\
                       )",
                     [str(goods_message["release_user_id"]), str(goods_message["buy_user_id"]), date, str(goods_id)])
-        cur.execute("select order_id from t_order where order_goods_id=%s",[goods_id])
+        cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
         cur.execute("delete from t_order where order_goods_id=%s", [str(goods_id)])
         # 用户确认收货以后需要把卖家的钱增加
         cur.execute("select goods_price from t_goods where goods_id=%s", [goods_id])
@@ -2124,7 +2111,7 @@ def confirm_goods(request):
         user_money = cur.fetchone()["user_money"]
         user_money = user_money + goods_price
         cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, goods_message["release_user_id"]])
-        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)",[])
+        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)", [])
         print("ok")
     except Exception as e:
         con.rollback()
@@ -2381,7 +2368,7 @@ def admin(request, user):
 
 
 @admin_session
-def admin_goodslist(request, user):
+def admin_goods(request, user):
     cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
     goodslist = cur.fetchall()
     paginator = Paginator(goodslist, 40)
@@ -2394,7 +2381,7 @@ def admin_goodslist(request, user):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
-    return render(request, 'admin_goodslist.html', {'user': user, 'contacts': contacts})
+    return render(request, 'admin_goods.html', {'user': user, 'contacts': contacts})
 
 
 @admin_session
@@ -2422,13 +2409,22 @@ def admin_update(request, user):
 
 
 @admin_session
-def admin_userlist(request, user):
+def admin_user(request, user):
     cur.execute("select * from t_user")
     userlist = cur.fetchall()
-    return render(request, 'admin_userlist.html', {'user': user, 'userlist': userlist})
+    return render(request, 'admin_user.html', {'user': user, 'userlist': userlist})
 
 
 @admin_session
 def exit(request, user):
     del request.session['user']
     return redirect('/admin_login/')
+
+
+@admin_session
+def admin_order(request, user):
+    cur.execute(
+        "select * from (t_goods inner join t_user on t_goods.user_id=t_user.user_id)inner join t_order on t_goods.goods_id = t_order.order_goods_id")
+    orderlist = cur.fetchall()
+    print(orderlist)
+    return render(request, 'admin_order.html', {'user': user, 'orderlist': orderlist})

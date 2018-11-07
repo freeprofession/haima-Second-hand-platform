@@ -89,13 +89,11 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-<<<<<<< HEAD
 
 
     path('buy_auction/', view.buy_auction),
 
-=======
->>>>>>> 91834e4d00776202605d1c71bec7caef5b0457cd
+
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
