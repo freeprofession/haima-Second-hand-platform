@@ -145,3 +145,19 @@ html,body
 	display: none;
 
 }
+#auction_one
+{
+	width: 100px;
+	height: 25px;
+background-color: #ffda44;
+border: 0px;
+border-radius: 5px
+}
+#auction_four
+{
+	width: 100px;
+	height: 25px;
+background-color: #ffda44;
+border: 0px;
+border-radius: 5px
+}

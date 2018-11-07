@@ -16,9 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from myapp import view
-
 from myapp import goods_recommend
-
 from django.views.generic.base import RedirectView
 from myapp import cz
 from myapp import auction_pay
@@ -88,20 +86,22 @@ urlpatterns = [
     path('my_auction/', auction.my_auction),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata),
-
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
+<<<<<<< HEAD
 
 
     path('buy_auction/', view.buy_auction),
 
+=======
+>>>>>>> 91834e4d00776202605d1c71bec7caef5b0457cd
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
 
-    # path('modify_information/', view.modify_information),
-    path('buy_auction/', auction.buy_auction),
+ # path('modify_information/', view.modify_information),
+     path('buy_auction/', auction.buy_auction),
 
     # 实时计算拍卖总价的路径
     path('calculate_price/', auction.calculate_price),
@@ -119,10 +119,8 @@ urlpatterns = [
     # 用户支付成功以后的跳转
     path("buy_auction_ok/", auction.buy_auction_ok),
     # 提前结束拍卖
-
     path("end_auction/", auction.end_auction),
     # 普通商品的购买
-
     # 普通商品购买成功
     path("buy_goods_ok/", view.buy_goods_ok),
     # 拍卖时间结束的判断

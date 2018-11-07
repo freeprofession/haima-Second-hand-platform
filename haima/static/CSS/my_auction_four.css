@@ -6,6 +6,7 @@ html,body
 {
 	height:100%
 }
+
 /*以上就是最上面的导航的css*/
 
 .header_con{
@@ -238,4 +239,7 @@ border-radius: 5px
 #auction_goods_desc{
 	padding-left: 40px;
 	padding-top: 10px;
+}
+#four{
+	padding-top: 5px;
 }
