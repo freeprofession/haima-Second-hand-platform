@@ -1,10 +1,13 @@
 import pymysql
 import time
 from utils.pay import AliPay
+
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import base64
+
+# r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
 from django.shortcuts import render, redirect, HttpResponse
@@ -22,6 +25,7 @@ from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
 from myapp import goods_recommend
+
 # from myapp import AI_assess
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
@@ -35,6 +39,7 @@ get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
 search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
 history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
+
 
 def get_token(func):
     def in_func(request):
@@ -238,24 +243,28 @@ def login_ajax(request):
         if login_code['status'] == 1:  # 判断验证码
             print(login_code['status'])
             if password == user_login['user_password']:
-                user_id = user_login['user_id']  # 判断用户名密码
-                request.session['username'] = username
-                request.session['user_id'] = user_id
-                # href = request.session.get('href') #废弃跳转思路
-                return_url = request.session["url"]
-                # print(href)
-                error = "login_ok"
-                if return_url:
-                    if return_url == "http://127.0.0.1:8000/register_ok/":
-                        return_url = "/haima/"
-                    elif return_url == "http://127.0.0.1:8000/register/":
-                        return_url = "/haima/"
+                if user_login["user_state"] == 0:
+                    user_id = user_login['user_id']  # 判断用户名密码
+                    request.session['username'] = username
+                    request.session['user_id'] = user_id
+                    # href = request.session.get('href') #废弃跳转思路
+                    return_url = request.session["url"]
+                    # print(href)
+                    error = "login_ok"
+                    if return_url:
+                        if return_url == "http://127.0.0.1:8000/register_ok/":
+                            return_url = "/haima/"
+                        elif return_url == "http://127.0.0.1:8000/register/":
+                            return_url = "/haima/"
+                        else:
+                            pass
                     else:
-                        pass
+                        return_url = "/haima/"
+                    print(return_url, "enddddd")
+                    return HttpResponse(json.dumps({"msg": error, "href": return_url}))
                 else:
-                    return_url = "/haima/"
-                print(return_url, "enddddd")
-                return HttpResponse(json.dumps({"msg": error, "href": return_url}))
+                    error = "abnormal"
+                    return HttpResponse(json.dumps({"msg": error}))
             else:
 
                 error = "login_error"  # 用户名或密码错误
@@ -317,13 +326,14 @@ def register_ajax(request):
         password = request.POST.get("password")
         # email = request.POST.get("email")
         phone = request.POST.get("phone")
-        # code = request.POST.get("code")
-        check_code = sms.hget(phone)  # 获取手机验证码
+        code = request.POST.get("code")
         check_all = request.POST.get("check_all")
+        print(phone)
         # print(username, password, phone, check_code, check_all, login_code)
         if login_code['status'] == 1:  # 图片验证码
-            if check_code:  # 手机验证码待定！
-                check_code = check_code.decode('utf8')
+            check_code = sms.get(phone)  # 获取手机验证码
+            check_code = check_code.decode("utf-8")
+            if check_code == code:  # 手机验证判断！
                 if user_error == "" and check_all == 'true':
                     now_time = datetime.datetime.now().strftime('%Y-%m-%d')
                     cur.execute(
@@ -984,6 +994,9 @@ def pub_success(request):
               1, loc_time, title, desc, price, category, "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0], address,
               appearance)
     cur.execute(sql)
+    last_id = cur.lastrowid
+    for file in filelist:
+        img.rpush(last_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
     con.commit()
     print(title, category, price, postage, filelist)
     return HttpResponse("publish success 页面还没写")
@@ -1024,7 +1037,6 @@ def assess_ajax(request):
     print(price)
     time.sleep(1)
     return HttpResponse(json.dumps({"price": price}))
-
 
 
 # ********************************************************************普通商品购买***************************************
@@ -1081,7 +1093,6 @@ def goods_confirm_buy(request):
 
 def buy_goods_ok(request):
     return render(request, "buy_goods_ok.html")
-
 
 
 # 我出售的
@@ -1264,64 +1275,24 @@ def my_sale_complete(request):
     return render(request, "my_sale_complete.html", locals())
 
 
-# ******************************************************************我购买的*******************************************
 def my_buy(request):
-
     username = request.session.get('username')
     user_id = request.session.get("user_id")
-    list1 = []
-    # 找到该用户的所有订单号,已经订单号里面的商品id
-    cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
-    order_dict = cur.fetchall()
-    if order_dict:
-        order_id_list = []
-        goods_id_list = []
-        for i in order_dict:
-            order_id_list.append(i["order_id"])
-            goods_id_list.append(i["order_goods_id"])
-        for i in range(len(order_id_list)):
-            dict1 = {}
-            cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
-            order_message = cur.fetchone()
-            cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
-            goods_message = cur.fetchone()
-            dict1["goods"] = goods_message
-            dict1["order"] = order_message
-            list1.append(dict1)
+    cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
+    order_list = cur.fetchall()
+    print(order_list)
 
     return render(request, 'my_buy.html', locals())
 
 
 def my_buy_complete(request):
-    def my_buy_complete(request):
-        username = request.session.get('username')
-        user_id = request.session.get("user_id")
-        cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
-                    [user_id, ])
-        order_success_list = cur.fetchall()
-        return render(request, "my_buy_complete.html", locals())
-        user_id = request.session.get("user_id")
-        list1 = []
-        # 找到该用户的所有订单号,已经订单号里面的商品id
-        cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
-        order_dict = cur.fetchall()
-        if order_dict:
-            order_id_list = []
-            goods_id_list = []
-            for i in order_dict:
-                order_id_list.append(i["order_id"])
-                goods_id_list.append(i["order_goods_id"])
-            for i in range(len(order_id_list)):
-                dict1 = {}
-                cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
-                order_message = cur.fetchone()
-                cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
-                goods_message = cur.fetchone()
-                dict1["goods"] = goods_message
-                dict1["order"] = order_message
-                list1.append(dict1)
+    username = request.session.get('username')
+    user_id = request.session.get("user_id")
+    cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
+                [user_id, ])
+    order_success_list = cur.fetchall()
+    return render(request, "my_buy_complete.html", locals())
 
-        return render(request, 'my_buy.html', locals())
 
 
 # 我的收藏
@@ -1612,8 +1583,6 @@ def gettokendata(request):
     return HttpResponse(token)
 
 
-
-
 # ***********************************************普通商品确认收货*************************************************
 def confirm_goods(request):
     goods_id = request.POST.get("goods_id")
@@ -1645,10 +1614,90 @@ def confirm_goods(request):
     return HttpResponse(json.dumps({"msg": "123"}))
 
 
+# ***********************************************拍卖商品竞拍成功后，支付尾款********************************************
+def pay_auction_money(request):
+    error = ""
+    buy_user_id = request.session.get("user_id")
+    order_id = request.POST.get("order_id")
+    print(order_id)
+    cur.execute("select auction_order_fianl_price from t_auction_order where auction_order_id=%s", [order_id])
+    order_price = cur.fetchone()["auction_order_fianl_price"]
+    print(order_price)
+    cur.execute("select user_money from t_user where user_id=%s", [buy_user_id])
+    user_money = cur.fetchone()["user_money"]
+    print(user_money)
+    # 通过订单id找到商品id
+    cur.execute("select auction_order_goods_id from t_auction_order where  auction_order_id=%s", [order_id])
+    goods_id = cur.fetchone()["auction_order_goods_id"]
+    # 通过商品id找到保证金
+    cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s", [goods_id])
+    goods_margin = cur.fetchone()["auction_goods_margin"]
+    # 这里是用户输入的账号密码
+    pay_password = request.POST.get("pay_password")
+    cur.execute("select user_pay_password from t_user where user_id=%s", [buy_user_id])
+    user_pay_password = cur.fetchone()["user_pay_password"]
+
+    # 先判断有没有输入支付密码：
+    if pay_password:
+        if len(pay_password) < 6:
+            error = "pay_password_length_error"
+            return HttpResponse(json.dumps({"msg": error}))
+        elif int(user_pay_password) != int(pay_password):
+            error = "pay_password_error"
+            return HttpResponse(json.dumps({"msg": error}))
+        elif float(user_money) < float(order_price):
+            error = "money_less_error"
+            return HttpResponse(json.dumps({"msg": error}))
+        # 用户账号正确而且余额足够
+        else:
+            print("进入支付操作")
+            error = "ok"
+            try:
+                user_money = user_money - order_price + goods_margin
+                # 付款以后把他的钱扣掉把保证金退还
+                cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, buy_user_id])
+                # 将订单那个状态改成1
+                cur.execute("update t_auction_order set auction_order_state=%s where auction_order_id=%s",
+                            ["1", order_id])
+                # 将商品记录表里的状态改成3,付款时间也改一下
+                now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+                cur.execute(
+                    "update t_auction_goods_record set auction_goods_state=%s,pay_monet_date=%s where  auction_goods_id=%s",
+                    ["3", now_time, goods_id])
+
+                print("操作完成")
+            except Exception as e:
+                print(e)
+            con.commit()
+            error = "pay_ok"
+            return HttpResponse(json.dumps({"msg": error}))
+
+    else:
+        print("无密码")
+        error = "no_pay_password"
+        return HttpResponse(json.dumps({"msg": error}))
 
 
+# ********************************************返回支付拍卖成功的钱以后的跳转*********************************************
+def pay_auction_money_ok(request):
+    return render(request, "pay_auction_money_ok.html")
 
 
+# *****************************************处理拍卖商品的发货************************************************************
+def delivery(request):
+    courier_number = request.POST.get("courier_number")
+    order_id = request.POST.get("order_id")
+
+    try:
+        cur.execute("update t_auction_order set the_goods_state=%s where auction_order_id=%s",
+                    [courier_number, order_id])
+        con.commit()
+    except Exception as e:
+        print(e)
+    return HttpResponse(json.dumps({"msg": "ok"}))
+
+
+# 支付宝支付
 def get_ali_object():
     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
     app_id = "2016092000555548"  # APPID （沙箱应用）
@@ -1783,11 +1832,10 @@ def admin(request, user):
 
 
 @admin_session
-def admin_goodslist(request, user):
-
+def admin_goods(request, user):
     cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
     goodslist = cur.fetchall()
-    paginator = Paginator(goodslist, 40)
+    paginator = Paginator(goodslist, 35)
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -1797,7 +1845,7 @@ def admin_goodslist(request, user):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
-    return render(request, 'admin_goodslist.html', {'user': user, 'contacts': contacts})
+    return render(request, 'admin_goods.html', {'user': user, 'contacts': contacts})
 
 
 @admin_session
@@ -1825,10 +1873,19 @@ def admin_update(request, user):
 
 
 @admin_session
-def admin_userlist(request, user):
+def admin_user(request, user):
     cur.execute("select * from t_user")
     userlist = cur.fetchall()
-    return render(request, 'admin_userlist.html', {'user': user, 'userlist': userlist})
+    return render(request, 'admin_user.html', {'user': user, 'userlist': userlist})
+
+
+@admin_session
+def admin_order(request, user):
+    cur.execute(
+        "select * from (t_goods inner join t_user on t_goods.user_id=t_user.user_id)inner join t_order on t_goods.goods_id = t_order.order_goods_id")
+    orderlist = cur.fetchall()
+    print(orderlist)
+    return render(request, 'admin_order.html', {'user': user, 'orderlist': orderlist})
 
 
 @admin_session

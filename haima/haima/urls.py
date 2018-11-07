@@ -26,8 +26,9 @@ from myapp import auction
 urlpatterns = [
     path('admin/', view.admin),
     path('admin_login/', view.admin_login),
-    path('admin_goodslist/', view.admin_goodslist),
-    path('admin_userlist/', view.admin_userlist),
+    path('admin_goods/', view.admin_goods),
+    path('admin_user/', view.admin_user),
+    path('admin_order/', view.admin_order),
     path('admin_search_goods/', view.admin_search_goods),
     path('admin_update/', view.admin_update),
     path('exit/', view.exit),
@@ -71,6 +72,11 @@ urlpatterns = [
     path('evaluate/', view.evaluate),
     path('evaluate_ajax/', view.evaluate_ajax),
     # -------------------------
+    path('history_auction/', auction.history_auction),
+    path('test/', view.text_message),
+    path('test_ajax', view.test_ajax),
+    # 获取图片上传token
+    path('gettokendata/', view.gettokendata), path('modify_information/', view.modify_information),  # 修改信息
     path('my_auction/', auction.my_auction),
     path('history_auction/', auction.history_auction),
     path('release_auction/', auction.release_auction),
@@ -85,8 +91,10 @@ urlpatterns = [
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
+
  # path('modify_information/', view.modify_information),
      path('buy_auction/', auction.buy_auction),
+
     # 实时计算拍卖总价的路径
     path('calculate_price/', auction.calculate_price),
     # 返回用户的拍卖发布历史记录
@@ -114,6 +122,15 @@ urlpatterns = [
     path('calculate_price/', auction.calculate_price),
     # 返回用户的全部拍卖记录
 
+    path("my_auction_four/", auction_buy.my_auction_four),
+    # 普通商品收货
+    path("confirm_goods/", view.confirm_goods),
+    # 拍卖商品竞拍成功后，支付尾款
+    # 拍卖商品收货
+    path("confirm_auction_goods/", auction.confirm_auction_goods),
+    path("send_sms/", view.send_sms),
+    path("page1/", view.page1),
+    path("page2", view.page2),
     # 普通商品收货
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品竞拍成功后，支付尾款

@@ -84,7 +84,7 @@
                         </td>
                         <td width="15%"><a href="{{ item.buy_user_id }}" class="oper_btn">私聊买家</a></td>
                         {% if item.state == 0 %}
-                            <td width="15%"><a href="#" class="send" style="color: red">去发货</a></td>
+                            <td width="15%"><input type="button" class="send" style="color: red" value="去发货"></td>
                         {% else %}
                             <td width="15%"><a href="#" class="oper_btn">已发货</a></td>
                         {% endif %}
