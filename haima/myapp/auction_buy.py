@@ -113,7 +113,7 @@ def my_auction_four(request):
                 dict1["order"] = order_messge
                 dict1["record"]=record_message
                 list3.append(dict1)
-            # 这里表示支付完成的
+            print(list3)            # 这里表示支付完成的
             if order_state == 1:
                 print(i)
                 dict1 = {}
@@ -160,7 +160,7 @@ def my_auction_four(request):
                 dict1["order"] = order_messge
                 list6.append(dict1)
                 pass
-        print("收货确认列表",list5)
+        print(list1)
 
         #
         # dict1 = {}

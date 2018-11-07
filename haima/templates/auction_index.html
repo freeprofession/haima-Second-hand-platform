@@ -25,7 +25,7 @@
                 <span>|</span>
                 <a href="/user_center/">用户中心</a>
                 <span>|</span>
-                <a href="" id="my_order">我的订单</a>
+                <a href="/my_sale/" id="my_order">我的订单</a>
                 <span>|</span>
                 <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
             </div>
@@ -41,30 +41,22 @@
         </div>
     </div>
 <div class="guest_cart fr">
-        <a href="#" class="cart_name fl">我的收藏</a>
+         <a href="#" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
-
         <ul class="cart_goods_show">
-            <li>
-                <img src="../static/Images/goods/goods001.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>4</div>1
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods002.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>5</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
-            <li>
-                <img src="../static/Images/goods/goods003.jpg" alt="商品图片">
-                <h4>商品名称手机</h4>
-                <div>6</div>
-            </li>
+            {% if not collection_list %}
+                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                     alt="" height="100">
+                你没有收藏任何商品
+            {% else %}
+                {% for value in collection_list %}
+                    <li>
+                        <img src="{{ value.goods_imgurl }}" alt="商品图片">
+                        <h4>{{ value.goods_title }}</h4>
+                        <div><span style="color: red"></span>{{ value.goods_price }}</div>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 </div>
@@ -73,13 +65,6 @@
         <a href="/my_auction_one/"><button id="my_auction">我的拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
         <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
-    </div>
-    <div id="auction_classification">
-        <div>拍卖分类：</div>
-        <div><a href="">手机</a></div>
-        <div><a href="">相机</a></div>
-        <div><a href="">电脑</a></div>
-        <div><a href="">外设</a></div>
     </div>
 
 </div>
