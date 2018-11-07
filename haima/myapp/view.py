@@ -4,10 +4,8 @@ from utils.pay import AliPay
 
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import base64
 
-# r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
 from django.shortcuts import render, redirect, HttpResponse
@@ -24,9 +22,9 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
+from myapp import AI_assess
 from myapp import goods_recommend
 
-# from myapp import AI_assess
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
 img = redis.Redis(host="47.100.200.132", port=6379, db=2)
@@ -38,7 +36,6 @@ set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
 get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
 search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
-history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
 
 
 def get_token(func):
@@ -157,9 +154,18 @@ def homepage(request):
         login_status = "未登录"
         user_imgurl = {}
         user_imgurl['user_imgurl'] = '../static/Images/default_hp.jpg'
-    sql = "select * from t_goods limit 0,10"
-    cur.execute(sql)
-    goods_list = cur.fetchall()
+    cur.execute(
+        "select goods_id,goods_title,goods_price,goods_imgurl from t_goods where goods_category_id = %s and goods_state = %s limit 10",
+        ['1', '0'])
+    phone_list = cur.fetchall()
+    cur.execute(
+        "select goods_id,goods_title,goods_price,goods_imgurl from t_goods where goods_category_id = %s and goods_state = %s limit 10",
+        ['2', '0'])
+    computer_list = cur.fetchall()
+    cur.execute(
+        "select goods_id,goods_title,goods_price,goods_imgurl from t_goods where goods_category_id = %s and goods_state = %s limit 10",
+        ['1', '0'])
+    phone_list = cur.fetchall()
     # 收藏--------------------------
     # cur.execute("select * from t_user_collection where collection_user_id=%s", [user_id, ])
     cur.execute(
@@ -243,28 +249,24 @@ def login_ajax(request):
         if login_code['status'] == 1:  # 判断验证码
             print(login_code['status'])
             if password == user_login['user_password']:
-                if user_login["user_state"] == 0:
-                    user_id = user_login['user_id']  # 判断用户名密码
-                    request.session['username'] = username
-                    request.session['user_id'] = user_id
-                    # href = request.session.get('href') #废弃跳转思路
-                    return_url = request.session["url"]
-                    # print(href)
-                    error = "login_ok"
-                    if return_url:
-                        if return_url == "http://127.0.0.1:8000/register_ok/":
-                            return_url = "/haima/"
-                        elif return_url == "http://127.0.0.1:8000/register/":
-                            return_url = "/haima/"
-                        else:
-                            pass
-                    else:
+                user_id = user_login['user_id']  # 判断用户名密码
+                request.session['username'] = username
+                request.session['user_id'] = user_id
+                # href = request.session.get('href') #废弃跳转思路
+                return_url = request.session["url"]
+                # print(href)
+                error = "login_ok"
+                if return_url:
+                    if return_url == "http://127.0.0.1:8000/register_ok/":
                         return_url = "/haima/"
-                    print(return_url, "enddddd")
-                    return HttpResponse(json.dumps({"msg": error, "href": return_url}))
+                    elif return_url == "http://127.0.0.1:8000/register/":
+                        return_url = "/haima/"
+                    else:
+                        pass
                 else:
-                    error = "abnormal"
-                    return HttpResponse(json.dumps({"msg": error}))
+                    return_url = "/haima/"
+                print(return_url, "enddddd")
+                return HttpResponse(json.dumps({"msg": error, "href": return_url}))
             else:
 
                 error = "login_error"  # 用户名或密码错误
@@ -326,14 +328,13 @@ def register_ajax(request):
         password = request.POST.get("password")
         # email = request.POST.get("email")
         phone = request.POST.get("phone")
-        code = request.POST.get("code")
+        # code = request.POST.get("code")
+        check_code = sms.hget(phone)  # 获取手机验证码
         check_all = request.POST.get("check_all")
-        print(phone)
         # print(username, password, phone, check_code, check_all, login_code)
         if login_code['status'] == 1:  # 图片验证码
-            check_code = sms.get(phone)  # 获取手机验证码
-            check_code = check_code.decode("utf-8")
-            if check_code == code:  # 手机验证判断！
+            if check_code:  # 手机验证码待定！
+                check_code = check_code.decode('utf8')
                 if user_error == "" and check_all == 'true':
                     now_time = datetime.datetime.now().strftime('%Y-%m-%d')
                     cur.execute(
@@ -414,17 +415,16 @@ def goods_list(request):
                     bvalue_list = list(cut_words.smembers(key))
                     for value in bvalue_list:
                         value = int(value.decode('utf-8'))
-                        if value not in value_list:
-                            value_list.append(value)
-                    for goods_id in value_list:
-                        sql = "select * from t_goods where goods_id = %d" % goods_id
-                        cur.execute(sql)
-                        goods = cur.fetchone()
-                        goods_lst.append(goods)
+                        value_list.append(value)
+            value_list = sorted(set(value_list), key=value_list.index)
+            for goods_id in value_list:
+                sql = "select * from t_goods where goods_id = %d" % goods_id
+                cur.execute(sql)
+                goods = cur.fetchone()
+                goods_lst.append(goods)
             prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
             if count == 0:
                 return render(request, 'register_ok.html')
-
         # 价格筛选
         if request.GET.get("price_low") and request.GET.get("price_high"):
             price_low = int(request.GET.get("price_low"))
@@ -447,8 +447,6 @@ def goods_list(request):
             goods_lst = start_list
 
         sort_method = request.GET.get('sort_method')
-        for i in goods_lst:
-            print(i['goods_id'])
         if sort_method == '1':
             goods_lst.sort(key=lambda x: x['goods_price'])
         if sort_method == '2':
@@ -1012,7 +1010,8 @@ def pub_success(request):
 
 # 估价
 def assess(request):
-    return render(request, 'assess.html')
+    user_name = request.session.get('username')
+    return render(request, 'assess.html', locals())
 
 
 # 估计ajax
@@ -1283,14 +1282,12 @@ def my_sale_complete(request):
     return render(request, "my_sale_complete.html", locals())
 
 
-# ******************************************************************我购买的*******************************************
 def my_buy(request):
     username = request.session.get('username')
     user_id = request.session.get("user_id")
     cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
     order_list = cur.fetchall()
     print(order_list)
-
     return render(request, 'my_buy.html', locals())
 
 
@@ -1598,11 +1595,13 @@ def confirm_goods(request):
     goods_message = cur.fetchone()
     date = datetime.datetime.now().strftime('%Y-%m-%d')
     print(goods_message)
+    user_id = request.session.get('user_id')
     # 把信息加到订单成功表：然后删除原来订单表里的数据
     try:
         cur.execute("insert into t_order_success (release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s\
                       )",
                     [str(goods_message["release_user_id"]), str(goods_message["buy_user_id"]), date, str(goods_id)])
+        cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
         cur.execute("delete from t_order where order_goods_id=%s", [str(goods_id)])
         # 用户确认收货以后需要把卖家的钱增加
         cur.execute("select goods_price from t_goods where goods_id=%s", [goods_id])
@@ -1611,6 +1610,7 @@ def confirm_goods(request):
         user_money = cur.fetchone()["user_money"]
         user_money = user_money + goods_price
         cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, goods_message["release_user_id"]])
+        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)", [])
         print("ok")
     except Exception as e:
         con.rollback()

@@ -3621,7 +3621,9 @@ label:hover {
 }
 
 .credit_time {
-    font-size: 16px;
+    font-size: 14px;
+    position: relative;
+    top: 1px;
 }
 
 .credit_select_show_dl dd {
@@ -3640,7 +3642,7 @@ label:hover {
 
 .credit_select_show_li {
     border-bottom: 1px solid #c5c5c5;
-    width: 920px;
+    width: 1040px;
 }
 
 .credit_goods_title {

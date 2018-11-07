@@ -93,7 +93,7 @@
                                 <div class="am-btn-group am-btn-group-xs">
                                     <button type="button" onclick="detail(this)" value="{{ goods.goods_id }}"
                                             class="am-btn am-btn-default am-btn-xs am-text-success am-round"
-                                            title="查看商品"><span
+                                            title="商品详情"><span
                                             class="am-icon-search"></span></button>
                                     <button type="button" onclick="up(this)" value="{{ goods.goods_id }}"
                                             class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
@@ -147,7 +147,11 @@
                 {% endif %}
             </ul>
             <hr/>
-            <p>注：.....</p>
+            <p>备注：
+                <a class="am-text-success am-icon-search" title="商品详情"> 商品详情</a>
+                <a class="am-icon-arrow-up am-text-secondary" title="上架商品"> 上架商品</a>
+                <a class="am-icon-arrow-down am-text-warning" title="下架商品"> 下架商品</a>
+                <a class="am-icon-trash-o am-text-danger" title="删除商品"> 删除商品</a></p>
         </form>
         {% include "admin_bottom.html" %}
     </div>
@@ -164,6 +168,7 @@
             $.ajax({
                 type: "POST",
                 url: "/admin_update/",
+                async: false,
                 data: {'goods_id': goods_id, 'action': '2'},
                 success: function (data) {
                     //处理返回后的数据
@@ -184,6 +189,7 @@
             $.ajax({
                 type: "POST",
                 url: "/admin_update/",
+                async: false,
                 data: {'goods_id': goods_id, 'action': '0'},
                 success: function (data) {
                     //处理返回后的数据
@@ -244,6 +250,5 @@
                 });
             }
         });
-
     </script>
 {% endblock %}
