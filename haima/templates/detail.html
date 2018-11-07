@@ -628,7 +628,10 @@
                         message_id = id;
                         child_review = $('#get_child_review_' + get_message_id).val();
                         var check = $('#get_child_review_' + get_message_id).val()
+<<<<<<< HEAD
                         alert(child_review)
+=======
+>>>>>>> 001e5c22ba82a3fc8c1b35bc17a7a9c605d9524c
                         {#child_user_id = $('#child_user_id').val();#}
                         {#parent_id = $("#get_parent_id").val()#}
                         {#goods_id = $("#get_goods_id").val()#}
@@ -684,8 +687,12 @@
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
+<<<<<<< HEAD
         input_.value = "回复" + c_name + ":"
         alert(input_.value)
+=======
+        input_.value = "回复"+ c_name +":"
+>>>>>>> 001e5c22ba82a3fc8c1b35bc17a7a9c605d9524c
     }
 
     //留言
@@ -695,12 +702,10 @@
                     Published = $('#Published').val();
                     var check = $('#Published').val();
                     goods_id = $('#good_id').val();
-                    alert(goods_id)
                     url_ = location.href;
                     if (check == "") {
                         return false
                     } else {
-
                         $.post('/lea_message/', {
                             'Published': Published,
                             'goods_id': goods_id,
