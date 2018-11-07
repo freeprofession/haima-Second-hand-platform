@@ -11,7 +11,7 @@
 <body>
 <div class="register_con">
     <div class="l_con fl">
-        <a class="reg_logo"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+        <a class="reg_logo" href="/haima/"><img src="../static/Images/haima3.png" width="200" height="100"></a>
         <div class="reg_banner"></div>
     </div>
     <div class="r_con fr">
@@ -51,7 +51,7 @@
                     <input id="hash" name="captcha_0" value="{{ hashkey }}" type="hidden">
                     {#                        <input type="text" id="login_code" class="code_input">#}
                     <input type="text" name="pic_code" id="pic_code"
-                           class="msg_input">
+                           class="msg_input" onchange="return picture_code()">
                     <img class="pic_code" id="code_img" alt="captcha" src="{{ image_url }}">
                     {#                        <img src="images/pic_code.jpg" alt="图形验证码" class="pic_code">#}
                     <span class="error_tip" id="pic_code_error">请填写图片验证码</span>
@@ -59,8 +59,8 @@
                 <li>
                     <label>短信验证码:</label>
                     <input type="text" name="msg_code" id="msg_code"
-                           class="msg_input">
-                    <input type="button" class="get_msg_code" id="get_code" value="获取短信验证码">
+                           class="msg_input" onchange="return phone_code()">
+                    <input type="button" class="get_msg_code" id="get_code" value="获取短信验证码" onclick="get_code()">
                     <span class="error_tip" id="phone_code_error">请填写短信验证码</span>
 
                 </li>
@@ -68,7 +68,7 @@
                     <input type="checkbox" name="allow" id="allow"
                            checked="checked">
                     <label>同意《海马商城用户使用协议》</label>
-                    <span class="error_tip2">请勾选同意</span>
+                    <span class="error_tip2" id="allow_">请勾选同意</span>
                 </li>
                 <li class="reg_sub">
                     <input type="button" value="注 册" name="" id="register" onclick="return checkall()">
@@ -152,41 +152,43 @@
             phone = $('#phone').val();
             hashkey = $('#hash').val();
             response = $('#pic_code').val();
-            {#code = $('#msg_code').val();#}
+            code = $('#msg_code').val();
             check_all = checkall()
-            $.post('/register_ajax/', {
-                'username': username,
-                'password': password,
-                'phone': phone,
-                {#'code': code,#}
-                'check_all': check_all,
-                'response': response,
-                'hashkey': hashkey,
-            }, function (data) {
-                if (data.msg === 'register_ok') {
-                    location.href = '/register_ok/'
-                } else if (data.msg === 'img_code_error') {
-                    $('#pic_code_error').html(function () {
-                        document.getElementById('pic_code_error').style.color = 'Red';
-                        document.getElementById('pic_code_error').innerText = '图片验证码错误';
-                    })
-                } else if (data.msg === 'phone_code_error') {
+            if(checkall()) {
+                $.post('/register_ajax/', {
+                    'username': username,
+                    'password': password,
+                    'phone': phone,
+                    'code': code,
+                    'check_all': check_all,
+                    'response': response,
+                    'hashkey': hashkey,
+                }, function (data) {
+                    if (data.msg === 'register_ok') {
+                        location.href = '/register_ok/'
+                    } else if (data.msg === 'img_code_error') {
+                        $('#pic_code_error').html(function () {
+                            document.getElementById('pic_code_error').style.color = 'Red';
+                            document.getElementById('pic_code_error').innerText = '图片验证码错误';
+                        })
+                    } else if (data.msg === 'phone_code_error') {
 
-                    $('#phone_code_error').html(function () {
-                        document.getElementById('phone_code_error').style.color = 'Red';
-                        document.getElementById('phone_code_error').innerText = '手机验证码错误';
-                    })
+                        $('#phone_code_error').html(function () {
+                            document.getElementById('phone_code_error').style.color = 'Red';
+                            document.getElementById('phone_code_error').innerText = '手机验证码错误';
+                        })
 
-                } else if (data.msg === 'user_exists') {
-                    $('#check_error').html('用户名已存在！！')
+                    } else if (data.msg === 'user_exists') {
+                        $('#check_error').html('用户名已存在！！')
 
-                } else if (data.msg === 'check_all') {
-                    alert('检查是否全部填写正确')
+                    } else if (data.msg === 'check_all') {
+                        alert('检查是否全部填写正确')
 
 
-                }
+                    }
 
-            }, 'json')
+                }, 'json')
+            }
         })
 
     })

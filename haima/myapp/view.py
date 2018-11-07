@@ -6,6 +6,7 @@ st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import base64
+
 # r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
@@ -234,24 +235,28 @@ def login_ajax(request):
         if login_code['status'] == 1:  # 判断验证码
             print(login_code['status'])
             if password == user_login['user_password']:
-                user_id = user_login['user_id']  # 判断用户名密码
-                request.session['username'] = username
-                request.session['user_id'] = user_id
-                # href = request.session.get('href') #废弃跳转思路
-                return_url = request.session["url"]
-                # print(href)
-                error = "login_ok"
-                if return_url:
-                    if return_url == "http://127.0.0.1:8000/register_ok/":
-                        return_url = "/haima/"
-                    elif return_url == "http://127.0.0.1:8000/register/":
-                        return_url = "/haima/"
+                if user_login["user_state"] == 0:
+                    user_id = user_login['user_id']  # 判断用户名密码
+                    request.session['username'] = username
+                    request.session['user_id'] = user_id
+                    # href = request.session.get('href') #废弃跳转思路
+                    return_url = request.session["url"]
+                    # print(href)
+                    error = "login_ok"
+                    if return_url:
+                        if return_url == "http://127.0.0.1:8000/register_ok/":
+                            return_url = "/haima/"
+                        elif return_url == "http://127.0.0.1:8000/register/":
+                            return_url = "/haima/"
+                        else:
+                            pass
                     else:
-                        pass
+                        return_url = "/haima/"
+                    print(return_url, "enddddd")
+                    return HttpResponse(json.dumps({"msg": error, "href": return_url}))
                 else:
-                    return_url = "/haima/"
-                print(return_url, "enddddd")
-                return HttpResponse(json.dumps({"msg": error, "href": return_url}))
+                    error = "abnormal"
+                    return HttpResponse(json.dumps({"msg": error}))
             else:
 
                 error = "login_error"  # 用户名或密码错误
@@ -313,13 +318,14 @@ def register_ajax(request):
         password = request.POST.get("password")
         # email = request.POST.get("email")
         phone = request.POST.get("phone")
-        # code = request.POST.get("code")
-        check_code = sms.hget(phone)  # 获取手机验证码
+        code = request.POST.get("code")
         check_all = request.POST.get("check_all")
+        print(phone)
         # print(username, password, phone, check_code, check_all, login_code)
         if login_code['status'] == 1:  # 图片验证码
-            if check_code:  # 手机验证码待定！
-                check_code = check_code.decode('utf8')
+            check_code = sms.get(phone)  # 获取手机验证码
+            check_code = check_code.decode("utf-8")
+            if check_code == code:  # 手机验证判断！
                 if user_error == "" and check_all == 'true':
                     now_time = datetime.datetime.now().strftime('%Y-%m-%d')
                     cur.execute(
@@ -477,7 +483,7 @@ def user_center(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             contacts1 = paginator1.page(paginator1.num_pages)
-    # 这里需要返回他的购买和出售数量，从order_success 订单成功表去查
+        # 这里需要返回他的购买和出售数量，从order_success 订单成功表去查
         cur.execute("select * from t_order_success where buy_user_id=%s", [user_id])
         dict1 = cur.fetchall()
         buy_count = len(dict1)
@@ -514,7 +520,7 @@ def user_credit(request):
             # 计算天数------------------
             day_ = str(user_info[0]["user_startdate"])
             now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-            d1 = datetime.datetime.strptime(day_,"%Y-%m-%d")
+            d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
             d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
             d3 = str(d2 - d1)
             if d3.split(" ")[0] == "0:00:00":
@@ -1202,8 +1208,9 @@ def my_release_record(request):
 def release_auction_ok(request):
     return render(request, 'release_auction_ok.html')
 
+
 # ******************************************购买拍卖页面**********************************************
->>>>>>> aedcaca96b238552189f5bf2ba8ce9a03683c203
+
 # 用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
     id = request.session.get('user_id')
@@ -1227,10 +1234,7 @@ def buy_auction(request):
         dict1["goods"] = goods_messge
         dict1["attribute"] = goods_auction_message
         dict1["img"] = img_list
-<<<<<<< HEAD
-=======
-        print('图片的地址',img_list)
->>>>>>> aedcaca96b238552189f5bf2ba8ce9a03683c203
+        print('图片的地址', img_list)
         list1.append(dict1)
         return render(request, 'buy_auction.html', locals())
     else:
@@ -1254,11 +1258,8 @@ def calculate_price(request):
         count_price = int(price) + int(permium)
         return HttpResponse(count_price)
 
-<<<<<<< HEAD
 
-=======
 # 购买拍卖页面
->>>>>>> aedcaca96b238552189f5bf2ba8ce9a03683c203
 def buy_auction(request):
     id = request.session.get('user_id')
     dict1 = {}
@@ -1412,7 +1413,6 @@ def buy_auction_ok(request):
 # **********************************************************提前结束拍卖*************************************************
 
 
-
 # **********************************************************提前结束拍卖*************************************************
 def end_auction(request):
     user_id = request.session.get("user_id")
@@ -1461,7 +1461,6 @@ def end_auction(request):
 
         con.commit()
     return redirect("/my_auction_one/")
-
 
 
 # 用户输入支付密码扣款完成
@@ -1713,7 +1712,6 @@ def my_sale_complete(request):
 
 # ******************************************************************我购买的*******************************************
 def my_buy(request):
-
     username = request.session.get('username')
     user_id = request.session.get("user_id")
     list1 = []
@@ -2170,7 +2168,6 @@ def confirm_goods(request):
     return HttpResponse(json.dumps({"msg": "123"}))
 
 
-
 # ***********************************************拍卖商品竞拍成功后，支付尾款********************************************
 def pay_auction_money(request):
     error = ""
@@ -2254,11 +2251,6 @@ def delivery(request):
     return HttpResponse(json.dumps({"msg": "ok"}))
 
 
-
-
-
-
-
 # *********************************************拍卖商品的收货*******************************************************
 def confirm_auction_goods(request):
     order_id = request.POST.get("order_id")
@@ -2287,7 +2279,7 @@ def confirm_auction_goods(request):
         con.commit()
     except Exception as e:
         print(e)
->>>>>>> aedcaca96b238552189f5bf2ba8ce9a03683c203
+
 
 def get_ali_object():
     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
@@ -2316,7 +2308,7 @@ def get_ali_object():
 @login_required
 def page1(request):
     # 根据当前用户的配置，生成URL，并跳转。
-    user_id=request.session.get("user_id")
+    user_id = request.session.get("user_id")
     money = request.POST.get('price')
     title = request.POST.get('title')
     alipay = get_ali_object()
@@ -2326,7 +2318,7 @@ def page1(request):
     query_params = alipay.direct_pay(
         subject=title,  # 商品简单描述
         out_trade_no="x2" + str(time.time()),  # 用户购买的商品订单号（每次不一样） 20180301073422891
-        total_amount=money, # 交易金额(单位: 元 保留俩位小数)
+        total_amount=money,  # 交易金额(单位: 元 保留俩位小数)
 
     )
     pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）

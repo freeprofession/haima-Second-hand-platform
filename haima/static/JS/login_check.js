@@ -18,6 +18,8 @@ $(function () {
                 $('#code_error').html('验证码错误');
             } else if (data.msg === "login_error") {
                 $('#login_error').html('用户名或密码错误')
+            } else if (data.msg === "abnormal") {
+                $('#login_error').html('账号异常')
             }
         }, 'json')
 
