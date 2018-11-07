@@ -8,7 +8,7 @@
       <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
 
 </head>
-<body >
+<body>
 <div class="header_con">
     <div class="header">
         <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
@@ -60,11 +60,9 @@
 </div>
 <hr>
 <div id="auction_select">
-    <div>
+    <div style="margin-top: 10px;">
     <a href="/my_auction_one/"><button id="auction_one" value="one">我发布的</button></a>
-    <a href="/my_auction_two/"><button id="auction_two" value="two">我拍卖的</button></a>
-
-    <a href="/my_auction_four/"><button id="auction_four" value="four">我竞拍的</button></a>
+        <a href="/my_auction_four/"><button id="auction_four" value="four">我竞拍的</button></a>
     </div>
     <div>
         <span style="font-size: 14px; font-weight: bolder">商品状态选择:</span>
@@ -78,7 +76,9 @@
     </select>
         </div>
 </div>
+<div id="goods_all">
 <div id="select_one">
+{% if list1 %}
 {% for i in list1%}
   <div id="four">
         <div>
@@ -108,19 +108,23 @@
          </div>
     </div>
 {% endfor %}
+    {% else %}
+        <span style="position: fixed; left: 5%;"><b style="font-size: 20px;">海马商城温馨提示，你还没有竞拍的商品哦!</b></span>
+        <div style="position: fixed; left: 30%;"><img src="../static/Images/no_goods.jpg" alt="" width=100 height="100"></div>
+{% endif %}
 </div>
 <div id="select_two">
 {% for i in list2 %}
   <div id="four">
         <div>
-            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="360px" width="400px">
+            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="300px">
         </div>
          <div id="auction_goods_desc">
              <div id="title" style="font-size:25px">
                 {{ i.goods.auction_goods_title }}
              </div>
              <br>
-             <div id="auction_messige">
+             <div id="auction_messige" style="margin-top: 30px;">
                 <div id="auction_messige_desc" >
                     <div>开始时间：<span id="acution_goods_start_time">{{ i.attribute.start_date }}</span></div>
                     <br>
@@ -132,7 +136,7 @@
                     <br>
                     <div>加价后价格：<span id="acution_goods_start_time">{{ i.record.auction_goods_price }}</span></div>
                     <br>
-                    <div>竞拍状态：<span id="acution_goods_start_time">{{ i.state }}</span></div>
+                    <div>竞拍状态：<span id="acution_goods_start_time" style="color: red">{{ i.state }}</span></div>
                     <br>
 
                 </div>
@@ -140,12 +144,32 @@
          </div>
     </div>
 {% endfor %}
+<div id="two_info">
+    <div style="margin-left: 22px;">
+            <img src="../static/Images/haima3.png" alt="" width=150 height=100>
+        </div>
+    <div style="margin-top: 10px; padding-left: 10px;">
+<h1>海马平台温馨提示</h1>
+        <div>
+        <span>竞拍失败的情况：</span>
+        <br>
+        <span>1.您的出价的商品被更高价拍得</span>
+        <br>
+        <span>2.发布拍卖的用户自己下架</span>
+    </div>
+    <div >
+        竞拍失败以后您可以重新返回拍卖首页继续竞拍，
+        竞拍加价不能低于最低价格不能高于商品底价
+    </div>
+
+</div>
+    </div>
 </div>
 <div id="select_three">
 {% for i in list3 %}
   <div id="four">
         <div>
-            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="360px" width="400px">
+            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="350px">
         </div>
          <div id="auction_goods_desc">
              <div id="title" style="font-size:25px">
@@ -155,18 +179,16 @@
              <div id="auction_messige">
                 <div id="auction_messige_desc" >
 
-                    <div>竞拍成功时间：<span id="acution_goods_start_time">{{ i.order.auction_goods_date }}</span></div>
-                    <br>
-                    <div>开始价格：<span id="acution_goods_start_time">{{ i.record.auction_goods_oldprice }}</span></div>
+                    <div>竞拍成功时间：<span id="acution_goods_start_time">{{ i.order.auction_order_date }}</span></div>
                     <br>
                     <div>我的加价：<span id="auction_goods_floorprice">{{ i.record.auction_goods_premium }}</span></div>
                     <br>
-                    <div>加价后价格：<span id="acution_goods_start_time">{{ i.record.auction_goods_price }}</span></div>
+                    <div>我的出价：<span id="price_tag{{ i.order.auction_order_id }}"><em >{{ i.record.auction_goods_price }}</em></span></div>
                     <br>
-                    <div>竞拍状态：<span id="acution_goods_start_time">{{ i.state }}</span></div>
+                    <div>竞拍状态：<span id="acution_goods_start_time">已竞拍成功，请尽快付款</span></div>
                     <br>
                    <div>
-                       <button id="pay_money" onclick="pay(this)" value ={{ i.order.auction_order_id}}>
+                       <button id="pay_money" onclick="pay(this)" value ={{ i.order.auction_order_id}} >
                            付款
                        </button>
                    </div>
@@ -247,19 +269,27 @@
     </div>
 </div>
 
-
-<div id="pay_message">
-    <button id="shutdown">关闭</button>
-    <span id="goods_order_id" style="display: none">0</span>
-    <br>
-   <span>请输入支付密码 <input type="text" maxlength="6" id="pay_password"></span>
-    <br>
-    <button id="pay_ok">确定</button>
-    <span id="pay_error" style="display: none;color: red"></span>
 </div>
 </body>
 <script>
-    $("#ok").click(function () {
+       {#将那个订单id传到那个支付密码的界面#}
+      function pay(obj) {
+        order_id=obj.value;
+        price=$("#price_tag"+order_id).text();
+        $.post("/auction_money/"
+        ,
+            {
+                "price":price,
+                "order_id":order_id,
+
+            }
+            ,function (data) {
+                location.href=data
+            })
+
+    }
+
+ $("#ok").click(function () {
         order_id=$("#goods_order_id").text();
         $.post("/confirm_auction_goods/"
         ,
@@ -267,7 +297,7 @@
                 "order_id":order_id
             }
             ,function (data) {
-
+                 location.href=data
             }
             ,'json')
     });
@@ -281,63 +311,6 @@ $("#no").click(function () {
         $("#info_message").show()
     }
 
-
-
-    $("#pay_ok").click(function () {
-        order_id=$("#order_id").text();
-        pay_password=$("#pay_password").val();
-        $.post("/pay_auction_money/"
-        ,
-            {
-                "order_id":order_id,
-                "pay_password":pay_password,
-
-            }
-            ,function (data) {
-            switch (data.msg)
-            {
-                case"no_pay_password":
-                    $('#pay_error').html(function () {
-                            document.getElementById('pay_error').style.display='block';
-                            document.getElementById('pay_error').innerText = "请输入支付密码";
-                            });
-                        break;
-                case "pay_password_length_error":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
-                            document.getElementById('pay_error').innerText = "密码长度不能少于六位数";
-                            });
-                        break;
-                case "pay_password_error":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
-                            document.getElementById('pay_error').innerText = "支付密码错误";
-                            });
-                        break;
-                case "money_less_error":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
-                            document.getElementById('pay_error').innerText = "账户余额不足";
-                            });
-                        break;
-                case "pay_ok":
-                           location.href = '/pay_auction_money_ok/'
-                        break;
-            }
-
-            }
-           ,'json'
-        )
-
-    })
-
-    {#将那个订单id传到那个支付密码的界面#}
-      function pay(obj) {
-          alert("123")
-        order_id=obj.value
-        document.getElementById("order_id").innerText=order_id;
-        $("#pay_message").show()
-    }
  function f1(obj) {
        if(obj.value==0)
        {
@@ -424,8 +397,8 @@ $("#no").click(function () {
         if(x==2) {f4()}
         if(x==3) {f5()}
         if(x==4) {f6()}
-         if(x==5) {f7()}
-    }
+        if(x==5) {f7()}
+    };
     $("#shutdown").click(function () {
          $("#pay_message").hide()
     })
