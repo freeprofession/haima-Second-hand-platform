@@ -1,5 +1,4 @@
 import pandas as pd
-
 df = pd.read_csv("C:\\phone_model.csv")
 def Phone_model(brand, model):
     a = list(df['0']).index(brand)
@@ -11,4 +10,3 @@ def Phone_model(brand, model):
 # print(brand, model)
 
 
-# C:\\Users\\Administrator\\Desktop\\phone_model.csv

@@ -38,8 +38,8 @@
     <div class="sub_page_name fl ">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message/" style="color: #666">收到回复</a></div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_two/" style="color: #ff8800">我的回复</a>
     </div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_tree/"
-                                                              style="color: #ff8800">商品留言</a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_three/"
+                                                              style="color: #666">商品留言</a>
     </div>
 </div>
 
@@ -84,10 +84,10 @@
                         <span>{{ item.second_date }}</span>
                     </div>
                     <div class="cell" style="padding-right: 20px">
-                        <img src="{{ item.goods_imgurl }}" alt="" width="80px" height="80px">
+                        <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}" alt="" width="80px" height="80px"></a>
                     </div>
                     <div class="cell" style="padding-top: 30px">
-                        <span class="line2"><a href="">{{ item.goods_title }}</a></span><br>
+                        <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}" style="color: royalblue">{{ item.goods_title }}</a></span><br>
                         <span class="credit_goods_price">{{ item.goods_price }}</span>
                     </div>
                 </li>

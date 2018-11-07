@@ -5,7 +5,6 @@ st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import base64
-# r = redis.Redis(host='47.100.200.132', port='6379')
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
 from django.shortcuts import render, redirect, HttpResponse
@@ -22,10 +21,8 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-
+from myapp import goods_recommend
 # from myapp import AI_assess
-
-
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
 img = redis.Redis(host="47.100.200.132", port=6379, db=2)
@@ -35,6 +32,7 @@ auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
 sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
 get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
+search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
 history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
 
@@ -143,6 +141,13 @@ def homepage(request):
             con.commit()
             cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
             user_imgurl = cur.fetchone()
+        # recommend = goods_recommend.goods_recommend(user_id)[0:5]
+        # goods_recommend_list = []
+        # for goods_id in recommend:
+        #     cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s",
+        #                 [goods_id, ])
+        #     goods_recommend_list.append(cur.fetchone())
+        # print(goods_recommend_list)
     else:
         login_status = "未登录"
         user_imgurl = {}
@@ -313,11 +318,10 @@ def register_ajax(request):
         # email = request.POST.get("email")
         phone = request.POST.get("phone")
         # code = request.POST.get("code")
-        check_code = r.get(phone)  # 获取手机验证码
+        check_code = sms.hget(phone)  # 获取手机验证码
         check_all = request.POST.get("check_all")
         # print(username, password, phone, check_code, check_all, login_code)
         if login_code['status'] == 1:  # 图片验证码
-
             if check_code:  # 手机验证码待定！
                 check_code = check_code.decode('utf8')
                 if user_error == "" and check_all == 'true':
@@ -433,6 +437,8 @@ def goods_list(request):
             goods_lst = start_list
 
         sort_method = request.GET.get('sort_method')
+        for i in goods_lst:
+            print(i['goods_id'])
         if sort_method == '1':
             goods_lst.sort(key=lambda x: x['goods_price'])
         if sort_method == '2':
@@ -477,7 +483,7 @@ def user_center(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             contacts1 = paginator1.page(paginator1.num_pages)
-    # 这里需要返回他的购买和出售数量，从order_success 订单成功表去查
+        # 这里需要返回他的购买和出售数量，从order_success 订单成功表去查
         cur.execute("select * from t_order_success where buy_user_id=%s", [user_id])
         dict1 = cur.fetchall()
         buy_count = len(dict1)
@@ -514,7 +520,7 @@ def user_credit(request):
             # 计算天数------------------
             day_ = str(user_info[0]["user_startdate"])
             now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-            d1 = datetime.datetime.strptime(day_,"%Y-%m-%d")
+            d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
             d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
             d3 = str(d2 - d1)
             if d3.split(" ")[0] == "0:00:00":
@@ -716,11 +722,13 @@ def goods_detail(request):
 # 测试用---------------------------------
 def text_message(request):
     cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
-                [1, ])
+                ['2', ])
     b = cur.fetchall()
     cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
-                [1, ])
+                ['2', ])
     a = cur.fetchall()
+    print(a)
+    print(b)
     c_comment_dict = {}
     for d in b:
         id = d.get('second_message_id')
@@ -848,16 +856,15 @@ def review_ajax(request):
         rr = """<dl>
                                     <dd style="margin-left: 75px;height: 50px;">
                                         <input type="text" id="child_user_id" value="{0}" hidden>
-                                        <img src="{1}" alt="" height="40" width="40">
+                                        <a  href="/user_center/"><img src="{1}" alt="" height="40" width="40"></a>
                                         <div style="margin-left: 45px;position: relative;top: -50px;"><a
-                                                href="" style="color: #2d64b3"
+                                                href="/user_center/" style="color: #2d64b3"
                                                 class="c_name_{2}">{3}</a>:
-                                            <span style="color: #333333;font-size: 14px">{4}</span>
-                                            <div><span style="color: #a3a3a3">{5}</span>
-                                                <a name="abc">1</a>
+                                            <a  href="/user_center/" style="color: #a3a3a3"><span style="color: #333333;font-size: 14px">{4}</span></a>
+                                            <div><a  href="/user_center/"><span style="color: #a3a3a3">{5}</span></a>
                                                 <input id="review" class="c_review_{6}"
                                                        type="button" value="回复"
-                                                       onclick="c_review({7})">
+                                                       onclick="c_review({7})" hidden>
                                             </div>
                                         </div>
                                     </dd>
@@ -925,6 +932,7 @@ def collection(request):
 # 商品上架，下架
 def lower_goods(request):
     goods_id = request.POST.get("goods_id")
+    print(goods_id, 888888888888888888888)
     state = request.POST.get("state")
     if state == "lower":
         cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
@@ -937,6 +945,7 @@ def lower_goods(request):
         msg = "上架成功"
         con.commit()
         href = '/goods_detail/?goods=' + str(goods_id)
+        print(href)
 
     return HttpResponse(json.dumps({"msg": msg, "href": href}))
 
@@ -1015,6 +1024,9 @@ def assess_ajax(request):
     print(price)
     time.sleep(1)
     return HttpResponse(json.dumps({"price": price}))
+
+
+
 # ********************************************************************普通商品购买***************************************
 def goods_confirm_buy(request):
     error = ""
@@ -1082,6 +1094,7 @@ def my_sale(request):
         'select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc',
         [user_id, 0])
     p_sale_list = cur.fetchall()
+    print(5555555555555555555, p_sale_list)
     paginator1 = Paginator(p_sale_list, 3)
     page1 = request.GET.get('page1')
     try:
@@ -1125,15 +1138,19 @@ def user_lower_goods(request):
         cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
                     [user_id, 0])
         goods_list = cur.fetchall()
-        print(goods_list)
+        print("444444444444444444444", goods_list)
+
         a = 0
         if goods_list:
-            for item in goods_list:
-                if item["goods_id"] == int(goods_id):
-                    a = goods_list.index(item) + 3
+            # for item in goods_list:
+            #     print(item["goods_id"], type(item["goods_id"]), goods_id, type(goods_id))
+            #     if item["goods_id"] == int(goods_id):
+            #         a = goods_list.index(item) + 3
+            #         print(777777777777777777777777777777777777777, a)
+            #     b = a
             try:
-                goods_list_ = goods_list[a]
-                print(4444444444444444444, goods_id, goods_list_, a)
+                goods_list_ = goods_list[3]
+                print(4444444444444444444, goods_id, goods_list_, b)
                 goods_id_ = goods_list_["goods_id"]
                 release_date = goods_list_["release_date"]
                 goods_imgurl = goods_list_["goods_imgurl"]
@@ -1254,41 +1271,6 @@ def my_buy(request):
     user_id = request.session.get("user_id")
     list1 = []
     # 找到该用户的所有订单号,已经订单号里面的商品id
-    # cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
-    # order_dict = cur.fetchall()
-    # if order_dict:
-    #     order_id_list = []
-    #     goods_id_list = []
-    #     for i in order_dict:
-    #         order_id_list.append(i["order_id"])
-    #         goods_id_list.append(i["order_goods_id"])
-    #     for i in range(len(order_id_list)):
-    #         dict1 = {}
-    #         cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
-    #         order_message = cur.fetchone()
-    #         cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
-    #         goods_message = cur.fetchone()
-    #         dict1["goods"] = goods_message
-    #         dict1["order"] = order_message
-    #         list1.append(dict1)
-    cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
-    order_list = cur.fetchall()
-    print(order_list)
-
-    return render(request, 'my_buy.html', locals())
-
-
-def my_buy_complete(request):
-    username = request.session.get('username')
-    user_id = request.session.get("user_id")
-    cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
-                [user_id, ])
-    order_success_list = cur.fetchall()
-    return render(request, "my_buy_complete.html", locals())
-
-    user_id = request.session.get("user_id")
-    list1 = []
-    # 找到该用户的所有订单号,已经订单号里面的商品id
     cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
     order_dict = cur.fetchall()
     if order_dict:
@@ -1309,6 +1291,37 @@ def my_buy_complete(request):
 
     return render(request, 'my_buy.html', locals())
 
+
+def my_buy_complete(request):
+    def my_buy_complete(request):
+        username = request.session.get('username')
+        user_id = request.session.get("user_id")
+        cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
+                    [user_id, ])
+        order_success_list = cur.fetchall()
+        return render(request, "my_buy_complete.html", locals())
+        user_id = request.session.get("user_id")
+        list1 = []
+        # 找到该用户的所有订单号,已经订单号里面的商品id
+        cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
+        order_dict = cur.fetchall()
+        if order_dict:
+            order_id_list = []
+            goods_id_list = []
+            for i in order_dict:
+                order_id_list.append(i["order_id"])
+                goods_id_list.append(i["order_goods_id"])
+            for i in range(len(order_id_list)):
+                dict1 = {}
+                cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
+                order_message = cur.fetchone()
+                cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
+                goods_message = cur.fetchone()
+                dict1["goods"] = goods_message
+                dict1["order"] = order_message
+                list1.append(dict1)
+
+        return render(request, 'my_buy.html', locals())
 
 
 # 我的收藏
@@ -1536,6 +1549,27 @@ def leave_message_two(request):
     return render(request, 'leave_message_two.html', locals())
 
 
+def leave_message_three(request):
+    user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    cur.execute(
+        "select * from t_goods right join t_message on goods_id=message_goods_id inner join t_user on message_user_id=t_user.user_id where t_goods.user_id=%s ",
+        [user_id, ])
+    my_review_list = cur.fetchall()
+    print(my_review_list)
+    paginator = Paginator(my_review_list, 5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render(request, 'leave_message_three.html', locals())
+
+
 # 修改信息
 def modify_information(request):
     if request.method == 'GET':
@@ -1607,9 +1641,15 @@ def confirm_goods(request):
     con.commit()
     return HttpResponse(json.dumps({"msg": "123"}))
 
+
+
+
+
+
 def get_ali_object():
     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
     app_id = "2016092000555548"  # APPID （沙箱应用）
+
     # 支付完成后，支付偷偷向这里地址发送一个post请求，识别公网IP,如果是 192.168.20.13局域网IP ,支付宝找不到，def page2() 接收不到这个请求
     # notify_url = "http://47.94.172.250:8804/page2/"
     notify_url = "http://127.0.0.1:8000/page2/"
@@ -1629,9 +1669,10 @@ def get_ali_object():
 
 
 # 前端跳转的支付页面
+@login_required
 def page1(request):
     # 根据当前用户的配置，生成URL，并跳转。
-    user_id=request.session.get("user_id")
+    user_id = request.session.get("user_id")
     money = request.POST.get('price')
     title = request.POST.get('title')
     alipay = get_ali_object()
@@ -1641,7 +1682,7 @@ def page1(request):
     query_params = alipay.direct_pay(
         subject=title,  # 商品简单描述
         out_trade_no="x2" + str(time.time()),  # 用户购买的商品订单号（每次不一样） 20180301073422891
-        total_amount=money, # 交易金额(单位: 元 保留俩位小数)
+        total_amount=money,  # 交易金额(单位: 元 保留俩位小数)
 
     )
     pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
@@ -1740,5 +1781,54 @@ def admin(request, user):
 
 @admin_session
 def admin_goodslist(request, user):
-    return render(request, 'admin_goodslist.html', {'user': user})
 
+    cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
+    goodslist = cur.fetchall()
+    paginator = Paginator(goodslist, 40)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render(request, 'admin_goodslist.html', {'user': user, 'contacts': contacts})
+
+
+@admin_session
+def admin_search_goods(request, user):
+    start = request.POST.get('start')
+    end = request.POST.get('end')
+    print(start, end)
+    return HttpResponse("POST")
+
+
+@admin_session
+def admin_update(request, user):
+    goods_id = request.POST.get('goods_id')
+    user_id = request.POST.get('user_id')
+    action = request.POST.get('action')
+    if goods_id:
+        result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
+    else:
+        result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
+    con.commit()
+    if result:
+        return HttpResponse("success")
+    else:
+        return HttpResponse('')
+
+
+@admin_session
+def admin_userlist(request, user):
+    cur.execute("select * from t_user")
+    userlist = cur.fetchall()
+    return render(request, 'admin_userlist.html', {'user': user, 'userlist': userlist})
+
+
+@admin_session
+def exit(request, user):
+    del request.session['user']
+    return redirect('/admin_login/')
