@@ -15,7 +15,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -28,7 +28,7 @@
                 <span>|</span>
                 <a href="/user/">用户中心</a>
                 <span>|</span>
-                <a href="" id="my_order" onmouseover="showhide()">我的订单</a>
+                <a href="" id="my_order">我的订单</a>
             </div>
         </div>
     </div>
@@ -41,18 +41,6 @@
     </ul>
 </div>
 
-<div class="navbar_con">
-    <div class="navbar">
-        <h1 class="fl">商品分类</h1>
-        <ul class="navlist fl">
-            <li><a href="/haima/">首页</a></li>
-            <li><a href="/publish/">发布闲置</a></li>
-            <li><a href="/auction/">拍卖</a></li>
-            <li><a href="/assess/">二手估价</a></li>
-            <li><a href="/my_leave/">我的闲置</a></li>
-        </ul>
-    </div>
-</div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/images/haima3.png" width="200" height="100"></a>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/publish/" style="color: #666">发布闲置</a></div>

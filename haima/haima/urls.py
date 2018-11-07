@@ -16,17 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from myapp import view
-<<<<<<< HEAD
 from myapp import goods_recommend
 
-=======
->>>>>>> d1841869d6fbac3aeda718188489ee8db3c4bc35
 from django.views.generic.base import RedirectView
 from myapp import cz
 from myapp import auction_pay
 from myapp import auction_buy
 from myapp import auction_sale
 from myapp import auction
+
 urlpatterns = [
     path('admin/', view.admin),
     path('admin_login/', view.admin_login),
@@ -83,15 +81,10 @@ urlpatterns = [
     path('my_auction/', view.my_auction),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata),
-<<<<<<< HEAD
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-=======
-    path('modify_password/', view.modify_password),  # 修改密码
-    path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
-    path('modify_information/', view.modify_information),  # 修改信息
->>>>>>> d1841869d6fbac3aeda718188489ee8db3c4bc35
+
     path('buy_auction/', view.buy_auction),
     # 实时计算拍卖总价的路径
     path('calculate_price/', view.calculate_price),
@@ -100,8 +93,6 @@ urlpatterns = [
     path('publish_auction/', view.publish_auction),
     path('release_auction_ok/', view.release_auction_ok),
     path('buy_auction/', view.buy_auction),
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
     # 用户输完价格确认竞拍
     path("confirm_buy/", view.confirm_buy),
     # 用户支付成功以后的跳转
@@ -112,49 +103,25 @@ urlpatterns = [
     path("buy_goods_ok/", view.buy_goods_ok),
     # 拍卖时间结束的判断
     path("Determine_auction_date/", view.Determine_auction_date),
-    path('publish_auction/', view.publish_auction),
-    path('release_auction_ok/', view.release_auction_ok),
-    path('buy_auction/', view.buy_auction),
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
     # 返回用户的全部拍卖记录
-<<<<<<< HEAD
-    path("my_auction_one/", view.my_auction_one),
-    path("my_auction_two/", view.my_auction_two),
-    path("my_auction_three/", view.my_auction_three),
-    path("my_auction_four/", view.my_auction_four),
-    # 普通商品收货
-    path("confirm_goods/", view.confirm_goods),
-    # 拍卖商品竞拍成功后，支付尾款
     path("pay_auction_money/", view.pay_auction_money),
     # 支付拍卖尾款成功
     path("pay_auction_money_ok/", view.pay_auction_money_ok),
-    # 拍卖商品发货
-    path("delivery/", view.delivery),
-    # 拍卖商品收货
-    path("confirm_auction_goods/", view.confirm_auction_goods),
     path("send_sms/", view.send_sms),
-    path("goods_recommend/", goods_recommend.goods_recommend),
-=======
+    path("goods_recommend/", goods_recommend.goods_recommend),  # 商品推荐
     path("my_auction_one/", auction_sale.my_auction_one),
     path("my_auction_four/", auction_buy.my_auction_four),
-    # 用户输完价格确认竞拍
-    path("confirm_buy/", view.confirm_buy),
-    # 用户支付成功以后的跳转
-    path("buy_auction_ok/", view.buy_auction_ok),
     # 普通商品收货
     path("confirm_goods/", view.confirm_goods),
-    # 拍卖商品竞拍成功后，支付尾款
     # 拍卖商品发货
     path("delivery/", view.delivery),
     # 拍卖商品收货
     path("confirm_auction_goods/", auction.confirm_auction_goods),
-    path("send_sms/", view.send_sms),
     path('page1/', view.page1),
     path('page2/', view.page2),
     path('page3/', cz.page3),
-    path('top_up_money/',cz.top_up_money),#充值
-    path('auction_money/',auction_pay.auction_money),
+    path('top_up_money/', cz.top_up_money),  # 充值
+    path('auction_money/', auction_pay.auction_money),
     path('page4/', auction_pay.page4),
->>>>>>> d1841869d6fbac3aeda718188489ee8db3c4bc35
+
 ]
