@@ -11,7 +11,7 @@
 <body >
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/?href=/my_auction/" target="_blank">登录</a>
@@ -46,7 +46,7 @@
 <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
-        <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
+          <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
         <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
     </div>
     <div id="auction_classification">
@@ -62,8 +62,6 @@
 <div id="auction_select">
 
     <a href="/my_auction_one/"><button id="auction_one" value="one">我发布的</button></a>
-    <a href="/my_auction_two/"><button id="auction_two" value="two">我拍卖的</button></a>
-
     <a href="/my_auction_four/"><button id="auction_four" value="four">我竞拍的</button></a>
     <div>
         <span style="font-size: 14px; font-weight: bolder">商品状态选择:</span>
@@ -231,7 +229,40 @@
     {% endfor %}
 </div>
 <div id="select_five">
-{% for i in list14 %}
+{% for i in list15 %}
+    <div id="one" >
+        <div>
+            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="360px" width="400px">
+        </div>
+         <div id="auction_goods_desc">
+             <div id="title" style="font-size:25px">
+                 {{ i.goods.auction_goods_title }}
+
+             </div>
+             <br>
+             <div id="auction_messige">
+                <div id="auction_messige_desc" >
+                    <div>订单id：<span id="auction_order_id">{{ i.order.auction_order_id }}</span></div>
+                    <br>
+                    <div>订单生成时间：<span id="auction_goods_premium">{{ i.order.auction_order_date }}</span></div>
+                    <br>
+                    <div>付款时间：<span id="auction_goods_premium">{{ i.order.pay_money_date }}</span></div>
+                    <br>
+                    <div>订单金额：<span id="auction_goods_premium">{{ i.order.auction_order_fianl_price }}</span></div>
+                    <br>
+                    <div>买家用户名：<span id="acution_goods_start_time">{{ i.user_name }}</span></div>
+                    <br>
+                     <div>快递运单号：<span id="acution_goods_start_time">{{ i.the_goods_state }}</span></div>
+                    <br>
+                    <br>
+                </div>
+             </div>
+         </div>
+    </div>
+    {% endfor %}
+</div>
+<div id="select_six">
+{% for i in list15 %}
     <div id="one" >
         <div>
             <img src={{ i.goods.auction_goods_imgurl }} alt="" height="360px" width="400px">
@@ -337,12 +368,14 @@
     });
 
     function f1(obj) {
-       if(obj.value==0) {f2()}
+
+        if(obj.value==0) {f2()}
        else if(obj.value==1) {f3()}
          else if(obj.value==2) {f4()}
        else if(obj.value==3) {f5()}
            else if(obj.value==4) {f6()}
             else if(obj.value==5) {f7()}
+
     }
     function f2() {
         $("#select_one").show()
@@ -360,7 +393,9 @@
            $("#select_three").hide();
            $("#select_four").hide();
            $("#select_five").hide();
+
             $("#select_six").hide();
+
     }
     function f4()
     {
@@ -369,7 +404,9 @@
            $("#select_three").show();
            $("#select_four").hide();
            $("#select_five").hide();
+
             $("#select_six").hide();
+
     }
 
     function f5(){
@@ -378,7 +415,9 @@
            $("#select_three").hide();
            $("#select_four").show();
            $("#select_five").hide();
+
             $("#select_six").hide();
+
     }
         function f6(){
           $("#select_one").hide();
@@ -386,15 +425,19 @@
            $("#select_three").hide();
            $("#select_four").hide();
            $("#select_five").show();
-            $("#select_six").hide();
+
+           $("#select_six").hide();
     }
+
      function f7(){
+
           $("#select_one").hide();
            $("#select_two").hide();
            $("#select_three").hide();
            $("#select_four").hide();
            $("#select_five").hide();
             $("#select_six").show();
+
     }
     window.onload=function () {
         x=$("#goods_state").val()
@@ -403,7 +446,9 @@
         if(x==2) {f4()}
         if(x==3) {f5()}
         if(x==4) {f6()}
+
         if(x==5) {f7()}
+
 
     }
 </script>

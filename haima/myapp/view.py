@@ -4,9 +4,7 @@ from utils.pay import AliPay
 
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 import base64
 
 # r = redis.Redis(host='47.100.200.132', port='6379')
@@ -37,6 +35,9 @@ category = redis.Redis(host="47.100.200.132", port=6379, db=3)
 cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
 auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
 sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
+set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
+get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
+goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
 
 
 def get_token(func):
@@ -94,6 +95,37 @@ def login_required(function):
             return HttpResponseRedirect('/login/')
 
     return check_login_status
+
+
+# 权限装饰器
+def root_request(function):
+    @login_required
+    def check_request(request):
+        user_id = request.session.get('user_id')
+        customer = request.GET.get('customer')
+        goods_id = request.GET.get('goods_id')
+        print("权限：", user_id, customer, goods_id, "______________________________________")
+        if customer == "buy":
+            cur.execute("select * from t_order_success where order_goods_id=%s and buy_user_id=%s", [goods_id, user_id])
+            buy_check = cur.fetchone()
+            if buy_check:
+                print(buy_check)
+                return function(request)
+            else:
+                return HttpResponseRedirect('/haima/')
+        elif customer == "sell":
+            cur.execute("select * from t_order_success where order_goods_id=%s and release_user_id=%s",
+                        [goods_id, user_id])
+            sell_check = cur.fetchone()
+            print(sell_check)
+            if sell_check:
+                return function(request)
+            else:
+                return HttpResponseRedirect('/haima/')
+        else:
+            return HttpResponseRedirect('/haima/')
+
+    return check_request
 
 
 def homepage(request):
@@ -377,7 +409,7 @@ def goods_list(request):
                         cur.execute(sql)
                         goods = cur.fetchone()
                         goods_lst.append(goods)
-            prompt = '已选条件： 所有与' + question + '相关的宝贝'
+            prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
             if count == 0:
                 return render(request, 'register_ok.html')
 
@@ -437,10 +469,23 @@ def user_center(request):
             [user_id, ])
         # cur.execute("select * from t_user_browse where browse_user_id=%s", [user_id, ])
         browse_list = cur.fetchall()
-
+        paginator1 = Paginator(browse_list, 10)
+        page1 = request.GET.get('page1')
+        try:
+            contacts1 = paginator1.page(page1)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            contacts1 = paginator1.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            contacts1 = paginator1.page(paginator1.num_pages)
         # 这里需要返回他的购买和出售数量，从order_success 订单成功表去查
         cur.execute("select * from t_order_success where buy_user_id=%s", [user_id])
         dict1 = cur.fetchall()
+        buy_count = len(dict1)
+        cur.execute("select * from t_order_success where release_user_id=%s", [user_id])
+        dict2 = cur.fetchall()
+        sell_count = len(dict2)
         buy_conut = 0
         if dict1:
             buy_conut = len(dict1)
@@ -465,10 +510,11 @@ def user_credit(request):
             return redirect("/user_center/")
         else:
             # -用户信息
+            # 发布商品--------------------------------------------------------------
             cur.execute("select * from t_user where user_id=%s ", [user_credit_id, ])
             user_info = cur.fetchall()
             # 计算天数------------------
-            day_ = user_info[0]["user_startdate"]
+            day_ = str(user_info[0]["user_startdate"])
             now_time = datetime.datetime.now().strftime('%Y-%m-%d')
             d1 = datetime.datetime.strptime(day_, "%Y-%m-%d")
             d2 = datetime.datetime.strptime(now_time, "%Y-%m-%d")
@@ -510,6 +556,43 @@ def user_credit(request):
                 goods[j] = lst
 
             print(goods)
+            # cur.execute(
+            #     'select * from t_order_success right join t_evaluation on order_id=evaluation_order_id where buy_user_id=%s ',
+            #     [user_id, ])
+            # buy_list = cur.fetchall()
+            # cur.execute(
+            #     'select * from t_order_success inner join t_evaluation on order_id= evaluation_order_id inner join t_goods on order_goods_id=goods_id '
+            #     'where to_rid=%s order by second_message_id desc',
+            #     [user_id, ])
+            # # 卖家收到的评价---------------------------
+            # cur.execute(
+            #     'select * from t_order_success right join t_evaluation on order_id=evaluation_order_id where sell_user_id=%s ',
+            #     [user_id, ])
+            # sell_list = cur.fetchall()
+            # 评价------------------------------------------------
+            # 买家收到的评价-----------
+            cur.execute(
+                "select order_id from t_order_success where buy_user_id=%s and sell_eva_state=%s or release_user_id=%s and buy_eva_state=%s",
+                [user_credit_id, 1, user_credit_id, 1])
+            order_id = cur.fetchall()
+            eva_list = []
+            print(user_id)
+            count_order = len(order_id)
+            for id in order_id:
+                one = {}
+                key = str(user_credit_id) + str(id["order_id"])
+                a = get_eva.hgetall(key)
+                print(key, a)
+                if a:
+                    for i in a:
+                        c = a[i].decode("utf-8")
+                        i = i.decode("utf-8")
+                        one[i] = c
+                    eva_list.append(one)
+                else:
+                    eva_list.append("none")
+            print("评价内容", eva_list)
+            count_eva = len(eva_list)
             return render(request, "user_credit.html", locals())
     else:
         return redirect('/login/')
@@ -522,6 +605,7 @@ def goods_detail(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     goods_id = request.GET.get('goods')
+
     # 商品收藏------------------------------------------
     cur.execute(
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
@@ -596,10 +680,12 @@ def goods_detail(request):
     # print(p_comment_dict)
     # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
     if username:  # 登录后才记录，浏览记录
+        key = goods_id
+        goods_browse.lpush(key, user_id)
+        key = goods_id
         cur.execute("select user_imgurl from t_user where user_id=%s", [user_id])
         user_imgurl = cur.fetchone()["user_imgurl"]
         print("图片", user_imgurl)
-
         login_status = username
         cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
         browse = cur.fetchone()
@@ -798,11 +884,12 @@ def lea_message(request):
         Published = request.POST.get("Published")
         goods_id = request.POST.get("goods_id")
         now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print("商品留言", user_id, Published, goods_id, now_time)
         cur.execute(
             "insert into t_message(message_user_id,message_desc,message_goods_id,message_date) values(%s,%s,%s,%s)",
             [user_id, Published, goods_id, now_time])
         con.commit()
-        url = '/goods_detail/?goods=' + str(goods_id)
+        url = "success"
         return HttpResponse(json.dumps({"href": url}))
 
     else:
@@ -820,6 +907,7 @@ def collection(request):
     cur.execute("select * from t_user_collection where collection_user_id=%s and collection_goods_id=%s",
                 [user_id, str(goods_id)])
     collection_check_ = cur.fetchone()
+    print("商品收藏", collection_check_)
     if username:
         if collection_check_:
             msg = "您已收藏过改商品"
@@ -959,20 +1047,6 @@ def auction_index(request):
             list1.append(dict1)
 
         return render(request, "auction_index.html", locals())
-    else:
-        return HttpResponseRedirect('/login/')
-
-
-# 历史拍卖
-def history_auction(request):
-    id = request.session.get('user_id')
-    print(id)
-    if id:
-        cur.execute('select user_name from t_user where user_id=%s', \
-                    [id])
-        username = cur.fetchone()
-
-        return render(request, 'histroy_auction.html', locals())
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1128,387 +1202,7 @@ def release_auction_ok(request):
     return render(request, 'release_auction_ok.html')
 
 
-# **********************************************************返回用户的我的拍卖中心的我的发布界面**************************************
-# 这里主要是显示他的发布记录,和发布商品现在的状态
-def my_auction_one(request):
-    user_id = request.session.get("user_id")
-    list10 = []
-    list11 = []
-    list12 = []
-    list13 = []
-    list14 = []
-    list15 = []
-    list16 = []
-    print(user_id)
-    # 从发布记录表里找到商品id
-    cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
-    message = cur.fetchall()
-    id_list = []
-    for i in message:
-        id_list.append(i["release_auction_goods_id"])
-    print(id_list)
-    for goods_id in id_list:
-        dict1 = {}
-        cur.execute("select auction_goods_state from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-        x = cur.fetchone()
-        print(x)
-        state = x["auction_goods_state"]
-
-        # 返回发布记录的时候就要判断他发布的商品是否5已经下架，2竞拍成功，4购买成功，3付款成功，1流拍
-        if int(state) == 0:  # 0代表的是正常拍卖的
-            # print("正常拍卖")
-
-            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            dict1["goods"] = goods_message
-            dict1["attribute"] = goods_auction_message
-            dict1["state"] = "正在拍卖"
-            # 返回当前竞拍者的姓名
-            cur.execute(
-                "select auction_record_id from t_auction_record where auction_goods_id=%s",
-                [goods_id])
-            record_dict = cur.fetchall()
-            if record_dict:
-                if record_dict:
-                    record_list = []
-                    for i in record_dict:
-                        record_list.append(i["auction_record_id"])
-                    record_maxid = max(record_list)
-                    cur.execute("select auction_goods_buyuser_id from t_auction_record where auction_record_id=%s",
-                                [record_maxid])
-                    buy_user_id = cur.fetchone()
-                    cur.execute("select user_name from t_user where user_id=%s",
-                                [buy_user_id["auction_goods_buyuser_id"]])
-                    user_name = cur.fetchone()["user_name"]
-                    if user_name:
-                        dict1["user_name"] = user_name
-                    else:
-                        dict1["user_name"] = "无"
-            list10.append(dict1)
-
-        if int(state) == 1:  # 1流拍
-            # print("流拍")
-            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            dict1["goods"] = goods_message
-            dict1["attribute"] = goods_auction_message
-            dict1["state"] = "商品已经流拍"
-            dict1["user_name"] = "无"
-            list11.append(dict1)
-
-        if int(state) == 2:  # 2被竞拍成功
-            # print("被竞拍成功")
-            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            dict1["goods"] = goods_message
-            dict1["attribute"] = goods_auction_message
-
-            dict1["state"] = "商品已经被竞拍成功等待买家付款"
-            cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",
-                        [goods_id])
-            buy_user_id = cur.fetchone()
-            cur.execute("select user_name from t_user where user_id=%s", [buy_user_id["auction_order_buy_user_id"]])
-            user_name = cur.fetchone()["user_name"]
-            dict1["user_name"] = user_name
-
-            list12.append(dict1)
-
-        if int(state) == 3:  # 商品付款成功
-            print("ok")
-            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            cur.execute("select auction_order_id from t_auction_order where auction_order_goods_id=%s", [goods_id])
-            order_id = cur.fetchone()["auction_order_id"]
-            cur.execute("select * from t_auction_order where auction_order_id=%s", [order_id])
-            order_messge = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            dict1["goods"] = goods_message
-            dict1["attribute"] = goods_auction_message
-            dict1["state"] = "商品已经付款"
-            cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",
-                        [goods_id])
-            buy_user_id = cur.fetchone()
-            cur.execute("select user_name from t_user where user_id=%s", [buy_user_id["auction_order_buy_user_id"]])
-            user_name = cur.fetchone()["user_name"]
-            dict1["order"] = order_messge
-            dict1["user_name"] = user_name
-            cur.execute("select the_goods_state from t_auction_order where auction_order_id=%s", [order_id])
-            the_goods_state = cur.fetchone()["the_goods_state"]
-            if the_goods_state:
-                dict1["the_goods_state"] = the_goods_state
-                list14.append(dict1)
-            else:
-                list13.append(dict1)
-
-        if int(state) == 4:  # 商品收货成功
-            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            cur.execute("select auction_order_id from t_auction_order where auction_order_goods_id=%s", [goods_id])
-            order_id = cur.fetchone()["auction_order_id"]
-            cur.execute("select * from t_auction_order where auction_order_id=%s", [order_id])
-            order_messge = cur.fetchone()
-            cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",
-                        [goods_id])
-            buy_user_id = cur.fetchone()
-            cur.execute("select user_name from t_user where user_id=%s", [buy_user_id["auction_order_buy_user_id"]])
-            user_name = cur.fetchone()["user_name"]
-
-            dict1["order"] = order_messge
-            dict1["goods"] = goods_message
-            dict1["attribute"] = goods_auction_message
-            dict1["user_name"] = user_name
-            dict1["state"] = "商品已经收货"
-
-            list15.append(dict1)
-
-        if int(state) == 5:  # 商品被用户自己下架
-            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            dict1["goods"] = goods_message
-            dict1["attribute"] = goods_auction_message
-            dict1["state"] = "商品已经下架"
-            list16.append(dict1)
-    print(list15)
-    return render(request, 'my_auction_one.html', locals())
-
-
-# **********************************************************返回用户的我的拍卖中心我拍卖的界面**************************************
-# 这个显示的他正在拍卖中的商品
-def my_auction_two(request):
-    user_id = request.session.get("user_id")
-    list2 = []
-    cur.execute("select auction_goods_id from t_auction_goods where auction_goods_user_id=%s", [user_id])
-    goods_id_dict = cur.fetchall()
-    goods_id_list = []
-    goods_list = []
-    attribute_list = []
-    buy_name_list = []
-    # 这里是找到这个人所有正在拍卖的商品
-    for i in goods_id_dict:
-        goods_id_list.append(i["auction_goods_id"])
-    # 找到商品的拍卖属性和基本属性,同时找到商品竞拍者的名字
-    for i in goods_id_list:
-        cur.execute("select * from t_auction_goods where auction_goods_id=%s", [i])
-        goods = cur.fetchone()
-        goods_list.append(goods)
-        cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [i])
-        attribute = cur.fetchone()
-        attribute_list.append(attribute)
-        cur.execute("select auction_goods_buyuser_id from t_auction_attribute where auction_goods_id=%s", [i])
-        buy_user_id = cur.fetchone()["auction_goods_buyuser_id"]
-        if buy_user_id and buy_user_id > 0:
-            cur.execute("select user_name from t_user where user_id=%s", [buy_user_id])
-            buy_name = cur.fetchone()
-            buy_name_list.append(buy_name)
-
-        else:
-            dict2 = {"user_name": "无"}
-            buy_name_list.append(dict2)
-
-    for i in range(len(goods_id_list)):
-        dict1 = {}
-        dict1["goods"] = goods_list[i]
-        dict1["attribute"] = attribute_list[i]
-        dict1["buyname"] = buy_name_list[i]
-        list2.append(dict1)
-    print(list2)
-    return render(request, 'my_auction_two.html', locals())
-
-
-# *****************************************************返回用户的我的拍卖中心我拍卖的界面**************************************
-def my_auction_three(request):
-    return render(request, 'my_auction_two.html', locals())
-
-
-# **********************************************************返回用户的我的拍卖中心我的竞拍的界面**************************************
-def my_auction_four(request):
-    user_id = request.session.get("user_id")
-    # 先找到该用户的所有竞拍记录
-    cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
-                [user_id])
-    record_id_dict = cur.fetchall()
-
-    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
-                [user_id])
-    # 找到用户的订单
-    cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s", [user_id])
-    order_dict = cur.fetchall()
-    list1 = []
-    list2 = []
-    list3 = []
-    list4 = []
-    list5 = []
-    list6 = []
-    cur.execute("select *  from t_auction_record where auction_goods_buyuser_id=%s",
-                [user_id])
-
-    goods_list = []
-
-    for i in record_id_dict:
-        dict1 = {}
-        # 这里拿到拍卖记录表的状态
-        cur.execute("select auction_goods_state from t_auction_record where auction_record_id=%s",
-                    [i["auction_record_id"]])
-        x = cur.fetchone()
-        state = x["auction_goods_state"]
-        if state == 0:  # 竞拍失败的记录
-            dict1 = {}
-            print(i)
-            cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
-                        [i["auction_record_id"]])
-
-            goods_id = cur.fetchone()["auction_goods_id"]
-            cur.execute("select *  from t_auction_record where auction_record_id=%s",
-                        [i["auction_record_id"]])
-            record_message = cur.fetchone()
-            cur.execute("select *  from t_auction_goods_record where auction_goods_id=%s",
-                        [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select *  from t_auction_attribute where auction_goods_id=%s",
-                        [goods_id])
-            attribute = cur.fetchone()
-            dict1["state"] = "竞拍失败"
-            dict1["goods"] = goods_message
-            dict1["record"] = record_message
-            dict1["attribute"] = attribute
-            list2.append(dict1)
-        if state == 1:  # 竞拍中的记录
-            dict1 = {}
-            print(i)
-            cur.execute("select auction_goods_id from t_auction_record where auction_record_id=%s",
-                        [i["auction_record_id"]])
-            goods_id = cur.fetchone()["auction_goods_id"]
-            cur.execute("select *  from t_auction_record where auction_record_id=%s",
-                        [i["auction_record_id"]])
-            record_message = cur.fetchone()
-            cur.execute("select *  from t_auction_goods_record where auction_goods_id=%s",
-                        [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select *  from t_auction_attribute where auction_goods_id=%s",
-                        [goods_id])
-            attribute = cur.fetchone()
-            dict1["state"] = "竞拍中"
-            dict1["goods"] = goods_message
-            dict1["record"] = record_message
-            dict1["attribute"] = attribute
-            list1.append(dict1)
-    if order_dict:
-        for i in order_dict:
-            print("订单", i)
-            id = i["auction_order_id"]
-            print("id")
-            cur.execute("select auction_order_state from t_auction_order where auction_order_id=%s", [id])
-            x = cur.fetchone()
-            order_state = x["auction_order_state"]
-
-            # 这里待支付尾款的
-            if order_state == 0:
-                dict1 = {}
-                cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s",
-                            [i["auction_order_id"]])
-                goods_id = cur.fetchone()["auction_order_goods_id"]
-
-                cur.execute("select *  from t_auction_goods_record where auction_goods_id=%s",
-                            [goods_id])
-                goods_message = cur.fetchone()
-                cur.execute("select *  from t_auction_attribute where auction_goods_id=%s",
-                            [goods_id])
-                attribute = cur.fetchone()
-                cur.execute("select * from t_auction_order where auction_order_goods_id=%s", [i["auction_order_id"]])
-                order_messge = cur.fetchone()
-                cur.execute("select the_goods_state from t_auction_order where auction_order_id=%s",
-                            [i["auction_order_id"]])
-                the_goods_state = cur.fetchone()["the_goods_state"]
-                if the_goods_state:
-                    dict1["state"] = the_goods_state
-                else:
-                    dict1["state"] = "待发货"
-                dict1["goods"] = goods_message
-                dict1["attribute"] = attribute
-                dict1["order"] = order_messge
-                list3.append(dict1)
-            # 这里表示支付完成的
-            if order_state == 1:
-                dict1 = {}
-                cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s",
-                            [i["auction_order_id"]])
-                goods_id = cur.fetchone()["auction_order_goods_id"]
-
-                cur.execute("select *  from t_auction_goods_record where auction_goods_id=%s",
-                            [goods_id])
-                goods_message = cur.fetchone()
-                cur.execute("select *  from t_auction_attribute where auction_goods_id=%s",
-                            [goods_id])
-                attribute = cur.fetchone()
-                cur.execute("select * from t_auction_order where auction_order_goods_id")
-                order_messge = cur.fetchone()
-                cur.execute("select the_goods_state from t_auction_order where auction_order_id=%s",
-                            [i["auction_order_id"]])
-                the_goods_state = cur.fetchone()["the_goods_state"]
-                if the_goods_state == 0:
-                    dict1["state"] = "待发货"
-                else:
-                    dict1["state"] = the_goods_state
-                dict1["goods"] = goods_message
-                dict1["attribute"] = attribute
-                dict1["order"] = order_messge
-                list5.append(dict1)
-        # 收货完成交易成功
-        if order_state == 2:
-            dict1 = {}
-            cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s",
-                        [i["auction_order_id"]])
-            goods_id = cur.fetchone()["auction_order_goods_id"]
-            cur.execute("select *  from t_auction_goods_record where auction_goods_id=%s",
-                        [goods_id])
-            goods_message = cur.fetchone()
-            cur.execute("select * from t_auction_order where auction_order_goods_id")
-            order_messge = cur.fetchone()
-            cur.execute("select the_goods_state from t_auction_order where auction_order_id=%s",
-                        [i["auction_order_id"]])
-            dict1["goods"] = goods_message
-
-            dict1["order"] = order_messge
-            list6.append(dict1)
-            pass
-        print(list6)
-
-        #
-        # dict1 = {}
-        # dict1["record"] = goods_record_list[i]
-        # dict1["goods"] = goods_info_list[i]
-        # list4.append(dict1)
-        # print(list4)
-
-        return render(request, 'my_auction_four.html', locals())
-
-
 # ******************************************购买拍卖页面**********************************************
-
-
 # 用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
     id = request.session.get('user_id')
@@ -1532,6 +1226,7 @@ def buy_auction(request):
         dict1["goods"] = goods_messge
         dict1["attribute"] = goods_auction_message
         dict1["img"] = img_list
+        print('图片的地址', img_list)
         list1.append(dict1)
         return render(request, 'buy_auction.html', locals())
     else:
@@ -1742,6 +1437,7 @@ def end_auction(request):
             cur.execute("update t_auction_goods_record set auction_goods_state =%s where auction_goods_id=%s",
                         ["5", goods_id])
             con.commit()
+            print("下架成功")
         except Exception as e:
             print(e)
     else:
@@ -1996,6 +1692,42 @@ def my_sale_complete(request):
 
 # ******************************************************************我购买的*******************************************
 def my_buy(request):
+    username = request.session.get('username')
+    user_id = request.session.get("user_id")
+    list1 = []
+    # 找到该用户的所有订单号,已经订单号里面的商品id
+    # cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
+    # order_dict = cur.fetchall()
+    # if order_dict:
+    #     order_id_list = []
+    #     goods_id_list = []
+    #     for i in order_dict:
+    #         order_id_list.append(i["order_id"])
+    #         goods_id_list.append(i["order_goods_id"])
+    #     for i in range(len(order_id_list)):
+    #         dict1 = {}
+    #         cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
+    #         order_message = cur.fetchone()
+    #         cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
+    #         goods_message = cur.fetchone()
+    #         dict1["goods"] = goods_message
+    #         dict1["order"] = order_message
+    #         list1.append(dict1)
+    cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
+    order_list = cur.fetchall()
+    print(order_list)
+
+    return render(request, 'my_buy.html', locals())
+
+
+def my_buy_complete(request):
+    username = request.session.get('username')
+    user_id = request.session.get("user_id")
+    cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
+                [user_id, ])
+    order_success_list = cur.fetchall()
+    return render(request, "my_buy_complete.html", locals())
+
     user_id = request.session.get("user_id")
     list1 = []
     # 找到该用户的所有订单号,已经订单号里面的商品id
@@ -2036,6 +1768,7 @@ def my_collection(request):
 
 
 # 评价
+@root_request
 def evaluate(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
@@ -2068,44 +1801,123 @@ def evaluate(request):
     if customer == "buy":
         # --本商品是否已经评价-------------------
         cur.execute("select * from t_order_success where order_goods_id=%s", [goods_id, ])  # 获取商品表内容
-        order_id_ = cur.fetchone()
-        print(44444444444, order_id_, user_id, username, goods_id, customer)
-        order_id = order_id_["order_id"]
-        eva_state = order_id_["buy_eva_state"]
-        print()
+        buy_list = cur.fetchone()
+        print(buy_list, "44444444444444444")
+        order_id = buy_list["order_id"]
+        eva_state = buy_list["buy_eva_state"]
         if eva_state != 0:
             cur.execute("select * from t_evaluation where evaluation_order_id=%s", [order_id, ])
-            buy_desc_list = cur.fetchone()
+            buy_desc_list = cur.fetchall()
+            print(buy_desc_list, 5555555555555555555555)
     else:
         print(customer)
         cur.execute("select * from t_order_success where order_goods_id=%s", [goods_id, ])  # 获取商品表内容
-        eva_state = cur.fetchone()["buy_eva_state"]
-        order_id = cur.fetchone()["order_id"]
-
+        sell_list = cur.fetchone()
+        print(sell_list)
+        eva_state = sell_list["sell_eva_state"]
+        order_id = sell_list["order_id"]
+        print("订单：", order_id, "状态", type(eva_state))
         if eva_state != 0:
             cur.execute("select * from t_evaluation where evaluation_order_id=%s", [order_id, ])
-            sell_desc_list = cur.fetchone()
-            print(4444444, customer, eva_state, order_id, sell_desc_list)
+            sell_desc_list = cur.fetchall()
+            print(55555555, customer, eva_state, order_id, sell_desc_list)
+
     return render(request, 'evaluate.html', locals())
 
 
 def evaluate_ajax(request):
+    user_id = request.session.get('user_id')
     evaluate_text = request.POST.get('evaluate_text')
-    dddddddd = request.POST.get('dddddddd')
+    eva_state = request.POST.get('dddddddd')
     customer = request.POST.get('customer')
     order_id = request.POST.get('order_id')
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(evaluate_text, eva_state, customer, type(order_id))
     if customer == "buy":
         cur.execute(
             "update t_evaluation set buyer_evaluation_date = %s,buyer_desc=%s,buy_state=%s where evaluation_order_id = %s",
-            [now_time, evaluate_text, dddddddd, order_id])
+            [now_time, evaluate_text, eva_state, order_id])
+        cur.execute("update t_order_success set buy_eva_state=%s where order_id=%s", [1, order_id])
+        # __________________redis保存被回复人记录(别人查看记录)-----------------------------------------------------------------------
+        cur.execute("select * from t_order_success where order_id=%s", [int(order_id), ])
+        order_list = cur.fetchone()
+        key = str(order_list["release_user_id"]) + str(order_id)
+        print("购买人，", key)
+        # 评价人的信息！-------------
+        cur.execute("select * from t_user where user_id=%s", [user_id, ])
+        get_user_list = cur.fetchone()
+        # 商品信息！----------------------------------------------------
+        cur.execute("select * from t_goods where goods_id=%s", [order_list["order_goods_id"], ])
+        goods_lst = cur.fetchone()
+        get_eva.hset(key, "username", get_user_list["user_name"])
+        get_eva.hset(key, "user_imgurl", get_user_list["user_imgurl"])
+        get_eva.hset(key, "user_id", get_user_list["user_id"])
+        get_eva.hset(key, "desc", evaluate_text)
+        get_eva.hset(key, "date", now_time)
+        get_eva.hset(key, "goods_id", goods_lst["goods_id"])
+        get_eva.hset(key, "goods_name", goods_lst["goods_title"])
+        get_eva.hset(key, "goods_price", goods_lst["goods_price"])
+        get_eva.hset(key, "eva_state", eva_state)
+        get_eva.hset(key, "customer", "买家")
+        # __________________redis保存回复人记录-----------------------------------------------------------------------
+        # 评价用户的信息！-------------
+        key_ = str(order_list["buy_user_id"]) + str(order_id)
+        cur.execute("select * from t_user where user_id=%s", [order_list["release_user_id"], ])
+        set_user_list = cur.fetchone()
+        set_eva.hset(key_, "username", set_user_list["user_name"])
+        set_eva.hset(key_, "user_imgurl", set_user_list["user_imgurl"])
+        set_eva.hset(key_, "user_id", set_user_list["user_id"])
+        set_eva.hset(key_, "desc", evaluate_text)
+        set_eva.hset(key_, "date", now_time)
+        set_eva.hset(key_, "goods_id", goods_lst["goods_id"])
+        set_eva.hset(key_, "goods_name", goods_lst["goods_title"])
+        set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
+        set_eva.hset(key_, "eva_state", eva_state)
+        set_eva.hset(key_, "customer", "卖家")
     else:
         cur.execute(
             "update t_evaluation set seller_evaluation_date = %s,seller_desc=%s,sell_state=%s where evaluation_order_id = %s",
-            [now_time, evaluate_text, dddddddd, order_id])
+            [now_time, evaluate_text, eva_state, order_id])
+        cur.execute("update t_order_success set sell_eva_state=%s where order_id=%s", [1, order_id])
+        # __________________redis保存被回复人记录(别人查看记录)-----------------------------------------------------------------------
+        cur.execute("select * from t_order_success where order_id=%s", [int(order_id), ])
+        order_list = cur.fetchone()
+        key = str(order_list["buy_user_id"]) + str(order_id)
+        # 被评价用户的信息！-------------
+        cur.execute("select * from t_user where user_id=%s", [user_id, ])
+        get_user_list = cur.fetchone()
+        # 商品信息！----------------------------------------------------
+        cur.execute("select * from t_goods where goods_id=%s", [order_list["order_goods_id"], ])
+        goods_lst = cur.fetchone()
+        get_eva.hset(key, "username", get_user_list["user_name"])
+        get_eva.hset(key, "user_imgurl", get_user_list["user_imgurl"])
+        get_eva.hset(key, "user_id", get_user_list["user_id"])
+        get_eva.hset(key, "user_address", get_user_list["user_address"])
+        get_eva.hset(key, "desc", evaluate_text)
+        get_eva.hset(key, "date", now_time)
+        get_eva.hset(key, "goods_id", goods_lst["goods_id"])
+        get_eva.hset(key, "goods_name", goods_lst["goods_title"])
+        get_eva.hset(key, "goods_price", goods_lst["goods_price"])
+        get_eva.hset(key, "eva_state", eva_state)
+        get_eva.hset(key, "customer", "卖家")
+        # __________________redis保存回复人记录-----------------------------------------------------------------------
+        # 评价用户的信息！-------------
+        key_ = str(order_list["release_user_id"]) + str(order_id)
+        cur.execute("select * from t_user where user_id=%s", [order_list["buy_user_id"], ])
+        set_user_list = cur.fetchone()
+        set_eva.hset(key_, "username", set_user_list["user_name"])
+        set_eva.hset(key_, "user_imgurl", set_user_list["user_imgurl"])
+        set_eva.hset(key_, "user_id", set_user_list["user_id"])
+        set_eva.hset(key_, "user_address", set_user_list["user_address"])
+        set_eva.hset(key_, "desc", evaluate_text)
+        set_eva.hset(key_, "date", now_time)
+        set_eva.hset(key_, "goods_id", goods_lst["goods_id"])
+        set_eva.hset(key_, "goods_name", goods_lst["goods_title"])
+        set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
+        set_eva.hset(key_, "eva_state", eva_state)
+        set_eva.hset(key_, "customer", "买家")
     con.commit()
     msg = "success"
-
     return HttpResponse(json.dumps({"msg": msg}))
 
 
@@ -2252,6 +2064,7 @@ def Determine_auction_date(request):
                                 [state, i])
                     print("修改商品的状态成功")
                 else:
+                    print("有人竞拍")
                     # 2商品有人竞拍
                     state = "2"
                     cur.execute("update t_auction_goods_record set auction_goods_state =%s where auction_goods_id=%s",
@@ -2262,33 +2075,27 @@ def Determine_auction_date(request):
                         "select auction_record_id from t_auction_record where auction_goods_id=%s",
                         [i])
                     record_dict = cur.fetchall()
-                    cur.execute("insert into t_auction_order (auction_order_date,auction_order_goods_id,auction_order_fianl_price,\
-                                                    auction_order_buy_user_id) values (%s,%s,%s,%s)",
-                                [now_date, str(i), str(price), str(who_buy)])
-                    print("添加订单成功")
                     if record_dict:
                         record_list = []
                         for i in record_dict:
                             record_list.append(i["auction_record_id"])
                         record_maxid = max(record_list)
+                        print(record_maxid)
                         cur.execute(
                             "update t_auction_record set auction_goods_state=%s where auction_record_id=%s",
                             ['2', record_maxid])
-                    cur.execute("update t_auction_record set auction_goods_state =%s where auction_goods_id=%s",
-                                [state, i])
-                    print("修改商品的状态成功")
 
-                    cur.execute("insert into t_auction_order (auction_order_date,auction_order_goods_id,auction_order_fianl_price,\
-                                auction_order_buy_user_id) values (%s,%s,%s,%s)",
-                                [now_date, str(i), str(price), str(who_buy)])
-                    print("添加订单成功")
+                        print("修改商品的状态成功")
+                        cur.execute("insert into t_auction_order (auction_order_date,auction_order_goods_id,auction_order_fianl_price,\
+                                                                                    auction_order_buy_user_id) values (%s,%s,%s,%s)",
+                                    [now_date, str(i), str(price), str(who_buy)])
+                        print("添加订单成功")
 
-                con.commit()
-
+                    con.commit()
 
             except Exception as e:
+                con.rollback()
                 print(e)
-
     return redirect("/auction_index/")
 
 
@@ -2393,6 +2200,7 @@ def pay_auction_money_ok(request):
 def delivery(request):
     courier_number = request.POST.get("courier_number")
     order_id = request.POST.get("order_id")
+
     try:
         cur.execute("update t_auction_order set the_goods_state=%s where auction_order_id=%s",
                     [courier_number, order_id])
@@ -2402,37 +2210,8 @@ def delivery(request):
     return HttpResponse(json.dumps({"msg": "ok"}))
 
 
-# *********************************************拍卖商品的收货*******************************************************
-def confirm_auction_goods(request):
-    order_id = request.POST.get("order_id")
-    # 用户确认收货以后改变状态
-    try:
-        now_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-        cur.execute("update t_auction_order set auction_order_state=%s,order_success_date=%s where auction_order_id=%s",
-                    ["2", now_date, order_id])
-        cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s", [order_id])
-        auction_goods_id = cur.fetchone()["auction_order_goods_id"]
-        # 用户确认收货以后需要把钱打到卖家账户
-        cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s",
-                    [auction_goods_id])
-        goods_margin = cur.fetchone()["auction_goods_margin"]
-        cur.execute("select auction_goods_fianl_prcie from t_auction_goods where auction_order_id=%s", [order_id])
-        goods_money = cur.fetchone()["auction_goods_fianl_prcie"]
-        cur.execute("select auction_goods_user_id from t_auction_goods_record where auction_goods_id=%s",
-                    [auction_goods_id])
-        maijia_id = cur.fetchone()["auction_goods_user_id"]
-        cur.execute("select user_money from t_user where user_id=%s", [maijia_id])
-        user_money = cur.fetchone()["user_money"]
-        user_money = user_money + goods_money + goods_margin
-        cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, maijia_id])
-        cur.execute("update t_auction_goods_record set auction_goods_state=%s where auction_goods_id=%s",
-                    ["4", auction_goods_id])
-        con.commit()
-    except Exception as e:
-        print(e)
-
-
 # 支付宝支付
+
 
 def get_ali_object():
     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
@@ -2445,7 +2224,6 @@ def get_ali_object():
     return_url = "http://127.0.0.1:8000/page2/"
     merchant_private_key_path = "keys/app_private_2048.txt"  # 应用私钥
     alipay_public_key_path = "keys/alipay_public_2048.txt"  # 支付宝公钥
-
     alipay = AliPay(
         appid=app_id,
         app_notify_url=notify_url,
@@ -2460,6 +2238,7 @@ def get_ali_object():
 # 前端跳转的支付页面
 def page1(request):
     # 根据当前用户的配置，生成URL，并跳转。
+    user_id = request.session.get("user_id")
     money = request.POST.get('price')
     title = request.POST.get('title')
     alipay = get_ali_object()
@@ -2473,7 +2252,9 @@ def page1(request):
 
     )
     pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
+
     print(pay_url)
+
     return HttpResponse(pay_url)
 
 
@@ -2566,8 +2347,6 @@ def admin(request, user):
 
 @admin_session
 def admin_goodslist(request, user):
-    " select   a.*,b.*   from   a   inner   join   b     on   a.id=b.parent_id       "
-    # cur.execute("select * from   a   inner   join   b     on   a.id=b.parent_id       ")
     cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
     goodslist = cur.fetchall()
     paginator = Paginator(goodslist, 40)
@@ -2613,7 +2392,8 @@ def admin_userlist(request, user):
     userlist = cur.fetchall()
     return render(request, 'admin_userlist.html', {'user': user, 'userlist': userlist})
 
+
 @admin_session
-def exit(request,user):
+def exit(request, user):
     del request.session['user']
     return redirect('/admin_login/')
