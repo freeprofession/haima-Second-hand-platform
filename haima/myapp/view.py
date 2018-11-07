@@ -1621,11 +1621,13 @@ def confirm_goods(request):
     goods_message = cur.fetchone()
     date = datetime.datetime.now().strftime('%Y-%m-%d')
     print(goods_message)
+    user_id=request.session.get('user_id')
     # 把信息加到订单成功表：然后删除原来订单表里的数据
     try:
         cur.execute("insert into t_order_success (release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s\
                       )",
                     [str(goods_message["release_user_id"]), str(goods_message["buy_user_id"]), date, str(goods_id)])
+        cur.execute("select order_id from t_order where order_goods_id=%s",[goods_id])
         cur.execute("delete from t_order where order_goods_id=%s", [str(goods_id)])
         # 用户确认收货以后需要把卖家的钱增加
         cur.execute("select goods_price from t_goods where goods_id=%s", [goods_id])
@@ -1634,6 +1636,7 @@ def confirm_goods(request):
         user_money = cur.fetchone()["user_money"]
         user_money = user_money + goods_price
         cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, goods_message["release_user_id"]])
+        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)",[])
         print("ok")
     except Exception as e:
         con.rollback()
