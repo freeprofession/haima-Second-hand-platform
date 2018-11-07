@@ -1,7 +1,6 @@
 import pymysql
 import time
 from utils.pay import AliPay
-
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -24,10 +23,8 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-
+from myapp import goods_recommend
 # from myapp import AI_assess
-
-
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
 img = redis.Redis(host="47.100.200.132", port=6379, db=2)
@@ -37,8 +34,9 @@ auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
 sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
 get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
+search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
-
+history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
 
 def get_token(func):
     def in_func(request):
@@ -145,6 +143,13 @@ def homepage(request):
             con.commit()
             cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
             user_imgurl = cur.fetchone()
+        # recommend = goods_recommend.goods_recommend(user_id)[0:5]
+        # goods_recommend_list = []
+        # for goods_id in recommend:
+        #     cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s",
+        #                 [goods_id, ])
+        #     goods_recommend_list.append(cur.fetchone())
+        # print(goods_recommend_list)
     else:
         login_status = "未登录"
         user_imgurl = {}
@@ -439,6 +444,8 @@ def goods_list(request):
             goods_lst = start_list
 
         sort_method = request.GET.get('sort_method')
+        for i in goods_lst:
+            print(i['goods_id'])
         if sort_method == '1':
             goods_lst.sort(key=lambda x: x['goods_price'])
         if sort_method == '2':
@@ -1076,6 +1083,12 @@ def goods_confirm_buy(request):
         return HttpResponse(json.dumps({"msg": error}))
 
 
+# 用户输入支付密码扣款完成
+
+def buy_goods_ok(request):
+    return render(request, "buy_goods_ok.html")
+
+
 # 我出售的
 @login_required
 def my_sale(request):
@@ -1262,41 +1275,6 @@ def my_buy(request):
     user_id = request.session.get("user_id")
     list1 = []
     # 找到该用户的所有订单号,已经订单号里面的商品id
-    # cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
-    # order_dict = cur.fetchall()
-    # if order_dict:
-    #     order_id_list = []
-    #     goods_id_list = []
-    #     for i in order_dict:
-    #         order_id_list.append(i["order_id"])
-    #         goods_id_list.append(i["order_goods_id"])
-    #     for i in range(len(order_id_list)):
-    #         dict1 = {}
-    #         cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
-    #         order_message = cur.fetchone()
-    #         cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
-    #         goods_message = cur.fetchone()
-    #         dict1["goods"] = goods_message
-    #         dict1["order"] = order_message
-    #         list1.append(dict1)
-    cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
-    order_list = cur.fetchall()
-    print(order_list)
-
-    return render(request, 'my_buy.html', locals())
-
-
-def my_buy_complete(request):
-    username = request.session.get('username')
-    user_id = request.session.get("user_id")
-    cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
-                [user_id, ])
-    order_success_list = cur.fetchall()
-    return render(request, "my_buy_complete.html", locals())
-
-    user_id = request.session.get("user_id")
-    list1 = []
-    # 找到该用户的所有订单号,已经订单号里面的商品id
     cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
     order_dict = cur.fetchall()
     if order_dict:
@@ -1316,6 +1294,37 @@ def my_buy_complete(request):
             list1.append(dict1)
 
     return render(request, 'my_buy.html', locals())
+
+
+def my_buy_complete(request):
+        username = request.session.get('username')
+        user_id = request.session.get("user_id")
+        cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
+                    [user_id, ])
+        order_success_list = cur.fetchall()
+        return render(request, "my_buy_complete.html", locals())
+        user_id = request.session.get("user_id")
+        list1 = []
+        # 找到该用户的所有订单号,已经订单号里面的商品id
+        cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
+        order_dict = cur.fetchall()
+        if order_dict:
+            order_id_list = []
+            goods_id_list = []
+            for i in order_dict:
+                order_id_list.append(i["order_id"])
+                goods_id_list.append(i["order_goods_id"])
+            for i in range(len(order_id_list)):
+                dict1 = {}
+                cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
+                order_message = cur.fetchone()
+                cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
+                goods_message = cur.fetchone()
+                dict1["goods"] = goods_message
+                dict1["order"] = order_message
+                list1.append(dict1)
+
+        return render(request, 'my_buy.html', locals())
 
 
 # 我的收藏
@@ -1606,6 +1615,7 @@ def gettokendata(request):
     return HttpResponse(token)
 
 
+
 # ***********************************************普通商品确认收货*************************************************
 def confirm_goods(request):
     goods_id = request.POST.get("goods_id")
@@ -1657,7 +1667,6 @@ def get_ali_object():
 
 
 # 前端跳转的支付页面
-
 @login_required
 def page1(request):
     # 根据当前用户的配置，生成URL，并跳转。
@@ -1770,4 +1779,54 @@ def admin(request, user):
 
 @admin_session
 def admin_goodslist(request, user):
-    return render(request, 'admin_goodslist.html', {'user': user})
+
+    cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
+    goodslist = cur.fetchall()
+    paginator = Paginator(goodslist, 40)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render(request, 'admin_goodslist.html', {'user': user, 'contacts': contacts})
+
+
+@admin_session
+def admin_search_goods(request, user):
+    start = request.POST.get('start')
+    end = request.POST.get('end')
+    print(start, end)
+    return HttpResponse("POST")
+
+
+@admin_session
+def admin_update(request, user):
+    goods_id = request.POST.get('goods_id')
+    user_id = request.POST.get('user_id')
+    action = request.POST.get('action')
+    if goods_id:
+        result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
+    else:
+        result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
+    con.commit()
+    if result:
+        return HttpResponse("success")
+    else:
+        return HttpResponse('')
+
+
+@admin_session
+def admin_userlist(request, user):
+    cur.execute("select * from t_user")
+    userlist = cur.fetchall()
+    return render(request, 'admin_userlist.html', {'user': user, 'userlist': userlist})
+
+
+@admin_session
+def exit(request, user):
+    del request.session['user']
+    return redirect('/admin_login/')

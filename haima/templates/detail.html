@@ -570,8 +570,8 @@
                     }
                 );
             } else {
-                $(".send_" + get_message_id).hide(500)
-                $('#get_child_review_' + get_message_id).hide(500)
+                $(".send_" + get_message_id).hide(500);
+                $('#get_child_review_' + get_message_id).hide(500);
 
             }
             var button_list =
@@ -781,22 +781,22 @@
 
 </script>
 
-var checkLength = function (dom, maxLength) {
-var l = 0;
-for (var i = 0; i < dom.value.length; i++) {
-if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
-l += 2;
-} else {
-l++;
-}
-if (l > maxLength) {
-dom.value = dom.value.substr(0, i);
-break;
-}
-}
-};
 
 <script>
+    var checkLength = function (dom, maxLength) {
+        var l = 0;
+        for (var i = 0; i < dom.value.length; i++) {
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l += 2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0, i);
+                break;
+            }
+        }
+    };
 </script>
 <a name="abc"></a>
 
