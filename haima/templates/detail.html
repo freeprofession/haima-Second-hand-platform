@@ -399,7 +399,7 @@
                                         <div style="margin-left: 45px;position: relative;top: -50px;">
                                             <a href="/user_credit/?user_credit_id={{ item.child_user_id }}"
                                                style="color: #2d64b3"
-                                               class="c_name_{{ item.second_message_id }}">{{ item.user_name }}&nbsp;</a>
+                                               class="c_name_{{ item.second_message_id }}">{{ item.user_name }}</a>
                                             {% if item.child_user_id == seller_id %}
                                                 <span style="color:green;font-size: 14px;">{{ item.second_desc }}</span>
                                             {% else %}
@@ -543,6 +543,7 @@
                         message_id = id;
                         child_review = $('#get_child_review_' + get_message_id).val();
                         var check = $('#get_child_review_' + get_message_id).val()
+                         alert(child_review)
                         {#child_user_id = $('#child_user_id').val();#}
                         {#parent_id = $("#get_parent_id").val()#}
                         {#goods_id = $("#get_goods_id").val()#}
@@ -561,6 +562,8 @@
                                     top.location.href = data.href
                                 } else {
                                     $(".append_" + get_message_id).append(data.msg)
+                                    var input_ = document.getElementById("get_child_review_" + get_message_id);
+                                    input_.value = ""
                                 }
                             }, 'json')
                         }
@@ -596,7 +599,8 @@
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
-        input_.value = "回复" + c_name + ":"
+        input_.value = "回复"+ c_name +":"
+        alert(input_.value)
     }
 
     //留言

@@ -100,7 +100,7 @@
             </div>
             <div id="auction_goods_desc">
                 <div id="title" style="font-size: large">{{ i.goods.auction_goods_title }}</div>
-                <div id="desc" style="font-size: medium ; ">{{ i.goods.auction_goods_desc }}</div>
+                <div id="desc" style="font-size: medium ;word-break:break-all; ">{{ i.goods.auction_goods_desc }}</div>
 
                 <div id="auction_messige">
                     <div id="auction_messige_desc" >
@@ -108,7 +108,7 @@
                         <br>
                         <div>结束时间：<span id="acution_goods_end_time">{{ i.attribute.end_date }}</span></div>
                         <br>
-                        <div>保证金：<span>{{ i.auction_goods_margin }}</span></div>
+                        <div>保证金：<span>{{ i.attribute.auction_goods_margin }}</span></div>
                         <br>
                         <div>单次加价最低：<span id="auction_goods_premium">{{ i.attribute.auction_goods_floorpremium}}</span></div>
                         <br>

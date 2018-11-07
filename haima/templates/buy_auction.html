@@ -106,7 +106,7 @@
 {% for i in list1 %}
     <div class="goods_detail_con clearfix">
     <div class="up fl" id="up"><img src={{ i.goods.auction_goods_imgurl }}></div>
-    <div class="down" id="down">
+    <div class="down" id="down" >
         <table>
             <tr>
                 {% for j in i.img %}
@@ -118,6 +118,19 @@
 
     <div class="goods_detail_list fr">
         <h3>{{ i.goods.auction_goods_title }}</h3>
+         <div id="auction_goods_info">
+             <div style="margin-left: 22px;">
+            <img src="../static/Images/haima3.png" alt="" width=150 height=100>
+        </div>
+                <div id="info_message_auction" style=" font-size: 14px;">
+                    <h1>海马平台拍卖规则</h1>
+                    <p>1.不得竞拍自己的物品</p>
+                    <p>2.单次加价不得低于最低加价</p>
+                    <p>3.单次加价不得高于商品底价</p>
+                    <p>4.拍卖时间系统会自动识别当前物品是否被竞拍，若无人竞拍，物品流拍</p>
+                    <p>5.拍卖扣除保证金，成功后退还</p>
+                </div>
+        </div>
         <div class="prize_bar">
         <span class="show_pirze">¥<em>{{ i.attribute.auction_goods_price }}</em></span>
         <a href="" class="goods_judge">{{ i.attribute.auction_goods_count }}次加价过</a>
@@ -139,6 +152,7 @@
             <label>商品底价:</label>
             <span id="floorprice">{{ i.attribute.auction_goods_floorprice }}</span>
         </div>
+
         <div class="type_select">
             <label>最低加价:</label>
             <span id="floor_premium">{{ i.attribute.auction_goods_floorpremium }}</span>
@@ -167,41 +181,43 @@
             <button class="buy_btn" id="buy_btn">立即竞拍</button>
             <a href="" class="add_collection" id="add_collection">加入收藏</a>
         </div>
+
     </div>
 
-        <div id="buy_now_message">
+        <div id="buy_now_message" style="background-color: #2e3846; color: white">
+            <div style="margin-left: 30px;">
             <button id="shutdown" >
                 关闭
             </button>
                 <div class="type_select">
                         <label>当前价格:</label>
-                        <span id="old_price">{{ i.attribute.auction_goods_price }}</span>
+                        <span id="old_price" style="color: white">{{ i.attribute.auction_goods_price }}</span>
                 </div>
               <div class="type_select">
                         <label>竞拍加价:</label>
-                        <span id="buy_auction_premium">0</span>
+                        <span id="buy_auction_premium" style="color: white">0</span>
                 </div>
               <div class="type_select">
                         <label>总计:</label>
-                        <span id="buy_auction_goods_price">0</span>
+                        <span id="buy_auction_goods_price" style="color: white">0</span>
                 </div>
                <div class="type_select">
                         <label>需先支付保证金:</label>
-                        <span >{{ i.attribute.auction_goods_margin }}</span>
+                        <span style="color: white" >{{ i.attribute.auction_goods_margin }}</span>
                 </div>
               <div class="type_select">
                   <label>请输入支付密码:</label>
-                    <input type="text" maxlength="6" id="pay_password">
+                    <input type="text" maxlength="6" id="pay_password" style="margin-top: 10px;">
                 </div>
 
                 <div class="type_select">
-                    <button id="confirm_buy">确认竞拍</button>
+                    <button id="confirm_buy" style="margin-left: 80px;">确认竞拍</button>
                 </div>
 
                 <div id="pay_error">
                     竞拍错误
                 </div>
-
+</div>
 
             </div>
         <div id="price_error" >

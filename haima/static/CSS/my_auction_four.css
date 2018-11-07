@@ -167,3 +167,24 @@ html,body
 	top: 30%;
 	background: #16bcbd;
 }
+#pay_money{
+	width: 80px;
+	height: 20px;
+}
+#goods_all{
+	margin-top: 20px;
+
+}
+#goods_state option{
+	width: 100px;
+	height: 20px;
+}
+#two_info{
+	font-size: 14px;
+	position: fixed;
+	right: 5%;
+	top: 20%;
+	width: 200px;
+	height: 310px;
+	border: #f3f3de solid 1px;
+}
