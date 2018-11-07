@@ -256,7 +256,7 @@
                     <label>所在地:</label>
                     <span>{{ goods.goods_address }}</span>
                 </div>
-            <span id="goods_id" style="display: none">{{ goods.goods_id }}</span>
+                <span id="goods_id" style="display: none">{{ goods.goods_id }}</span>
                 <div class="type_select">
                     <label>发布日期:</label>
                     <span>{{ goods.release_date }}</span>
@@ -469,7 +469,6 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
-<<<<<<< HEAD
 <div id="buy_now_message">
     <button id="shutdown_buy_now_message">关闭</button>
     <div class="type_select">
@@ -494,18 +493,17 @@
 <script>
 
     $("#buy_now").click(function () {
-        title=$("#goods_title").text();
-        price=$("#goods_price").text();
-        goods_id=$("#goods_id").text();
+        title = $("#goods_title").text();
+        price = $("#goods_price").text();
+        goods_id = $("#goods_id").text();
         $.post("/page1/",
             {
-                "title":title,
-                "price":price,
-                "goods_id":goods_id,
+                "title": title,
+                "price": price,
+                "goods_id": goods_id,
             }
-            ,function(data)
-            {
-                location.href=data
+            , function (data) {
+                location.href = data
             }
         )
     })
@@ -570,8 +568,8 @@
                     }
                 );
             } else {
-                $(".send_" + get_message_id).hide(500)
-                $('#get_child_review_' + get_message_id).hide(500)
+                $(".send_" + get_message_id).hide(500);
+                $('#get_child_review_' + get_message_id).hide(500);
 
             }
             var button_list =
@@ -665,7 +663,7 @@
     //下架商品
     $(function () {
         $("#lower_goods").one("click", function () {
-            goods_id = $('#goods_id').val();
+            goods_id = $('#good_id').val();
             $.post('/lower_goods/', {
                 {#'Published': Published,#}
                 'goods_id': goods_id,
@@ -693,7 +691,7 @@
     //上架
     $(function () {
         $("#on_shelf").one("click", function () {
-            goods_id = $('#goods_id').val();
+            goods_id = $('#good_id').val();
             $.post('/lower_goods/', {
                 {#'Published': Published,#}
                 'goods_id': goods_id,
@@ -783,22 +781,22 @@
 
 </script>
 
-var checkLength = function (dom, maxLength) {
-var l = 0;
-for (var i = 0; i < dom.value.length; i++) {
-if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
-l += 2;
-} else {
-l++;
-}
-if (l > maxLength) {
-dom.value = dom.value.substr(0, i);
-break;
-}
-}
-};
 
 <script>
+    var checkLength = function (dom, maxLength) {
+        var l = 0;
+        for (var i = 0; i < dom.value.length; i++) {
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l += 2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0, i);
+                break;
+            }
+        }
+    };
 </script>
 <a name="abc"></a>
 

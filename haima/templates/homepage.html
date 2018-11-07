@@ -310,7 +310,7 @@
         </div>
     </div>
     <div id="mid" class="clearfix">
-        <div id="user_message"  class="midiv">
+        <div id="user_message" class="midiv">
             <div>
                 <div id="image">
                     <a href="/user_center/"><img src="{{ user_imgurl.user_imgurl }}" height="80px" width="80px"></a>
@@ -337,47 +337,17 @@
         <div class="midiv" style="width: 976px;">
             <div id="guess" style="height: 14px">
                 <ul class="item-type" style="margin-left: 25px">
-                    <li class="nav selected" id="guess1"><a href="" target="_blank" onmouseover="change_div('dc1')"
+                    <li class="nav" id="guess1"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank"
+                                                   onmouseover="change_div('dc1')">全新闲置</a></li>
+                    <li class="nav selected" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')"
                     >猜你喜欢</a></li>
-                    <li class="nav" id="guess2"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank"
-                                                   onmouseover="change_div('dc2')">全新闲置</a></li>
                     <li class="nav" id="guess3"><a href="/goods_list/?q=同城交易&price_low=&price_high=" target="_blank"
                                                    onmouseover="change_div('dc3')">同城交易</a></li>
                 </ul>
             </div>
             <br>
             <div id="ctn">
-                <div id="dc1" class="hold clearfix">
-                    <ul>
-                        <li>
-                            <a href="#"><img src="../static/Images/goods/goods003.jpg" class="goods_pic"></a>
-                            <h4><a href="#" title="360手机 N6 Pro 全网通 6GB+128GB 极夜黑">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a>
-                            </h4>
-                            <div class="prize">¥ 2699.00</div>
-                        </li>
-                        <li>
-                            <a href="#"><img src="../static/Images/goods/goods002.jpg" class="goods_pic"></a>
-                            <h4><a href="#">iphoneX N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                            <div class="prize">¥ 7788.00</div>
-                        </li>
-                        <li>
-                            <a href="#"><img src="../static/Images/goods/goods001.jpg" class="goods_pic"></a>
-                            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                            <div class="prize">¥ 1988.00</div>
-                        </li>
-                        <li>
-                            <a href="#"><img src="../static/Images/goods/goods004.jpg" class="goods_pic"></a>
-                            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                            <div class="prize">¥ 3688.00</div>
-                        </li>
-                        <li>
-                            <a href="#"><img src="../static/Images/goods/goods005.jpg" class="goods_pic"></a>
-                            <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                            <div class="prize">¥ 4288.80</div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="dc2" class="hold">
+                <div id="dc1" class="hold">
                     <ul>
                         {% for goods in newest_list %}
                             <li>
@@ -390,6 +360,20 @@
                             </li>
                         {% endfor %}
                     </ul>
+                </div>
+                <div id="dc2" class="hold clearfix">
+                    {#                    <ul>#}
+                    {#                        {% for goods in goods_recommend_list %}#}
+                    {#                            <li>#}
+                    {#                                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"#}
+                    {#                                                                                         class="goods_pic"></a>#}
+                    {#                                <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"#}
+                    {#                                       title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>#}
+                    {#                                </h4>#}
+                    {#                                <div class="prize">¥ {{ goods.goods_price }}</div>#}
+                    {#                            </li>#}
+                    {#                        {% endfor %}#}
+                    {#                    </ul>#}
                 </div>
                 <div id="dc3" class="hold">
                     <ul>
@@ -556,6 +540,18 @@
             $('html, body').animate({scrollTop: 0}, 500);
         });
     });
+</script>
+<script>
+    $(document).ready(function () {
+        user_id = '{{ user_id }}';
+        console.log(user_id)
+        $.post('/goods_recommend/', {
+            'user_id': user_id
+        }, function (data) {
+
+            $("#dc2").append(data.rr)
+        },"json")
+    })
 </script>
 </body>
 </html>
