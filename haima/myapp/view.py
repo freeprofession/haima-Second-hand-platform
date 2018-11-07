@@ -1,6 +1,7 @@
 import pymysql
 import time
 from utils.pay import AliPay
+
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -24,6 +25,7 @@ from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
 from myapp import goods_recommend
+
 # from myapp import AI_assess
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
@@ -37,6 +39,7 @@ get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
 search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
 history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
+
 
 def get_token(func):
     def in_func(request):
@@ -160,7 +163,7 @@ def homepage(request):
     # 收藏--------------------------
     # cur.execute("select * from t_user_collection where collection_user_id=%s", [user_id, ])
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,5',
         [user_id, ])
     collection_list = cur.fetchall()
     cur.execute("select * from t_goods order by goods_id desc limit 5")
@@ -685,6 +688,7 @@ def goods_detail(request):
                     c_comment_dict[j] = ''
         p_comment_dict[i]['child_message'] = lst
     # 按钮列表
+    print("评论", p_comment_dict)
     button_list = []
     for i in p_comment_dict:
         button_list.append(int(i))
@@ -966,6 +970,16 @@ def publish(request):
     if request.method == 'POST':
         price = int(request.POST.get('price_hid').replace('¥', ''))
     return render(request, 'publish.html', locals())
+
+
+def goods_republish(request):
+    title = request.GET.get('title')
+    category = request.GET.get('type')
+    price = request.GET.get('price')
+    postage = request.GET.get('postage')
+    desc = request.POST.get('desc')
+    appearance = request.POST.get('apperance')
+    filelist = json.loads(request.POST.get('filelist'))
 
 
 def pub_success(request):
@@ -1273,58 +1287,20 @@ def my_sale_complete(request):
 def my_buy(request):
     username = request.session.get('username')
     user_id = request.session.get("user_id")
-    list1 = []
-    # 找到该用户的所有订单号,已经订单号里面的商品id
-    cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
-    order_dict = cur.fetchall()
-    if order_dict:
-        order_id_list = []
-        goods_id_list = []
-        for i in order_dict:
-            order_id_list.append(i["order_id"])
-            goods_id_list.append(i["order_goods_id"])
-        for i in range(len(order_id_list)):
-            dict1 = {}
-            cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
-            order_message = cur.fetchone()
-            cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
-            goods_message = cur.fetchone()
-            dict1["goods"] = goods_message
-            dict1["order"] = order_message
-            list1.append(dict1)
+    cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
+    order_list = cur.fetchall()
+    print(order_list)
 
     return render(request, 'my_buy.html', locals())
 
 
 def my_buy_complete(request):
-        username = request.session.get('username')
-        user_id = request.session.get("user_id")
-        cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
-                    [user_id, ])
-        order_success_list = cur.fetchall()
-        return render(request, "my_buy_complete.html", locals())
-        user_id = request.session.get("user_id")
-        list1 = []
-        # 找到该用户的所有订单号,已经订单号里面的商品id
-        cur.execute("select order_id,order_goods_id from t_order where  buy_user_id=%s", [user_id])
-        order_dict = cur.fetchall()
-        if order_dict:
-            order_id_list = []
-            goods_id_list = []
-            for i in order_dict:
-                order_id_list.append(i["order_id"])
-                goods_id_list.append(i["order_goods_id"])
-            for i in range(len(order_id_list)):
-                dict1 = {}
-                cur.execute("select * from t_order where  order_id=%s", [order_id_list[i]])
-                order_message = cur.fetchone()
-                cur.execute("select * from t_goods where goods_id=%s", [goods_id_list[i]])
-                goods_message = cur.fetchone()
-                dict1["goods"] = goods_message
-                dict1["order"] = order_message
-                list1.append(dict1)
-
-        return render(request, 'my_buy.html', locals())
+    username = request.session.get('username')
+    user_id = request.session.get("user_id")
+    cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
+                [user_id, ])
+    order_success_list = cur.fetchall()
+    return render(request, "my_buy_complete.html", locals())
 
 
 # 我的收藏
@@ -1615,7 +1591,6 @@ def gettokendata(request):
     return HttpResponse(token)
 
 
-
 # ***********************************************普通商品确认收货*************************************************
 def confirm_goods(request):
     goods_id = request.POST.get("goods_id")
@@ -1779,7 +1754,6 @@ def admin(request, user):
 
 @admin_session
 def admin_goodslist(request, user):
-
     cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
     goodslist = cur.fetchall()
     paginator = Paginator(goodslist, 40)
