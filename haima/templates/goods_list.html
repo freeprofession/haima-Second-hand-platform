@@ -40,11 +40,11 @@
     <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100" id="haima"></a>
     <div class="search_wrap fl">
         <div class="search_con">
-            <form action="/goods_list/" method="get">
-                <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+           <form action="/goods_list/" method="get">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
                 <input type="hidden" name="price_low" value="{{ price_low }}">
                 <input type="hidden" name="price_high" value="{{ price_high }}">
-                <input type="submit" class="input_btn fr" name="" value="搜  索">
+                <input type="submit" class="input_btn fr" value="搜  索">
             </form>
         </div>
     </div>
@@ -76,10 +76,9 @@
             </li>
         </ul>
     </div>
-
 </div>
 
-<div class="navbar_con">
+<div class="navbar_con" style="width: 1240px;">
     <div class="navbar">
         <div class="sub_menu_con fl">
             <h1 class="fl">商品分类</h1>

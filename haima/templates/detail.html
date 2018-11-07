@@ -543,7 +543,6 @@
                         message_id = id;
                         child_review = $('#get_child_review_' + get_message_id).val();
                         var check = $('#get_child_review_' + get_message_id).val()
-                         alert(child_review)
                         {#child_user_id = $('#child_user_id').val();#}
                         {#parent_id = $("#get_parent_id").val()#}
                         {#goods_id = $("#get_goods_id").val()#}
@@ -571,8 +570,8 @@
                     }
                 );
             } else {
-                $(".send_" + get_message_id).hide(500)
-                $('#get_child_review_' + get_message_id).hide(500)
+                $(".send_" + get_message_id).hide(500);
+                $('#get_child_review_' + get_message_id).hide(500);
 
             }
             var button_list =
@@ -600,7 +599,6 @@
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
         input_.value = "回复"+ c_name +":"
-        alert(input_.value)
     }
 
     //留言
@@ -610,12 +608,10 @@
                     Published = $('#Published').val();
                     var check = $('#Published').val();
                     goods_id = $('#good_id').val();
-                    alert(goods_id)
                     url_ = location.href;
                     if (check == "") {
                         return false
                     } else {
-
                         $.post('/lea_message/', {
                             'Published': Published,
                             'goods_id': goods_id,
@@ -785,22 +781,22 @@
 
 </script>
 
-var checkLength = function (dom, maxLength) {
-var l = 0;
-for (var i = 0; i < dom.value.length; i++) {
-if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
-l += 2;
-} else {
-l++;
-}
-if (l > maxLength) {
-dom.value = dom.value.substr(0, i);
-break;
-}
-}
-};
 
 <script>
+    var checkLength = function (dom, maxLength) {
+        var l = 0;
+        for (var i = 0; i < dom.value.length; i++) {
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l += 2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0, i);
+                break;
+            }
+        }
+    };
 </script>
 <a name="abc"></a>
 

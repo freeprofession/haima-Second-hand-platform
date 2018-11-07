@@ -528,3 +528,9 @@ a = [{'goods_id': 580670260232, 'user_id': 1, 'release_date': datetime.date(2018
   'goods_imgurl': 'https://img.alicdn.com/bao/uploaded/i3/O1CN011RjpDIL3UjuSWL6_!!0-fleamarket.jpg_728x728.jpg',
   'goods_browse_count': 1, 'goods_address': '江苏苏州 虎丘区', 'goods_postage': 0, 'goods_appearance': 4, 'goods_state': '1',
   'desc_link': 'https://osdsc.alicdn.com/i5/571/570/578573944299/TB1DD.ckbrpK1RjSZTE8qwWAVla.desc%7Cvar%5Edesc%3Bsign%5E07f6a0f49816a92bbb98d4a44ec9eb3e%3Blang%5Egbk%3Bt%5E1540800477'}]
+# sms = redis.Redis(host="47.100.200.132", port=6379, db=5)
+# a=sms.get(17326197619)
+# print(a)
+cur.execute("select user_name,user_state from t_user where user_name=%s", ["jqlove", ])  # 全表搜索，待建立索引
+user_login = cur.fetchone()
+print(user_login)
