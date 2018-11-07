@@ -28,7 +28,6 @@ urlpatterns = [
     path('admin_login/', view.admin_login),
     path('admin_goodslist/', view.admin_goodslist),
     path('', view.homepage),
-
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
@@ -42,7 +41,6 @@ urlpatterns = [
     path('pub_success/', view.pub_success),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
-    path('auction_index/', view.auction_index),
     # 用户中心--------------------------------------
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
@@ -68,15 +66,10 @@ urlpatterns = [
     path('evaluate/', view.evaluate),
     path('evaluate_ajax/', view.evaluate_ajax),
     # -------------------------
-    path('my_auction/', view.my_auction),
     path('history_auction/', auction.history_auction),
-    path('release_auction/', view.release_auction),
     path('test/', view.text_message),
     path('test_ajax', view.test_ajax),
-    path('my_auction/', view.my_auction),
     # 获取图片上传token
-
-
     path('gettokendata/', view.gettokendata), path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
 
@@ -86,58 +79,18 @@ urlpatterns = [
 
     path('modify_information/', view.modify_information),  # 修改信息
     # path('modify_information/', view.modify_information),
-
-
-    path('buy_auction/', view.buy_auction),
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
-    # 返回用户的拍卖发布历史记录
-    path("my_release_record/", view.my_release_record),
-    path('publish_auction/', view.publish_auction),
-    path('release_auction_ok/', view.release_auction_ok),
-    path('buy_auction/', view.buy_auction),
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
-    # 用户输完价格确认竞拍
-    path("confirm_buy/", view.confirm_buy),
-    # 用户支付成功以后的跳转
-    path("buy_auction_ok/", view.buy_auction_ok),
-    # 提前结束拍卖
-    path("end_auction/", view.end_auction),
-    # 普通商品的购买
-    # 普通商品购买成功
-    path("buy_goods_ok/", view.buy_goods_ok),
-    # 拍卖时间结束的判断
-    path("Determine_auction_date/", view.Determine_auction_date),
-    path('publish_auction/', view.publish_auction),
-    path('release_auction_ok/', view.release_auction_ok),
-    path('buy_auction/', view.buy_auction),
-    # 实时计算拍卖总价的路径
-    path('calculate_price/', view.calculate_price),
     # 返回用户的全部拍卖记录
     path("my_auction_one/", auction_sale.my_auction_one),
 
     path("my_auction_four/", auction_buy.my_auction_four),
-
-
-    # 用户输完价格确认竞拍
-    path("confirm_buy/", view.confirm_buy),
-    # 用户支付成功以后的跳转
-    path("buy_auction_ok/", view.buy_auction_ok),
-
     # 普通商品收货
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品竞拍成功后，支付尾款
-
-    # 拍卖商品发货
-    path("delivery/", view.delivery),
     # 拍卖商品收货
     path("confirm_auction_goods/", auction.confirm_auction_goods),
     path("send_sms/", view.send_sms),
     path("page1/", view.page1),
     path("page2", view.page2),
-
-
     path('page1/', view.page1),
     path('page2/', view.page2),
     path('page3/', cz.page3),
