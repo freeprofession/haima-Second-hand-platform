@@ -51,6 +51,7 @@ urlpatterns = [
     path('my_collection/', view.my_collection),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
+    path('leave_message_three/', view.leave_message_three),
     path('user_lower_goods/', view.user_lower_goods),
     path('my_sale_lower/', view.my_sale_lower),
     path('my_sale/', view.my_sale),
@@ -121,17 +122,10 @@ urlpatterns = [
     # 拍卖商品收货
     path("confirm_auction_goods/", auction.confirm_auction_goods),
     path("send_sms/", view.send_sms),
-
-
-
     path('page1/', view.page1),
     path('page2/', view.page2),
     path('page3/', cz.page3),
     path('top_up_money/',cz.top_up_money),#充值
     path('auction_money/',auction_pay.auction_money),
     path('page4/', auction_pay.page4),
-
-
-
-
 ]

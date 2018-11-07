@@ -88,6 +88,7 @@
 
         <h3 class="common_title2">最近浏览</h3>
         <div class="has_view_list">
+            <a name="href"></a>
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
                 {% if not contacts1 %}
                     <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
@@ -111,13 +112,13 @@
         <div class="pagenation">
     <span class="step-links" style="margin-top: 1px">
         {% if contacts1.has_previous %}
-            <a href="?page1={{ contacts1.previous_page_number }}"
+            <a href="?page1={{ contacts1.previous_page_number }}#href"
                style="font-size: large;color: #00bc6f"><< </a>
         {% endif %}
         <em style="font-size: 16px">第 <em
                 style="color: red">{{ contacts1.number }}</em> 页/总{{ contacts1.paginator.num_pages }}页</em>
         {% if contacts1.has_next %}
-            <a href="?page1={{ contacts1.next_page_number }}" style="font-size: large;color: #00bc6f">>></a>
+            <a href="?page1={{ contacts1.next_page_number }}#href" style="font-size: large;color: #00bc6f">>></a>
         {% endif %}
     </span>
         </div>
