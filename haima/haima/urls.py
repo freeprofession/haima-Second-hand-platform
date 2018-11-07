@@ -46,6 +46,7 @@ urlpatterns = [
     path('my_collection/', view.my_collection),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
+    path('leave_message_three/', view.leave_message_three),
     path('user_lower_goods/', view.user_lower_goods),
     path('my_sale_lower/', view.my_sale_lower),
     path('my_sale/', view.my_sale),
@@ -74,7 +75,6 @@ urlpatterns = [
 
     path('gettokendata/', view.gettokendata), path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-
 
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
 
@@ -142,5 +142,7 @@ urlpatterns = [
     # 拍卖商品收货
     path("confirm_auction_goods/", view.confirm_auction_goods),
     path("send_sms/", view.send_sms),
+    path("page1/", view.page1),
+    path("page2", view.page2),
 
 ]
