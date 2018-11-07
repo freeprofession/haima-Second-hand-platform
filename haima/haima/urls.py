@@ -25,8 +25,9 @@ from myapp import auction
 urlpatterns = [
     path('admin/', view.admin),
     path('admin_login/', view.admin_login),
-    path('admin_goodslist/', view.admin_goodslist),
-    path('admin_userlist/', view.admin_userlist),
+    path('admin_goods/', view.admin_goods),
+    path('admin_user/', view.admin_user),
+    path('admin_order/', view.admin_order),
     path('admin_search_goods/', view.admin_search_goods),
     path('admin_update/', view.admin_update),
     path('exit/', view.exit),

@@ -47,6 +47,7 @@
         $.ajax({
             type: "POST",
             url: "/admin_login/",
+            async: false,
             data: {'user': user, 'pwd': pwd},
             success: function (data) {
                 //处理返回后的数据
