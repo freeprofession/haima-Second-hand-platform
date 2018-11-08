@@ -1733,6 +1733,7 @@ def delivery(request):
 
 
 # 支付宝支付
+
 def get_ali_object():
     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
     app_id = "2016092000555548"  # APPID （沙箱应用）
@@ -1882,14 +1883,12 @@ def admin_goods(request, user):
         contacts = paginator.page(paginator.num_pages)
     return render(request, 'admin_goods.html', {'user': user, 'contacts': contacts})
 
-
 @admin_session
 def admin_search_goods(request, user):
     start = request.POST.get('start')
     end = request.POST.get('end')
     print(start, end)
     return HttpResponse("POST")
-
 
 @admin_session
 def admin_update(request, user):
@@ -1906,13 +1905,11 @@ def admin_update(request, user):
     else:
         return HttpResponse('')
 
-
 @admin_session
 def admin_user(request, user):
     cur.execute("select * from t_user")
     userlist = cur.fetchall()
     return render(request, 'admin_user.html', {'user': user, 'userlist': userlist})
-
 
 @admin_session
 def admin_order(request, user):
@@ -1921,7 +1918,6 @@ def admin_order(request, user):
     orderlist = cur.fetchall()
     print(orderlist)
     return render(request, 'admin_order.html', {'user': user, 'orderlist': orderlist})
-
 
 @admin_session
 def exit(request, user):
