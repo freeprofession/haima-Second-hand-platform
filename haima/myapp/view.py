@@ -1281,8 +1281,6 @@ def calculate_price(request):
 # 购买拍卖页面
 
 
-
-
 # ******************************************用户输入价格完成确认竞拍*********************************************
 # 这里主要是对用户输入的支付密码做判断，然后在对表进行更新插入
 
@@ -1589,7 +1587,7 @@ def user_lower_goods(request):
             #     b = a
             try:
                 goods_list_ = goods_list[3]
-                print(4444444444444444444, goods_id, goods_list_, b)
+                print(4444444444444444444, goods_id, goods_list_)
                 goods_id_ = goods_list_["goods_id"]
                 release_date = goods_list_["release_date"]
                 goods_imgurl = goods_list_["goods_imgurl"]
@@ -1988,6 +1986,42 @@ def modify_information(request):
 
 def modify_password(request):
     return render(request, 'modify_password.html')
+
+
+def modify_password_ajax(request):
+    user_phone = request.POST.get('user_phone')
+    phone_yzm = request.POST.get('phone_yzm')
+    user_id = request.session.get('user_id')
+    user_password = request.POST.get('user_password')
+    repwd = request.POST.get('repwd')
+    print(repwd)
+    cur.execute("select user_phone from t_user where user_id = %s", [user_id, ])
+    users_phone = cur.fetchone()
+    if user_phone:
+        if user_phone != users_phone['user_phone']:
+            msg = "phone_error"
+            return HttpResponse(json.dumps({'msg': msg}))
+        else:
+            msg = '111'
+            if sms.get(user_phone):
+                true_phone_yzm = sms.get(user_phone)
+                true_phone_yzm = true_phone_yzm.decode('utf-8')
+                if phone_yzm != true_phone_yzm:
+                    msg = "phone_yzm_error"
+                    return HttpResponse(json.dumps({'msg': msg}))
+            return HttpResponse(json.dumps({'msg': msg}))
+    if user_password == '':
+        msg = 'user_password_none'
+        return HttpResponse(json.dumps({'msg': msg}))
+    else:
+        if user_password != repwd:
+            msg = 'repsd_error'
+            return HttpResponse(json.dumps({'msg': msg}))
+        if user_password == repwd:
+            cur.execute("update t_user set user_password = %s where user_id =%s", [user_password, user_id])
+            con.commit()
+            msg = '222'
+            return HttpResponse(json.dumps({'msg': msg}))
 
 
 # 上传图片所需要的token

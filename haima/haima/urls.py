@@ -63,6 +63,7 @@ urlpatterns = [
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
     path('my_buy_complete/', view.my_buy_complete),
+    path('modify_password_ajax/', view.modify_password_ajax),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -90,16 +91,14 @@ urlpatterns = [
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
 
-
     path('buy_auction/', view.buy_auction),
-
 
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
 
- # path('modify_information/', view.modify_information),
-     path('buy_auction/', auction.buy_auction),
+    # path('modify_information/', view.modify_information),
+    path('buy_auction/', auction.buy_auction),
 
     # 实时计算拍卖总价的路径
     path('calculate_price/', auction.calculate_price),
@@ -161,7 +160,6 @@ urlpatterns = [
 
     path("buy_auction_ok/", auction.buy_auction_ok),
 
-
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品发货
     path("delivery/", auction.delivery),
@@ -173,5 +171,4 @@ urlpatterns = [
     path('top_up_money/', cz.top_up_money),  # 充值
     path('auction_money/', auction_pay.auction_money),
     path('page4/', auction_pay.page4),
-
 ]
