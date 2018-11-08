@@ -162,7 +162,7 @@ def my_auction(request):
             print(goods_auction_message["auction_goods_floorprice"])
             list1.append(dict1)
         print("查询成功")
-        return render(request, 'my_auction_one.html', locals())
+        return render(request, 'my_auction_sale_one.html', locals())
     else:
         return HttpResponseRedirect('/login/')
 
@@ -428,10 +428,7 @@ def buy_auction_ok(request):
 # **********************************************************提前结束拍卖*************************************************
 def end_auction(request):
     user_id = request.session.get("user_id")
-    goods_id = request.GET.get("id")
-    print(user_id)
-    print("商品id", goods_id)
-
+    goods_id = request.POST.get("goods_id")
     cur.execute(
         "select auction_record_id from t_auction_record where auction_goods_id=%s",
         [goods_id])
@@ -472,7 +469,7 @@ def end_auction(request):
         print("删除成功")
 
         con.commit()
-    return redirect("/my_auction_one/")
+    return HttpResponse("/my_auction_sale_one/")
 # ******************************************************判断拍卖时间************************************************
 def Determine_auction_date(request):
     cur.execute("select auction_goods_id  from t_auction_goods")
@@ -551,69 +548,6 @@ def Determine_auction_date(request):
                 con.rollback()
                 print(e)
     return redirect("/auction_index/")
-# ***********************************************拍卖商品竞拍成功后，支付尾款********************************************
-def pay_auction_money(request):
-    error = ""
-    buy_user_id = request.session.get("user_id")
-    order_id = request.POST.get("order_id")
-    print(order_id)
-    cur.execute("select auction_order_fianl_price from t_auction_order where auction_order_id=%s", [order_id])
-    order_price = cur.fetchone()["auction_order_fianl_price"]
-    print(order_price)
-    cur.execute("select user_money from t_user where user_id=%s", [buy_user_id])
-    user_money = cur.fetchone()["user_money"]
-    print(user_money)
-    # 通过订单id找到商品id
-    cur.execute("select auction_order_goods_id from t_auction_order where  auction_order_id=%s", [order_id])
-    goods_id = cur.fetchone()["auction_order_goods_id"]
-    # 通过商品id找到保证金
-    cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s", [goods_id])
-    goods_margin = cur.fetchone()["auction_goods_margin"]
-    # 这里是用户输入的账号密码
-    pay_password = request.POST.get("pay_password")
-    cur.execute("select user_pay_password from t_user where user_id=%s", [buy_user_id])
-    user_pay_password = cur.fetchone()["user_pay_password"]
-
-    # 先判断有没有输入支付密码：
-    if pay_password:
-        if len(pay_password) < 6:
-            error = "pay_password_length_error"
-            return HttpResponse(json.dumps({"msg": error}))
-        elif int(user_pay_password) != int(pay_password):
-            error = "pay_password_error"
-            return HttpResponse(json.dumps({"msg": error}))
-        elif float(user_money) < float(order_price):
-            error = "money_less_error"
-            return HttpResponse(json.dumps({"msg": error}))
-        # 用户账号正确而且余额足够
-        else:
-            print("进入支付操作")
-            error = "ok"
-            try:
-                user_money = user_money - order_price + goods_margin
-                # 付款以后把他的钱扣掉把保证金退还
-                cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, buy_user_id])
-                # 将订单那个状态改成1
-                cur.execute("update t_auction_order set auction_order_state=%s where auction_order_id=%s",
-                            ["1", order_id])
-                # 将商品记录表里的状态改成3,付款时间也改一下
-                now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-                cur.execute(
-                    "update t_auction_goods_record set auction_goods_state=%s,pay_monet_date=%s where  auction_goods_id=%s",
-                    ["3", now_time, goods_id])
-
-                print("操作完成")
-            except Exception as e:
-                print(e)
-            con.commit()
-            error = "pay_ok"
-            return HttpResponse(json.dumps({"msg": error}))
-
-    else:
-        print("无密码")
-        error = "no_pay_password"
-        return HttpResponse(json.dumps({"msg": error}))
-
 
 # ********************************************返回支付拍卖成功的钱以后的跳转*********************************************
 def pay_auction_money_ok(request):
@@ -633,4 +567,12 @@ def delivery(request):
         print(e)
     return HttpResponse(json.dumps({"msg": "ok"}))
 
-
+def auction_place_order(request):
+    user_id = request.session.get("user_id")
+    order_id = request.GET.get("id")
+    cur.execute("select * from t_auction_order where auction_order_id=%s", [order_id])
+    order_message = cur.fetchone()
+    cur.execute("select * from t_auction_goods_record left join t_auction_order on auction_goods_id=auction_order_goods_id where auction_order_id=%s",[order_id])
+    goods_message=cur.fetchone()
+    print(goods_message)
+    return render(request, 'auction_place_order.html', locals())

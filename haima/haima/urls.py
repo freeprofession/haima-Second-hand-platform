@@ -139,7 +139,7 @@ urlpatterns = [
     path("goods_recommend/", goods_recommend.goods_recommend),
 
     path("my_auction_one/", auction_sale.my_auction_one),
-    path("my_auction_four/", auction_buy.my_auction_four),
+
     # 用户输完价格确认竞拍
     path("confirm_buy/", auction.confirm_buy),
     # 用户支付成功以后的跳转
@@ -160,5 +160,19 @@ urlpatterns = [
     path('top_up_money/',cz.top_up_money),#充值
     path('auction_money/',auction_pay.auction_money),
     path('page4/', auction_pay.page4),
+    path('place_order/',view.place_order),
+    path("my_auction_buy_one/", auction_buy.my_auction_buy_one),
+    path("my_auction_buy_two/", auction_buy.my_auction_buy_two),
+    path("my_auction_buy_three/", auction_buy.my_auction_buy_three),
+    path("my_auction_buy_four/", auction_buy.my_auction_buy_four),
+    path("my_auction_buy_five/", auction_buy.my_auction_buy_five),
+    path("my_auction_buy_six/", auction_buy.my_auction_buy_six),
+    path("my_auction_sale_one/", auction_sale.my_auction_sale_one),
+    path("my_auction_sale_two/", auction_sale.my_auction_sale_two),
+    path("my_auction_sale_three/", auction_sale.my_auction_sale_three),
+    path("my_auction_sale_four/", auction_sale.my_auction_sale_four),
+    path("my_auction_sale_five/", auction_sale.my_auction_sale_five),
+    path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
+    path('auction_place_order/',auction.auction_place_order),
 
 ]

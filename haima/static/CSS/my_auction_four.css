@@ -134,8 +134,8 @@ html,body
     float: left;
 }
 #four{
-    margin-left: 200px;
-    width: 1100px;
+    margin-left: 0px;
+    width: 980px;
     height: 380px;
 	background-color: #f3f3f3;
 }
