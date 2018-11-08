@@ -98,7 +98,7 @@ def goods_recommend(requset):
                         continue
                     rank.setdefault(j, 0)
                     rank[j] += score * wj  # 如果物品j没有购买过，则累计物品j与item的相似度*兴趣评分，作为user对物品j的兴趣程度
-            return dict(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:5])
+            return dict(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:10])
 
     # 声明一个ItemBased推荐的对象
     Item = ItemBasedCF(uid_score_bid)
@@ -109,17 +109,18 @@ def goods_recommend(requset):
         cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s", [k, ])
         goods_list.append(cur.fetchone())
     a = ''
-    for item in goods_list:
-        rr = """<ul>
-                                <li>
-                                    <a href="/goods_detail/?goods={0}"><img src="{1}"class="goods_pic"></a>
-                                    <h4><a href="/goods_detail/?goods={2}"title="{3}">{4}</a></h4>
-                                    <div class="prize">¥ {5}</div>
-                                </li>
-                        </ul>"""
-        b = rr.format(item['goods_id'], item['goods_imgurl'], item['goods_id'], item['goods_title'],
-                      item['goods_title'], item['goods_price'])
-        a += b
+    for item in goods_list[0:5]:
+        if item != None:
+            rr = """<ul>
+                                    <li>
+                                        <a href="/goods_detail/?goods={0}"><img src="{1}"class="goods_pic"></a>
+                                        <h4><a href="/goods_detail/?goods={2}"title="{3}">{4}</a></h4>
+                                        <div class="prize">¥ {5}</div>
+                                    </li>
+                            </ul>"""
+            b = rr.format(item['goods_id'], item['goods_imgurl'], item['goods_id'], item['goods_title'],
+                          item['goods_title'], item['goods_price'])
+            a += b
     return HttpResponse(json.dumps({'rr': a}))
 
 # a = [0, 1, 1, 1, 0, 0]

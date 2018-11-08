@@ -66,7 +66,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -89,19 +89,6 @@
         <li><a href="/my_sale/">我出售的</a></li>
         <li><a href="/my_buy/">我购买的</a></li>
     </ul>
-</div>
-
-<div class="navbar_con">
-    <div class="navbar">
-        <h1 class="fl">商品分类</h1>
-        <ul class="navlist fl">
-            <li><a href="/haima/">首页</a></li>
-            <li><a href="/publish/">发布闲置</a></li>
-            <li><a href="/auction/">拍卖</a></li>
-            <li><a href="/assess/">二手估价</a></li>
-            <li><a href="/my_leave/">我的闲置</a></li>
-        </ul>
-    </div>
 </div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img id="logoimg" src="../static/Images/haima3.png"></a>
@@ -192,7 +179,7 @@
         </div>
     </div>
 </div>
-<div class="footer">
+<div class="footer" style="margin-top: 100px">
     <div class="foot_link">
         <a href="#">关于我们</a>
         <span>|</span>

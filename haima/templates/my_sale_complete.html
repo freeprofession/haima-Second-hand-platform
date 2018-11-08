@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>海马商城-用户中心</title>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+</head>
+<body>
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">欢迎来到海马商城!</div>
+        <div class="fr">
+            <div class="login_btn fl">
+                <a href="/login/">登录</a>
+                <span>|</span>
+                <a href="/register/">注册</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/haima/">首页</a>
+                <span>|</span>
+                <a href="/user_center/">用户中心</a>
+                <span>|</span>
+                <a href="" id="my_order" onmouseover="showhide()">我的订单</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="order_show">
+    <ul>
+        <li><a href="/my_sale/">我出售的</a></li>
+        <li><a href="/my_buy/">我购买的</a></li>
+    </ul>
+</div>
+<div class="search_bar clearfix">
+    <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+    <div class="sub_page_name fl"><a href="/my_sale/" style="color: #5e5e5e">|&nbsp;&nbsp;&nbsp;&nbsp;出售中</a></div>
+    <div class="sub_page_name fl"><a href="/my_sale_complete/" style="color: #ff8800">|&nbsp;&nbsp;&nbsp;&nbsp;已完成</a>
+    </div>
+    <div class="sub_page_name fl"><a href="/my_sale_lower/" style="color: #5e5e5e">|&nbsp;&nbsp;&nbsp;&nbsp;已下架</a>
+    </div>
+</div>
+
+<div class="main_con clearfix">
+    <div class="left_menu_con clearfix">
+        <h3>用户中心</h3>
+        <ul>
+            <li><a href="/user_center/">· 个人信息</a></li>
+            <li><a href="/my_sale/" class="active">· 我出售的</a></li>
+            <li><a href="/my_buy/">· 我购买的</a></li>
+            <li><a href="user_center_order.html">· 我的拍卖</a></li>
+            <li><a href="/my_collection/">· 我的收藏</a></li>
+            <li><a href="/my_evaluate/">· 我的评价</a></li>
+            <li><a href="/leave_message/">· 宝贝留言</a></li>
+            <li><a href="/modify_information/">· 修改信息</a></li>
+            <li><a href="/modify_password/">· 修改密码</a></li>
+        </ul>
+    </div>
+    <div class="right_content clearfix">
+        <h3 class="common_title2" style="color: dodgerblue">完成订单</h3>
+        {% if not  contacts1 %}
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                 alt="" height="100">
+            这里空空如也，快去 <a href="">发布（发布链接）</a>
+        {% else %}
+            {% for item in contacts1 %}
+                <ul class="order_list_th w978 clearfix" id="goods_{{ item.goods_id }}">
+                    <input type="text" value="{{ item.goods_id }}" hidden id="goods_id_{{ item.goods_id }}">
+                    <li class="col01" id="date">订单号：{{ item.order_id }}</li>
+                    <li class="col01" id="date">交易时间：{{ item.release_date }}</li>
+                </ul>
+
+                <table class="order_list_table w980" id="goods1_{{ item.goods_id }}">
+                    <tbody>
+                    <tr>
+                        <td width="55%">
+                            <ul class="order_goods_list clearfix">
+                                <li class="col01"><a href="/goods_detail/?goods={{ item.goods_id }}"><img
+                                        src="{{ item.goods_imgurl }}"></a></li>
+                                <li class="col02"><a
+                                        href="/goods_detail/?goods={{ item.goods_id }}"
+                                        style="color: dodgerblue">{{ item.goods_title }}</a><em
+                                        style="color: red">{{ item.goods_price }}元</em>
+                                </li>
+                            </ul>
+                        </td>
+                        {% if item.sell_eva_state == 0 %}
+                            <td width="15%"><a href="/evaluate/?goods_id={{ item.goods_id }}&customer=sell"><input
+                                    type="button" class="lower1_btn lower_{{ item.goods_id }} send"
+                                    onclick="lower({{ item.goods_id }})" value=快去评价 ></a>
+                            </td>
+                        {% else %}
+                            <td width="15%"><a href="/evaluate/?goods_id={{ item.goods_id }}&customer=sell"><input type="button" class="lower1_btn lower_{{ item.goods_id }}"
+                                                   onclick="lower({{ item.goods_id }})" value=查看评价></a>
+                            </td>
+                        {% endif %}
+                        <td width="15%"><a href="" class="oper_btn">私聊买家</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% endfor %}
+            <a href="" id="append"></a>
+            <div class="pagenation">
+    <span class="step-links" style="margin-top: 1px">
+        {% if contacts1.has_previous %}
+            <a href="?page1={{ contacts1.previous_page_number }}"
+               style="font-size: large;color: #00bc6f"><< </a>
+        {% endif %}
+        <em style="font-size: 16px">第 <em
+                style="color: red">{{ contacts1.number }}</em> 页/总{{ contacts1.paginator.num_pages }}页</em>
+        {% if contacts1.has_next %}
+            <a href="?page1={{ contacts1.next_page_number }}" style="font-size: large;color: #00bc6f">>></a>
+        {% endif %}
+    </span>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：0512-****888 苏ICP备*******8号</p>
+</div>
+<script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
+    function index() {
+        $('.send').css('color', '#03a9f4');  //默认值
+        setTimeout(" $('.send').css('color','#fF0000')", 100); //第一次闪烁
+        setTimeout("$('.send').css('color','#ccc')", 200); //第二次闪烁
+    };
+    window.setInterval(index, 400);
+</script>
+<script>
+    {#function lower(id) {#}
+    {#    goods_id = id#}
+    {#    $.post('/my_sale_lower/', {#}
+    {#        'goods_id': goods_id,#}
+    {#    }, function (data) {#}
+    {#        if (data.msg === "success") {#}
+    {#            $("#goods_" + id).remove();#}
+    {#            $("#goods1_" + id).remove();#}
+    {#            top.location.href = data.href#}
+    {#            console.log(data.msg)#}
+    {#        } else {#}
+    {#            alert("上架失败")#}
+    {#            top.location.href = data.href#}
+    {#        }#}
+    {#    }, "json")#}
+    {#    $(function () {#}
+    {#        var tiemer = "";#}
+    {#        var time = 3000;//每次点击三秒后才能再次点击#}
+    {#        var fun = function bClick() {#}
+    {#            alert("执行方法");#}
+    {#            $(".lower_" + id).unbind("click");#}
+    {#            tiemer = setTimeout(function () {#}
+    {#                $(".lower_" + id).click(fun);#}
+    {#            }, time);#}
+    {#        };#}
+    {#        $(".lower_" + id).click(fun);#}
+    {#    })#}
+    {##}
+    {
+    #}#}
+</script>
+<script>
+</script>
+
+</body>
+</html>
