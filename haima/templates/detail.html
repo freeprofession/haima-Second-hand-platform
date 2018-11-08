@@ -335,7 +335,15 @@
             <div class="goods_num clearfix">
                 <div class="type_select">
                     <label>成色：</label>
-                    <span>全新</span>
+                    {% if goods.goods_appearance == 4 %}
+                        <span>全新</span>
+                    {% elif goods.goods_appearance == 3 %}
+                        <span>九五新</span>
+                    {% elif goods.goods_appearance == 2 %}
+                        <span>九成新</span>
+                    {% elif goods.goods_appearance == 1 %}
+                        <span>八五新</span>
+                    {% endif %}
                 </div>
                 <div class="type_select">
                     <label>所在地:</label>
@@ -361,7 +369,7 @@
                         {#                        <a href="javascript:" class="buy_btn" style="color: #2d64b3">已经下架</a>#}
                     {% elif seller_in == "seller_in" and goods_state == "0" %}
                         <a href="javascript:;" class="buy_btn" id="lower_goods">下架商品</a>
-                        <a href="javascript:;" class="add_cart" id="modify_goods">修改商品</a>
+                        <a href="/publish/?goods_id={{ goods.goods_id }}" class="add_cart" id="modify_goods">修改商品</a>
                     {% elif seller_in == "seller_in" and goods_state == "1" %}
                         <a href="javascript:;" class="add_cart">已经出售</a>
                     {% elif seller_in == "seller_in" and goods_state == "2" %}
@@ -628,10 +636,6 @@
                         message_id = id;
                         child_review = $('#get_child_review_' + get_message_id).val();
                         var check = $('#get_child_review_' + get_message_id).val()
-<<<<<<< HEAD
-                        alert(child_review)
-=======
->>>>>>> 001e5c22ba82a3fc8c1b35bc17a7a9c605d9524c
                         {#child_user_id = $('#child_user_id').val();#}
                         {#parent_id = $("#get_parent_id").val()#}
                         {#goods_id = $("#get_goods_id").val()#}
@@ -687,12 +691,7 @@
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
-<<<<<<< HEAD
         input_.value = "回复" + c_name + ":"
-        alert(input_.value)
-=======
-        input_.value = "回复"+ c_name +":"
->>>>>>> 001e5c22ba82a3fc8c1b35bc17a7a9c605d9524c
     }
 
     //留言

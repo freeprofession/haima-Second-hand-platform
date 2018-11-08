@@ -9,7 +9,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-       <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -62,18 +62,68 @@
                          alt="" height="100">
                     你没有收藏任何商品，<a href="/haima/" style="color: royalblue"> 快去收藏吧</a>
                 {% else %}
-                    {% for value in collection_list %}
-                        <li>
-                            <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"></a>
-                            <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
-                            <div class="operate">
-                                <span class="prize">￥：{{ value.goods_price }}</span>
-                                <p class="unit">{{ value.collection_date }}</p>
-                            </div>
-                        </li>
+                    {% for value in contacts %}
+                        {% if value.goods_state == '2' %}
+                            <li>
+                                <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
+                                                                                         style="position: relative;z-index: 1"></a>
+                                <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
+                                <div class="operate">
+                                    <span class="prize">该商品已经下架</span>
+                                    <p class="unit">{{ value.collection_date }}</p>
+                                    <button href="#" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
+                                                                       style="width: 15px;height: 15px" alt=""></button>
+                                </div>
+                            </li>
+                        {% elif value.goods_state == '1' %}
+                            <li>
+                                <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
+                                                                                         style="position: relative;z-index: 1"></a>
+                                <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
+                                <div class="operate">
+                                    <span class="prize">已出售</span>
+                                    <p class="unit">{{ value.collection_date }}</p>
+                                    <button href="#" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
+                                                                       style="width: 15px;height: 15px" alt=""></button>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"></a>
+                                <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
+                                <div class="operate">
+                                    <span class="prize">￥：{{ value.goods_price }}</span>
+                                    <p class="unit">{{ value.collection_date }}</p>
+                                    <button href="#" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
+                                                                       style="width: 15px;height: 15px" alt=""></button>
+
+                                </div>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             </ul>
+        </div>
+        <div class="pagenation">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
         </div>
 
         <h3 class="common_title2">宝贝推荐</h3>

@@ -37,14 +37,18 @@ urlpatterns = [
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
+    path('forget_password/',view.forget_password),
+    path('forget_password_two/',view.forget_password_two),
     path('captcha/', include('captcha.urls')),
     path('register/', view.register),
     path('register_ajax/', view.register_ajax),
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
-    path('publish/', view.publish),
+    # path('publish/', view.publish),
+    path('publish/', view.goods_republish),
     path('pub_success/', view.pub_success),
+    path('publish_ok/', view.publish_ok),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
     path('auction_index/', auction.auction_index),
@@ -89,13 +93,12 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
 
- # path('modify_information/', view.modify_information),
-     path('buy_auction/', auction.buy_auction),
+    # path('modify_information/', view.modify_information),
+    path('buy_auction/', auction.buy_auction),
 
     # 实时计算拍卖总价的路径
     path('calculate_price/', auction.calculate_price),
@@ -156,7 +159,6 @@ urlpatterns = [
     # 用户支付成功以后的跳转
 
     path("buy_auction_ok/", auction.buy_auction_ok),
-
 
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品发货

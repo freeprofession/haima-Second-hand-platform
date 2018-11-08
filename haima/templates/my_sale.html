@@ -59,7 +59,6 @@
     </div>
     <div class="right_content clearfix">
         <h3 class="common_title2" style="color: red">交易中</h3>
-     <a name="html"></a>
         {% if not contacts2 %}
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                  alt="" height="100">
@@ -136,7 +135,7 @@
                         <td width="15%"><input type="button" class="lower1_btn lower_{{ item.goods_id }}"
                                                onclick="lower({{ item.goods_id }})" value="下架">
                         </td>
-                        <td width="15%"><a href="" class="oper_btn">修改</a></td>
+                        <td width="15%"><a href="/publish/?goods_id={{ item.goods_id }}" class="oper_btn">修改</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -197,6 +196,7 @@
             } else if (data.msg === "flash") {
                 top.location.href = data.href
             } else if (data.msg === "fail") {
+                alert("下架失败")
                 top.location.href = data.href
             }
         }, "json")
@@ -212,12 +212,6 @@
             };
             $(".lower_" + id).click(fun);
         })
-
-    }
-</script>
-<script>
-    window.onload = function () {
-        location.hash = '#html';
 
     }
 </script>

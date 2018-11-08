@@ -63,10 +63,10 @@
     </style>
 
 </head>
-<body>
+<body onload="change()">
 <div class="header_con">
     <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -106,14 +106,16 @@
             <table border="0">
                 <tr>
                     <td>宝贝标题：</td>
-                    <td><input type="text" name="title" placeholder="请输入商品标题" onblur="checktitle()">
+                    <input type="text" name="goods_id" value="{{ goods_list.goods_id }}" id="goods_id" hidden>
+                    <td><input type="text" name="title" placeholder="请输入商品标题" onblur="checktitle()"
+                               value="{{ goods_list.goods_title }}">
                         <div id="checktitle" style="float: right;font-size: 14px;color: red;display: none">宝贝标题不能为空
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>类型：</td>
-                    <td><select style="width: 200px" name="type">
+                    <td><select style="width: 200px" name="type" id="check_type">
                         <option value="1">手机</option>
                         <option value="2">电脑</option>
                         <option value="3">摄影</option>
@@ -123,7 +125,7 @@
                 </tr>
                 <tr>
                     <td>类型：</td>
-                    <td><select style="width: 200px" name="appearance">
+                    <td><select style="width: 200px" name="appearance" id="appearance">
                         <option value="4">全新</option>
                         <option value="3">九五新</option>
                         <option value="2">九成新</option>
@@ -133,7 +135,8 @@
                 <tr>
                     <td>价格：</td>
                     <td>
-                        <input type="text" name="price" placeholder="商品价格" onblur="checkprice()" value="{{ price }}">
+                        <input type="text" name="price" placeholder="商品价格" onblur="checkprice()"
+                               value="{{ goods_list.goods_price }}">
                         <div id="checkprice" style="float: right;font-size: 14px;color: red;display: none">格式有误</div>
                     </td>
                 </tr>
@@ -158,12 +161,16 @@
                                                       style="height: 100%;width: 100%"></label>
                             <input type="file" name="fuck" multiple="" id="js-file" style="display: none">
                         </div>
-                        <div id="js-pre"></div>
+                        <div id="js-pre">
+                            {{ c|safe }}
+                        </div>
+
                     </td>
                 </tr>
                 <tr>
                     <td>宝贝描述：</td>
-                    <td><textarea name="desc" id="" cols="100" rows="8" placeholder="商品描述不低于10个字"></textarea></td>
+                    <td><textarea name="desc" id="desc" cols="100" rows="8"
+                                  placeholder="商品描述不低于10个字">{{ goods_list.goods_desc|safe }}</textarea></td>
                 </tr>
             </table>
             <input type="text" name="filelist" id="filelist" style="display:none;">
@@ -179,7 +186,7 @@
         </div>
     </div>
 </div>
-<div class="footer">
+<div class="footer" style="margin-top: 100px">
     <div class="foot_link">
         <a href="#">关于我们</a>
         <span>|</span>
@@ -247,6 +254,18 @@
             },	//文件全部上传完毕时
         })
     })
+</script>
+<script>
+    function change() {
+
+        var type = '{{ goods_list.goods_category_id }}';
+        if (type.length === 0)
+            document.getElementById("check_type")[0].selected = true;
+        else {
+            document.getElementById("check_type")[{{ goods_list.goods_category_id }}-1].selected = true;
+            document.getElementById("appearance")[{{ goods_list.goods_appearance }}-1].selected = true;
+        }
+    }
 </script>
 </body>
 </html>
