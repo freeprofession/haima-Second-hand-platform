@@ -63,8 +63,8 @@
             {% else %}
                 {% for value in collection_list %}
                     <li>
-                        <img src="{{ value.goods_imgurl }}" alt="商品图片">
-                        <h4>{{ value.goods_title }}</h4>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}" alt="商品图片"></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
                 {% endfor %}

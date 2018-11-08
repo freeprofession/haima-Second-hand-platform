@@ -37,14 +37,18 @@ urlpatterns = [
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
+    path('forget_password/',view.forget_password),
+    path('forget_password_two/',view.forget_password_two),
     path('captcha/', include('captcha.urls')),
     path('register/', view.register),
     path('register_ajax/', view.register_ajax),
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
-    path('publish/', view.publish),
+    # path('publish/', view.publish),
+    path('publish/', view.goods_republish),
     path('pub_success/', view.pub_success),
+    path('publish_ok/', view.publish_ok),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
     path('auction_index/', auction.auction_index),
@@ -90,9 +94,12 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
+<<<<<<< HEAD
 
     path('buy_auction/', view.buy_auction),
 
+=======
+>>>>>>> 150351083dcd291772eebaa5fa388f10e63a42a4
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
@@ -153,7 +160,7 @@ urlpatterns = [
     path("goods_recommend/", goods_recommend.goods_recommend),
 
     path("my_auction_one/", auction_sale.my_auction_one),
-    path("my_auction_four/", auction_buy.my_auction_four),
+
     # 用户输完价格确认竞拍
     path("confirm_buy/", auction.confirm_buy),
     # 用户支付成功以后的跳转
@@ -171,4 +178,22 @@ urlpatterns = [
     path('top_up_money/', cz.top_up_money),  # 充值
     path('auction_money/', auction_pay.auction_money),
     path('page4/', auction_pay.page4),
+<<<<<<< HEAD
+=======
+    path('place_order/',view.place_order),
+    path("my_auction_buy_one/", auction_buy.my_auction_buy_one),
+    path("my_auction_buy_two/", auction_buy.my_auction_buy_two),
+    path("my_auction_buy_three/", auction_buy.my_auction_buy_three),
+    path("my_auction_buy_four/", auction_buy.my_auction_buy_four),
+    path("my_auction_buy_five/", auction_buy.my_auction_buy_five),
+    path("my_auction_buy_six/", auction_buy.my_auction_buy_six),
+    path("my_auction_sale_one/", auction_sale.my_auction_sale_one),
+    path("my_auction_sale_two/", auction_sale.my_auction_sale_two),
+    path("my_auction_sale_three/", auction_sale.my_auction_sale_three),
+    path("my_auction_sale_four/", auction_sale.my_auction_sale_four),
+    path("my_auction_sale_five/", auction_sale.my_auction_sale_five),
+    path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
+    path('auction_place_order/',auction.auction_place_order),
+
+>>>>>>> 150351083dcd291772eebaa5fa388f10e63a42a4
 ]

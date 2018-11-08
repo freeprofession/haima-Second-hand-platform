@@ -335,7 +335,15 @@
             <div class="goods_num clearfix">
                 <div class="type_select">
                     <label>成色：</label>
-                    <span>全新</span>
+                    {% if goods.goods_appearance == 4 %}
+                        <span>全新</span>
+                    {% elif goods.goods_appearance == 3 %}
+                        <span>九五新</span>
+                    {% elif goods.goods_appearance == 2 %}
+                        <span>九成新</span>
+                    {% elif goods.goods_appearance == 1 %}
+                        <span>八五新</span>
+                    {% endif %}
                 </div>
                 <div class="type_select">
                     <label>所在地:</label>
@@ -352,7 +360,7 @@
                 </div>
                 <div class="operate_btn">
                     {% if  seller_in == "no_seller" and goods_state == "0" %}
-                        <button id="buy_now" class="buy_btn">立即购买</button>
+                        <a href="/place_order/?goods_id={{ goods.goods_id }}"><button id="buy_now">立即购买</button></a>
                         <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
                     {% elif seller_in == "no_seller" and goods_state == "1" %}
                         <a href="javascript:;" class="buy_btn">已经出售</a>
@@ -361,7 +369,7 @@
                         {#                        <a href="javascript:" class="buy_btn" style="color: #2d64b3">已经下架</a>#}
                     {% elif seller_in == "seller_in" and goods_state == "0" %}
                         <a href="javascript:;" class="buy_btn" id="lower_goods">下架商品</a>
-                        <a href="javascript:;" class="add_cart" id="modify_goods">修改商品</a>
+                        <a href="/publish/?goods_id={{ goods.goods_id }}" class="add_cart" id="modify_goods">修改商品</a>
                     {% elif seller_in == "seller_in" and goods_state == "1" %}
                         <a href="javascript:;" class="add_cart">已经出售</a>
                     {% elif seller_in == "seller_in" and goods_state == "2" %}
@@ -577,21 +585,7 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
 
-    $("#buy_now").click(function () {
-        title = $("#goods_title").text();
-        price = $("#goods_price").text();
-        goods_id = $("#goods_id").text();
-        $.post("/page1/",
-            {
-                "title": title,
-                "price": price,
-                "goods_id": goods_id,
-            }
-            , function (data) {
-                location.href = data
-            }
-        )
-    })
+
 </script>
 <script>
     var get_message_id = 0;
@@ -683,7 +677,7 @@
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
-        input_.value = "回复"+ c_name +":"
+        input_.value = "回复" + c_name + ":"
     }
 
     //留言

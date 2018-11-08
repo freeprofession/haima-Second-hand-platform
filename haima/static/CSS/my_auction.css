@@ -161,3 +161,9 @@ background-color: #ffda44;
 border: 0px;
 border-radius: 5px
 }
+#one div{
+	float: left;
+}
+#one{
+	margin-left: 30px;
+}

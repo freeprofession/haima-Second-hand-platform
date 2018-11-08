@@ -72,23 +72,28 @@
             <table align="center">
                 <tr>
                     <td class="popwin_tips">用户名：</td>
-                    <td><input class="" type="text" name="" value=""/></td>
+                    <td><input id="c_username" class="" type="text" onchange="user_name()"></td>
+                    <p id="phone_error"></p>
+                    <p id="phone_error1"></p>
                 </tr>
                 <tr>
                     <td class="popwin_tips">手机号：</td>
-                    <td><input type="text"></td>
+                    <td><input type="text" id="c_phone1" onchange="checkPhone()"></td>
                 </tr>
                 <tr>
                     <td class="popwin_tips">验证码：</td>
-                    <td><input type="text" style="width: 100px;float: left">
-                        <span style="margin-left: 10px"><button id="fgt_psw_yzm_btn">点击获取</button></span></td>
+                    <td><input type="text" style="width: 100px;float: left" id="phone_code" onchange="phone_code()">
+                        <span style="margin-left: 10px"><button id="fgt_psw_yzm_btn"
+                        >点击获取</button></span></td>
+                    <p id="check_phone_code"></p>
                 </tr>
                 <tr>
-                    <td class="popwin_tips">新密码：</td>
-                    <td><input type="text"></td>
+                    <td class="popwin_tips" >新密码：</td>
+                    <td><input type="text" id="new_password"></td>
+                    <p id="n_pwd_error"></p>
                 </tr>
             </table>
-            <button class="btn_blue" style="margin-right: 40px">确定</button>
+            <button class="btn_blue" style="margin-right: 40px" id="change_password">确定</button>
             <button class="btn_blue cancer_fgt_psw">取消</button>
         </div>
 
@@ -110,6 +115,106 @@
     $(".cancer_fgt_psw").click(function () {
         $("#for_psw").hide();
     })
+</script>
+<script>
+    function phone_code() {
+        var phone_code = document.getElementById("phone_code")
+        if (phone_code.value.length === 0) {
+            document.getElementById("check_phone_code").style.color = 'Red';
+            document.getElementById("check_phone_code").innerText = "手机验证码不为空"
+            document.getElementById("check_phone_code").style.display = 'block';
+            return false
+        } else {
+            document.getElementById("check_phone_code").style.display = 'none';
+            return true
+        }
+
+    }
+</script>
+
+
+<script>
+    function checkPhone() {
+        var phone = document.getElementById('c_phone1');
+        var pattern = /^1[34578]\d{9}$/; //验证手机号正则表达式
+        if (!pattern.test(phone.value)) {
+            document.getElementById('phone_error').style.color = 'Red';
+            document.getElementById('phone_error').innerText = "手机格式错误"
+            document.getElementById('phone_error').style.display = 'block';
+            return false;
+        }
+        else {
+            document.getElementById('phone_error').style.display = 'none';
+            return true;
+        }
+    }
+
+    $(function () {
+        $("#fgt_psw_yzm_btn").click(function () {
+            username = $('#c_username').val();
+            phone = $('#c_phone1').val();
+            if (checkPhone()) {
+                $.post('/forget_password/', {
+                    'username': username,
+                    'phone': phone,
+                    {#'code': code,#}
+                    {#'response': response,#}
+                    {#'hashkey': hashkey,#}
+                }, function (data) {
+                    if (data.msg === 'success') {
+                        $.ajax({
+                            type: "POST",
+                            url: "/send_sms/",
+                            data: {phone: phone},
+                            dataType: "json",
+                            success: function (data) {
+                                console.log(data)
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                console.log(XMLHttpRequest, textStatus, errorThrown)
+                            },
+                        })
+                    } else if (data.msg === 'phone_error') {
+                        $('#phone_error1').html('不是注册手机');
+                    } else if (data.msg === "user_error") {
+                        $('#phone_error1').html('用户名不存在')
+                    }
+                }, 'json')
+
+            }
+        })
+
+    });
+</script>
+<script>
+    $(function () {
+        $("#change_password").click(function () {
+            phone_code1 = $('#phone_code').val();
+            new_password = $('#new_password').val();
+            phone = $('#c_phone1').val();
+            username = $('#c_username').val();
+            if (phone_code()) {
+                $.post('/forget_password_two/', {
+                    'phone_code1': phone_code1,
+                    'new_password': new_password,
+                    'phone': phone,
+                    'username': username,
+                }, function (data) {
+                    if (data.msg === 'success') {
+                        alert("修改成功")
+                        location=location
+                    } else if (data.msg === 'code_error') {
+                        $('#n_pwd_error').html('验证码错误');
+                    } else if (data.msg === "password_error") {
+                        $('#n_pwd_error').html('密码为6-16位')
+                    } else if (data.msg === "phone_error") {
+                        $('#n_pwd_error').html('账号异常')
+                    }
+                }, 'json')
+            }
+        })
+
+    });
 </script>
 </body>
 </html>
