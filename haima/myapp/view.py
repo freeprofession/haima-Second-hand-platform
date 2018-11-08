@@ -1785,9 +1785,15 @@ def page1(request):
     user_id = request.session.get("user_id")
     money = request.POST.get('price')
     title = request.POST.get('title')
+    phone=request.POST.get('phone')
+    name=request.POST.get('name')
+    address=request.POST.get('address')+request.POST.get("user_address")
     alipay = get_ali_object()
     goods_id = request.POST.get('goods_id')
     request.session['goods_id'] = goods_id
+    request.session['user_buy_phone'] = phone
+    request.session['name'] = name
+    request.session['address'] = address
     # 生成支付的url
     query_params = alipay.direct_pay(
         subject=title,  # 商品简单描述
@@ -1797,7 +1803,6 @@ def page1(request):
     )
     pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
 
-    print(pay_url)
 
     return HttpResponse(pay_url)
 
@@ -1832,6 +1837,9 @@ def page2(request):
     else:
         user_id = request.session.get("user_id")
         goods_id = request.session.get("goods_id")
+        phone = request.session.get("user_buy_phone")
+        name = request.session.get("name")
+        address = request.session.get("address")
         print(goods_id)
         params = request.GET.dict()
         sign = params.pop('sign', None)
@@ -1840,14 +1848,15 @@ def page2(request):
         print('GET验证', status)
         print('==================结束==================')
         print("支付成功")
+        print(phone)
         try:
             # 生成商品订单
             cur.execute("select user_id from t_goods where goods_id=%s", [goods_id])
             release_user_id = cur.fetchone()["user_id"]
             date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
             cur.execute(
-                "insert into t_order(release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s)",
-                [str(release_user_id), str(user_id), date, str(goods_id)])
+                "insert into t_order(release_user_id,buy_user_id,order_date,order_goods_id,buy_phone,buy_name,buy_address) values (%s,%s,%s,%s,%s,%s,%s)",
+                [str(release_user_id), str(user_id), date, str(goods_id),str(phone),str(name),str(address)])
             print("生成订单成功")
             cur.execute("update t_goods set goods_state=%s where goods_id=%s", ["1", goods_id])
             print("更新商品状态成功")
@@ -1855,7 +1864,7 @@ def page2(request):
 
         except Exception as e:
             print(e)
-        return redirect("/haima/")
+        return redirect("/user_center/")
 
 
 def admin_session(func):
@@ -1882,7 +1891,6 @@ def admin_login(request):
             return HttpResponse('login')
         else:
             return HttpResponse('')
-
 
 @admin_session
 def admin(request, user):
@@ -1950,3 +1958,19 @@ def admin_order(request, user):
     orderlist = cur.fetchall()
     print(orderlist)
     return render(request, 'admin_order.html', {'user': user, 'orderlist': orderlist})
+
+
+
+@admin_session
+def exit(request, user):
+    del request.session['user']
+    return redirect('/admin_login/')
+
+@login_required
+def place_order(request):
+    user_id=request.session.get("user_id")
+    goods_id=request.GET.get("goods_id")
+    cur.execute("select * from t_goods where goods_id=%s",[goods_id])
+    goods_message=cur.fetchone()
+    return render(request, 'place_order.html',locals())
+

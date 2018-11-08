@@ -31,12 +31,18 @@ def auction_money(request):
     # 根据当前用户的配置，生成URL，并跳转。
     money = request.POST.get('price')
     order_id=request.POST.get('order_id')
-    request.session['order_id'] = order_id
+    request.session['auction_order_id'] = order_id
+    phone = request.POST.get('phone')
+    name = request.POST.get('name')
+    address = request.POST.get('address') + request.POST.get("user_address")
     alipay = get_ali_object()
-    print(money)
+    request.session['auction_user_buy_phone'] = phone
+    request.session['auction_name'] = name
+    request.session['auction_address'] = address
+    print(money,phone,name,address)
      # 生成支付的url
     query_params = alipay.direct_pay(
-        subject="海马充值"+money,  # 商品简单描述
+        subject="拍卖支付尾款"+money,  # 商品简单描述
         out_trade_no="x2" + str(time.time()),  # 用户购买的商品订单号（每次不一样） 20180301073422891
         total_amount=money,  # 交易金额(单位: 元 保留俩位小数)
 
@@ -47,6 +53,8 @@ def auction_money(request):
 
 
 def page4(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     alipay = get_ali_object()
     if request.method == "POST":
         # 检测是否支付成功
@@ -77,7 +85,10 @@ def page4(request):
         user_id = request.session.get("user_id")
         cur.execute("select user_money from t_user where user_id=%s", [user_id])
         user_money = cur.fetchone()["user_money"]
-        order_id=request.session.get("order_id")
+        order_id=request.session.get("auction_order_id")
+        auction_user_name=request.session.get("auction_name")
+        auction_phone=request.session.get("auction_buy_user_phone")
+        address=request.session.get("auction_address")
         print(order_id,user_id)
         # 通过订单id找到商品id
         cur.execute("select auction_order_goods_id from t_auction_order where  auction_order_id=%s", [order_id])
@@ -92,23 +103,23 @@ def page4(request):
         print('GET验证', status)
         print('==================结束==================')
         print("支付成功")
+
         try:
             user_money = user_money + goods_margin
             # 付款以后把把保证金退还
             cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, user_id])
             # 将订单那个状态改成1
             now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-            cur.execute("update t_auction_order set auction_order_state=%s,pay_money_date=%s where auction_order_id=%s",
-                        ["1",now_time ,order_id])
+            cur.execute("update t_auction_order set auction_order_state=%s,pay_money_date=%s,order_address=%s,order_name=%s,order_phone=%s where auction_order_id=%s",
+                        ["1",now_time ,order_id,address,auction_user_name,auction_phone])
             # 将商品记录表里的状态改成3,付款时间也改一下
             print("订单修改完成")
             cur.execute(
                 "update t_auction_goods_record set auction_goods_state=%s where auction_goods_id=%s",
                 ["3", goods_id])
-
-            print("操作完成")
             con.commit()
+            print("操作完成")
+            return redirect("/my_auction_buy_five/")
         except Exception as e:
-            con.rollback()
+
             print(e)
-        return redirect("/my_auction_one/")

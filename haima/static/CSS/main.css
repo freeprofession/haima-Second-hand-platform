@@ -2209,7 +2209,7 @@ label:hover {
 .common_list_con {
     width: 1200px;
     border: 1px solid #dddddd;
-    border-top: 2px solid #e3101e;
+    border-top: 2px solid #ffda44;
     margin: 10px auto 0;
     background-color: #f7f7f7;
     position: relative;
@@ -2233,10 +2233,11 @@ label:hover {
 .edit_site {
     position: absolute;
     right: 20px;
-    top: 30px;
+    top: 150px;
+
     width: 100px;
     height: 30px;
-    background-color: #fe0000;
+    background-color: #ffda44;
     text-align: center;
     line-height: 30px;
     color: #fff
@@ -3877,6 +3878,12 @@ label:hover {
     color: red;
     font-size: 13px;
 }
-
+#buy_now{
+    float: right;
+    width: 120px;
+    height: 25px;
+    background-color: #ffda44;
+    border-radius: 2px;
+}
 
 

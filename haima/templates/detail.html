@@ -360,7 +360,7 @@
                 </div>
                 <div class="operate_btn">
                     {% if  seller_in == "no_seller" and goods_state == "0" %}
-                        <button id="buy_now" class="buy_btn">立即购买</button>
+                        <a href="/place_order/?goods_id={{ goods.goods_id }}"><button id="buy_now">立即购买</button></a>
                         <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
                     {% elif seller_in == "no_seller" and goods_state == "1" %}
                         <a href="javascript:;" class="buy_btn">已经出售</a>
@@ -585,21 +585,7 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
 
-    $("#buy_now").click(function () {
-        title = $("#goods_title").text();
-        price = $("#goods_price").text();
-        goods_id = $("#goods_id").text();
-        $.post("/page1/",
-            {
-                "title": title,
-                "price": price,
-                "goods_id": goods_id,
-            }
-            , function (data) {
-                location.href = data
-            }
-        )
-    })
+
 </script>
 <script>
     var get_message_id = 0;

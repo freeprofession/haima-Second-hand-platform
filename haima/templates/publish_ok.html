@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/static/js/register_ok.js"></script>
+</head>
+<body>
+<div align="center">
+    <h3 style="color: brown">注册成功</h3>
+    {% if not goods_id %}
+        <p>
+            <b id="second">5</b>秒 &nbsp;&nbsp; 你没有发布商品哦！<a href="/haima/">快去商品看看</a>
+        </p>
+
+    {% else %}
+        <p>
+            <b id="second">5</b>秒 &nbsp;&nbsp; <a href="/goods_detail/?goods={{ goods_id }}">点击查看</a>
+        </p>
+    {% endif %}
+</div>
+<script type="text/javascript">
+    //设定倒数秒数
+    var t = 10;
+
+    //显示倒数秒数
+    function showTime() {
+        t -= 1;
+        document.getElementById('second').innerHTML = t;
+        if (t == 0) {
+            location.href ={{ href }};
+        }
+        //每秒执行一次,showTime()
+        setTimeout("showTime()", 1000);
+    }
+
+
+    //执行showTime()
+    showTime();
+</script>
+</body>
+</html>
