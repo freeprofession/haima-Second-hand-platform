@@ -10,56 +10,89 @@
     <script type="text/javascript" src="../static/JS/login_check.js"></script>
 </head>
 <body>
-<div class="login_top clearfix">
-    <a href="/haima/" class="login_logo"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-</div>
-<div class="login_form_bg">
-    <div class="login_form_wrap clearfix">
-        <div class="login_banner fl"></div>
-        <div class="slogan fl">海量数码 · 轻松淘</div>
-        <div class="login_form fr">
-            <div class="login_title clearfix">
-                <a href="javascript:;" class="cur">账户登录</a>
-            </div>
-            <div class="form_con">
-                <div class="form_input cur">
-                    <form method="post" action="/login_ajax/">
-                        <input type="text" name="username" class="name_input" placeholder="请输入用户名" id="username" value="{{ username }}">
-                        <div class="user_error" id="login_error"></div>
-                        <input type="password" name="pwd" class="pass_input" placeholder="请输入密码" id="password">
-                        <div class="more_input clearfix">
-                            <input id="hash" name="captcha_0" value="{{ hashkey }}" type="hidden">
-                            <input type="text" id="login_code" class="code_input" style="height: 27px">
-                            {#                            <input type="button" id="code_refresh" value="genhuan">#}
-                            <img class="captcha" id="code_img" alt="captcha" src="{{ image_url }}" style="border: 1px solid #ebebeb;margin-left: 18px;height: 30px;">
-                            <div id="code_error" style="color: red"></div>
-                        </div>
-                        <input type="button" name="" value="登 录" class="input_submit" id="login">
-                    </form>
+<div>
+    <div class="login_top clearfix">
+        <a href="/haima/" class="login_logo"><img src="../static/Images/haima3.png" width="200" height="100"></a>
+    </div>
+    <div class="login_form_bg">
+        <div class="login_form_wrap clearfix">
+            <div class="login_banner fl"></div>
+            <div class="slogan fl">海量数码 · 轻松淘</div>
+            <div class="login_form fr">
+                <div class="login_title clearfix">
+                    <a href="javascript:;" class="cur">账户登录</a>
                 </div>
-            </div>
-            <div class="third_party">
-                <a href="#" class="qq_login">忘记密码？</a>
-{#                <a href="#" class="weixin_login">微信</a>#}
-                <a href="/register/" class="register_btn">立即注册</a>
-            </div>
+                <div class="form_con">
+                    <div class="form_input cur">
+                        <form method="post" action="/login_ajax/">
+                            <input type="text" name="username" class="name_input" placeholder="请输入用户名" id="username"
+                                   value="{{ username }}">
+                            <div class="user_error" id="login_error"></div>
+                            <input type="password" name="pwd" class="pass_input" placeholder="请输入密码" id="password">
+                            <div class="more_input clearfix">
+                                <input id="hash" name="captcha_0" value="{{ hashkey }}" type="hidden">
+                                <input type="text" id="login_code" class="code_input" style="height: 27px">
+                                {#                            <input type="button" id="code_refresh" value="genhuan">#}
+                                <img class="captcha" id="code_img" alt="captcha" src="{{ image_url }}"
+                                     style="border: 1px solid #ebebeb;margin-left: 18px;height: 30px;">
+                                <div id="code_error" style="color: red"></div>
+                            </div>
+                            <input type="button" name="" value="登 录" class="input_submit" id="login">
+                        </form>
+                    </div>
+                </div>
+                <div class="third_party">
+                    <button class="qq_login">忘记密码？</button>
+                    {#                <a href="#" class="weixin_login">微信</a>#}
+                    <a href="/register/" class="register_btn">立即注册</a>
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
 
-<div class="footer no-mp">
-    <div class="foot_link">
-        <a href="#">关于我们</a>
-        <span>|</span>
-        <a href="#">联系我们</a>
-        <span>|</span>
-        <a href="#">招聘人才</a>
-        <span>|</span>
-        <a href="#">友情链接</a>
+    <div class="footer no-mp">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+        <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
-    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
-    <p>电话：0512-****888 苏ICP备*******8号</p>
+    <div id="for_psw">
+        <p class="popwin_title">
+            忘记密码
+        </p>
+        <div class="popwin_content">
+            <table align="center">
+                <tr>
+                    <td class="popwin_tips">用户名：</td>
+                    <td><input class="" type="text" name="" value=""/></td>
+                </tr>
+                <tr>
+                    <td class="popwin_tips">手机号：</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="popwin_tips">验证码：</td>
+                    <td><input type="text" style="width: 100px;float: left">
+                        <span style="margin-left: 10px"><button id="fgt_psw_yzm_btn">点击获取</button></span></td>
+                </tr>
+                <tr>
+                    <td class="popwin_tips">新密码：</td>
+                    <td><input type="text"></td>
+                </tr>
+            </table>
+            <button class="btn_blue" style="margin-right: 40px">确定</button>
+            <button class="btn_blue cancer_fgt_psw">取消</button>
+        </div>
+
+    </div>
 </div>
 <script>
     //验证码更换！！
@@ -68,6 +101,14 @@
             $('#code_img').attr('src', result['image_url']);
             $('#hash').val(result['key'])
         }, 'json');
+    })
+</script>
+<script>
+    $(".qq_login").click(function () {
+        $("#for_psw").show();
+    })
+    $(".cancer_fgt_psw").click(function () {
+        $("#for_psw").hide();
     })
 </script>
 </body>

@@ -9,6 +9,7 @@
 
 </head>
 <body>
+<div style="min-height:100%;height:auto;">
 <div class="header_con">
     <div class="header">
         <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
@@ -31,19 +32,7 @@
         </div>
     </div>
 </div>
-<div class="navbar_con">
-    <div class="navbar">
-        <h1 class="fl">商品分类</h1>
-        <ul class="navlist fl">
-            <li><a href="/haima/">首页</a></li>
-            <li><a href="/release_auction/">发布闲置</a></li>
-            <li><a href="/auction_index/">拍卖</a></li>
-            <li><a href="/assess/">二手估价</a></li>
-            <li><a href="/user_center/">我的闲置</a></li>
-        </ul>
-    </div>
-</div>
-<div class="Navigation_information">
+    <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
@@ -68,7 +57,7 @@
     </select>
         </div>
 </div>
-<div id="goods_all">
+<div id="container" style="width:100%;min-height:100%;position:relative;">
 <div id="select_one">
 {% if list1 %}
 {% for i in list1%}
@@ -109,8 +98,10 @@
     </div>
 {% endfor %}
     {% else %}
+    <div>
         <span style="position: fixed; left: 5%;"><b style="font-size: 20px;">海马商城温馨提示，你还没有竞拍的商品哦!</b></span>
         <div style="position: fixed; left: 30%;"><img src="../static/Images/no_goods.jpg" alt="" width=100 height="100"></div>
+    </div>
 {% endif %}
 </div>
 <div id="select_two">
@@ -200,9 +191,7 @@
          </div>
 
   </div>
-   <div style="margin-right: 5px;margin-top: 260px;">
-            <img src="../static/Images/success.jpg" alt="" width="100px" height="100px;">
-        </div>
+
     </div>
 {% endfor %}
 </div>
@@ -283,6 +272,20 @@
   </div>
 </div>
 
+</div>
+ <div class="footer" style="position:absolute;bottom:0px;left:0px;">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+        <p>电话：0512-****888 苏ICP备*******8号</p>
+    </div>
 </div>
 </body>
 <script>

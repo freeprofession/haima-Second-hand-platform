@@ -1,13 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <title>半透明div</title>
+    <style>
+        #div1 {
+            margin: 0px auto;
+            width: 500px;
+            height: 370px;
+            text-align: center;
+            background: url('http://www.codefans.net/jscss/demoimg/wall3.jpg');
+        }
+
+        #div2 {
+            height: 330px;
+            filter: alpha(Opacity=80);
+            -moz-opacity: 0.5;
+            opacity: 0.5;
+            z-index: 100;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 <body>
-{% for i in auction_goods %}
-    <div>dsfshdf</div>
-    <div>{{ i.auction_id }}</div>
-{% endfor %}
+<div id="div1">
+    <div style="padding:20px;">
+        <div id="div2">这里是透明的DIV</div>
+    </div>
+</div>
 </body>
 </html>
