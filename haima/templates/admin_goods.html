@@ -12,29 +12,36 @@
             <ul>
                 <li>
                     <div class="am-btn-group am-btn-group-xs">
-                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
-                            <option value="b">产品分类</option>
-                            <option value="o">下架</option>
+                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}" id="goods_type">
+                            <option value="0">商品分类</option>
+                            <option value="1">手机</option>
+                            <option value="2">电脑</option>
+                            <option value="3">摄影</option>
+                            <option value="4">电玩</option>
+                            <option value="5">其他</option>
                         </select>
                     </div>
                 </li>
                 <li>
                     <div class="am-btn-group am-btn-group-xs">
-                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
-                            <option value="b">产品分类</option>
-                            <option value="o">下架</option>
+                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}" id="goods_state">
+                            <option value="1">商品状态</option>
+                            <option value="0">上架</option>
+                            <option value="2">下架</option>
                         </select>
                     </div>
                 </li>
                 <li style="margin-right: 0;">
                     <span class="tubiao am-icon-calendar"></span>
-                    <input type="text" id="start" class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
+                    <input type="text" name="start" id="start"
+                           class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
                            placeholder="开始日期" data-am-datepicker="{theme: 'success',}" readonly/>
                 </li>
                 <li style="margin-left: -4px;">
                     <span class="tubiao am-icon-calendar"></span>
-                    <input type="text" id="end" class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
-                           placeholder="开始日期" data-am-datepicker="{theme: 'success',}" readonly/>
+                    <input type="text" name="end" id="end"
+                           class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
+                           placeholder="结束日期" data-am-datepicker="{theme: 'success',}" readonly/>
                 </li>
 
                 <li style="margin-left: -10px;">
@@ -46,7 +53,7 @@
                     </div>
                 </li>
                 <li><input type="text" class="am-form-field am-input-sm am-input-xm" placeholder="关键词搜索"
-                           style="margin-top: 0px;"/></li>
+                           style="margin-top: 0px;" id="key"/></li>
                 <li>
                     <button type="button" class="am-btn am-radius am-btn-xs am-btn-success" id="search">搜索
                     </button>
@@ -70,11 +77,10 @@
                     <th width="163px" class="table-set">操作</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="goods">
                 {% for goods in contacts %}
-                    <tr>
+                    <tr class="goods">
                         <td><input type="checkbox" name="checkbox"/></td>
-                        {#                        <td><input type="text" class="am-form-field am-radius am-input-sm"/></td>#}
                         <td>{{ goods.goods_id }}</td>
                         <td>{{ goods.goods_title }}</td>
                         <td>{{ goods.user_name }}</td>
@@ -127,24 +133,7 @@
                 </button>
             </div>
             {#{{ contacts.paginator.num_pages }}#}
-            <ul class="am-pagination am-fr">
-                {% if contacts.has_previous %}
-                    <li><a href="?page={{ contacts.previous_page_number }}">«</a></li>
-                {% else %}
-                    <li class="am-disabled"><a href="javascript:void(0);">«</a></li>
-                {% endif %}
-                {% for pg in contacts.paginator.page_range %}
-                    {% if pg == contacts.number %}
-                        <li class="am-active"><a href="javascript:void(0);">{{ pg }}</a></li>
-                    {% else %}
-                        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if contacts.has_next %}
-                    <li><a href="?page={{ contacts.next_page_number }}">»</a></li>
-                {% else %}
-                    <li class="am-disabled"><a href="javascript:void(0);">»</a></li>
-                {% endif %}
+            <ul class="am-pagination am-fr" id="page">
             </ul>
             <hr/>
             <p>备注：
@@ -163,6 +152,87 @@
             $(location).attr('href', '/goods_detail/?goods=' + goods_id);
         }
 
+        function pg(obj) {
+            page = $(obj).attr('value')
+            console.log(page)
+            getgoods(page)
+        }
+
+        function getgoods(page) {
+            key = $('#key').val();
+            start = $('#start').val();
+            end = $('#end').val();
+            goods_type = $('#goods_type').val();
+            goods_state = $('#goods_state').val();
+            $.ajax({
+                type: "POST",
+                url: "/admin_search_goods/",
+                data: {
+                    'start': start,
+                    'end': end,
+                    'goods_type': goods_type,
+                    'goods_state': goods_state,
+                    'key': key,
+                    'page': page
+                },
+                beforeSend: function (XMLHttpRequest) {
+                    $("#goods").text('');
+                    $('#page').text('');
+                    $("#goods").append("<tr><td colspan='9' style='text-align: center'>数据加载中</td></tr>")
+                }, //请求前进行的操作
+                success: function (req) {
+                    console.log(req)
+                    $("#goods").text('');
+                    //处理返回后的数据
+                    var data = req['data'];
+                    var pagelist = req['pagelist']
+                    var page = req['page']
+                    var num_pages = req['num_pages']
+                    if (data.length != 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var goods_id = data[i].goods_id;
+                            var goods_title = data[i].goods_title;
+                            var user_name = data[i].user_name;
+                            var goods_category_id = data[i].goods_category_id;
+                            var goods_state = data[i].goods_state;
+                            var release_date = data[i].release_date;
+                            var goods_address = data[i].goods_address;
+                            appendData(goods_id, goods_title, user_name, goods_category_id, goods_state, release_date, goods_address);
+                        }
+                    } else {
+                        $("#goods").append("<tr><td colspan='9' style='text-align: center'>没有符合条件的商品</td></tr>")
+                    }
+                    if (page != 1) {
+                        $('#page').append('<li><a href="javascript:void(0);" onclick="pg(this)" value="' + (page - 1) + '">«</a></li>')
+                    }
+                    else {
+                        $('#page').append('<li class="am-disabled"><a href="javascript:void(0);">«</a></li>')
+                    }
+                    for (var i = 0; i < pagelist.length; i++) {
+                        var pg = pagelist[i]
+                        console.log(pg)
+                        if (pg == page) {
+                            $('#page').append('<li class="am-active"><a href="javascript:void(0);">' + pg + '</a></li>')
+                        }
+                        else {
+                            $('#page').append('<li><a href="javascript:void(0);" onclick="pg(this)" value="' + pg + '">' + pg + '</a></li>')
+                        }
+                    }
+                    if (page != num_pages) {
+                        $('#page').append('<li><a href="javascript:void(0);" onclick="pg(this)" value="' + (page + 1) + '">»</a></li>')
+                    }
+                    else {
+                        $('#page').append('<li class="am-disabled"><a href="javascript:void(0);">»</a></li>')
+                    }
+
+                },
+                error: function () {
+                    $("#goods").text('');
+                    $("#goods").append("<tr><td colspan='9' style='text-align: center'>网络繁忙，请稍后重试</td></tr>")
+                }
+            })
+        }
+
         function down(obj) {
             goods_id = $(obj).val();
             $.ajax({
@@ -174,7 +244,7 @@
                     //处理返回后的数据
                     if (data) {
                         $("#" + goods_id).attr("class", "am-icon-close am-text-primary");
-                        {#alert("下架成功")#}
+                        alert("下架成功")
                     } else {
                         {#alert("下架失败，请刷新页面重试")#}
                     }
@@ -195,7 +265,7 @@
                     //处理返回后的数据
                     if (data) {
                         $("#" + goods_id).attr("class", "am-icon-check am-text-warning");
-                        {#alert("上架成功")#}
+                        alert("上架成功")
                     } else {
                         {#alert("上架失败，请刷新页面重试")#}
                     }
@@ -206,37 +276,49 @@
         }
     </script>
     <script>
-        function duibi(a, b, flag) {
-            var arr = a.split("-");
-            var starttime = new Date(arr[0], arr[1], arr[2]);
-            var starttimes = starttime.getTime();
-            var arrs = b.split("-");
-            var endTime = new Date(arrs[0], arrs[1], arrs[2]);
-            var endTimes = endTime.getTime();
-            // 进行日期比较
-            if (endTimes >= starttimes) {
-                flag = "true";
-                return flag;
-            } else {
-                flag = "false";
-                return flag;
+        function appendData(goods_id, goods_title, user_name, goods_category_id, goods_state, release_date, goods_address) {
+            if (goods_state == '2') {
+                goods_state = 'am-icon-close am-text-primary'
             }
+            else {
+                goods_state = 'am-icon-check am-text-warning'
+            }
+            var text = '<tr class="goods">\n' + '<td><input type="checkbox" name="checkbox"/></td>\n' +
+                '<td>' + goods_id + '</td>\n' + '<td>' + goods_title + '</td>\n' +
+                '                        <td>' + user_name + '</td>\n' +
+                '                        <td>' + goods_category_id + '</td>\n' +
+                '                        <td class="am-hide-sm-only">\n' +
+                '                            \n' +
+                '                                <i class="' + goods_state + '" id="' + goods_id + '"></i>\n' +
+                '                            \n' +
+                '                        </td>\n' +
+                '                        <td class="am-hide-sm-only">' + release_date + '</td>\n' +
+                '                        <td>' + goods_address + '</td>\n' +
+                '                        <td>\n' +
+                '                            <div class="am-btn-toolbar">\n' +
+                '                                <div class="am-btn-group am-btn-group-xs">\n' +
+                '                                    <button type="button" onclick="detail(this)" value="' + goods_id + '"\n' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-success am-round"\n' +
+                '                                            title="商品详情"><span\n' +
+                '                                            class="am-icon-search"></span></button>\n' +
+                '                                    <button type="button" onclick="up(this)" value="' + goods_id + '"\n' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"\n' +
+                '                                            title="上架商品"><span\n' +
+                '                                            class="am-icon-arrow-up"></span></button>\n' +
+                '                                    <button type="button" onclick="down(this)" value="' + goods_id + '"\n' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-warning  am-round"\n' +
+                '                                            title="下架商品"><span\n' +
+                '                                            class="am-icon-arrow-down"></span></button>\n' +
+                '                                    <button type="button"\n' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-round"\n' +
+                '                                            title="强制删除"><span\n' +
+                '                                            class="am-icon-trash-o"></span></button>\n' +
+                '                                </div>\n' +
+                '                            </div>\n' +
+                '                        </td>\n' +
+                '                    </tr>';
+            $("#goods").append(text)
         }
-
-        $('#search').click(function () {
-            start = $('#start').val();
-            end = $('#end').val();
-            console.log(start, end)
-            $.ajax({
-                type: "POST",
-                url: "/admin_search_goods/",
-                data: {'start': start, 'end': end},
-                success: function (data) {
-                    //处理返回后的数据
-                    console.log(data)
-                }
-            })
-        })
     </script>
     <script>
         $('input[name="checkall"]').on("click", function () {
@@ -250,5 +332,29 @@
                 });
             }
         });
+    </script>
+    <script>
+        $('#start,#end').click(function () {
+            $(this).val("")
+        });
+        $(document).ready(function () {
+            $('#start,#end').datepicker().on('changeDate.datepicker.amui', function (event) {
+                getgoods()
+            });
+
+            $("#goods_state,#goods_type").change(function () {
+                getgoods()
+            });
+
+            $('#search').click(function () {
+                getgoods()
+            });
+            $(window).keydown(function (event) { //这个是你在页面按任意按钮的时候会触发该方法
+                if (event && event.keyCode == 13) {
+                    getgoods()
+                }
+            });
+            getgoods()
+        })
     </script>
 {% endblock %}

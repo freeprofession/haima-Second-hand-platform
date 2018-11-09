@@ -11,28 +11,7 @@
     <script type="text/javascript" src="../static/JS/main.js"></script>
 </head>
 <body onload="leftTimer()">
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/auction_index/" target="_blank">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="/my_sale/" id="my_order">我的订单</a>
-                <span>|</span>
-                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"
                                            style="position: relative;top: -15px"></a>

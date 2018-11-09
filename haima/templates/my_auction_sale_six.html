@@ -19,28 +19,7 @@
 </head>
 <body>
 <div style="min-height:100%;height:auto;">
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/my_auction/" target="_blank">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a>
-                <span>|</span>
-                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'home_head.html' %}
     <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>

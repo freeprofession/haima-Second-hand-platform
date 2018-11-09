@@ -25,6 +25,17 @@ from myapp import phone_model
 from myapp import AI_assess
 from myapp import goods_recommend
 
+
+class CJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, datetime.date):
+            return obj.strftime('%Y-%m-%d')
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
 r = redis.Redis(host="47.100.200.132", port=6379)
 r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
 img = redis.Redis(host="47.100.200.132", port=6379, db=2)
@@ -1578,7 +1589,6 @@ def end_auction(request):
 # ****************************************************************用户竞拍成功******************************************
 
 
-
 # ********************************************************************普通商品购买***************************************
 def goods_confirm_buy(request):
     error = ""
@@ -2197,6 +2207,119 @@ def confirm_goods(request):
     return HttpResponse(json.dumps({"msg": "123"}))
 
 
+# ***********************************************拍卖商品竞拍成功后，支付尾款********************************************
+def pay_auction_money(request):
+    error = ""
+    buy_user_id = request.session.get("user_id")
+    order_id = request.POST.get("order_id")
+    print(order_id)
+    cur.execute("select auction_order_fianl_price from t_auction_order where auction_order_id=%s", [order_id])
+    order_price = cur.fetchone()["auction_order_fianl_price"]
+    print(order_price)
+    cur.execute("select user_money from t_user where user_id=%s", [buy_user_id])
+    user_money = cur.fetchone()["user_money"]
+    print(user_money)
+    # 通过订单id找到商品id
+    cur.execute("select auction_order_goods_id from t_auction_order where  auction_order_id=%s", [order_id])
+    goods_id = cur.fetchone()["auction_order_goods_id"]
+    # 通过商品id找到保证金
+    cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s", [goods_id])
+    goods_margin = cur.fetchone()["auction_goods_margin"]
+    # 这里是用户输入的账号密码
+    pay_password = request.POST.get("pay_password")
+    cur.execute("select user_pay_password from t_user where user_id=%s", [buy_user_id])
+    user_pay_password = cur.fetchone()["user_pay_password"]
+
+    # 先判断有没有输入支付密码：
+    if pay_password:
+        if len(pay_password) < 6:
+            error = "pay_password_length_error"
+            return HttpResponse(json.dumps({"msg": error}))
+        elif int(user_pay_password) != int(pay_password):
+            error = "pay_password_error"
+            return HttpResponse(json.dumps({"msg": error}))
+        elif float(user_money) < float(order_price):
+            error = "money_less_error"
+            return HttpResponse(json.dumps({"msg": error}))
+        # 用户账号正确而且余额足够
+        else:
+            print("进入支付操作")
+            error = "ok"
+            try:
+                user_money = user_money - order_price + goods_margin
+                # 付款以后把他的钱扣掉把保证金退还
+                cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, buy_user_id])
+                # 将订单那个状态改成1
+                cur.execute("update t_auction_order set auction_order_state=%s where auction_order_id=%s",
+                            ["1", order_id])
+                # 将商品记录表里的状态改成3,付款时间也改一下
+                now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+                cur.execute(
+                    "update t_auction_goods_record set auction_goods_state=%s,pay_monet_date=%s where  auction_goods_id=%s",
+                    ["3", now_time, goods_id])
+
+                print("操作完成")
+            except Exception as e:
+                print(e)
+            con.commit()
+            error = "pay_ok"
+            return HttpResponse(json.dumps({"msg": error}))
+
+    else:
+        print("无密码")
+        error = "no_pay_password"
+        return HttpResponse(json.dumps({"msg": error}))
+
+
+# ********************************************返回支付拍卖成功的钱以后的跳转*********************************************
+def pay_auction_money_ok(request):
+    return render(request, "pay_auction_money_ok.html")
+
+
+# *****************************************处理拍卖商品的发货************************************************************
+def delivery(request):
+    courier_number = request.POST.get("courier_number")
+    order_id = request.POST.get("order_id")
+
+    try:
+        cur.execute("update t_auction_order set the_goods_state=%s where auction_order_id=%s",
+                    [courier_number, order_id])
+        con.commit()
+    except Exception as e:
+        print(e)
+    return HttpResponse(json.dumps({"msg": "ok"}))
+
+
+# *********************************************拍卖商品的收货*******************************************************
+def confirm_auction_goods(request):
+    order_id = request.POST.get("order_id")
+    # 用户确认收货以后改变状态
+    try:
+        now_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+        cur.execute("update t_auction_order set auction_order_state=%s,order_success_date=%s where auction_order_id=%s",
+                    ["2", now_date, order_id])
+        cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s", [order_id])
+        auction_goods_id = cur.fetchone()["auction_order_goods_id"]
+        # 用户确认收货以后需要把钱打到卖家账户
+        cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s",
+                    [auction_goods_id])
+        goods_margin = cur.fetchone()["auction_goods_margin"]
+        cur.execute("select auction_goods_fianl_prcie from t_auction_goods where auction_order_id=%s", [order_id])
+        goods_money = cur.fetchone()["auction_goods_fianl_prcie"]
+        cur.execute("select auction_goods_user_id from t_auction_goods_record where auction_goods_id=%s",
+                    [auction_goods_id])
+        maijia_id = cur.fetchone()["auction_goods_user_id"]
+        cur.execute("select user_money from t_user where user_id=%s", [maijia_id])
+        user_money = cur.fetchone()["user_money"]
+        user_money = user_money + goods_money + goods_margin
+        cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, maijia_id])
+        cur.execute("update t_auction_goods_record set auction_goods_state=%s where auction_goods_id=%s",
+                    ["4", auction_goods_id])
+        con.commit()
+    except Exception as e:
+        print(e)
+
+
 def get_ali_object():
     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
     app_id = "2016092000555548"  # APPID （沙箱应用）
@@ -2226,9 +2349,9 @@ def page1(request):
     user_id = request.session.get("user_id")
     money = request.POST.get('price')
     title = request.POST.get('title')
-    phone=request.POST.get('phone')
-    name=request.POST.get('name')
-    address=request.POST.get('address')+request.POST.get("user_address")
+    phone = request.POST.get('phone')
+    name = request.POST.get('name')
+    address = request.POST.get('address') + request.POST.get("user_address")
     alipay = get_ali_object()
     goods_id = request.POST.get('goods_id')
     request.session['goods_id'] = goods_id
@@ -2243,7 +2366,6 @@ def page1(request):
 
     )
     pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
-
 
     return HttpResponse(pay_url)
 
@@ -2297,7 +2419,7 @@ def page2(request):
             date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
             cur.execute(
                 "insert into t_order(release_user_id,buy_user_id,order_date,order_goods_id,buy_phone,buy_name,buy_address) values (%s,%s,%s,%s,%s,%s,%s)",
-                [str(release_user_id), str(user_id), date, str(goods_id),str(phone),str(name),str(address)])
+                [str(release_user_id), str(user_id), date, str(goods_id), str(phone), str(name), str(address)])
             print("生成订单成功")
             cur.execute("update t_goods set goods_state=%s where goods_id=%s", ["1", goods_id])
             print("更新商品状态成功")
@@ -2333,6 +2455,7 @@ def admin_login(request):
         else:
             return HttpResponse('')
 
+
 @admin_session
 def admin(request, user):
     return render(request, 'admin.html', {'user': user})
@@ -2340,27 +2463,70 @@ def admin(request, user):
 
 @admin_session
 def admin_goods(request, user):
-    cur.execute("select * from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
-    goodslist = cur.fetchall()
-    paginator = Paginator(goodslist, 40)
-    page = request.GET.get('page')
-    try:
-        contacts = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        contacts = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        contacts = paginator.page(paginator.num_pages)
-    return render(request, 'admin_goods.html', {'user': user, 'contacts': contacts})
+    # cur.execute(
+    #     "select goods_id,goods_title,user_name,goods_category_id,goods_state,release_date,goods_address from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
+    # goodslist = cur.fetchall()
+    # paginator = Paginator(goodslist, 40)
+    # page = request.GET.get('page')
+    # try:
+    #     contacts = paginator.page(page)
+    # except PageNotAnInteger:
+    #     # If page is not an integer, deliver first page.
+    #     contacts = paginator.page(1)
+    # except EmptyPage:
+    #     # If page is out of range (e.g. 9999), deliver last page of results.
+    #     contacts = paginator.page(paginator.num_pages)
+    # print(contacts)
+    return render(request, 'admin_goods.html', {'user': user})
 
 
 @admin_session
 def admin_search_goods(request, user):
     start = request.POST.get('start')
     end = request.POST.get('end')
-    print(start, end)
-    return HttpResponse("POST")
+    key = request.POST.get('key')
+    if not end:
+        end = loc_time
+    sql = "select goods_id,goods_title,user_name,goods_category_id,goods_state,release_date,goods_address from t_goods inner join t_user on t_goods.user_id=t_user.user_id where release_date BETWEEN '%s' AND '%s'" % (
+        start, end)
+    goods_type = request.POST.get('goods_type')
+    goods_state = request.POST.get('goods_state')
+    if goods_type in ['1', '2', '3', '4', '5']:
+        sql += " and goods_category_id = '%s'" % (goods_type)
+    if goods_state in ['0', '2']:
+        sql += " and goods_state= '%s'" % (goods_state)
+    if key:
+        key = '%' + key + '%'
+        sql += " and concat(goods_title,goods_address,user_name,goods_id) like '%s'" % (key)
+    cur.execute(sql)
+    print(sql)
+    goodslist = cur.fetchall()
+    paginator = Paginator(goodslist, 40)
+    page = request.POST.get('page')
+    print(page)
+    try:
+        contacts = paginator.page(page)
+        page = int(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+    num_pages = paginator.num_pages
+    if num_pages <= 5:
+        pagelist = [i + 1 for i in range(num_pages)]
+    else:
+        if page <= 3:
+            pagelist = [i + 1 for i in range(5)]
+        elif page >= num_pages - 2:
+            pagelist = [i + 1 for i in range(num_pages - 5, num_pages)]
+        else:
+            pagelist = [i + 1 for i in range(page - 2, page + 3)]
+    # pagelist = ['«'] + pagelist + ['»']
+    print(pagelist)
+    datalist = {'page': page, 'num_pages': num_pages, 'data': contacts.object_list, 'pagelist': pagelist}
+    return HttpResponse(json.dumps(datalist, cls=CJsonEncoder), content_type="application/json")
 
 
 @admin_session
@@ -2387,12 +2553,6 @@ def admin_user(request, user):
 
 
 @admin_session
-def exit(request, user):
-    del request.session['user']
-    return redirect('/admin_login/')
-
-
-@admin_session
 def admin_order(request, user):
     cur.execute(
         "select * from (t_goods inner join t_user on t_goods.user_id=t_user.user_id)inner join t_order on t_goods.goods_id = t_order.order_goods_id")
@@ -2401,17 +2561,16 @@ def admin_order(request, user):
     return render(request, 'admin_order.html', {'user': user, 'orderlist': orderlist})
 
 
-
 @admin_session
 def exit(request, user):
     del request.session['user']
     return redirect('/admin_login/')
 
+
 @login_required
 def place_order(request):
-    user_id=request.session.get("user_id")
-    goods_id=request.GET.get("goods_id")
-    cur.execute("select * from t_goods where goods_id=%s",[goods_id])
-    goods_message=cur.fetchone()
-    return render(request, 'place_order.html',locals())
-
+    user_id = request.session.get("user_id")
+    goods_id = request.GET.get("goods_id")
+    cur.execute("select * from t_goods where goods_id=%s", [goods_id])
+    goods_message = cur.fetchone()
+    return render(request, 'place_order.html', locals())
