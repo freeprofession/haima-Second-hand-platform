@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>海马商城-提交订单</title>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../static/JS/p_c_c.js"></script>
+</head>
+{% include 'home_head.html' %}
+<div class="search_bar clearfix">
+    <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="120px" height="70px;"
+                                              style="margin-top: 20px;"></a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交拍卖订单订单</div>
+
+</div>
+
+<h3 class="common_title">确认收货地址</h3>
+
+<div class="common_list_con clearfix" id="get_site">
+    <div>
+        <dl>
+            <dt>寄送到：</dt>
+            <select id="cmbProvince" name="cmbProvince"></select>
+            <select id="cmbCity" name="cmbCity"></select>
+            <select id="cmbArea" name="cmbArea"></select>
+
+            <dt>
+                <br>
+                <span style="padding-top: 20px;">请输入详细地址:<input type="text" id="address"
+                                                                style="width: 200px;height: 20px;"></span>
+            </dt>
+        </dl>
+        <a href="" class="edit_site">编辑收货信息</a>
+    </div>
+    <div>
+        <dl>
+            <dt>个人信息：</dt>
+            <dt>收货人号码：<input type="text" id="phone"></dt>
+            <dt>收货人姓名：<input type="text" id="name"></dt>
+        </dl>
+
+    </div>
+</div>
+
+<h3 class="common_title">支付方式</h3>
+<div class="common_list_con clearfix">
+    <div class="pay_style_con clearfix">
+
+        <label class="zhifubao"></label>
+    </div>
+</div>
+
+<h3 class="common_title">商品列表</h3>
+
+<div class="common_list_con clearfix">
+    <ul class="goods_list_th clearfix">
+        <li class="col01">商品名称</li>
+
+        <li class="col04">数量</li>
+        <li class="col05">总价</li>
+    </ul>
+    <ul class="goods_list_td clearfix">
+        <li class="col01">1</li>
+        <li class="col02"><img src={{ goods_message.auction_goods_imgurl }}></li>
+        <li class="col03" id="goods_title">{{ goods_message.auction_goods_title }}</li>
+        <li id="order_id">{{ order_message.auction_order_id }}</li>
+        <li class="col06">1</li>
+        <li class="col07">{{ order_message.auction_order_fianl_price }}</li>
+    </ul>
+
+</div>
+
+<h3 class="common_title">总金额结算</h3>
+
+<div class="common_list_con clearfix">
+    <div class="settle_con">
+
+        <div class="total_pay">实付款：<b style="color: #ffda44"
+                                      id="goods_price">{{ order_message.auction_order_fianl_price }}</b></div>
+    </div>
+</div>
+
+<div class="order_submit clearfix">
+    <button id="buy_now">提交拍卖订单</button>
+</div>
+
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2016 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：010-****888 京ICP备*******8号</p>
+</div>
+
+
+<script>
+    function isPhoneNo(phone) {
+        var pattern = /^1[34578]\d{9}$/;
+        return pattern.test(phone);
+    }
+
+    function isChinaName(name) {
+        var pattern = /^[\u4E00-\u9FA5]{1,6}$/;
+        return pattern.test(name);
+    }
+
+    addressInit('cmbProvince', 'cmbCity', 'cmbArea');
+    $("#buy_now").click(function () {
+        var address = $("#cmbProvince").val() + $("#cmbCity").val();
+        var user_address = $("#address").val();
+        var phone = $("#phone").val();
+        var name = $("#name").val();
+        order_id = $("#order_id").text();
+        title = $("#goods_title").text();
+        price = $("#goods_price").text();
+        goods_id = $("#goods_id").text();
+        if ($.trim(user_address).length == 0) {
+            alert("详细地址必须输入");
+            return false
+        }
+        if (isPhoneNo(phone) == false) {
+            alert("手机号码不正确")
+            return false
+        }
+        if (isChinaName(name) == false) {
+            alert("名字不合法");
+            return false
+        }
+        if ($.trim(name).length == 0) {
+            alert("收货人姓名必须输入");
+            return false
+        }
+
+
+        $.post("/auction_money/",
+            {
+                "address": address,
+                "user_address": user_address,
+                "phone": phone,
+                "name": name,
+                "title": title,
+                "price": price,
+                "order_id": order_id,
+            }
+            , function (data) {
+                location.href = data
+            }
+        )
+    })
+</script>
+
+</body>
+</html>

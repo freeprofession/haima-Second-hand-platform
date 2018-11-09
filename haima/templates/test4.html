@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body onload="f()">
 <form action=""  method="post" enctype="multipart/form-data">
     <label for="fileId"><img src="../static/Images/addpic.jpg" alt=""></label>
             <input type="file" id="fileId" name="image" value="请上传图片"/>
             <input type="hidden" id="hiddId" name="id" value="1"/>
             <input type="button" id="submit" value="上传"/>
 </form>
+<div class="ddddd"></div>
    
 <script type="text/javascript">
     $("#submit").click(function () {
@@ -36,5 +37,35 @@
         })
     })
 </script>
+{#<div id="js-uploadList_fuck0" class="img-box">#}
+{#    <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="0"></span><img#}
+{#            src="">#}
+{#    </div>#}
+{#</div>#}
+{#<div id="js-uploadList_fuck0" class="img-box">#}
+{#    <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="0"></span><img#}
+{#            src="https://img.alicdn.com/bao/uploaded/i3/O1CN011V3T3P6H2R156Ul_!!0-fleamarket.jpg_728x728.jpg">#}
+{#    </div>#}
+{#    <div id="js-uploadList_fuck1" class="img-box">#}
+{#        <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="1"></span><img#}
+{#                src="https://img.alicdn.com/bao/uploaded/i3/O1CN011V3T3P6H2R156Ul_!!0-fleamarket.jpg_728x728.jpg">#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+<div id="js-uploadList_fuck0" class="img-box"> <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="0"></span> <img src="http://pgwecu7z4.bkt.clouddn.com/Fkid7rCDM5ROTwArvG8i9tlTy82j"> </div> </div><div id="js-uploadList_fuck1" class="img-box"> <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="1"></span> <img src="http://pgwecu7z4.bkt.clouddn.com/FkaNIOXPi_sXqQthQyzHlDtd_VVK"> </div> </div>
 </body>
+<script>
+    function f() {
+        $("#ddddd").append("<div id=\"js-uploadList_fuck0\" class=\"img-box\">\n" +
+            "    <div class=\"img-border\"><span class=\"js-upload_delete icon-delete_fill red\" data-index=\"0\"></span><img src=\"https://img.alicdn.com/bao/uploaded/i3/O1CN011V3T3P6H2R156Ul_!!0-fleamarket.jpg_728x728.jpg\"></div>\n" +
+            "</div>\n" +
+            "<div id=\"js-uploadList_fuck0\" class=\"img-box\">\n" +
+            "    <div class=\"img-border\"><span class=\"js-upload_delete icon-delete_fill red\" data-index=\"0\"></span>\n" +
+            "        <img src=\"https://img.alicdn.com/bao/uploaded/i3/O1CN011V3T3P6H2R156Ul_!!0-fleamarket.jpg_728x728.jpg\">\n" +
+            "    </div>\n" +
+            "</div>")
+
+    }
+</script>
 </html>

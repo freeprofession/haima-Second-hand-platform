@@ -42,33 +42,7 @@
 
 </head>
 <body onload="href()">
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red">{{ login_status }}</span> 欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/goods_detail/?goods={{ goods_id }}">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a><br>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="order_show">
-    <ul>
-        <li><a href="/my_sale/">我出售的</a></li>
-        <li><a href="/my_buy/">我购买的</a></li>
-    </ul>
-</div>
-
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
@@ -335,7 +309,15 @@
             <div class="goods_num clearfix">
                 <div class="type_select">
                     <label>成色：</label>
-                    <span>全新</span>
+                    {% if goods.goods_appearance == 4 %}
+                        <span>全新</span>
+                    {% elif goods.goods_appearance == 3 %}
+                        <span>九五新</span>
+                    {% elif goods.goods_appearance == 2 %}
+                        <span>九成新</span>
+                    {% elif goods.goods_appearance == 1 %}
+                        <span>八五新</span>
+                    {% endif %}
                 </div>
                 <div class="type_select">
                     <label>所在地:</label>
@@ -352,7 +334,7 @@
                 </div>
                 <div class="operate_btn">
                     {% if  seller_in == "no_seller" and goods_state == "0" %}
-                        <button id="buy_now" class="buy_btn">立即购买</button>
+                        <a href="/place_order/?goods_id={{ goods.goods_id }}"><button id="buy_now">立即购买</button></a>
                         <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
                     {% elif seller_in == "no_seller" and goods_state == "1" %}
                         <a href="javascript:;" class="buy_btn">已经出售</a>
@@ -361,7 +343,7 @@
                         {#                        <a href="javascript:" class="buy_btn" style="color: #2d64b3">已经下架</a>#}
                     {% elif seller_in == "seller_in" and goods_state == "0" %}
                         <a href="javascript:;" class="buy_btn" id="lower_goods">下架商品</a>
-                        <a href="javascript:;" class="add_cart" id="modify_goods">修改商品</a>
+                        <a href="/publish/?goods_id={{ goods.goods_id }}" class="add_cart" id="modify_goods">修改商品</a>
                     {% elif seller_in == "seller_in" and goods_state == "1" %}
                         <a href="javascript:;" class="add_cart">已经出售</a>
                     {% elif seller_in == "seller_in" and goods_state == "2" %}
@@ -577,21 +559,7 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
 
-    $("#buy_now").click(function () {
-        title = $("#goods_title").text();
-        price = $("#goods_price").text();
-        goods_id = $("#goods_id").text();
-        $.post("/page1/",
-            {
-                "title": title,
-                "price": price,
-                "goods_id": goods_id,
-            }
-            , function (data) {
-                location.href = data
-            }
-        )
-    })
+
 </script>
 <script>
     var get_message_id = 0;
@@ -683,7 +651,7 @@
         var c_name = $(".c_name_" + c_id).text();
         var input_ = document.getElementById("get_child_review_" + get_message_id);
         input_.style.fontFamily = "Microsoft YaHei"
-        input_.value = "回复"+ c_name +":"
+        input_.value = "回复" + c_name + ":"
     }
 
     //留言

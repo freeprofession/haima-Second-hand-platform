@@ -531,6 +531,7 @@ a = [{'goods_id': 580670260232, 'user_id': 1, 'release_date': datetime.date(2018
 # sms = redis.Redis(host="47.100.200.132", port=6379, db=5)
 # a=sms.get(17326197619)
 # print(a)
-cur.execute("select user_name,user_state from t_user where user_name=%s", ["jqlove", ])  # 全表搜索，待建立索引
-user_login = cur.fetchone()
-print(user_login)
+# cur.execute("select user_name,user_state from t_user where user_name=%s", ["jqlove", ])  # 全表搜索，待建立索引
+# user_login = cur.fetchone()
+# print(user_login)
+r = """<div id="js-uploadList_fuck0" class="img-box"><div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="0"></span><img src=""></div></div>"""

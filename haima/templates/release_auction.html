@@ -64,28 +64,7 @@
     <script type="text/javascript" src="../static/JS/release_auction.js"></script>
 </head>
 <body>
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/release_auction/" target="_blank">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a>
-                <span>|</span>
-                <a href="" id="my_order">留言 </a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'home_head.html' %}
 <div class="navbar_con">
     <div class="navbar">
         <h1 class="fl">商品分类</h1>
@@ -100,7 +79,7 @@
 </div>
 <div class="Navigation_information">
     <div id="auction_Navigation">
-        <a href="/my_auction_one/">
+        <a href="/my_auction_sale_one/">
             <button id="my_auction">我的拍卖</button>
         </a>
         <a href="/auction_index/">

@@ -1,0 +1,46 @@
+#for_psw {
+    height: 1400px;
+    width: 1520px;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, .7);
+    display: none;
+}
+
+.popwin_title {
+    width: 394px;
+    height: 50px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    line-height: 50px;
+    background: #F5F5F5;
+    padding-left: 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #DDDDDD;
+    position: absolute;
+    z-index: 10002;
+    top: 200px;
+    left: 540px;
+}
+
+.popwin_content {
+    width: 374px;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    position: absolute;
+    z-index: 10002;
+    top: 250px;
+    left: 540px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+#info{
+    position: fixed;
+    top:10%;
+    left: 7%;
+}
