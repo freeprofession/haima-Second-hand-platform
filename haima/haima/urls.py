@@ -94,12 +94,9 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-<<<<<<< HEAD
 
     path('buy_auction/', view.buy_auction),
 
-=======
->>>>>>> 150351083dcd291772eebaa5fa388f10e63a42a4
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
@@ -178,8 +175,7 @@ urlpatterns = [
     path('top_up_money/', cz.top_up_money),  # 充值
     path('auction_money/', auction_pay.auction_money),
     path('page4/', auction_pay.page4),
-<<<<<<< HEAD
-=======
+
     path('place_order/',view.place_order),
     path("my_auction_buy_one/", auction_buy.my_auction_buy_one),
     path("my_auction_buy_two/", auction_buy.my_auction_buy_two),
@@ -195,5 +191,4 @@ urlpatterns = [
     path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
     path('auction_place_order/',auction.auction_place_order),
 
->>>>>>> 150351083dcd291772eebaa5fa388f10e63a42a4
 ]

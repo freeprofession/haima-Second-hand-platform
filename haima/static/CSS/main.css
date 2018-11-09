@@ -42,7 +42,7 @@ html, body {
 #for_psw {
     height: 760px;
     width: 1520px;
-    position: absolute;
+    position: fixed;
     top: 0;
     z-index: 100;
     background-color: rgba(0, 0, 0, .7);
@@ -107,7 +107,7 @@ html, body {
 
 .btn_blue {
     margin-top: 10px;
-    padding: 5px 10px;
+    padding: 4px 10px;
     background-color: #0a6999;
     color: white;
     border-radius: 3px;
@@ -1269,6 +1269,17 @@ label:hover {
 .goods_type_list .operate .unit {
     color: #999;
     padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+.del_col {
+    border: 0;
+    padding: 0;
+    float: right;
+}
+
+.del_col:hover {
+    cursor: pointer;
 }
 
 .goods_type_list .operate .add_goods {
@@ -1280,14 +1291,15 @@ label:hover {
     right: 0;
     top: 3px;
 }
+
 /*.delete_goods{*/
-    /*display: inline-block;*/
-    /*width: 15px;*/
-    /*height: 15px;*/
-    /*background: url(../Images/delete_goods.jpg) no-repeat;*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 3px;*/
+/*display: inline-block;*/
+/*width: 15px;*/
+/*height: 15px;*/
+/*background: url(../Images/delete_goods.jpg) no-repeat;*/
+/*position: absolute;*/
+/*right: 0;*/
+/*top: 3px;*/
 
 /*}*/
 
@@ -3447,7 +3459,7 @@ label:hover {
 
 #price_res {
     background-color: #fff;
-    border: 5px solid rgb(0, 0, 0, .4);
+    border: 5px solid rgba(0, 0, 0, .4);
     height: 150px;
     padding: 1px;
     position: fixed;
@@ -3904,7 +3916,6 @@ label:hover {
     color: red;
     font-size: 13px;
 }
-<<<<<<< HEAD
 
 #mod_psw_prcs ul li {
     margin-top: 20px;
@@ -3912,14 +3923,14 @@ label:hover {
     width: 200px;
     background-color: #e2e2e2;
     float: left;
-=======
-#buy_now{
+}
+
+#buy_now {
     float: right;
     width: 120px;
     height: 25px;
     background-color: #ffda44;
     border-radius: 2px;
->>>>>>> 150351083dcd291772eebaa5fa388f10e63a42a4
 }
 
 #mod_psw_word ul li {
@@ -3930,3 +3941,4 @@ label:hover {
     text-align: center;
     float: left;
 }
+

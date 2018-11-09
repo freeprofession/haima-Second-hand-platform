@@ -9,7 +9,7 @@
 <body>
 <div class="header_con">
     <div class="header">
-       <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
         <div class="fr">
             <div class="login_btn fl">
                 <a href="/login/">登录</a>
@@ -81,7 +81,7 @@
                                         style="color: red">{{ item.goods_price }}</em></li>
                             </ul>
                         </td>
-                        <td width="15%"><a href="{{ item.buy_user_id }}" class="oper_btn">私聊买家</a></td>
+                        <td width="15%"><button class="oper_btn sale_msg">私聊买家</button></td>
                         {% if item.state == 0 %}
                             <td width="15%"><input type="button" class="send" style="color: red" value="去发货"></td>
                         {% else %}
@@ -157,7 +157,28 @@
         {% endif %}
     </div>
 </div>
-
+<div id="for_psw">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        卖家信息
+    </p>
+    <div class="popwin_content">
+        <table align="center" style="font-size: 15px">
+            <tr>
+                <td>卖家：</td>
+                <td>clearlove</td>
+            </tr>
+            <tr>
+                <td>联系方式：</td>
+                <td>17777777777</td>
+            </tr>
+            <tr>
+                <td>收货地址：</td>
+                <td>灵石路</td>
+            </tr>
+        </table>
+        <button class="btn_blue" id="change_password">确定</button>
+    </div>
+</div>
 
 <div class="footer">
     <div class="foot_link">
@@ -215,6 +236,13 @@
 
     }
 </script>
-
+<script>
+    $(".sale_msg").click(function () {
+        $("#for_psw").show();
+    })
+    $("#change_password").click(function () {
+        $("#for_psw").hide();
+    })
+</script>
 </body>
 </html>

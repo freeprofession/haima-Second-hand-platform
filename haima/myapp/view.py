@@ -1174,7 +1174,6 @@ def assess_ajax(request):
     return HttpResponse(json.dumps({"price": price}))
 
 
-<<<<<<< HEAD
 # 拍卖首页
 def auction_index(request):
     id = request.session.get('user_id')
@@ -1589,8 +1588,7 @@ def end_auction(request):
 # ****************************************************************用户竞拍成功******************************************
 
 
-=======
->>>>>>> 150351083dcd291772eebaa5fa388f10e63a42a4
+
 # ********************************************************************普通商品购买***************************************
 def goods_confirm_buy(request):
     error = ""

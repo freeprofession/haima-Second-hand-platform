@@ -70,9 +70,11 @@
                                 <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
                                 <div class="operate">
                                     <span class="prize">该商品已经下架</span>
-                                    <p class="unit">{{ value.collection_date }}</p>
-                                    <button href="#" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
-                                                                       style="width: 15px;height: 15px" alt=""></button>
+                                    <p class="unit fl">{{ value.collection_date }}</p>
+                                    <button class="del_col fl" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
+                                                                                 style="width: 15px;height: 15px;margin: 0"
+                                                                                 alt="">
+                                    </button>
                                 </div>
                             </li>
                         {% elif value.goods_state == '1' %}
@@ -82,9 +84,11 @@
                                 <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
                                 <div class="operate">
                                     <span class="prize">已出售</span>
-                                    <p class="unit">{{ value.collection_date }}</p>
-                                    <button href="#" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
-                                                                       style="width: 15px;height: 15px" alt=""></button>
+                                    <p class="unit fl">{{ value.collection_date }}</p>
+                                    <button class="del_col fl" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
+                                                                                 style="width: 15px;height: 15px;margin: 0"
+                                                                                 alt="">
+                                    </button>
                                 </div>
                             </li>
                         {% else %}
@@ -92,10 +96,12 @@
                                 <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"></a>
                                 <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
                                 <div class="operate">
-                                    <span class="prize">￥：{{ value.goods_price }}</span>
-                                    <p class="unit">{{ value.collection_date }}</p>
-                                    <button href="#" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
-                                                                       style="width: 15px;height: 15px" alt=""></button>
+                                    <span class="prize">￥{{ value.goods_price }}</span>
+                                    <p class="unit fl">{{ value.collection_date }}</p>
+                                    <button class="del_col fl" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
+                                                                                 style="width: 15px;height: 15px;margin: 0"
+                                                                                 alt="">
+                                    </button>
 
                                 </div>
                             </li>
@@ -182,7 +188,16 @@
         </div>
     </div>
 </div>
-
+<div id="for_psw">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        取消收藏
+    </p>
+    <div class="popwin_content">
+        <p style="font-size: 18px;font-weight: bold;margin-bottom: 20px">确定取消收藏吗？</p>
+        <button class="btn_blue" style="margin-right: 40px" id="change_password">确定</button>
+        <button class="btn_blue cancer_fgt_psw">取消</button>
+    </div>
+</div>
 
 <div class="footer">
     <div class="foot_link">
@@ -198,5 +213,14 @@
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+<script>
+    $(".del_col").click(function () {
+        $("#for_psw").show();
+    })
+    $(".cancer_fgt_psw").click(function () {
+        $("#for_psw").hide();
+    })
+</script>
 </body>
 </html>
