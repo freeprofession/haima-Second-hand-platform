@@ -201,7 +201,7 @@ html, body {
     width: 100px;
 }
 
-#auction_goods {
+.auction_goods {
     margin: 25px auto;
     height: 220px;
     width: 1060px;
@@ -209,12 +209,12 @@ html, body {
 
 }
 
-#auction_goods div {
+.auction_goods .tttt {
     float: left;
 }
 
 #auction_goods_desc {
-    color: #16bcbd;
+    color: black;
     width: 806px;
     height: 188px;
     padding: 16px;
@@ -222,8 +222,11 @@ html, body {
 }
 
 #desc {
+    padding-top: 10px;
     width: 500px;
-    height: 100px;
+    height: 110px;
+    font-family: 等线;
+    font-size: 16px;
 }
 
 #auction_goods_img {
@@ -241,7 +244,6 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-
 #auction_messige {
     font-size: 16px;
     float: left;
@@ -249,13 +251,16 @@ html, body {
 }
 
 #auction_messige_desc div {
-    padding-top: 10px;
+    padding-top: 5px;
+    width: 150px;
+}
+
+#auction_bot .auc_fl {
+    float: left;
 }
 
 #auction_button {
-    margin-left: 550px;
-    padding-top: 100px;
-
+    margin-left: 50px;
 }
 
 #auction_button button {
@@ -264,18 +269,21 @@ html, body {
 
 }
 
-#auction_wantbuy_persons {
+#auction_button button:hover {
+    box-shadow: 1px 1px 1px 1px #a2a2a2;
+}
 
-    position: relative;
-    top: -20px;
-    left: 100px;
-    padding-top: 0px;
+#auction_wantbuy_persons {
     font-size: 14px;
+    padding: 15px 20px;
+    background-color: #c30000;
+    color: white;
+    position: relative;
+    top: -161px;
+    left: 19px;
 }
 
 #go_buy {
-    position: relative;
-    top: -150px;
     background-color: #ffda44;
     border: 0px;
     border-radius: 7px;;
@@ -321,4 +329,13 @@ html, body {
     top: 35%;
     width: 180px;
     height: 350px;
+}
+
+#auction_goods_floorprice {
+    color: #ff2634;
+    font-weight: bolder;
+}
+.auction_goods:hover{
+    border: 1px solid #c30000;
+    cursor: pointer;
 }

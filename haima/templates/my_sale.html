@@ -132,7 +132,7 @@
                                 <li class="col04">{{ item.goods_browse_count }}人浏览</li>
                             </ul>
                         </td>
-                        <td width="15%"><input type="button" class="lower1_btn lower_{{ item.goods_id }}"
+                        <td width="15%"><input type="button" class="lower1_btn lower_{{ item.goods_id }} oper_btn"
                                                onclick="lower({{ item.goods_id }})" value="下架">
                         </td>
                         <td width="15%"><a href="/publish/?goods_id={{ item.goods_id }}" class="oper_btn">修改</a></td>
@@ -157,7 +157,7 @@
         {% endif %}
     </div>
 </div>
-<div id="for_psw">
+<div class="for_psw">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         卖家信息
     </p>
@@ -176,10 +176,29 @@
                 <td>灵石路</td>
             </tr>
         </table>
-        <button class="btn_blue" id="change_password">确定</button>
+        <button class="btn_blue change_password">确定</button>
     </div>
 </div>
-
+<div class="for_psw_send">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        通知买家
+    </p>
+    <div class="popwin_content">
+        <p style="font-size: 16px;margin-bottom: 20px">请输入宝贝订单号通知买家</p>
+        <input type="text" style="height: 23px;margin-bottom: 10px">
+        <button class="btn_blue change_password_send" style="position: relative;top: 1px">确定</button>
+    </div>
+</div>
+<div class="for_psw_down">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        下架商品
+    </p>
+    <div class="popwin_content">
+        <p style="font-size: 18px;font-weight: bold;margin-bottom: 20px">确定下架商品吗？</p>
+        <button class="btn_blue" style="margin-right: 40px" id="change_password">确定</button>
+        <button class="btn_blue cancer_fgt_psw">取消</button>
+    </div>
+</div>
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>
@@ -238,11 +257,23 @@
 </script>
 <script>
     $(".sale_msg").click(function () {
-        $("#for_psw").show();
-    })
-    $("#change_password").click(function () {
-        $("#for_psw").hide();
-    })
+        $(".for_psw").fadeIn(500);
+    });
+    $(".change_password").click(function () {
+        $(".for_psw").fadeOut(500);
+    });
+    $(".send").click(function () {
+        $(".for_psw_send").fadeIn(500);
+    });
+    $(".change_password_send").click(function () {
+        $(".for_psw_send").fadeOut(500);
+    });
+    $(".lower1_btn").click(function () {
+        $(".for_psw_down").fadeIn(500);
+    });
+    $(".cancer_fgt_psw").click(function () {
+        $(".for_psw_down").fadeOut(500);
+    });
 </script>
 </body>
 </html>

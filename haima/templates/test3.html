@@ -1,40 +1,124 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="author" Content="li">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>jQuery手风琴下拉菜单代码 - 站长素材</title>
+
+    <link rel="stylesheet" href="../static/CSS/index.css">
+
 </head>
 <body>
-
-<select name="queryType" onchange="op(this)">
-    <option value="0" name="queryType"> 0</option>
-    <option value="1" name="queryType"> 1</option>
-    <option value="2" name="queryType"> 2</option>
-    <option value="3" name="queryType"> 3</option>
-</select>
-<table>
-    <tr class="div1"><td>111</td></tr>
-    <tr class="div2"><td>222</td></tr>
-    <tr class="div3"><td>333</td></tr>
-</table>
+<dl class="list_dl">
+    <dt class="list_dt">
+        <span class="_after"></span>
+        <p>选择器</p>
+        <i class="list_dt_icon"></i>
+    </dt>
+    <dd class="list_dd">
+        <ul>
+            <li class="list_li">#id</li>
+            <li class="list_li">element</li>
+            <li class="list_li">.class</li>
+            <li class="list_li">*</li>
+        </ul>
+    </dd>
+    <dt class="list_dt">
+        <span class="_after"></span>
+        <p>属性</p>
+        <i class="list_dt_icon"></i>
+    </dt>
+    <dd class="list_dd">
+        <ul>
+            <li class="list_li">attr</li>
+            <li class="list_li">removeAttr</li>
+            <li class="list_li">prop</li>
+            <li class="list_li">removeProp</li>
+            <li class="list_li">addClass</li>
+            <li class="list_li">removeClass</li>
+        </ul>
+    </dd>
+    <dt class="list_dt">
+        <span class="_after"></span>
+        <p>文档处理</p>
+        <i class="list_dt_icon"></i>
+    </dt>
+    <dd class="list_dd">
+        <ul>
+            <li class="list_li">append</li>
+            <li class="list_li">appendTo</li>
+            <li class="list_li">prepend</li>
+            <li class="list_li">prependTo</li>
+            <li class="list_li">after</li>
+            <li class="list_li">before</li>
+        </ul>
+    </dd>
+    <dt class="list_dt">
+        <span class="_after"></span>
+        <p>事件</p>
+        <i class="list_dt_icon"></i>
+    </dt>
+    <dd class="list_dd">
+        <ul>
+            <li class="list_li">ready</li>
+            <li class="list_li">on</li>
+            <li class="list_li">off</li>
+            <li class="list_li">bind</li>
+            <li class="list_li">one</li>
+            <li class="list_li">trigger</li>
+            <li class="list_li">hover</li>
+            <li class="list_li">click</li>
+            <li class="list_li">focus</li>
+        </ul>
+    </dd>
+    <dt class="list_dt">
+        <span class="_after"></span>
+        <p>AJAX</p>
+        <i class="list_dt_icon"></i>
+    </dt>
+    <dd class="list_dd">
+        <ul>
+            <li class="list_li">$.ajax</li>
+            <li class="list_li">$.get</li>
+            <li class="list_li">$.getJSON</li>
+            <li class="list_li">$.getScript</li>
+            <li class="list_li">$.post</li>
+        </ul>
+    </dd>
+    <dt class="list_dt">
+        <span class="_after"></span>
+        <p>效果</p>
+        <i class="list_dt_icon"></i>
+    </dt>
+    <dd class="list_dd">
+        <ul>
+            <li class="list_li">show</li>
+            <li class="list_li">hide</li>
+            <li class="list_li">toggle</li>
+            <li class="list_li">slideDown</li>
+            <li class="list_li">slideUp</li>
+            <li class="list_li">slideToggle</li>
+            <li class="list_li">fadeIn</li>
+            <li class="list_li">fadeOut</li>
+            <li class="list_li">fadeTo</li>
+            <li class="list_li">fadeToggle</li>
+            <li class="list_li">stop</li>
+        </ul>
+    </dd>
+</dl>
+<!--为了浏览器兼容性jqeury版本推荐使用1.12.0，其他版本会出现不支持某些浏览器-->
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
-<script>
-    function op(obj) {
-        if (obj.value == 0) {
-            $(".div1").show();
-            $(".div2").show();
-            $(".div3").show();
+<script type="text/javascript">
+    $(".list_dt").on("click", function () {
+        $('.list_dd').stop();
+        $(this).siblings("dt").removeAttr("id");
+        if ($(this).attr("id") == "open") {
+            $(this).removeAttr("id").siblings("dd").slideUp();
+        } else {
+            $(this).attr("id", "open").next().slideDown().siblings("dd").slideUp();
         }
-        else {
-            /* $(obj).next("div").find("div").each(function () {
-                $(this).hide();
-            });
-            $("#div" + obj.value).show();*/
-            $(".div1").hide();
-            $(".div2").show();
-            $(".div3").show();
-        }
-    }
+    });
 </script>
 
 </body>

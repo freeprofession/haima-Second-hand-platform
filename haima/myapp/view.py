@@ -115,7 +115,7 @@ def root_request(function):
             cur.execute("select * from t_order_success where order_goods_id=%s and release_user_id=%s",
                         [goods_id, user_id])
             sell_check = cur.fetchone()
-            print(sell_check)
+            # print(sell_check)
             if sell_check:
                 return function(request)
             else:
@@ -143,13 +143,6 @@ def homepage(request):
             con.commit()
             cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
             user_imgurl = cur.fetchone()
-        # recommend = goods_recommend.goods_recommend(user_id)[0:5]
-        # goods_recommend_list = []
-        # for goods_id in recommend:
-        #     cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s",
-        #                 [goods_id, ])
-        #     goods_recommend_list.append(cur.fetchone())
-        # print(goods_recommend_list)
     else:
         login_status = "未登录"
         user_imgurl = {}
@@ -179,14 +172,13 @@ def homepage(request):
 
 def homepage_ajax(request):
     pass
-    # print(goods_list)
     return render(request, 'homepage.html', {'goods_list': goods_list})
 
 
 # 登录
 def login(request):
     url = request.META.get('HTTP_REFERER', '/')
-    print(url, "返回地址")
+    # print(url, "返回地址")
     request.session["url"] = url
     href = request.GET.get('href')
     request.session['href'] = href
@@ -247,7 +239,7 @@ def login_ajax(request):
         return HttpResponse(json.dumps({"msg": error}))
     else:
         if login_code['status'] == 1:  # 判断验证码
-            print(login_code['status'])
+            # print(login_code['status'])
             if password == user_login['user_password']:
                 user_id = user_login['user_id']  # 判断用户名密码
                 request.session['username'] = username
@@ -265,7 +257,7 @@ def login_ajax(request):
                         pass
                 else:
                     return_url = "/haima/"
-                print(return_url, "enddddd")
+                # print(return_url, "enddddd")
                 return HttpResponse(json.dumps({"msg": error, "href": return_url}))
             else:
 
@@ -282,14 +274,14 @@ def forget_password(request):
     cur.execute("select user_phone from t_user where user_name=%s", [username, ])
     check_phone = cur.fetchone()
     if check_phone:
-        print(check_phone)
+        # print(check_phone)
         if check_phone["user_phone"] == phone:
-            print(phone, check_phone["user_phone"], type(phone), type(check_phone["user_phone"]))
+            # print(phone, check_phone["user_phone"], type(phone), type(check_phone["user_phone"]))
             msg = "success"
             return HttpResponse(json.dumps({"msg": msg}))
         else:
             msg = "phone_error"
-            print(555)
+            # print(555)
             return HttpResponse(json.dumps({"msg": msg}))
     else:
         msg = "user_error"
@@ -301,7 +293,7 @@ def forget_password_two(request):
     new_password = request.POST.get("new_password")
     phone = request.POST.get("phone")
     username = request.POST.get("username")
-    print(phone_code, new_password, phone)
+    # print(phone_code, new_password, phone)
     code = ""
     cur.execute("select user_phone from t_user where user_name=%s", [username, ])
     check_phone = cur.fetchone()
@@ -313,7 +305,7 @@ def forget_password_two(request):
                 if len(new_password) in range(6, 16):
                     if code == phone_code:
                         msg = "success"
-                        print(msg)
+                        # print(msg)
                         cur.execute("update t_user set user_password=%s where user_name=%s", [new_password, username])
                         con.commit()
                         return HttpResponse(json.dumps({"msg": msg}))
@@ -482,8 +474,6 @@ def goods_list(request):
                 goods = cur.fetchone()
                 goods_lst.append(goods)
             prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
-            if count == 0:
-                return render(request, 'register_ok.html')
         # 价格筛选
         if request.GET.get("price_low") and request.GET.get("price_high"):
             price_low = int(request.GET.get("price_low"))
@@ -560,7 +550,7 @@ def user_center(request):
         buy_conut = 0
         if dict1:
             buy_conut = len(dict1)
-        print(user_info, browse_list, 77777777777777777777)
+        # print(user_info, browse_list, 77777777777777777777)
 
         return render(request, 'user_center.html', locals())
     else:
@@ -576,7 +566,7 @@ def user_credit(request):
     # 判断是否登陆-------------------------------
     if user_id:
         # 判断是否为本人进入
-        print(user_id, user_credit_id)
+        # print(user_id, user_credit_id)
         if str(user_credit_id) == str(user_id):
             return redirect("/user_center/")
         else:
@@ -626,7 +616,7 @@ def user_credit(request):
                     break
                 goods[j] = lst
 
-            print(goods)
+            # print(goods)
             # cur.execute(
             #     'select * from t_order_success right join t_evaluation on order_id=evaluation_order_id where buy_user_id=%s ',
             #     [user_id, ])
@@ -647,13 +637,13 @@ def user_credit(request):
                 [user_credit_id, 1, user_credit_id, 1])
             order_id = cur.fetchall()
             eva_list = []
-            print(user_id)
+            # print(user_id)
             count_order = len(order_id)
             for id in order_id:
                 one = {}
                 key = str(user_credit_id) + str(id["order_id"])
                 a = get_eva.hgetall(key)
-                print(key, a)
+                # print(key, a)
                 if a:
                     for i in a:
                         c = a[i].decode("utf-8")
@@ -662,7 +652,7 @@ def user_credit(request):
                     eva_list.append(one)
                 else:
                     eva_list.append("none")
-            print("评价内容", eva_list)
+            # print("评价内容", eva_list)
             count_eva = len(eva_list)
             return render(request, "user_credit.html", locals())
     else:
@@ -683,10 +673,10 @@ def goods_detail(request):
         [user_id, ])
     collection_list = cur.fetchall()
     # --------------------------------------------------
-    print(goods_id)  # 获取商品ID
+    # print(goods_id)  # 获取商品ID
     cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])  # 获取商品表内容
     goods_list = cur.fetchall()  # 商品表内容
-    print(username, user_id, goods_id, goods_list)
+    # print(username, user_id, goods_id, goods_list)
     seller_id = goods_list[0]['user_id']  # 获取卖家ID
     goods_state = goods_list[0]['goods_state']  # 商品状态
     # 获取商品图片
@@ -694,7 +684,7 @@ def goods_detail(request):
     for item in img.lrange(goods_id, 0, 4):
         item = item.decode("utf-8")
         img_list.append(item)
-    print("商品图片地址", img_list)
+    # print("商品图片地址", img_list)
 
     # 判断是否为发布人进去页面---------------------
     if user_id == seller_id:
@@ -745,7 +735,7 @@ def goods_detail(request):
                     c_comment_dict[j] = ''
         p_comment_dict[i]['child_message'] = lst
     # 按钮列表
-    print("评论", p_comment_dict)
+    # print("评论", p_comment_dict)
     button_list = []
     for i in p_comment_dict:
         button_list.append(int(i))
@@ -757,7 +747,7 @@ def goods_detail(request):
         key = goods_id
         cur.execute("select user_imgurl from t_user where user_id=%s", [user_id])
         user_imgurl = cur.fetchone()["user_imgurl"]
-        print("图片", user_imgurl)
+        # print("图片", user_imgurl)
         login_status = username
         cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
         browse = cur.fetchone()
@@ -767,7 +757,7 @@ def goods_detail(request):
             count += 1
             # 更新商品浏览次数
             cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
-            print(count, goods_id, "商品浏览记录")
+            # print(count, goods_id, "商品浏览记录")
         # 用户浏览记录
         if seller_id != user_id:
             cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s",
@@ -795,8 +785,8 @@ def text_message(request):
     cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
                 ['2', ])
     a = cur.fetchall()
-    print(a)
-    print(b)
+    # print(a)
+    # print(b)
     c_comment_dict = {}
     for d in b:
         id = d.get('second_message_id')
@@ -819,14 +809,14 @@ def text_message(request):
 
 def test_ajax(request):
     username = request.session.get('username')
-    print(username, 4444)
+    # print(username, 4444)
     child_id = request.POST.get('child_id')
     cur.execute("select * from t_user where user_id=%s", [child_id, ])
     child_user = cur.fetchone()
-    print(child_user['user_name'], 45555)
+    # print(child_user['user_name'], 45555)
     message = request.POST.get('message')
     if username:
-        print(message)
+        # print(message)
         # cur.execute()   #加入数据库
         # 评论拼接
         tt = """            
@@ -1142,7 +1132,7 @@ def assess(request):
     return render(request, 'assess.html', locals())
 
 
-# 估计ajax
+# 估价ajax
 def assess_ajax(request):
     assess_list = []
     brand = request.POST.get('brand')

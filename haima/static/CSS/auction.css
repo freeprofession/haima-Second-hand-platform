@@ -144,9 +144,10 @@ html, body {
     line-height: 32px;
     border: 1px solid #dddddd;
     display: block;
-    background: url(../images/icons.png) 13px -302px no-repeat #fff;
+    background: url(../images/shoucang.jpg) no-repeat #fff;
+    background-size: 32px 32px;
     font-size: 14px;
-    color: #fe0000;
+    color: #c6a335;
     text-indent: 56px;
 }
 
@@ -158,7 +159,7 @@ html, body {
     font-size: 18px;
     font-weight: bold;
     color: #fff;
-    background-color: #fe0000;
+    background-color: #ffda44;
 }
 
 .guest_cart:hover .cart_name {
