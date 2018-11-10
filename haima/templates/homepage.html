@@ -353,18 +353,25 @@
                     {#                                        </ul>#}
                 </div>
                 <div id="dc3" class="hold">
-                    <ul>
-                        {% for goods in same_city_list %}
-                            <li>
-                                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"
-                                                                                         class="goods_pic"></a>
-                                <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"
-                                       title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>
-                                </h4>
-                                <div class="prize">¥ {{ goods.goods_price }}</div>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    {% if same_city_list %}
+                        <ul>
+                            {% for goods in same_city_list %}
+                                <li>
+                                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img
+                                            src="{{ goods.goods_imgurl }}"
+                                            class="goods_pic"></a>
+                                    <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"
+                                           title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>
+                                    </h4>
+                                    <div class="prize">¥ {{ goods.goods_price }}</div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div style="padding-top: 80px;padding-left: 250px">
+                            <span style="font-size: 25px;font-weight: bold">您尚未登录，无法查看同城商品哟！</span>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -523,11 +530,12 @@
 <script>
     $(document).ready(function () {
         user_id = '{{ user_id }}';
-        console.log(user_id)
+        if (user_id == 'None') {
+            user_id = 'visitor'
+        }
         $.post('/goods_recommend/', {
             'user_id': user_id
         }, function (data) {
-
             $("#dc2").append(data.rr)
         }, "json")
     })

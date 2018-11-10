@@ -163,7 +163,7 @@
         </div>
     </div>
 </div>
-<div id="for_psw">
+<div class="for_psw">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         取消收藏
     </p>
@@ -191,10 +191,10 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
     $(".del_col").click(function () {
-        $("#for_psw").show();
+        $(".for_psw").fadeIn();
     })
     $(".cancer_fgt_psw").click(function () {
-        $("#for_psw").hide();
+        $(".for_psw").fadeOut();
     })
 </script>
 </body>
