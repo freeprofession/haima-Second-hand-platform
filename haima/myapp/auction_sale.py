@@ -1,4 +1,5 @@
 import pymysql
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
@@ -7,6 +8,8 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 # **********************************************************返回用户的我的拍卖中心的我的发布界面**************************************
 # 这里主要是显示他的发布记录,和发布商品现在的状态
 def my_auction_sale_one(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     username = request.session.get('username')
     print(username)
@@ -57,7 +60,17 @@ def my_auction_sale_one(request):
                     else:
                         dict1["user_name"] = "无"
             list10.append(dict1)
-    print(list10)
+    paginator = Paginator(list10, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_sale_one.html',locals())
 def my_auction_sale_two(request):
     user_id = request.session.get("user_id")
@@ -90,7 +103,19 @@ def my_auction_sale_two(request):
             dict1["state"] = "商品已经流拍"
             dict1["user_name"] = "无"
             list11.append(dict1)
-    print(list11)
+            # 分页
+
+    paginator = Paginator(list11, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+
     return render(request,'my_auction_sale_two.html',locals())
 def my_auction_sale_three(request):
     user_id = request.session.get("user_id")
@@ -130,7 +155,16 @@ def my_auction_sale_three(request):
             dict1["user_name"] = user_name
 
             list12.append(dict1)
-
+    paginator = Paginator(list12, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_three.html',locals())
 def my_auction_sale_four(request):
     user_id = request.session.get("user_id")
@@ -180,7 +214,16 @@ def my_auction_sale_four(request):
                 # list14.append(dict1)
             else:
                 list13.append(dict1)
-
+    paginator = Paginator(list13, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_four.html',locals())
 def my_auction_sale_five(request):
     user_id = request.session.get("user_id")
@@ -229,7 +272,16 @@ def my_auction_sale_five(request):
                 dict1["the_goods_state"] = the_goods_state
                 list14.append(dict1)
 
-
+    paginator = Paginator(list14, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_five.html',locals())
 def my_auction_sale_six(request):
     user_id = request.session.get("user_id")
@@ -273,9 +325,68 @@ def my_auction_sale_six(request):
             dict1["state"] = "商品已经收货"
 
             list15.append(dict1)
-
+    paginator = Paginator(list15, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_six.html',locals())
+def my_auction_sale_seven(request):
+    user_id = request.session.get("user_id")
+    username = request.session.get('username')
+    print(username)
+    # 从发布记录表里找到商品id
+    cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
+    message = cur.fetchall()
+    id_list = []
+    id_list = []
+    for i in message:
+        id_list.append(i["release_auction_goods_id"])
+    list16=[]
+    for goods_id in id_list:
+        dict1 = {}
+        cur.execute("select auction_goods_state from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
+        x = cur.fetchone()
 
+        state = x["auction_goods_state"]
+        if int(state) == 6:  # 商品支付时间失效
+            # print("被竞拍成功")
+            cur.execute("select * from t_auction_goods_record where auction_goods_id=%s ", [goods_id])
+            goods_message = cur.fetchone()
+            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
+            goods_auction_message = cur.fetchone()
+            cur.execute("select * from t_auction_order where auction_order_goods_id=%s ", [goods_id])
+            order_message = cur.fetchone()
+            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
+            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
+            dict1["goods"] = goods_message
+            dict1["attribute"] = goods_auction_message
+            dict1["state"] = "商品已经超过付款时间"
+            dict1["order"]=order_message
+            cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",
+                        [goods_id])
+            buy_user_id = cur.fetchone()
+            cur.execute("select user_name from t_user where user_id=%s", [buy_user_id["auction_order_buy_user_id"]])
+            user_name = cur.fetchone()["user_name"]
+            dict1["user_name"] = user_name
+
+            list16.append(dict1)
+    paginator = Paginator(list16, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render(request,'my_auction_sale_seven.html',locals())
 def my_auction_one(request):
     user_id = request.session.get("user_id")
     list10 = []
@@ -293,7 +404,6 @@ def my_auction_one(request):
     id_list = []
     for i in message:
         id_list.append(i["release_auction_goods_id"])
-
     for goods_id in id_list:
         dict1 = {}
         cur.execute("select auction_goods_state from t_auction_goods_record where auction_goods_id=%s ", [goods_id])

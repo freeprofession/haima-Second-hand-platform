@@ -7,7 +7,6 @@
       <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../static/JS/my_auction.js"></script>
     <link rel="stylesheet" href="../static/CSS/main.css">
-    <link rel="stylesheet" href="../static/CSS/my_auction_sale_one.css">
     <style>
         #four{
     margin-left: 0px;
@@ -20,7 +19,28 @@
 </head>
 <body>
 <div style="min-height:100%;height:auto;">
-{% include 'home_head.html' %}
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
+        <div class="fr">
+            <div class="login_btn fl">
+                <a href="/login/?href=/my_auction/" target="_blank">登录</a>
+                <span>|</span>
+                <a href="/register/">注册</a>
+            </div>
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/haima/">首页</a>
+                <span>|</span>
+                <a href="/user_center/">用户中心</a>
+                <span>|</span>
+                <a href="" id="my_order">我的订单</a>
+                <span>|</span>
+                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
@@ -42,13 +62,13 @@
 		<div class="left_menu_con clearfix" style="margin-top: 40px;">
 			<h3>用户拍卖中心</h3>
 			<ul>
-				<li><a href="/my_auction_sale_one/" class="active">· 发布竞拍中</a></li>
+				<li><a href="/my_auction_sale_one/">· 发布竞拍中</a></li>
 				<li><a href="/my_auction_sale_two/" >· 流拍</a></li>
 				<li><a href="/my_auction_sale_three/">· 拍卖成功</a></li>
 				<li><a href="/my_auction_sale_four/">· 待发货商品</a></li>
                 <li><a href="/my_auction_sale_five/">· 已发货商品</a></li>
-                <li><a href="/my_auction_sale_six/">· 交易完成</a></li>
-                <li><a href="/my_auction_sale_seven/">· 交易失败</a></li>
+                <li><a href="/my_auction_sale_six/"  >· 交易完成</a></li>
+                 <li><a href="/my_auction_sale_seven/" class="active" >· 交易失败</a></li>
 			</ul>
 		</div>
         <div class="right_content clearfix">
@@ -59,10 +79,11 @@
 				</ul>
 <div>
 				<div id="select_one">
-{% for i in contacts %}
-    <div id="four">
-    <div id="one">
-        <div style="margin-top:15px; ">
+
+ {% for i in contacts %}
+     <div id="four">
+    <div id="one" >
+        <div style="margin-top: 15px;">
             <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="300px">
         </div>
          <div id="auction_goods_desc">
@@ -70,42 +91,34 @@
 
              <div id="auction_messige">
                 <div id="auction_messige_desc" >
-                    <div id="title" style="font-size:25px">
+                              <div id="title" style="font-size:25px">
                  {{ i.goods.auction_goods_title }}
 
-                    </div>
+             </div>
                     <br>
-                    <div>开始时间：<span id="acution_goods_start_time">{{ i.attribute.start_date }}</span></div>
+                    <div>订单id：<span id="auction_order_id">{{ i.order.auction_order_id }}</span></div>
                     <br>
-                    <div>结束时间：<span id="acution_goods_end_time">{{ i.attribute.end_date }}</span></div>
+                    <div>订单生成时间：<span id="auction_goods_premium">{{ i.order.auction_order_date }}</span></div>
                     <br>
-                    <div>保证金：<span>{{ i.attribute.auction_goods_margin }}</span>元</div>
+                    <div>付款时间：<span id="auction_goods_premium">{{ i.order.pay_money_date }}</span></div>
                     <br>
-                    <div>单次加价最低：<span id="auction_goods_premium">{{ i.attribute.auction_goods_floorpremium }}</span></div>
+                    <div>订单金额：<span id="auction_goods_premium">{{ i.order.auction_order_fianl_price }}</span></div>
                     <br>
-                    <div>商品底价：<span id="auction_goods_floorprice">{{ i.attribute.auction_goods_floorprice }}</span></div>
+                    <div>买家用户名：<span id="acution_goods_start_time">{{ i.user_name }}</span></div>
                     <br>
-                    <div>当前价格：<span id="acution_goods_start_time">{{ i.attribute.auction_goods_price }}</span></div>
+                     <div>商品状态：<span id="acution_goods_start_time" style="color: red">{{ i.state }}</span></div>
                     <br>
-                    <div>当前竞拍者：<span id="acution_goods_start_time">{{ i.user_name }}</span></div>
                     <br>
-
-                    <div style="padding-left: 300px;">
-                      <button id="end_auction" onclick="f1(this)" value={{ i.goods.auction_goods_id }}>
-                            结束拍卖
-                        </button>
-                    </div>
-
                 </div>
              </div>
          </div>
     </div>
-    </div>
+     </div>
     {% endfor %}
 </div>
 </div>
 
-				 <div class="pagenation">
+				<div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
             <a href="?page={{ contacts.previous_page_number }}">上一页</a>
@@ -143,40 +156,9 @@
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
 
- <div id="for_psw">
-     <div id="info">
-        <p class="popwin_title">
-            忘记密码
-        </p>
-        <div class="popwin_content">
-            <button id="ok">确认下架</button>
-            <button id="shutdown">关闭</button>
-            <span id="goods_id" style="display: none"></span>
-        </div>
 
-        </div>
-    </div>
-</div>
 </body>
 <script>
-function f1(obj){
-     $("#for_psw").show();
-    $("#goods_id").text(obj.value)
-}
-$("#ok").click(function () {
-    goods_id=$("#goods_id").text();
-    alert(goods_id);
-    $.post("/end_auction/"
-    ,
-        {
-            "goods_id":goods_id
-        }
-        ,function (data) {
-            location.href=data
-        })
-});
-    $("#shutdown").click(function () {
-       $("#for_psw").hide()
-    })
+
 </script>
 </html>

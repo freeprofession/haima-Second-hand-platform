@@ -20,28 +20,7 @@
 </head>
 <body>
 <div style="min-height:100%;height:auto;">
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/my_auction/" target="_blank">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a>
-                <span>|</span>
-                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'home_head.html' %}
     <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
@@ -69,29 +48,31 @@
 				<li><a href="/my_auction_sale_four/" class="active">· 待发货商品</a></li>
                 <li><a href="/my_auction_sale_five/">· 已发货商品</a></li>
                 <li><a href="/my_auction_sale_six/">· 交易完成</a></li>
+                 <li><a href="/my_auction_sale_seven/">· 交易失败</a></li>
 			</ul>
 		</div>
         <div class="right_content clearfix">
-				<h3 class="common_title2">全部订单</h3>
+
 				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
+					<h3 class="common_title2">带发货商品</h3>
 				</ul>
 <div>
 				<div id="select_one">
-{% for i in list13 %}
+{% for i in contacts %}
+    <div id="four">
     <div id="one" >
         <div>
             <img src={{ i.goods.auction_goods_imgurl }} alt="" height="360px" width="400px">
         </div>
          <div id="auction_goods_desc">
-             <div id="title" style="font-size:25px">
+
+             <div id="auction_messige">
+                <div id="auction_messige_desc" >
+                     <div id="title" style="font-size:25px">
                  {{ i.goods.auction_goods_title }}
 
              </div>
              <br>
-             <div id="auction_messige">
-                <div id="auction_messige_desc" >
                     <div>订单id：<span id="auction_order_id">{{ i.order.auction_order_id }}</span></div>
                     <br>
                     <div>订单生成时间：<span id="auction_goods_premium">{{ i.order.auction_order_date }}</span></div>
@@ -101,6 +82,12 @@
                     <div>订单金额：<span id="auction_goods_premium">{{ i.order.auction_order_fianl_price }}</span></div>
                     <br>
                     <div>买家用户名：<span id="acution_goods_start_time">{{ i.user_name }}</span></div>
+                    <br>
+                     <div>买家收货地址：<span id="acution_goods_start_time">{{ i.order.order_address }}</span></div>
+                    <br>
+                     <div>买家收货姓名：<span id="acution_goods_start_time">{{ i.order.order_name }}</span></div>
+                    <br>
+                     <div>买家电话号码：<span id="acution_goods_start_time">{{ i.order.order_phone }}</span></div>
                     <br>
                     <div style="color: #ffda44">{{ i.state }}</div>
                     <br>
@@ -114,20 +101,33 @@
              </div>
          </div>
     </div>
+    </div>
     {% endfor %}
 
 </div>
 </div>
 
 				<div class="pagenation">
-					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
-				</div>
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+            </div>
 		</div>
 	</div>
 
@@ -147,12 +147,14 @@
  <div id="for_psw">
      <div id="info">
         <p class="popwin_title">
-            忘记密码
+            输入单号：
         </p>
         <div class="popwin_content">
-            <button id="ok">确认下架</button>
+            <input type="text" id="courier_number" maxlength="20">
+            <button id="ok">确认</button>
+
             <button id="shutdown">关闭</button>
-            <span id="goods_id" style="display: none"></span>
+            <span id="order_id" style="display: none"></span>
         </div>
 
         </div>
@@ -181,12 +183,15 @@
                "order_id": order_id
             }
             ,function (data) {
-
+                location.href=data
             }
             ,'json'
         )
 
     });
+    $("#shutdown").click(function () {
+         $("#for_psw").hide();
+    })
 
 
 </script>

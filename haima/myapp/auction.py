@@ -98,6 +98,7 @@ def buy_auction(request):
 def auction_index(request):
     id = request.session.get('user_id')
     list1 = []
+    data_list=[]
     cur.execute(
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
         [id, ])
@@ -120,10 +121,13 @@ def auction_index(request):
             goods_auction_message = cur.fetchone()
             # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
             # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
+            cur.execute("select end_date from t_auction_attribute where auction_goods_id=%s",[goods_id])
+            end_data=cur.fetchone()["end_date"]
+            data_list.append(end_data)
             dict1["goods"] = goods_messge
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
-
+        time_length=len(data_list)
         return render(request, "auction_index.html", locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -200,10 +204,7 @@ def publish_auction(request):
         category = request.POST.get("category")
         postage = request.POST.get("postage")
         imgurl_list = json.loads(request.POST.get("img_address"))
-        print(imgurl_list)
         imgurl = "http://pgwecu7z4.bkt.clouddn.com/" + imgurl_list[0]
-        print(imgurl_list)
-
         list1 = []
         date_now = datetime.datetime.now().strftime('%Y-%m-%d')
         if title and desc and floorpremium and floorprice and end_date and start_date and category and postage:
@@ -222,7 +223,7 @@ def publish_auction(request):
                 # 把其余的图片传到redis
                 for i in imgurl_list:
                     i = "http://pgwecu7z4.bkt.clouddn.com/" + i
-                    print(i)
+
                     auction_img.lpush(goods_id, i)
                 try:
                     cur.execute(
@@ -240,7 +241,7 @@ def publish_auction(request):
                 except Exception as e:
                     con.rollback()
                     print(e)
-
+                print("123")
                 return HttpResponse(json.dumps({"msg": error}))
             elif len(title) < 6:
                 error = 'title.length_error'
@@ -472,6 +473,7 @@ def end_auction(request):
     return HttpResponse("/my_auction_sale_one/")
 # ******************************************************判断拍卖时间************************************************
 def Determine_auction_date(request):
+    su=request.POST.get("su")
     cur.execute("select auction_goods_id  from t_auction_goods")
     list_goods_id = []
     dict_goods_id = cur.fetchall()
@@ -545,9 +547,10 @@ def Determine_auction_date(request):
                     con.commit()
 
             except Exception as e:
-                con.rollback()
+
                 print(e)
-    return redirect("/auction_index/")
+    print(su)
+    return HttpResponse("你好")
 
 # ********************************************返回支付拍卖成功的钱以后的跳转*********************************************
 def pay_auction_money_ok(request):
@@ -557,7 +560,6 @@ def pay_auction_money_ok(request):
 def delivery(request):
     courier_number = request.POST.get("courier_number")
     order_id = request.POST.get("order_id")
-
     try:
         print("发货",order_id)
         cur.execute("update t_auction_order set the_goods_state=%s where auction_order_id=%s",
@@ -565,7 +567,7 @@ def delivery(request):
         con.commit()
     except Exception as e:
         print(e)
-    return HttpResponse(json.dumps({"msg": "ok"}))
+    return HttpResponse("my_auction_sale_five.html")
 
 def auction_place_order(request):
     user_id = request.session.get("user_id")
@@ -576,3 +578,24 @@ def auction_place_order(request):
     goods_message=cur.fetchone()
     print(goods_message)
     return render(request, 'auction_place_order.html', locals())
+#***************************************付款时间判断*******************************************
+def Determine_pay_date(request):
+    now_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    cur.execute("select auction_order_id  from t_auction_order where (auction_order_date<%s and auction_order_state=%s) ",[now_date,'0'] )
+    order_id_list=cur.fetchall()
+    if order_id_list:
+        for i in order_id_list:
+            cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s",[str(i["auction_order_id"])])
+            goods_id=cur.fetchone()["auction_order_goods_id"]
+            try:
+                cur.execute("update t_auction_order set auction_order_state=%s where auction_order_id=%s",["3",i["auction_order_id"]])
+                cur.execute("update t_auction_goods_record set auction_goods_state=%s where auction_goods_id=%s",['6',goods_id])
+                print("操作成功")
+                con.commit()
+            except Exception as e:
+                con.rollback()
+                print(e)
+    return redirect("/auction_index/")
+    # and auction_order_date = % s
+def time_test(request):
+    return render(request,'test_time.html')

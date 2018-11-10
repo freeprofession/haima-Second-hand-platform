@@ -39,7 +39,7 @@ html, body {
     margin: 0 10px;
 }
 
-#for_psw {
+.for_psw {
     height: 760px;
     width: 1520px;
     position: fixed;
@@ -47,6 +47,34 @@ html, body {
     z-index: 100;
     background-color: rgba(0, 0, 0, .7);
     display: none;
+}
+
+.for_psw_send {
+    height: 760px;
+    width: 1520px;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, .7);
+    display: none;
+}
+
+.for_psw_down {
+    height: 760px;
+    width: 1520px;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, .7);
+    display: none;
+}
+
+.send {
+    padding: 3px 8px;
+}
+
+.send:hover {
+    cursor: pointer;
 }
 
 .popwin_title {
@@ -935,7 +963,7 @@ label:hover {
     background: #719ef7;
     width: 190px;
     height: 83px;
-    padding: 10px;
+    padding: 8px 10px 9px 10px;
 }
 
 .model02 .key_words {
@@ -2032,7 +2060,7 @@ label:hover {
 }
 
 .cart_list_th .col04 {
-    width: 12%;
+    width: 10%;
 }
 
 .cart_list_th .col05 {
@@ -2417,7 +2445,7 @@ label:hover {
     width: 1198px;
     border: 1px solid #ddd;
     background-color: #f7f7f7;
-    margin: 20px auto 0;
+    margin: 5px auto 0;
 }
 
 .order_list_th li {
@@ -2471,8 +2499,10 @@ label:hover {
 }
 
 .order_goods_list .col02 {
-    width: 50%;
+    width: 64%;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 
 .order_goods_list .col02 em {
@@ -2485,27 +2515,20 @@ label:hover {
 }
 
 .order_goods_list .col04 {
-    width: 20%
+    width: 16%
 }
 
 .oper_btn {
     display: inline-block;
     border: 1px solid #ddd;
     color: #666;
-    padding: 5px 10px
-}
-
-.lower1_btn {
-    display: inline-block;
-    border: 1px solid #ddd;
-    color: #666;
-    padding: 5px 10px
-
+    padding: 5px 10px;
+    background-color: white;
+    font-size: 14px;
 }
 
 .lower1_btn:hover {
     cursor: pointer;
-    background-color: #3eb8e9;
 }
 
 .popup_con {
@@ -2569,6 +2592,14 @@ label:hover {
     font-size: 14px;
 }
 
+.left_menu_con ul li:hover {
+    cursor: pointer;
+    border-top: 2px solid #eaeaea;
+    border-bottom: 2px solid #eaeaea;
+    color: #ff8800;
+    font-weight: bold;
+}
+
 .left_menu_con ul li a {
     color: #666;
 }
@@ -2596,7 +2627,7 @@ label:hover {
     height: 20px;
     line-height: 20px;
     font-size: 16px;
-    margin: 20px 0;
+    margin-bottom: 10px;
 }
 
 .user_info_list {
@@ -3942,3 +3973,18 @@ label:hover {
     float: left;
 }
 
+.no_goods {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 420px;
+    margin-right: 40px;
+    width: 80px;
+    height: 90px;
+    background: url('../Images/no_goods2.png') no-repeat;
+}
+
+.no_goods_msg {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+}
