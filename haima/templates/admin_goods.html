@@ -74,7 +74,7 @@
                             class="am-icon-close am-text-primary"></i></th>
                     <th class="table-date am-hide-sm-only">发布日期</th>
                     <th class="table-area">地区</th>
-                    <th width="163px" class="table-set">操作</th>
+                    <th width="" class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody id="goods">
@@ -122,17 +122,19 @@
             </table>
             <div class="am-btn-group am-btn-group-xs">
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 删除</button>
-                <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 上架</button>
-                <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 下架</button>
+                <button type="button" value="0" class="am-btn am-btn-default all_up"><span
+                        class="am-icon-arrow-up"></span>
+                    上架
+                </button>
+                <button type="button" value="2" class="am-btn am-btn-default all_up"><span
+                        class="am-icon-arrow-down"></span> 下架
+                </button>
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 移动</button>
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
-                <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动
-                </button>
-                <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除
-                </button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
             </div>
-            {#{{ contacts.paginator.num_pages }}#}
             <ul class="am-pagination am-fr" id="page">
             </ul>
             <hr/>
@@ -147,6 +149,36 @@
 {% endblock %}
 {% block js %}
     <script>
+        $('.all_up').click(function () {
+            var checkID = [];//定义一个空数组
+            $("input[name='checkbox']:checked").each(function (i) {//把所有被选中的复选框的值存入数组
+                checkID[i] = $(this).val();
+            });
+            console.log(checkID);
+            action = $(this).val()
+            $.ajax({
+                type: "POST",
+                url: "/admin_update/",
+                data: {'checkID': JSON.stringify(checkID), 'action': action},
+                async: false,
+                success: function (data) {
+                    alert("操作成功")
+                    $("[name='checkall']").attr("checked", false);
+                    $("input[name='checkbox']:checked").each(function (i) {//把所有被选中的复选框的值存入数组
+                        $(this).attr("checked", false);
+                    });
+                    if (action == '0') {
+                        cla = "am-icon-check am-text-warning"
+                    } else {
+                        cla = "am-icon-close am-text-primary"
+                    }
+                    for (j = 0; j < checkID.length; j++) {
+                        $("#" + checkID[j]).attr("class", cla);
+                    }
+                }
+            })
+        });
+
         function detail(obj) {
             goods_id = $(obj).val();
             $(location).attr('href', '/goods_detail/?goods=' + goods_id);
@@ -181,7 +213,6 @@
                     $("#goods").append("<tr><td colspan='9' style='text-align: center'>数据加载中</td></tr>")
                 }, //请求前进行的操作
                 success: function (req) {
-                    console.log(req)
                     $("#goods").text('');
                     //处理返回后的数据
                     var data = req['data'];
@@ -210,7 +241,6 @@
                     }
                     for (var i = 0; i < pagelist.length; i++) {
                         var pg = pagelist[i]
-                        console.log(pg)
                         if (pg == page) {
                             $('#page').append('<li class="am-active"><a href="javascript:void(0);">' + pg + '</a></li>')
                         }
@@ -245,6 +275,7 @@
                     if (data) {
                         $("#" + goods_id).attr("class", "am-icon-close am-text-primary");
                         alert("下架成功")
+                        console.log(data)
                     } else {
                         {#alert("下架失败，请刷新页面重试")#}
                     }
@@ -283,7 +314,7 @@
             else {
                 goods_state = 'am-icon-check am-text-warning'
             }
-            var text = '<tr class="goods">\n' + '<td><input type="checkbox" name="checkbox"/></td>\n' +
+            var text = '<tr class="goods">\n' + '<td><input type="checkbox" name="checkbox" value="' + goods_id + '"/></td>\n' +
                 '<td>' + goods_id + '</td>\n' + '<td>' + goods_title + '</td>\n' +
                 '                        <td>' + user_name + '</td>\n' +
                 '                        <td>' + goods_category_id + '</td>\n' +

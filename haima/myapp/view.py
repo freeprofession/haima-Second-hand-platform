@@ -2468,25 +2468,15 @@ def admin_login(request):
 
 @admin_session
 def admin(request, user):
-    return render(request, 'admin.html', {'user': user})
+    cur.execute('SELECT COUNT(*) FROM t_user')
+    num_user = cur.fetchall()[0]['COUNT(*)']
+    cur.execute('SELECT COUNT(*) FROM t_goods WHERE goods_state = 0')
+    num_goods = cur.fetchall()[0]['COUNT(*)']
+    return render(request, 'admin.html', {'user': user, 'num_user': num_user, 'num_goods': num_goods})
 
 
 @admin_session
 def admin_goods(request, user):
-    # cur.execute(
-    #     "select goods_id,goods_title,user_name,goods_category_id,goods_state,release_date,goods_address from t_goods inner join t_user on t_goods.user_id=t_user.user_id")
-    # goodslist = cur.fetchall()
-    # paginator = Paginator(goodslist, 40)
-    # page = request.GET.get('page')
-    # try:
-    #     contacts = paginator.page(page)
-    # except PageNotAnInteger:
-    #     # If page is not an integer, deliver first page.
-    #     contacts = paginator.page(1)
-    # except EmptyPage:
-    #     # If page is out of range (e.g. 9999), deliver last page of results.
-    #     contacts = paginator.page(paginator.num_pages)
-    # print(contacts)
     return render(request, 'admin_goods.html', {'user': user})
 
 
@@ -2509,11 +2499,9 @@ def admin_search_goods(request, user):
         key = '%' + key + '%'
         sql += " and concat(goods_title,goods_address,user_name,goods_id) like '%s'" % (key)
     cur.execute(sql)
-    print(sql)
     goodslist = cur.fetchall()
-    paginator = Paginator(goodslist, 40)
+    paginator = Paginator(goodslist, 35)
     page = request.POST.get('page')
-    print(page)
     try:
         contacts = paginator.page(page)
         page = int(page)
@@ -2533,21 +2521,26 @@ def admin_search_goods(request, user):
             pagelist = [i + 1 for i in range(num_pages - 5, num_pages)]
         else:
             pagelist = [i + 1 for i in range(page - 2, page + 3)]
-    # pagelist = ['«'] + pagelist + ['»']
-    print(pagelist)
     datalist = {'page': page, 'num_pages': num_pages, 'data': contacts.object_list, 'pagelist': pagelist}
     return HttpResponse(json.dumps(datalist, cls=CJsonEncoder), content_type="application/json")
 
 
 @admin_session
 def admin_update(request, user):
+    checkID = request.POST.get('checkID')
     goods_id = request.POST.get('goods_id')
     user_id = request.POST.get('user_id')
     action = request.POST.get('action')
-    if goods_id:
-        result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
+    if checkID:
+        checkID = '(' + checkID[1:-1] + ')'
+        sql = "update t_goods set goods_state = '" + action + "' where goods_id in " + checkID
+        print(sql)
+        result = cur.execute(sql)
     else:
-        result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
+        if goods_id:
+            result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
+        else:
+            result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
     con.commit()
     if result:
         return HttpResponse("success")
