@@ -547,7 +547,7 @@ def Determine_auction_date(request):
                     con.commit()
 
             except Exception as e:
-                con.rollback()
+
                 print(e)
     print(su)
     return HttpResponse("你好")

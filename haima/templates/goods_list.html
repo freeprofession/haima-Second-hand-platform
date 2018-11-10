@@ -9,33 +9,7 @@
     <script type="text/javascript" src="../static/JS/guess.js"></script>
 </head>
 <body>
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a><br>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="order_show">
-    <ul>
-        <li><a href="/my_sale/">我出售的</a></li>
-        <li><a href="/my_buy/">我购买的</a></li>
-    </ul>
-</div>
-
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="index.html" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100" id="haima"></a>
     <div class="search_wrap fl">
@@ -309,19 +283,26 @@
             </div>
         </form>
     </div>
-    <ul class="goods_type_list clearfix" id="goods_type_ul">
-        {% for goods in contacts %}
-            <li>
-                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
-                <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
-                <div class="operate">
-                    <span class="prize">￥{{ goods.goods_price }}</span>
-                    <span class="unit">台</span>
-                    <a href="#" class="add_goods" title="加入购物车"></a>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if contacts %}
+        <ul class="goods_type_list clearfix" id="goods_type_ul">
+            {% for goods in contacts %}
+                <li>
+                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
+                    <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
+                    <div class="operate">
+                        <span class="prize">￥{{ goods.goods_price }}</span>
+                        <span class="unit">台</span>
+                        <a href="#" class="add_goods" title="加入购物车"></a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div style="margin-left: 140px;margin-top: 40px">
+            <div class="no_goods"></div>
+            <div class="no_goods_msg">亲！抱歉没有找到"<span style="color: #ff4e3f">{{ question }}</span>"相关商品</div>
+        </div>
+    {% endif %}
     {#        这是分页#}
     <div class="pagenation">
     <span class="step-links">

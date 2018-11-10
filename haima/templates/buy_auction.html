@@ -45,28 +45,7 @@
     </style>
 </head>
 <body>
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/history_auction/" target="_blank">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="/my_sale/" id="my_order">我的订单</a>
-                <span>|</span>
-                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="search_wrap fl">
@@ -98,23 +77,23 @@
 <hr style="background-color: #16bcbd">
 {% for i in list1 %}
     <div class="goods_detail_con clearfix">
-    <div class="up fl" id="up"><img src={{ i.goods.auction_goods_imgurl }}></div>
-    <div class="down" id="down" >
-        <table>
-            <tr>
-                {% for j in i.img %}
-                <td><img src={{ j }}></td>
-                {% endfor %}
-            </tr>
-        </table>
-    </div>
-
-    <div class="goods_detail_list fr">
-        <h3>{{ i.goods.auction_goods_title }}</h3>
-         <div id="auction_goods_info">
-             <div style="margin-left: 22px;">
-            <img src="../static/Images/haima3.png" alt="" width=150 height=100>
+        <div class="up fl" id="up"><img src={{ i.goods.auction_goods_imgurl }}></div>
+        <div class="down" id="down">
+            <table>
+                <tr>
+                    {% for j in i.img %}
+                        <td><img src={{ j }}></td>
+                    {% endfor %}
+                </tr>
+            </table>
         </div>
+
+        <div class="goods_detail_list fr">
+            <h3>{{ i.goods.auction_goods_title }}</h3>
+            <div id="auction_goods_info">
+                <div style="margin-left: 22px;">
+                    <img src="../static/Images/haima3.png" alt="" width=150 height=100>
+                </div>
                 <div id="info_message_auction" style=" font-size: 14px;">
                     <h1>海马平台拍卖规则</h1>
                     <p>1.不得竞拍自己的物品</p>
@@ -123,83 +102,83 @@
                     <p>4.拍卖时间系统会自动识别当前物品是否被竞拍，若无人竞拍，物品流拍</p>
                     <p>5.拍卖扣除保证金，成功后退还</p>
                 </div>
-        </div>
-        <div class="prize_bar">
-        <span class="show_pirze">¥<em>{{ i.attribute.auction_goods_price }}</em></span>
-        <a href="" class="goods_judge">{{ i.attribute.auction_goods_count }}次加价过</a>
-        </div>
-        <div class="goods_num clearfix">
-        <div class="type_select">
-            <label>开始时间：</label>
-            <span id="startdate">{{ i.attribute.start_date }}</span>
-        </div>
-        <div class="type_select" style="display: none">
-            <label>开始时间：</label>
-            <span id="goods_id">{{ i.goods.auction_goods_id }}</span>
-        </div>
-        <div class="type_select">
-            <label>结束时间:</label>
-            <span id="enddate">{{ i.attribute.end_date }}</span>
-        </div>
-        <div class="type_select">
-            <label>商品底价:</label>
-            <span id="floorprice">{{ i.attribute.auction_goods_floorprice }}</span>
-        </div>
-
-        <div class="type_select">
-            <label>最低加价:</label>
-            <span id="floor_premium">{{ i.attribute.auction_goods_floorpremium }}</span>
-        </div>
-        <div class="type_select">
-            <label>保证金:</label>
-            <span id="acution_goods_margin">{{ i.attribute.auction_goods_margin }}</span>
-        </div>
-             <div class="type_select">
-            <label>当前价格</label>
-            <span id="old_price">{{ i.attribute.auction_goods_price }}</span>
-        </div>
             </div>
-        <div class="type_select" style="display: none">
-            <label>这里是隐藏的这个商品的用户id</label>
-            <span id="goods_user_id">{{ i.goods.auction_goods_user_id}}</span>
-        </div>
+            <div class="prize_bar">
+                <span class="show_pirze">¥<em>{{ i.attribute.auction_goods_price }}</em></span>
+                <a href="" class="goods_judge">{{ i.attribute.auction_goods_count }}次加价过</a>
+            </div>
+            <div class="goods_num clearfix">
+                <div class="type_select">
+                    <label>开始时间：</label>
+                    <span id="startdate">{{ i.attribute.start_date }}</span>
+                </div>
+                <div class="type_select" style="display: none">
+                    <label>开始时间：</label>
+                    <span id="goods_id">{{ i.goods.auction_goods_id }}</span>
+                </div>
+                <div class="type_select">
+                    <label>结束时间:</label>
+                    <span id="enddate">{{ i.attribute.end_date }}</span>
+                </div>
+                <div class="type_select">
+                    <label>商品底价:</label>
+                    <span id="floorprice">{{ i.attribute.auction_goods_floorprice }}</span>
+                </div>
+
+                <div class="type_select">
+                    <label>最低加价:</label>
+                    <span id="floor_premium">{{ i.attribute.auction_goods_floorpremium }}</span>
+                </div>
+                <div class="type_select">
+                    <label>保证金:</label>
+                    <span id="acution_goods_margin">{{ i.attribute.auction_goods_margin }}</span>
+                </div>
+                <div class="type_select">
+                    <label>当前价格</label>
+                    <span id="old_price">{{ i.attribute.auction_goods_price }}</span>
+                </div>
+            </div>
+            <div class="type_select" style="display: none">
+                <label>这里是隐藏的这个商品的用户id</label>
+                <span id="goods_user_id">{{ i.goods.auction_goods_user_id }}</span>
+            </div>
 
 
-        <div class="type_select">
-            <label>输入竞拍加价:</label>
-            <span><input type="text" id="auction_premium"></span>
-            <span>当前总计：<span id="auction_goods_price" style="color: red"></span></span>
-        </div>
-        <div class="operate_btn">
-            <button class="buy_btn" id="buy_btn">立即竞拍</button>
-            <a href="" class="add_collection" id="add_collection">加入收藏</a>
-        </div>
+            <div class="type_select">
+                <label>输入竞拍加价:</label>
+                <span><input type="text" id="auction_premium"></span>
+                <span>当前总计：<span id="auction_goods_price" style="color: red"></span></span>
+            </div>
+            <div class="operate_btn">
+                <button class="buy_btn" id="buy_btn">立即竞拍</button>
+                <a href="" class="add_collection" id="add_collection">加入收藏</a>
+            </div>
 
-    </div>
+        </div>
 
         <div id="buy_now_message" style="background-color: #2e3846; color: white">
             <div style="margin-left: 30px;">
-            <button id="shutdown" >
-                关闭
-            </button>
+                <button id="shutdown">
+                    关闭
+                </button>
                 <div class="type_select">
-                        <label>当前价格:</label>
-                        <span id="old_price" style="color: white">{{ i.attribute.auction_goods_price }}</span>
+                    <label>当前价格:</label>
+                    <span id="old_price" style="color: white">{{ i.attribute.auction_goods_price }}</span>
                 </div>
-              <div class="type_select">
-                        <label>竞拍加价:</label>
-                        <span id="buy_auction_premium" style="color: white">0</span>
+                <div class="type_select">
+                    <label>竞拍加价:</label>
+                    <span id="buy_auction_premium" style="color: white">0</span>
                 </div>
-              <div class="type_select">
-                        <label>总计:</label>
-                        <span id="buy_auction_goods_price" style="color: white">0</span>
+                <div class="type_select">
+                    <label>总计:</label>
+                    <span id="buy_auction_goods_price" style="color: white">0</span>
                 </div>
-               <div class="type_select">
-                        <label>需先支付保证金:</label>
-                        <span style="color: white" >{{ i.attribute.auction_goods_margin }}</span>
+                <div class="type_select">
+                    <label>需先支付保证金:</label>
+                    <span style="color: white">{{ i.attribute.auction_goods_margin }}</span>
                 </div>
-              <div class="type_select">
-                  <label>请输入支付密码:</label>
+                <div class="type_select">
+                    <label>请输入支付密码:</label>
                     <input type="text" maxlength="6" id="pay_password" style="margin-top: 10px;">
                 </div>
 
@@ -210,15 +189,15 @@
                 <div id="pay_error">
                     竞拍错误
                 </div>
-</div>
-
             </div>
-        <div id="price_error" >
+
+        </div>
+        <div id="price_error">
             <button id="shutdown_error" onclick="javascript:window.location.reload() ">
                 关闭
             </button>
             <br>
-            <div  style="font-size: 16px; color: white;margin-top: 70px;">
+            <div style="font-size: 16px; color: white;margin-top: 70px;">
                 必须输入正确的价格!
             </div>
             <span style="color: white;float: right;margin-top: 60px;">
@@ -227,10 +206,8 @@
         </div>
 
 
-
-
     </div>
-        <div class="main_wrap2 clearfix" >
+    <div class="main_wrap2 clearfix">
         <div class="wrap fr clearfix" style="clear: both;float: left;">
             <ul class="detail_tab clearfix">
                 <li class="active">宝贝信息</li>
@@ -266,7 +243,7 @@
             </div>
         </div>
     </div>
-     <div class="footer">
+    <div class="footer">
         <div class="foot_link">
             <a href="#">关于我们</a>
             <span>|</span>
@@ -322,17 +299,17 @@
         $("#auction_premium").blur(function () {
             $.ajax(
                 {
-                    url:'/calculate_price/',
-                    type:'post',
-                    dataType:'text',
-                    data:{
-                        permium :$("#auction_premium").val(),
-                        goods_user_id:$("#goods_user_id").text(),
-                        old_price : $("#old_price").text(),
-                        floorprice:$("#floorprice").text(),
-                        floormium : $("#floor_premium").text(),
+                    url: '/calculate_price/',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {
+                        permium: $("#auction_premium").val(),
+                        goods_user_id: $("#goods_user_id").text(),
+                        old_price: $("#old_price").text(),
+                        floorprice: $("#floorprice").text(),
+                        floormium: $("#floor_premium").text(),
                     },
-                    success:function (data) {
+                    success: function (data) {
                         document.getElementById('auction_goods_price').innerText = data;
                         document.getElementById('buy_auction_goods_price').innerText = data;
                     }
@@ -348,11 +325,11 @@
     $("#buy_btn").click(function () {
         permium = $("#auction_premium").val();
         price = $("#old_price").text();
-        info=$("#auction_goods_price").text();
+        info = $("#auction_goods_price").text();
         var ival = parseInt(info);
         if (!isNaN(ival)) {
             $("#buy_now_message").show();
-              $("#price_error").hide();
+            $("#price_error").hide();
             document.getElementById("buy_auction_premium").innerText = permium;
 
         }
@@ -371,75 +348,72 @@
 
     })
     $("#confirm_buy").click(function () {
-        margin=$("#acution_goods_margin").text();
+        margin = $("#acution_goods_margin").text();
         permium = $("#auction_premium").val();
-        floorprice=$("#floorprice").text();
-        pay_password=$("#pay_password").val();
-        old_price= $("#old_price").text();
-        price=$("#buy_auction_goods_price").text();
-        goods_id=$("#goods_id").text();
-            $.post('/confirm_buy/',
-                {
-                    "floorprice": floorprice,
-                    'price': price,
-                    'permium': permium,
-                    "old_price":old_price,
-                    "goods_id":goods_id,
-                    "pay_password":pay_password,
-                    "margin":margin,
-                }
-                ,function (data) {
-                switch (data.msg)
-                {
+        floorprice = $("#floorprice").text();
+        pay_password = $("#pay_password").val();
+        old_price = $("#old_price").text();
+        price = $("#buy_auction_goods_price").text();
+        goods_id = $("#goods_id").text();
+        $.post('/confirm_buy/',
+            {
+                "floorprice": floorprice,
+                'price': price,
+                'permium': permium,
+                "old_price": old_price,
+                "goods_id": goods_id,
+                "pay_password": pay_password,
+                "margin": margin,
+            }
+            , function (data) {
+                switch (data.msg) {
                     case "no_pay_password":
-                           $('#pay_error').html(function () {
+                        $('#pay_error').html(function () {
 
-                            document.getElementById('pay_error').style.display='block';
+                            document.getElementById('pay_error').style.display = 'block';
                             document.getElementById('pay_error').innerText = "请输入支付密码";
-                            });
+                        });
                         break;
                     case "no_user_password":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block'
                             document.getElementById('pay_error').innerText = "您还未设置支付密码，请前往个人中心设置";
-                            });
+                        });
 
                         break;
                     case "pay_password_length":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block'
                             document.getElementById('pay_error').innerText = "密码长度不能少于六位数";
-                            });
+                        });
                         break;
                     case "diferent_password":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block'
                             document.getElementById('pay_error').innerText = "支付密码错误";
-                            });
+                        });
                         break;
                     case "money_less":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block'
                             document.getElementById('pay_error').innerText = "账户余额不足";
-                            });
+                        });
                         break;
                     case "same_user_buy":
-                           $('#pay_error').html(function () {
-                               document.getElementById('pay_error').style.display='block'
+                        $('#pay_error').html(function () {
+                            document.getElementById('pay_error').style.display = 'block'
                             document.getElementById('pay_error').innerText = "此商品正在被你竞拍";
-                            });
+                        });
                         break;
-                     case "pay_ok":
-                           location.href = '/buy_auction_ok/'
+                    case "pay_ok":
+                        location.href = '/buy_auction_ok/'
                         break;
-
-
 
 
                 }
-                }
-                ,'json'
-            )
+            }
+            , 'json'
+        )
 
     })
 </script>

@@ -20,28 +20,7 @@
 </head>
 <body>
 <div style="min-height:100%;height:auto;">
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/?href=/my_auction/" target="_blank">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a>
-                <span>|</span>
-                <a href="" id="my_order">留言 <img src="../static/Images/message.png" alt="" width="10" height="10"></a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'home_head.html' %}
     <div class="Navigation_information">
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
@@ -80,10 +59,10 @@
 				</ul>
 <div>
 				<div id="select_one">
-{% for i in list10 %}
+{% for i in contacts %}
     <div id="four">
     <div id="one">
-        <div style="margin-top: ">
+        <div style="margin-top:15px; ">
             <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="300px">
         </div>
          <div id="auction_goods_desc">
@@ -126,15 +105,27 @@
 </div>
 </div>
 
-				<div class="pagenation">
-					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
-				</div>
+				 <div class="pagenation">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+            </div>
 		</div>
 	</div>
 

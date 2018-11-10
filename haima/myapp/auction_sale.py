@@ -1,4 +1,5 @@
 import pymysql
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
@@ -59,7 +60,16 @@ def my_auction_sale_one(request):
                     else:
                         dict1["user_name"] = "无"
             list10.append(dict1)
-    print(list10)
+    paginator = Paginator(list10, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     cur.close()
     return render(request,'my_auction_sale_one.html',locals())
 def my_auction_sale_two(request):
@@ -93,7 +103,19 @@ def my_auction_sale_two(request):
             dict1["state"] = "商品已经流拍"
             dict1["user_name"] = "无"
             list11.append(dict1)
-    print(list11)
+            # 分页
+
+    paginator = Paginator(list11, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+
     return render(request,'my_auction_sale_two.html',locals())
 def my_auction_sale_three(request):
     user_id = request.session.get("user_id")
@@ -133,7 +155,16 @@ def my_auction_sale_three(request):
             dict1["user_name"] = user_name
 
             list12.append(dict1)
-
+    paginator = Paginator(list12, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_three.html',locals())
 def my_auction_sale_four(request):
     user_id = request.session.get("user_id")
@@ -183,7 +214,16 @@ def my_auction_sale_four(request):
                 # list14.append(dict1)
             else:
                 list13.append(dict1)
-
+    paginator = Paginator(list13, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_four.html',locals())
 def my_auction_sale_five(request):
     user_id = request.session.get("user_id")
@@ -232,7 +272,16 @@ def my_auction_sale_five(request):
                 dict1["the_goods_state"] = the_goods_state
                 list14.append(dict1)
 
-
+    paginator = Paginator(list14, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_five.html',locals())
 def my_auction_sale_six(request):
     user_id = request.session.get("user_id")
@@ -276,7 +325,16 @@ def my_auction_sale_six(request):
             dict1["state"] = "商品已经收货"
 
             list15.append(dict1)
-
+    paginator = Paginator(list15, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_six.html',locals())
 def my_auction_sale_seven(request):
     user_id = request.session.get("user_id")
@@ -318,7 +376,16 @@ def my_auction_sale_seven(request):
             dict1["user_name"] = user_name
 
             list16.append(dict1)
-    print(list16)
+    paginator = Paginator(list16, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_sale_seven.html',locals())
 def my_auction_one(request):
     user_id = request.session.get("user_id")

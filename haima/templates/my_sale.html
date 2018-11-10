@@ -7,32 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
 </head>
 <body>
-<div class="header_con">
-    <div class="header">
-       <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order" onmouseover="showhide()">我的订单</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="order_show">
-    <ul>
-        <li><a href="/my_sale/">我出售的</a></li>
-        <li><a href="/my_buy/">我购买的</a></li>
-    </ul>
-</div>
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
     <div class="sub_page_name fl"><a href="/my_sale/" style="color: #ff8800">|&nbsp;&nbsp;&nbsp;&nbsp;出售中</a></div>
@@ -43,7 +18,7 @@
 </div>
 
 <div class="main_con clearfix">
-    <div class="left_menu_con clearfix">
+   <div class="left_menu_con clearfix">
         <h3>用户中心</h3>
         <ul>
             <li><a href="/user_center/">· 个人信息</a></li>
@@ -51,7 +26,7 @@
             <li><a href="/my_buy/">· 我购买的</a></li>
             <li><a href="user_center_order.html">· 我的拍卖</a></li>
             <li><a href="/my_collection/">· 我的收藏</a></li>
-            <li><a href="/my_evaluate/">· 我的评价</a></li>
+            <li><a href="/my_evaluate_get/">· 我的评价</a></li>
             <li><a href="/leave_message/">· 宝贝留言</a></li>
             <li><a href="/modify_information/">· 修改信息</a></li>
             <li><a href="/modify_password/">· 修改密码</a></li>
@@ -59,7 +34,6 @@
     </div>
     <div class="right_content clearfix">
         <h3 class="common_title2" style="color: red">交易中</h3>
-     <a name="html"></a>
         {% if not contacts2 %}
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                  alt="" height="100">
@@ -82,7 +56,9 @@
                                         style="color: red">{{ item.goods_price }}</em></li>
                             </ul>
                         </td>
-                        <td width="15%"><a href="{{ item.buy_user_id }}" class="oper_btn">私聊买家</a></td>
+                        <td width="15%">
+                            <button class="oper_btn sale_msg">私聊买家</button>
+                        </td>
                         {% if item.state == 0 %}
                             <td width="15%"><input type="button" class="send" style="color: red" value="去发货"></td>
                         {% else %}
@@ -133,10 +109,10 @@
                                 <li class="col04">{{ item.goods_browse_count }}人浏览</li>
                             </ul>
                         </td>
-                        <td width="15%"><input type="button" class="lower1_btn lower_{{ item.goods_id }}"
+                        <td width="15%"><input type="button" class="lower1_btn lower_{{ item.goods_id }} oper_btn"
                                                onclick="lower({{ item.goods_id }})" value="下架">
                         </td>
-                        <td width="15%"><a href="" class="oper_btn">修改</a></td>
+                        <td width="15%"><a href="/publish/?goods_id={{ item.goods_id }}" class="oper_btn">修改</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -158,8 +134,48 @@
         {% endif %}
     </div>
 </div>
-
-
+<div class="for_psw">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        卖家信息
+    </p>
+    <div class="popwin_content">
+        <table align="center" style="font-size: 15px">
+            <tr>
+                <td>卖家：</td>
+                <td>clearlove</td>
+            </tr>
+            <tr>
+                <td>联系方式：</td>
+                <td>17777777777</td>
+            </tr>
+            <tr>
+                <td>收货地址：</td>
+                <td>灵石路</td>
+            </tr>
+        </table>
+        <button class="btn_blue change_password">确定</button>
+    </div>
+</div>
+<div class="for_psw_send">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        通知买家
+    </p>
+    <div class="popwin_content">
+        <p style="font-size: 16px;margin-bottom: 20px">请输入宝贝订单号通知买家</p>
+        <input type="text" style="height: 23px;margin-bottom: 10px">
+        <button class="btn_blue change_password_send" style="position: relative;top: 1px">确定</button>
+    </div>
+</div>
+<div class="for_psw_down">
+    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+        下架商品
+    </p>
+    <div class="popwin_content">
+        <p style="font-size: 18px;font-weight: bold;margin-bottom: 20px">确定下架商品吗？</p>
+        <button class="btn_blue" style="margin-right: 40px" id="change_password">确定</button>
+        <button class="btn_blue cancer_fgt_psw">取消</button>
+    </div>
+</div>
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>
@@ -197,6 +213,7 @@
             } else if (data.msg === "flash") {
                 top.location.href = data.href
             } else if (data.msg === "fail") {
+                alert("下架失败")
                 top.location.href = data.href
             }
         }, "json")
@@ -216,11 +233,24 @@
     }
 </script>
 <script>
-    window.onload = function () {
-        location.hash = '#html';
-
-    }
+    $(".sale_msg").click(function () {
+        $(".for_psw").fadeIn(500);
+    });
+    $(".change_password").click(function () {
+        $(".for_psw").fadeOut(500);
+    });
+    $(".send").click(function () {
+        $(".for_psw_send").fadeIn(500);
+    });
+    $(".change_password_send").click(function () {
+        $(".for_psw_send").fadeOut(500);
+    });
+    $(".lower1_btn").click(function () {
+        $(".for_psw_down").fadeIn(500);
+    });
+    $(".cancer_fgt_psw").click(function () {
+        $(".for_psw_down").fadeOut(500);
+    });
 </script>
-
 </body>
 </html>

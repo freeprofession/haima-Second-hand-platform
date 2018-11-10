@@ -63,33 +63,8 @@
     </style>
 
 </head>
-<body>
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ user_name }}</b></span>欢迎来到海马二手商城!</div>
-        <div class="fr">
-            <div class="login_btn fl">
-                <a href="/login/">登录</a>
-                <span>|</span>
-                <a href="/register/">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="/haima/">首页</a>
-                <span>|</span>
-                <a href="/user_center/">用户中心</a>
-                <span>|</span>
-                <a href="" id="my_order">我的订单</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="order_show">
-    <ul>
-        <li><a href="/my_sale/">我出售的</a></li>
-        <li><a href="/my_buy/">我购买的</a></li>
-    </ul>
-</div>
+<body onload="change()">
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img id="logoimg" src="../static/Images/haima3.png"></a>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/publish/" style="color: #ff8800">发布闲置</a></div>
@@ -106,14 +81,16 @@
             <table border="0">
                 <tr>
                     <td>宝贝标题：</td>
-                    <td><input type="text" name="title" placeholder="请输入商品标题" onblur="checktitle()">
+                    <input type="text" name="goods_id" value="{{ goods_list.goods_id }}" id="goods_id" hidden>
+                    <td><input type="text" name="title" placeholder="请输入商品标题" onblur="checktitle()"
+                               value="{{ goods_list.goods_title }}">
                         <div id="checktitle" style="float: right;font-size: 14px;color: red;display: none">宝贝标题不能为空
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>类型：</td>
-                    <td><select style="width: 200px" name="type">
+                    <td><select style="width: 200px" name="type" id="check_type">
                         <option value="1">手机</option>
                         <option value="2">电脑</option>
                         <option value="3">摄影</option>
@@ -123,7 +100,7 @@
                 </tr>
                 <tr>
                     <td>类型：</td>
-                    <td><select style="width: 200px" name="appearance">
+                    <td><select style="width: 200px" name="appearance" id="appearance">
                         <option value="4">全新</option>
                         <option value="3">九五新</option>
                         <option value="2">九成新</option>
@@ -133,7 +110,8 @@
                 <tr>
                     <td>价格：</td>
                     <td>
-                        <input type="text" name="price" placeholder="商品价格" onblur="checkprice()" value="{{ price }}">
+                        <input type="text" name="price" placeholder="商品价格" onblur="checkprice()"
+                               value="{{ goods_list.goods_price }}">
                         <div id="checkprice" style="float: right;font-size: 14px;color: red;display: none">格式有误</div>
                     </td>
                 </tr>
@@ -158,12 +136,16 @@
                                                       style="height: 100%;width: 100%"></label>
                             <input type="file" name="fuck" multiple="" id="js-file" style="display: none">
                         </div>
-                        <div id="js-pre"></div>
+                        <div id="js-pre">
+                            {{ c|safe }}
+                        </div>
+
                     </td>
                 </tr>
                 <tr>
                     <td>宝贝描述：</td>
-                    <td><textarea name="desc" id="" cols="100" rows="8" placeholder="商品描述不低于10个字"></textarea></td>
+                    <td><textarea name="desc" id="desc" cols="100" rows="8"
+                                  placeholder="商品描述不低于10个字">{{ goods_list.goods_desc|safe }}</textarea></td>
                 </tr>
             </table>
             <input type="text" name="filelist" id="filelist" style="display:none;">
@@ -175,7 +157,7 @@
     <div class="pub" id="pub_rule">
         <h1 style="font-size: x-large;text-align: center">平台商品发布规则</h1>
         <div style="border: #ffda44 1px solid;height: 500px;width: 300px;">
-            <p style="font-size: 15px;color: black;text-indent: 2em">卖NMB NMSL</p>
+            <p style="font-size: 15px;color: black;text-indent: 2em">哈哈哈哈哈哈哈</p>
         </div>
     </div>
 </div>
@@ -247,6 +229,18 @@
             },	//文件全部上传完毕时
         })
     })
+</script>
+<script>
+    function change() {
+
+        var type = '{{ goods_list.goods_category_id }}';
+        if (type.length === 0)
+            document.getElementById("check_type")[0].selected = true;
+        else {
+            document.getElementById("check_type")[{{ goods_list.goods_category_id }}-1].selected = true;
+            document.getElementById("appearance")[{{ goods_list.goods_appearance }}-1].selected = true;
+        }
+    }
 </script>
 </body>
 </html>

@@ -10,7 +10,7 @@ function FFile(obj) {
         upButton: obj.upButton ? obj.upButton : null,					//提交按钮
         pre: obj.pre ? obj.pre : null,									//预览地址
         url: obj.url ? obj.url : null,									//ajax地址
-        fileFilter: [],					                            //过滤后的文件数组
+        fileFilter: obj.fileFilter ? obj.fileFilter : [],							                            //过滤后的文件数组
         filter: obj.filter ? obj.filter : function (files) {
             var arrFiles = [];
             for (var i = 0, file; i < files.length; i++) {
@@ -225,13 +225,20 @@ FFile.prototype = {
         //上传按钮提交
         if (self.FileSet.upButton) {
             $(self.FileSet.upButton).on('click', function (e) {
-                if (checkform()) {
-                    if (dex.length == 0) {
-                        alert('请添加商品图片')
-                        return
+                goods_id = $('#goods_id').val();
+                alert(goods_id, 455)
+                if (goods_id) {
+                } else {
+                    if (checkform()) {
+                        if (dex.length == 0) {
+                            alert('请添加商品图片')
+                            return
+                        }
+
                     }
-                    self.funUploadFile(e);
                 }
+                self.funUploadFile(e);
+
             })
         }
     }

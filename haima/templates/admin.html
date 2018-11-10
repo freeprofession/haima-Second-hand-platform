@@ -30,7 +30,7 @@
                 </ul>
             </li>
             <li class="kuanjie">
-                <a href="#">会员管理</a>
+                <a href="#">用户管理</a>
                 <a href="#">奖金管理</a>
                 <a href="#">订单管理</a>
                 <a href="#">产品管理</a>
@@ -104,7 +104,6 @@
                 <li><a href="#">第三方支付</a></li>
                 <li><a href="#">提现 /转账 出入账汇率</a></li>
                 <li><a href="#">平台设置</a></li>
-                <li><a href="#">声音文件</a></li>
                 <li><a href="/exit/">退出登录</a></li>
             </ul>
         </div>
@@ -150,7 +149,7 @@
                 <div class="admin-index">
                     <dl data-am-scrollspy="{animation: 'slide-right', delay: 100}">
                         <dt class="qs"><i class="am-icon-users"></i></dt>
-                        <dd>455</dd>
+                        <dd>{{ num_user }}</dd>
                         <dd class="f12">用户数量</dd>
                     </dl>
                     <dl data-am-scrollspy="{animation: 'slide-right', delay: 300}">
@@ -160,7 +159,7 @@
                     </dl>
                     <dl data-am-scrollspy="{animation: 'slide-right', delay: 600}">
                         <dt class="hs"><i class="am-icon-shopping-cart"></i></dt>
-                        <dd>455</dd>
+                        <dd>{{ num_goods }}</dd>
                         <dd class="f12">商品数量</dd>
                     </dl>
                     <dl data-am-scrollspy="{animation: 'slide-right', delay: 900}">

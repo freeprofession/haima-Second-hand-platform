@@ -8,35 +8,7 @@
     <link rel="stylesheet" href="../static/CSS/user_center.css">
 </head>
 <body>
-<div class="header_con">
-    <div class="header">
-        <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
-
-
-        <div class="login_btn fl">
-            <a href="/login/">登录</a>
-            <span>|</span>
-            <a href="/register/">注册</a>
-        </div>
-        <div class="user_link fl">
-            <span>|</span>
-            <a href="/haima/">首页</a>
-            <span>|</span>
-            <a href="/user/">用户中心</a>
-            <span>|</span>
-            <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
-
-
-        </div>
-    </div>
-</div>
-</div>
-<div id="order_show">
-    <ul>
-        <li><a href="/sale/">我出售的</a></li>
-        <li><a href="/buy/">我购买的</a></li>
-    </ul>
-</div>
+{% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
 </div>
@@ -79,7 +51,9 @@
                     <ul class="user_info_list">
                         <li><span>累计出售：</span>{{ sell_count }}</li>
                         <li><span>累计购买：</span>{{ buy_count }}</li>
-                         <li><button  id="top_up">充值</button></li>
+                        <li>
+                            <button id="top_up">充值</button>
+                        </li>
                     </ul>
                 </div>
 
@@ -128,31 +102,33 @@
     <div style="float: right">
         <button id="shutdown">关闭</button>
     </div>
-{#    <form action="/top_up_money/"method="post">#}
-        <table id="money_table">
+    {#    <form action="/top_up_money/"method="post">#}
+    <table id="money_table">
 
-            <tr>
-                <td><input type="radio" name="money" value="50" checked>50元</td>
-                <td><input type="radio" name="money" value="100">100元</td>
-                <td><input type="radio" name="money" value="200" >200元</td>
-            </tr>
-             <tr>
-                <td><input type="radio" name="money" value="500">500元</td>
-                <td><input type="radio" name="money" value="1000">1000元</td>
-                <td><input type="radio" name="money" value="2000" >2000元</td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                 <span style="font-size: 16px;height: 20px;">输入自定义金额:<input type="text" id="input_money" name="input_money" style="width: 100px;height: 20px;"></span>
-                </td>
-            </tr>
-            <tr >
-                <td style="text-align: center;padding-top: 40px;" colspan="3">
-                    <input type="button" value="确定充值" id="cz" style="width: 80px;height: 25px;">
-                </td>
-            </tr>
-        </table>
-{#    </form>#}
+        <tr>
+            <td><input type="radio" name="money" value="50" checked>50元</td>
+            <td><input type="radio" name="money" value="100">100元</td>
+            <td><input type="radio" name="money" value="200">200元</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="money" value="500">500元</td>
+            <td><input type="radio" name="money" value="1000">1000元</td>
+            <td><input type="radio" name="money" value="2000">2000元</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <span style="font-size: 16px;height: 20px;">输入自定义金额:<input type="text" id="input_money"
+                                                                           name="input_money"
+                                                                           style="width: 100px;height: 20px;"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;padding-top: 40px;" colspan="3">
+                <input type="button" value="确定充值" id="cz" style="width: 80px;height: 25px;">
+            </td>
+        </tr>
+    </table>
+    {#    </form>#}
 
 </div>
 
@@ -173,27 +149,27 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
     $("#cz").click(function () {
-       select_money=$("input[name='money']:checked").val();
-       input_money=$("#input_money").val();
-       if(input_money==''){
-           money=select_money
-       }
-       else{
-           money=input_money
-       }
-      $.post('/top_up_money/'
-      ,
-          {
-            "money":money,
-          }
-          ,function (data) {
-               location.href=data
-          })
+        select_money = $("input[name='money']:checked").val();
+        input_money = $("#input_money").val();
+        if (input_money == '') {
+            money = select_money
+        }
+        else {
+            money = input_money
+        }
+        $.post('/top_up_money/'
+            ,
+            {
+                "money": money,
+            }
+            , function (data) {
+                location.href = data
+            })
     });
 
     $("#top_up").click(function () {
-          $("#top_up_money").show()
-            money=$("input[name='money']:checked").val();
+        $("#top_up_money").show()
+        money = $("input[name='money']:checked").val();
 
     });
 
