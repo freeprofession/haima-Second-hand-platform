@@ -95,7 +95,6 @@ urlpatterns = [
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
 
-    path('buy_auction/', view.buy_auction),
 
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),

@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
 </head>
 <body>
+<input type="text" value="{{ page1 }}" id="page_count_c" hidden>
 <div class="header_con">
     <div class="header">
         <div class="welcome fl"><span style="color: red"><b>{{ username.user_name }}</b></span>欢迎来到海马二手商城!</div>
@@ -81,7 +82,9 @@
                                         style="color: red">{{ item.goods_price }}</em></li>
                             </ul>
                         </td>
-                        <td width="15%"><button class="oper_btn sale_msg">私聊买家</button></td>
+                        <td width="15%">
+                            <button class="oper_btn sale_msg">私聊买家</button>
+                        </td>
                         {% if item.state == 0 %}
                             <td width="15%"><input type="button" class="send" style="color: red" value="去发货"></td>
                         {% else %}
@@ -206,8 +209,10 @@
 <script>
     function lower(id) {
         goods_id = id
+        page_count_c = $("#page_count_c").val()
         $.post('/user_lower_goods/', {
             'goods_id': goods_id,
+            'page_count_c': page_count_c,
         }, function (data) {
             if (data.msg === "append") {
                 $("#goods_" + id).remove();
