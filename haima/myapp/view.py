@@ -1,11 +1,9 @@
 import pymysql
 import time
 from utils.pay import AliPay
-
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
 import base64
-
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
 from django.shortcuts import render, redirect, HttpResponse
@@ -22,7 +20,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-from myapp import AI_assess
+# from myapp import AI_assess
 from myapp import goods_recommend
 
 r = redis.Redis(host="47.100.200.132", port=6379)
@@ -127,6 +125,8 @@ def root_request(function):
 
 
 def homepage(request):
+    a = 0
+    request.session["wo"] = a
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     if username:
@@ -2268,21 +2268,27 @@ def page1(request):
     address=request.POST.get('address')+request.POST.get("user_address")
     alipay = get_ali_object()
     goods_id = request.POST.get('goods_id')
+    cur.execute("select goods_state from t_goods where goods_id=%s",[goods_id])
+    state=cur.fetchone()["goods_state"]
+    print(type(state))
     request.session['goods_id'] = goods_id
-    request.session['user_buy_phone'] = phone
-    request.session['name'] = name
-    request.session['address'] = address
-    # 生成支付的url
-    query_params = alipay.direct_pay(
-        subject=title,  # 商品简单描述
-        out_trade_no="x2" + str(time.time()),  # 用户购买的商品订单号（每次不一样） 20180301073422891
-        total_amount=money,  # 交易金额(单位: 元 保留俩位小数)
+    if state=='1':
+        return HttpResponse("error")
+    else:
+        request.session['user_buy_phone'] = phone
+        request.session['name'] = name
+        request.session['address'] = address
+        # 生成支付的url
+        query_params = alipay.direct_pay(
+            subject=title,  # 商品简单描述
+            out_trade_no="x2" + str(time.time()),  # 用户购买的商品订单号（每次不一样） 20180301073422891
+            total_amount=money,  # 交易金额(单位: 元 保留俩位小数)
 
-    )
-    pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
+        )
+        pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
+        print(pay_url)
 
-
-    return HttpResponse(pay_url)
+        return HttpResponse(pay_url)
 
 
 def page2(request):
@@ -2451,4 +2457,5 @@ def place_order(request):
     cur.execute("select * from t_goods where goods_id=%s",[goods_id])
     goods_message=cur.fetchone()
     return render(request, 'place_order.html',locals())
+
 

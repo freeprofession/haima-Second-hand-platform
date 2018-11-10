@@ -182,6 +182,9 @@ urlpatterns = [
     path("my_auction_sale_four/", auction_sale.my_auction_sale_four),
     path("my_auction_sale_five/", auction_sale.my_auction_sale_five),
     path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
+    path("my_auction_sale_seven/", auction_sale.my_auction_sale_seven),
     path('auction_place_order/',auction.auction_place_order),
+    path('Determine_pay_date/',auction.Determine_pay_date),
+    path('time_test/',auction.time_test),
 
 ]

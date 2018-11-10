@@ -76,6 +76,13 @@
   <h1 style="font-size: 16px"><b>海马拍卖,淘你所想！</b></h1>
 </div>
 <a href="/Determine_auction_date/">测试拍卖时间</a>
+<a href="/Determine_pay_date/">测试付款时间</a>
+<div id="all_time">
+{% for i in data_list %}
+    <span id={{ data_list.index }}>{{ i }}</span>
+    <spam id="data_list">{{ time_length }}</spam>
+{% endfor %}
+</div>
 {% for i in list1 %}
         <div id="auction_goods">
             <div id="auction_goods_img">
@@ -101,7 +108,7 @@
                         <br>
                         <div>当前价格：<span id="auction_goods_floorprice">{{ i.attribute.auction_goods_price }}</span></div>
                         <br>
-                        <div id="timer"></div>
+                        <div id={{ list1.index }}></div>
                     </div>
                     <div id="auction_button" >
                        <a href="/buy_auction/?id={{ i.goods.auction_goods_id }}"><button id="go_buy">马上去拍</button></a>
@@ -119,7 +126,8 @@
 </body>
 <script>
 
-function leftTimer(year,month,day,hour,minute,second){
+function leftTimer(year,month,day,hour,minute,second)
+{
   var leftTime = (new Date(year,month-1,day,hour,minute,second)) - (new Date()); //计算剩余的毫秒数
   var days = parseInt(leftTime / 1000 / 60 / 60 / 24 , 10); //计算剩余的天数
   var hours = parseInt(leftTime / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
