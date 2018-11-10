@@ -43,7 +43,7 @@ urlpatterns = [
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
-    path('publish/', view.publish),
+    path('publish/', view.goods_republish),
     path('pub_success/', view.pub_success),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
