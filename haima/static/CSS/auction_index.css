@@ -216,7 +216,7 @@ html, body {
 #auction_goods_desc {
     color: black;
     width: 806px;
-    height: 188px;
+    height: 186px;
     padding: 16px;
     background-color: white;
 }
@@ -337,5 +337,6 @@ html, body {
 }
 .auction_goods:hover{
     border: 1px solid #c30000;
+    box-sizing: border-box;
     cursor: pointer;
 }
