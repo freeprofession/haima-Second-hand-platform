@@ -31,6 +31,7 @@ urlpatterns = [
     path('admin_user/', view.admin_user),
     path('admin_order/', view.admin_order),
     path('admin_search_goods/', view.admin_search_goods),
+    path('admin_search_user/', view.admin_search_user),
     path('admin_update/', view.admin_update),
     path('exit/', view.exit),
     path('', view.homepage),
@@ -52,6 +53,7 @@ urlpatterns = [
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
+    path('system_message/', view.system_message),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
     path('leave_message_three/', view.leave_message_three),

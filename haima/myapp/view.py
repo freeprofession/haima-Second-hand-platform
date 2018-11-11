@@ -1865,6 +1865,13 @@ def my_evaluate_give(request):
     return render(request, 'my_evaluate_give.html', locals())
 
 
+# 系统消息
+@login_required
+@mysql_required
+def system_message(request):
+    return render(request, 'system_message.html')
+
+
 # 收到的回复
 @login_required
 @mysql_required
@@ -2224,7 +2231,7 @@ def admin_search_goods(request, user):
     goods_state = request.POST.get('goods_state')
     if goods_type in ['1', '2', '3', '4', '5']:
         sql += " and goods_category_id = '%s'" % (goods_type)
-    if goods_state in ['0', '2']:
+    if goods_state in ['0', '1', '2']:
         sql += " and goods_state= '%s'" % (goods_state)
     if key:
         key = '%' + key + '%'
@@ -2232,6 +2239,49 @@ def admin_search_goods(request, user):
     cur.execute(sql)
     goodslist = cur.fetchall()
     paginator = Paginator(goodslist, 35)
+    page = request.POST.get('page')
+    try:
+        contacts = paginator.page(page)
+        page = int(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
+    num_pages = paginator.num_pages
+    if num_pages <= 5:
+        pagelist = [i + 1 for i in range(num_pages)]
+    else:
+        if page <= 3:
+            pagelist = [i + 1 for i in range(5)]
+        elif page >= num_pages - 2:
+            pagelist = [i + 1 for i in range(num_pages - 5, num_pages)]
+        else:
+            pagelist = [i + 1 for i in range(page - 2, page + 3)]
+    datalist = {'page': page, 'num_pages': num_pages, 'data': contacts.object_list, 'pagelist': pagelist}
+    return HttpResponse(json.dumps(datalist, cls=CJsonEncoder), content_type="application/json")
+
+
+@admin_session
+def admin_search_user(request, user):
+    start = request.POST.get('start')
+    end = request.POST.get('end')
+    key = request.POST.get('key')
+    user_state = request.POST.get('user_state')
+    if not end:
+        end = loc_time
+    sql = "select user_id,user_name,user_password,user_address,user_phone,user_startdate,user_money,user_state from t_user where user_startdate BETWEEN '%s' AND '%s'" % (
+        start, end)
+    user_state = request.POST.get('user_state')
+    if user_state in ['0', '1']:
+        sql += " and user_state= '%s'" % (user_state)
+    if key:
+        key = '%' + key + '%'
+        sql += " and concat(user_name,user_phone,user_address) like '%s'" % (key)
+    cur.execute(sql)
+    userlist = cur.fetchall()
+    paginator = Paginator(userlist, 35)
     page = request.POST.get('page')
     try:
         contacts = paginator.page(page)
@@ -2269,7 +2319,10 @@ def admin_update(request, user):
         result = cur.execute(sql)
     else:
         if goods_id:
-            result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
+            if action == 'del':
+                result = cur.execute("delete from t_goods where goods_id = %s", [goods_id, ])
+            else:
+                result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
         else:
             result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
     con.commit()
@@ -2281,7 +2334,8 @@ def admin_update(request, user):
 
 @admin_session
 def admin_user(request, user):
-    cur.execute("select * from t_user")
+    cur.execute(
+        "select user_id,user_name,user_password,user_address,user_phone,user_startdate,user_money,user_state from t_user")
     userlist = cur.fetchall()
     return render(request, 'admin_user.html', {'user': user, 'userlist': userlist})
 

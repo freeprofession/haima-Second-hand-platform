@@ -25,9 +25,10 @@
                 <li>
                     <div class="am-btn-group am-btn-group-xs">
                         <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}" id="goods_state">
-                            <option value="1">商品状态</option>
+                            <option value="4">商品状态</option>
                             <option value="0">上架</option>
                             <option value="2">下架</option>
+                            <option value="1">出售</option>
                         </select>
                     </div>
                 </li>
@@ -43,17 +44,9 @@
                            class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
                            placeholder="结束日期" data-am-datepicker="{theme: 'success',}" readonly/>
                 </li>
-
-                <li style="margin-left: -10px;">
-                    <div class="am-btn-group am-btn-group-xs">
-                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
-                            <option value="b">产品分类</option>
-                            <option value="o">下架</option>
-                        </select>
-                    </div>
-                </li>
-                <li><input type="text" class="am-form-field am-input-sm am-input-xm" placeholder="关键词搜索"
-                           style="margin-top: 0px;" id="key"/></li>
+                <li style="margin-left: -10px"><input type="text" class="am-form-field am-input-sm am-input-xm"
+                                                      placeholder="关键词搜索"
+                                                      style="margin-top: 0px;" id="key"/></li>
                 <li>
                     <button type="button" class="am-btn am-radius am-btn-xs am-btn-success" id="search">搜索
                     </button>
@@ -70,54 +63,15 @@
                     <th class="table-title">标题</th>
                     <th class="table-user">发布用户</th>
                     <th class="table-type">类别</th>
-                    <th class="table-author am-hide-sm-only">上架/下架 <i class="am-icon-check am-text-warning"></i> <i
-                            class="am-icon-close am-text-primary"></i></th>
+                    <th class="table-author am-hide-sm-only">上架/下架/出售 <i class="am-icon-check am-text-warning"></i> <i
+                            class="am-icon-close am-text-primary"></i> <i class="am-icon-circle-o am-text-success"></i>
+                    </th>
                     <th class="table-date am-hide-sm-only">发布日期</th>
                     <th class="table-area">地区</th>
-                    <th width="" class="table-set">操作</th>
+                    <th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody id="goods">
-                {% for goods in contacts %}
-                    <tr class="goods">
-                        <td><input type="checkbox" name="checkbox"/></td>
-                        <td>{{ goods.goods_id }}</td>
-                        <td>{{ goods.goods_title }}</td>
-                        <td>{{ goods.user_name }}</td>
-                        <td>{{ goods.goods_category_id }}</td>
-                        <td class="am-hide-sm-only">
-                            {% if goods.goods_state == '2' %}
-                                <i class="am-icon-close am-text-primary" id="{{ goods.goods_id }}"></i>
-                            {% else %}
-                                <i class="am-icon-check am-text-warning" id="{{ goods.goods_id }}"></i>
-                            {% endif %}
-                        </td>
-                        <td class="am-hide-sm-only">{{ goods.release_date }}</td>
-                        <td>{{ goods.goods_address }}</td>
-                        <td>
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs">
-                                    <button type="button" onclick="detail(this)" value="{{ goods.goods_id }}"
-                                            class="am-btn am-btn-default am-btn-xs am-text-success am-round"
-                                            title="商品详情"><span
-                                            class="am-icon-search"></span></button>
-                                    <button type="button" onclick="up(this)" value="{{ goods.goods_id }}"
-                                            class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                            title="上架商品"><span
-                                            class="am-icon-arrow-up"></span></button>
-                                    <button type="button" onclick="down(this)" value="{{ goods.goods_id }}"
-                                            class="am-btn am-btn-default am-btn-xs am-text-warning  am-round"
-                                            title="下架商品"><span
-                                            class="am-icon-arrow-down"></span></button>
-                                    <button type="button"
-                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                            title="强制删除"><span
-                                            class="am-icon-trash-o"></span></button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
                 </tbody>
             </table>
             <div class="am-btn-group am-btn-group-xs">
@@ -305,16 +259,38 @@
                 }
             })
         }
+        function del(obj) {
+            goods_id = $(obj).val();
+            $.ajax({
+                type: "POST",
+                url: "/admin_update/",
+                async: false,
+                data: {'goods_id': goods_id, 'action': 'del'},
+                success: function (data) {
+                    //处理返回后的数据
+                    if (data) {
+                        $("#tr" + goods_id).text('')
+                        alert("删除成功")
+                    } else {
+                        {#alert("上架失败，请刷新页面重试")#}
+                    }
+                }, error: function () {
+                    alert("业务繁忙")
+                }
+            })
+        }
     </script>
     <script>
         function appendData(goods_id, goods_title, user_name, goods_category_id, goods_state, release_date, goods_address) {
             if (goods_state == '2') {
                 goods_state = 'am-icon-close am-text-primary'
             }
-            else {
+            else if (goods_state == '0') {
                 goods_state = 'am-icon-check am-text-warning'
+            } else {
+                goods_state = 'am-icon-circle-o am-text-success'
             }
-            var text = '<tr class="goods">\n' + '<td><input type="checkbox" name="checkbox" value="' + goods_id + '"/></td>\n' +
+            var text = '<tr class="goods" id="tr'+goods_id+'">\n' + '<td><input type="checkbox" name="checkbox" value="' + goods_id + '"/></td>\n' +
                 '<td>' + goods_id + '</td>\n' + '<td>' + goods_title + '</td>\n' +
                 '                        <td>' + user_name + '</td>\n' +
                 '                        <td>' + goods_category_id + '</td>\n' +
@@ -340,7 +316,7 @@
                 '                                            class="am-btn am-btn-default am-btn-xs am-text-warning  am-round"\n' +
                 '                                            title="下架商品"><span\n' +
                 '                                            class="am-icon-arrow-down"></span></button>\n' +
-                '                                    <button type="button"\n' +
+                '                                    <button type="button" onclick="del(this)" value="' + goods_id + '"\n' +
                 '                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-round"\n' +
                 '                                            title="强制删除"><span\n' +
                 '                                            class="am-icon-trash-o"></span></button>\n' +
