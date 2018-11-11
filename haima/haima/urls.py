@@ -52,6 +52,7 @@ urlpatterns = [
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
+    path('system_message/', view.system_message),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
     path('leave_message_three/', view.leave_message_three),

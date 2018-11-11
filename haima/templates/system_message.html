@@ -5,21 +5,37 @@
     <title>海马商城-用户中心</title>
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
+    <style>
+        .release-goods-list {
+            background-color: #ffffff;
+        }
+
+        .release-goods-list li {
+            color: #a2a4a5;
+            margin-left: 100px;
+            font-size: medium;
+            border-bottom: 1px solid #e3e3e3;
+            height: 50px;
+        }
+
+        .release-goods-list li .sys_div div:nth-child(2) span{
+            font-size: 12px;
+        }
+
+        .release-goods-list li .sys_div div:nth-child(2) {
+            float: right;
+        }
+    </style>
 </head>
 <body>
 {% include 'home_head.html' %}
-<div id="order_show">
-    <ul>
-        <li><a href="/sale/">我出售的</a></li>
-        <li><a href="/buy/">我购买的</a></li>
-    </ul>
-</div>
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/system_message/" style="color: #666">系统消息</a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/system_message/" style="color: #ff8800">系统消息</a>
     </div>
-    <div class="sub_page_name fl ">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message/" style="color: #666">收到回复</a></div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_two/" style="color: #ff8800">我的回复</a>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message/" style="color: #666">收到回复</a>
+    </div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_two/" style="color: #666">我的回复</a>
     </div>
     <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/leave_message_three/"
                                                               style="color: #666">商品留言</a>
@@ -38,41 +54,30 @@
             <li><a href="/my_evaluate_get/">· 我的评价</a></li>
             <li><a href="/leave_message/" class="active">· 消息中心</a></li>
             <li><a href="/modify_information/">· 修改信息</a></li>
+            <li><a href="/modify_password/">· 修改密码</a></li>
         </ul>
     </div>
     <div id="c2">
-        <ul class="release-goods-list" style="margin-left: 220px">
-            {% for item in contacts %}
-                <li class="comment-data-item clearfix" style="height: 120px;">
-                    <div class="cell">
-                        <div class="user-infor" style="margin-top: 12px">
-                        <span class="post-avator">回复：</span>
-                            {% if item.user_id == user_id %}
-                                <span class="post-name"><a
-                                        href="/user_credit/?user_credit_id={{ item.user_id }}"
-                                        style="color: red">@{{ item.user_name }}</a></span>
-                            {% else %}
-                                <span class="post-name"><a
-                                        href="/user_credit/?user_credit_id={{ item.user_id }}"
-                                        style="color: dodgerblue">{{ item.user_name }}</a></span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="comment-data cell" style="padding-top: 30px">
-                        <span class="line2"><a
-                                href="/user_credit/?user_credit_id={{ item.user_id }}"
-                                style="color: #5e5e5e">{{ item.second_desc }}</a></span><br>
-                        <span>{{ item.second_date }}</span>
-                    </div>
-                    <div class="cell" style="padding-right: 20px">
-                        <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}" alt="" width="80px" height="80px"></a>
-                    </div>
-                    <div class="cell" style="padding-top: 30px">
-                        <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}" style="color: royalblue">{{ item.goods_title }}</a></span><br>
-                        <span class="credit_goods_price">{{ item.goods_price }}</span>
-                    </div>
-                </li>
-            {% endfor %}
+        <ul class="release-goods-list" style="margin-left: 220px;margin-top: 20px">
+            <li class="clearfix">
+                <div class="sys_div">
+                    <div><span>11111111111111</span></div>
+                    <div><span>2018年11月11日 14:15</span></div>
+                </div>
+            </li>
+            <li class="clearfix">
+                <div class="sys_div">
+                    <div><span>11111111111111</span></div>
+                    <div><span>2018年11月11日 14:15</span></div>
+                </div>
+            </li>
+            <li class="clearfix">
+                <div class="sys_div">
+                    <div><span>11111111111111</span></div>
+                    <div><span>2018年11月11日 14:15</span></div>
+                </div>
+            </li>
+
         </ul>
     </div>
     <div class="pagenation">
