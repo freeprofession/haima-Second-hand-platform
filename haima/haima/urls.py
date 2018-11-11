@@ -45,6 +45,7 @@ urlpatterns = [
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
     path('publish/', view.goods_republish),
+    path('publish_ok/', view.publish_ok),
     path('pub_success/', view.pub_success),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
@@ -187,5 +188,6 @@ urlpatterns = [
     path('auction_place_order/', auction.auction_place_order),
     path('Determine_pay_date/', auction.Determine_pay_date),
     path('time_test/', auction.time_test),
+    path('search_image/', view.search_image),
 
 ]
