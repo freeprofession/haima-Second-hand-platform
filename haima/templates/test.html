@@ -1,81 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title></title>
-    <script src="../static/JS/jquery-3.3.1.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        function showTime(tuanid, time_distance) {
-            this.tuanid = tuanid;
-            //PHP时间是秒，JS时间是微秒
-this.time_distance = time_distance * 1000;
-        }
-        showTime.prototype.setTimeShow = function () {
-            var timer = $("#lefttime_" + this.tuanid);
-            var str_time;
-            var int_day, int_hour, int_minute, int_second;
-            time_distance = this.time_distance;
-            this.time_distance = this.time_distance - 1000;
-            if (time_distance > 0) {
-                int_day = Math.floor(time_distance / 86400000);
-                time_distance -= int_day * 86400000;
-                int_hour = Math.floor(time_distance / 3600000);
-                time_distance -= int_hour * 3600000;
-                int_minute = Math.floor(time_distance / 60000);
-                time_distance -= int_minute * 60000;
-                int_second = Math.floor(time_distance / 1000);
-                if (int_hour < 10)
-                    int_hour = "0" + int_hour;
-                if (int_minute < 10)
-                    int_minute = "0" + int_minute;
-                if (int_second < 10)
-                    int_second = "0" + int_second;
-                str_time = int_day + "day" + int_hour + "h" + int_minute + "m" + int_second + "s";
-                timer.text(str_time);
-                var self = this;
-                setTimeout(function () { self.setTimeShow(); }, 1000); //D:正确
-            } else {
-                timer.text("团购结束");
-                return;
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
-<script>
-$(function(){
-updateEndTime();
-});
-function updateEndTime()
-{
- var date = new Date();
- var time = date.getTime();
-
- $(".settime").each(function(i){
-
- var endTime =this.getAttribute("endTime");
- if(endTime == ""){
-    newendTime = time + parseInt((Math.random()*(72-24)+24)*1000*60*60*24);
-    this.setAttribute("endTime",newendTime);
- }
- var lag = (endTime - time) / 1000;
-  if(lag > 0)
-  {
-   var second = Math.floor(lag % 60);
-   var minite = Math.floor((lag / 60) % 60);
-   var hour = Math.floor((lag / 3600) % 24);
-   var day = Math.floor((lag / 3600) / 24);
-   $(this).html(day+"d"+hour+"h"+minite+"m"+second+"s");
-  }
-  else{
-        newendTime = time + parseInt((Math.random()*(72-24)+24)*1000*60*60*24);
-        this.setAttribute("endTime",newendTime);
-   }
- });
- setTimeout("updateEndTime()",1000);
-}
-</script>
-
 <body>
-<div class="settime" endTime=""></div>
-<div class="settime" endTime=""></div>
+<a href="/test1/">执行</a>
 </body>
 </html>

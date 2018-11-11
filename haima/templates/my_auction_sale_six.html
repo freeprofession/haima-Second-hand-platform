@@ -47,6 +47,7 @@
 				<li><a href="/my_auction_sale_four/">· 待发货商品</a></li>
                 <li><a href="/my_auction_sale_five/">· 已发货商品</a></li>
                 <li><a href="/my_auction_sale_six/"  class="active">· 交易完成</a></li>
+                 <li><a href="/my_auction_sale_seven/">· 交易失败</a></li>
 			</ul>
 		</div>
         <div class="right_content clearfix">
@@ -97,14 +98,26 @@
 </div>
 
 				<div class="pagenation">
-					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
-				</div>
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+            </div>
 		</div>
 	</div>
 

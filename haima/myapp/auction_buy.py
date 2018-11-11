@@ -148,6 +148,7 @@ def my_auction_buy_three(request):
                 dict1["order"] = order_messge
                 dict1["record"]=record_message
                 list3.append(dict1)
+    print(list3)
     return render(request,'my_auction_buy_three.html',locals())
 def my_auction_buy_four(request):
     user_id = request.session.get("user_id")

@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
 </head>
 <body>
+
 {% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
@@ -18,7 +19,7 @@
 </div>
 
 <div class="main_con clearfix">
-   <div class="left_menu_con clearfix">
+    <div class="left_menu_con clearfix">
         <h3>用户中心</h3>
         <ul>
             <li><a href="/user_center/">· 个人信息</a></li>
@@ -57,16 +58,39 @@
                             </ul>
                         </td>
                         <td width="15%">
-                            <button class="oper_btn sale_msg">私聊买家</button>
+                            <button class="oper_btn sale_msg" onclick="return info({{ item.order_id }})">查看信息</button>
                         </td>
                         {% if item.state == 0 %}
-                            <td width="15%"><input type="button" class="send" style="color: red" value="去发货"></td>
+                            <td width="15%"><input type="button" class="send" style="color: red" value="去发货"
+                                                   onclick="return send_goods({{ item.order_id }})"></td>
                         {% else %}
                             <td width="15%"><a href="#" class="oper_btn">已发货</a></td>
                         {% endif %}
                     </tr>
                     </tbody>
                 </table>
+                <div class="for_psw info_{{ item.order_id }}" style="background: rgba(0,0,0,0.3)">
+                    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
+                        买家信息
+                    </p>
+                    <div class="popwin_content">
+                        <table align="center" style="font-size: 15px">
+                            <tr>
+                                <td>卖家：</td>
+                                <td>{{ item.buy_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>联系方式：</td>
+                                <td>{{ item.buy_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td>收货地址：</td>
+                                <td>{{ item.buy_address }}</td>
+                            </tr>
+                        </table>
+                        <button class="btn_blue change_password">确定</button>
+                    </div>
+                </div>
             {% endfor %}
             <div class="pagenation">
     <span class="step-links" style="margin-top: 1px">
@@ -134,36 +158,14 @@
         {% endif %}
     </div>
 </div>
-<div class="for_psw">
-    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
-        卖家信息
-    </p>
-    <div class="popwin_content">
-        <table align="center" style="font-size: 15px">
-            <tr>
-                <td>卖家：</td>
-                <td>clearlove</td>
-            </tr>
-            <tr>
-                <td>联系方式：</td>
-                <td>17777777777</td>
-            </tr>
-            <tr>
-                <td>收货地址：</td>
-                <td>灵石路</td>
-            </tr>
-        </table>
-        <button class="btn_blue change_password">确定</button>
-    </div>
-</div>
 <div class="for_psw_send">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         通知买家
     </p>
     <div class="popwin_content">
-        <p style="font-size: 16px;margin-bottom: 20px">请输入宝贝订单号通知买家</p>
-        <input type="text" style="height: 23px;margin-bottom: 10px">
-        <button class="btn_blue change_password_send" style="position: relative;top: 1px">确定</button>
+        <p style="font-size: 16px;margin-bottom: 20px">请输入物流单号通知买家</p>
+        <input type="text" style="height: 23px;margin-bottom: 10px" id="order_mark">
+        <button class="btn_blue change_password_send" style="position: relative;top: 1px" id="send_goods__">确定</button>
     </div>
 </div>
 <div class="for_psw_down">
@@ -172,7 +174,7 @@
     </p>
     <div class="popwin_content">
         <p style="font-size: 18px;font-weight: bold;margin-bottom: 20px">确定下架商品吗？</p>
-        <button class="btn_blue" style="margin-right: 40px" id="change_password">确定</button>
+        <button class="btn_blue" style="margin-right: 40px" id="lower_goods_1">确定</button>
         <button class="btn_blue cancer_fgt_psw">取消</button>
     </div>
 </div>
@@ -201,56 +203,84 @@
 </script>
 <script>
     function lower(id) {
-        goods_id = id
-        $.post('/user_lower_goods/', {
-            'goods_id': goods_id,
-        }, function (data) {
-            if (data.msg === "append") {
-                $("#goods_" + id).remove();
-                $("#goods1_" + id).remove();
-                $("#append").after(data.html)
-                console.log(data.msg)
-            } else if (data.msg === "flash") {
-                top.location.href = data.href
-            } else if (data.msg === "fail") {
-                alert("下架失败")
-                top.location.href = data.href
-            }
-        }, "json")
-        $(function () {
-            var tiemer = "";
-            var time = 3000;//每次点击三秒后才能再次点击
-            var fun = function bClick() {
-                alert("执行方法");
-                $(".lower_" + id).unbind("click");
-                tiemer = setTimeout(function () {
-                    $(".lower_" + id).click(fun);
-                }, time);
-            };
-            $(".lower_" + id).click(fun);
+        $("#lower_goods_1").click(function () {
+            goods_id = id
+            page_count_c = $("#page_count_c").val()
+            $.post('/user_lower_goods/', {
+                'goods_id': goods_id,
+                'page_count_c': page_count_c,
+            }, function (data) {
+                if (data.msg === "append") {
+                    $("#goods_" + id).remove();
+                    $("#goods1_" + id).remove();
+                    $("#append").after(data.html)
+                    $(".for_psw_down").fadeOut(500);
+                    console.log(data.msg)
+                } else if (data.msg === "flash") {
+                    top.location.href = data.href
+                    $(".for_psw_down").fadeOut(500);
+                } else if (data.msg === "fail") {
+                    alert("下架失败")
+                    top.location.href = data.href
+                    $(".for_psw_down").fadeOut(500);
+                }
+            }, "json")
+            $(function () {
+                var tiemer = "";
+                var time = 3000;//每次点击三秒后才能再次点击
+                var fun = function bClick() {
+                    alert("执行方法");
+                    $(".lower_" + id).unbind("click");
+                    tiemer = setTimeout(function () {
+                        $(".lower_" + id).click(fun);
+                    }, time);
+                };
+                $(".lower_" + id).click(fun);
+            })
         })
-
     }
 </script>
 <script>
-    $(".sale_msg").click(function () {
-        $(".for_psw").fadeIn(500);
-    });
-    $(".change_password").click(function () {
-        $(".for_psw").fadeOut(500);
-    });
-    $(".send").click(function () {
-        $(".for_psw_send").fadeIn(500);
-    });
-    $(".change_password_send").click(function () {
-        $(".for_psw_send").fadeOut(500);
-    });
+    function info(id) {
+        $(".info_" + id).fadeIn(500);
+        $(".change_password").click(function () {
+            $(".info_" + id).fadeOut(500);
+        });
+    }
+
     $(".lower1_btn").click(function () {
         $(".for_psw_down").fadeIn(500);
     });
     $(".cancer_fgt_psw").click(function () {
         $(".for_psw_down").fadeOut(500);
     });
+</script>
+<script>
+    function send_goods(id) {
+        $(".for_psw_send").fadeIn(500);
+        $(function () {
+            $("#send_goods__").click(function () {
+                order_mark = $('#order_mark').val();
+                order_id = id;
+                $.post('/order_mark/', {
+                    'order_id': order_id,
+                    'order_mark': order_mark,
+                }, function (data) {
+                    if (data.msg === 'success') {
+                        $(".for_psw_send").fadeOut(500);
+                        location.reload()
+                    } else {
+                        $(".for_psw_send").fadeOut(500);
+                        alert("提交失败")
+                    }
+                }, 'json')
+
+            })
+
+        });
+
+    }
+
 </script>
 </body>
 </html>

@@ -534,4 +534,12 @@ a = [{'goods_id': 580670260232, 'user_id': 1, 'release_date': datetime.date(2018
 # cur.execute("select user_name,user_state from t_user where user_name=%s", ["jqlove", ])  # 全表搜索，待建立索引
 # user_login = cur.fetchone()
 # print(user_login)
-r = """<div id="js-uploadList_fuck0" class="img-box"><div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="0"></span><img src=""></div></div>"""
+# r = """<div id="js-uploadList_fuck0" class="img-box"><div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="0"></span><img src=""></div></div>"""
+# cur.execute(
+#             'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id',
+#             [2, ])
+# collection_list = cur.fetchall()
+#
+# print(collection_list[2])
+print(6 // 3)
+print(6 % 3)
