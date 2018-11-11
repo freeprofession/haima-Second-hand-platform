@@ -31,51 +31,60 @@
     <div class="right_content clearfix">
         <h3 class="common_title2">收藏的宝贝</h3>
         <div class="has_view_list clearfix">
-            <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
+            <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px" id="append_1">
                 {% if not collection_list %}
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                         alt="" height="100">
-                    你没有收藏任何商品，<a href="/haima/" style="color: royalblue"> 快去收藏吧</a>
+                    <div>
+                        <div class="fl" style="margin-left: 230px">
+                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                                 alt="" height="100"></div>
+                        <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                                style="font-weight: bolder;font-size: 20px">您没有收藏任何商品
+                            <a href="/haima/" style="color: royalblue">快去收藏吧</a></span></div>
+                    </div>
                 {% else %}
                     {% for value in contacts %}
                         {% if value.goods_state == '2' %}
-                            <li>
+                            <li id="goods_{{ value.goods_id }}">
                                 <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
                                                                                          style="position: relative;z-index: 1"></a>
                                 <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
                                 <div class="operate">
                                     <span class="prize">该商品已经下架</span>
                                     <p class="unit fl">{{ value.collection_date }}</p>
-                                    <button class="del_col fl" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
-                                                                                 style="width: 15px;height: 15px;margin: 0"
-                                                                                 alt="">
+                                    <button class="del_col fl" title="删除收藏" onclick="delete_({{ value.goods_id }})"><img
+                                            src="../static/Images/delete_goods.jpg"
+                                            style="width: 15px;height: 15px;margin: 0"
+                                            alt="">
                                     </button>
                                 </div>
                             </li>
                         {% elif value.goods_state == '1' %}
-                            <li>
+                            <li id="goods_{{ value.goods_id }}">
                                 <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
                                                                                          style="position: relative;z-index: 1"></a>
                                 <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
                                 <div class="operate">
                                     <span class="prize">已出售</span>
                                     <p class="unit fl">{{ value.collection_date }}</p>
-                                    <button class="del_col fl" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
-                                                                                 style="width: 15px;height: 15px;margin: 0"
-                                                                                 alt="">
+                                    <button class="del_col fl" title="删除收藏" onclick="delete_({{ value.goods_id }})"><img
+                                            src="../static/Images/delete_goods.jpg"
+                                            style="width: 15px;height: 15px;margin: 0"
+                                            alt="">
                                     </button>
                                 </div>
                             </li>
                         {% else %}
-                            <li>
+                            <li id="goods_{{ value.goods_id }}">
                                 <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"></a>
                                 <h4><a href="/goods_detail/?goods={{ value.goods_id }}">{{ value.goods_title }}</a></h4>
                                 <div class="operate">
                                     <span class="prize">￥{{ value.goods_price }}</span>
                                     <p class="unit fl">{{ value.collection_date }}</p>
-                                    <button class="del_col fl" title="删除收藏"><img src="../static/Images/delete_goods.jpg"
-                                                                                 style="width: 15px;height: 15px;margin: 0"
-                                                                                 alt="">
+                                    <button class="del_col fl " title="删除收藏" onclick="delete_({{ value.goods_id }})">
+                                        <img
+                                                src="../static/Images/delete_goods.jpg"
+                                                style="width: 15px;height: 15px;margin: 0"
+                                                alt="">
                                     </button>
 
                                 </div>
@@ -85,6 +94,7 @@
                 {% endif %}
             </ul>
         </div>
+        <input type="text" hidden value="{{ page }}" id="page_">
         <div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
@@ -93,11 +103,11 @@
         {% for pg in contacts.paginator.page_range %}
             {% if pg == contacts.number %}
                 <span class="active">
-                    <a href="?page={{ pg }}">{{ pg }}</a>
+                    <a href="?page={{ pg }}" class="page_">{{ pg }}</a>
                 </span>
             {% else %}
                 <span>
-                    <a href="?page={{ pg }}">{{ pg }}</a>
+                    <a href="?page={{ pg }}" class="page_">{{ pg }}</a>
                 </span>
             {% endif %}
         {% endfor %}
@@ -169,7 +179,7 @@
     </p>
     <div class="popwin_content">
         <p style="font-size: 18px;font-weight: bold;margin-bottom: 20px">确定取消收藏吗？</p>
-        <button class="btn_blue" style="margin-right: 40px" id="change_password">确定</button>
+        <button class="btn_blue" style="margin-right: 40px" id="delete_collection">确定</button>
         <button class="btn_blue cancer_fgt_psw">取消</button>
     </div>
 </div>
@@ -191,6 +201,39 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
     $(".del_col").click(function () {
+        $("#for_psw").fadeIn(500);
+    })
+    $(".cancer_fgt_psw").click(function () {
+        $("#for_psw").fadeOut(500);
+    })
+</script>
+</body>
+<script>
+    function delete_(id) {
+        alert(id)
+        id1 = id;
+        $("#delete_collection").click(function () {
+            page_ = $('#page_').val()
+            goods_id = id1;
+            $.post('/my_collection/', {
+                'page_': page_,
+                'goods_id': goods_id,
+            }, function (data) {
+                if (data.msg === "success") {
+                    $("#for_psw").fadeOut(500);
+                    $("#goods_" + id).remove()
+                    $("#append_1").append(data.html)
+                } else if (data.msg === "flash") {
+                    alert(data.href)
+                    top.location.href = data.href
+                }
+            }, "json")
+
+        })
+
+    }
+</script>
+</html>
         $(".for_psw").fadeIn();
     })
     $(".cancer_fgt_psw").click(function () {
@@ -199,3 +242,4 @@
 </script>
 </body>
 </html>
+

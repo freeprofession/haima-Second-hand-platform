@@ -1,5 +1,6 @@
 # 模型训练，使用scikit-learn里面的LinearRegression类来实现线性回归算法
 # #数据导入
+
 from sklearn.datasets import load_boston  # step1:数据导入
 from sklearn.model_selection import train_test_split  # step2:数据集划分
 from sklearn.linear_model import LinearRegression  # step3:数据模型训练

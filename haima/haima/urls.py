@@ -38,18 +38,14 @@ urlpatterns = [
     path('haima/', view.homepage),
     path('login/', view.login),
     path('login_ajax/', view.login_ajax),
-    path('forget_password/',view.forget_password),
-    path('forget_password_two/',view.forget_password_two),
     path('captcha/', include('captcha.urls')),
     path('register/', view.register),
     path('register_ajax/', view.register_ajax),
     path('code/', view.code),
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
-    # path('publish/', view.publish),
     path('publish/', view.goods_republish),
     path('pub_success/', view.pub_success),
-    path('publish_ok/', view.publish_ok),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
     path('auction_index/', auction.auction_index),
@@ -68,7 +64,7 @@ urlpatterns = [
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
     path('my_buy_complete/', view.my_buy_complete),
-    path('modify_password_ajax/', view.modify_password_ajax),
+    path('order_mark/', view.order_mark),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -95,8 +91,6 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-
-    path('buy_auction/', view.buy_auction),
 
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
@@ -176,8 +170,7 @@ urlpatterns = [
     path('top_up_money/', cz.top_up_money),  # 充值
     path('auction_money/', auction_pay.auction_money),
     path('page4/', auction_pay.page4),
-
-    path('place_order/',view.place_order),
+    path('place_order/', view.place_order),
     path("my_auction_buy_one/", auction_buy.my_auction_buy_one),
     path("my_auction_buy_two/", auction_buy.my_auction_buy_two),
     path("my_auction_buy_three/", auction_buy.my_auction_buy_three),
@@ -190,6 +183,9 @@ urlpatterns = [
     path("my_auction_sale_four/", auction_sale.my_auction_sale_four),
     path("my_auction_sale_five/", auction_sale.my_auction_sale_five),
     path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
-    path('auction_place_order/',auction.auction_place_order),
+    path("my_auction_sale_seven/", auction_sale.my_auction_sale_seven),
+    path('auction_place_order/', auction.auction_place_order),
+    path('Determine_pay_date/', auction.Determine_pay_date),
+    path('time_test/', auction.time_test),
 
 ]

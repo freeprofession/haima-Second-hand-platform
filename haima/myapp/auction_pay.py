@@ -87,9 +87,8 @@ def page4(request):
         user_money = cur.fetchone()["user_money"]
         order_id=request.session.get("auction_order_id")
         auction_user_name=request.session.get("auction_name")
-        auction_phone=request.session.get("auction_buy_user_phone")
+        auction_phone=request.session.get("auction_user_buy_phone")
         address=request.session.get("auction_address")
-        print(order_id,user_id)
         # 通过订单id找到商品id
         cur.execute("select auction_order_goods_id from t_auction_order where  auction_order_id=%s", [order_id])
         goods_id = cur.fetchone()["auction_order_goods_id"]
@@ -111,7 +110,7 @@ def page4(request):
             # 将订单那个状态改成1
             now_time = datetime.datetime.now().strftime('%Y-%m-%d')
             cur.execute("update t_auction_order set auction_order_state=%s,pay_money_date=%s,order_address=%s,order_name=%s,order_phone=%s where auction_order_id=%s",
-                        ["1",now_time ,order_id,address,auction_user_name,auction_phone])
+                        ["1",now_time ,address,auction_user_name,auction_phone,order_id])
             # 将商品记录表里的状态改成3,付款时间也改一下
             print("订单修改完成")
             cur.execute(
