@@ -67,54 +67,55 @@
             </dl>
             <!--这里打开的是新页面-->
         </div>
+        <div class="am-btn-toolbars am-btn-toolbar am-kg am-cf">
+            <ul>
+                <li>
+                    <div class="am-btn-group am-btn-group-xs">
+                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}" id="user_state">
+                            <option value="2">用户状态</option>
+                            <option value="0">正常</option>
+                            <option value="1">异常</option>
+                        </select>
+                    </div>
+                </li>
+                <li style="margin-right: 0;">
+                    <span class="tubiao am-icon-calendar"></span>
+                    <input type="text" name="start" id="start"
+                           class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
+                           placeholder="开始日期" data-am-datepicker="{theme: 'success',}" readonly/>
+                </li>
+                <li style="margin-left: -4px;">
+                    <span class="tubiao am-icon-calendar"></span>
+                    <input type="text" name="end" id="end"
+                           class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
+                           placeholder="结束日期" data-am-datepicker="{theme: 'success',}" readonly/>
+                </li>
+                <li style="margin-left: -10px"><input type="text" class="am-form-field am-input-sm am-input-xm"
+                                                      placeholder="关键词搜索"
+                                                      style="margin-top: 0px;" id="key"/></li>
+                <li>
+                    <button type="button" class="am-btn am-radius am-btn-xs am-btn-success" id="search">搜索
+                    </button>
+                </li>
+            </ul>
+        </div>
         <form class="am-form am-g">
             <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped">
                 <thead>
                 <tr class="am-success">
                     <th class="table-check"><input type="checkbox"/></th>
                     <th class="table-id">ID</th>
-                    <th class="table-title">用户名称</th>
-                    <th class="table-phone">用户手机号</th>
+                    <th class="table-title">用户名</th>
+                    <th class="table-password">密码</th>
+                    <th class="table-phone">手机号</th>
+                    <th class="table-address">地区</th>
                     <th class="table-date am-hide-sm-only">注册日期</th>
-                    <th class="table-money am-hide-sm-only">用户余额</th>
-                    <th class="table-state am-hide-sm-only">用户状态</th>
-                    <th width="130px" class="table-set">操作</th>
+                    <th class="table-money am-hide-sm-only">余额</th>
+                    <th class="table-state am-hide-sm-only">状态</th>
+                    <th class="table-set" width="130px">操作</th>
                 </tr>
                 </thead>
-                <tbody>
-                {% for user in userlist %}
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>{{ user.user_id }}</td>
-                        <td>{{ user.user_name }}</td>
-                        <td>{{ user.user_phone }}</td>
-                        <td class="am-hide-sm-only">{{ user.user_startdate }}</td>
-                        <td class="am-hide-sm-only">{{ user.user_money }}</td>
-                        {% if user.user_state == 0 %}
-                            <td class="am-text-primary" id="{{ user.user_id }}">正常</td>
-                        {% else %}
-                            <td class="am-text-danger" id="{{ user.user_id }}">违规封禁</td>
-                        {% endif %}
-                        <td>
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs">
-                                    <button type="button"
-                                            class="am-btn am-btn-default am-btn-xs am-text-success am-round"
-                                            title="查看用户详情"><span
-                                            class="am-icon-search"></span></button>
-                                    <button type="button" onclick="up(this)" value="{{ user.user_id }}"
-                                            class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
-                                            title="解封用户"><span
-                                            class="am-icon-check-circle-o"></span></button>
-                                    <button type="button" onclick="down(this)" value="{{ user.user_id }}"
-                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
-                                            title="封禁用户"><span
-                                            class="am-icon-ban"></span></button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
+                <tbody id="user">
                 </tbody>
             </table>
             <div class="am-btn-group am-btn-group-xs">
@@ -127,7 +128,7 @@
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动</button>
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
             </div>
-            <ul class="am-pagination am-fr">
+            <ul class="am-pagination am-fr" id="page">
                 <li class="am-disabled"><a href="#">«</a></li>
                 <li class="am-active"><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
@@ -143,6 +144,131 @@
     </div>
 {% endblock %}
 {% block js %}
+    <script>
+        function pg(obj) {
+            page = $(obj).attr('value')
+            console.log(page)
+            getuser(page)
+        }
+
+        function appendData(user_id, user_name, user_password, user_phone, user_address, user_startdate, user_money, user_state) {
+            if (user_state == '0') {
+                user_state = 'am-text-primary'
+                state_text = '正常'
+
+            } else {
+                user_state = 'am-text-danger'
+                state_text = '违规封禁'
+            }
+            var text = '<tr>' +
+                '                        <td><input type="checkbox"/></td>' +
+                '                        <td>' + user_id + '</td>' +
+                '                        <td>' + user_name + '</td>' +
+                '                        <td>' + user_password + '</td>' +
+                '                        <td>' + user_phone + '</td>' +
+                '                        <td>' + user_address + '</td>' +
+                '                        <td class="am-hide-sm-only">' + user_startdate + '</td>' +
+                '                        <td class="am-hide-sm-only">' + user_money + '</td>' +
+                '                            <td class="' + user_state + '" id="' + user_id + '">' + state_text + '</td>' +
+                '                        <td>' +
+                '                            <div class="am-btn-toolbar">' +
+                '                                <div class="am-btn-group am-btn-group-xs">' +
+                '                                    <button type="button"' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-success am-round"' +
+                '                                            title="查看用户详情"><span' +
+                '                                            class="am-icon-search"></span></button>' +
+                '                                    <button type="button" onclick="up(this)" value="' + user_id + '"' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"' +
+                '                                            title="解封用户"><span' +
+                '                                            class="am-icon-check-circle-o"></span></button>' +
+                '                                    <button type="button" onclick="down(this)" value="' + user_id + '"' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-round"' +
+                '                                            title="封禁用户"><span' +
+                '                                            class="am-icon-ban"></span></button>' +
+                '                                    <button type="button" onclick="del(this)" value="' + user_id + '"' +
+                '                                            class="am-btn am-btn-default am-btn-xs am-text-warning am-round"' +
+                '                                            title="封禁用户"><span' +
+                '                                            class="am-icon-trash"></span></button>' +
+                '                                </div>' +
+                '                            </div>' +
+                '                        </td>' +
+                '                    </tr>';
+            $("#user").append(text)
+        }
+
+        function getuser(page) {
+            key = $('#key').val();
+            start = $('#start').val();
+            end = $('#end').val();
+            user_state = $('#user_state').val();
+            $.ajax({
+                type: "POST",
+                url: "/admin_search_user/",
+                data: {
+                    'start': start,
+                    'end': end,
+                    'user_state': user_state,
+                    'key': key,
+                    'page': page
+                },
+                beforeSend: function (XMLHttpRequest) {
+                    $("#user").text('');
+                    $('#page').text('');
+                    $("#user").append("<tr><td colspan='10' style='text-align: center'>数据加载中</td></tr>")
+                }, //请求前进行的操作
+                success: function (req) {
+                    $("#user").text('');
+                    //处理返回后的数据
+                    var data = req['data'];
+                    var pagelist = req['pagelist']
+                    var page = req['page']
+                    var num_pages = req['num_pages']
+                    if (data.length != 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var user_id = data[i].user_id;
+                            var user_name = data[i].user_name;
+                            var user_password = data[i].user_password;
+                            var user_phone = data[i].user_phone;
+                            var user_address = data[i].user_address;
+                            var user_startdate = data[i].user_startdate;
+                            var user_money = data[i].user_money;
+                            var user_state = data[i].user_state;
+                            appendData(user_id, user_name, user_password, user_phone, user_address, user_startdate, user_money, user_state);
+                        }
+                    } else {
+                        $("#user").append("<tr><td colspan='10' style='text-align: center'>没有符合条件的用户</td></tr>")
+                    }
+                    if (page != 1) {
+                        $('#page').append('<li><a href="javascript:void(0);" onclick="pg(this)" value="' + (page - 1) + '">«</a></li>')
+                    }
+                    else {
+                        $('#page').append('<li class="am-disabled"><a href="javascript:void(0);">«</a></li>')
+                    }
+                    for (var i = 0; i < pagelist.length; i++) {
+                        var pg = pagelist[i]
+                        if (pg == page) {
+                            $('#page').append('<li class="am-active"><a href="javascript:void(0);">' + pg + '</a></li>')
+                        }
+                        else {
+                            $('#page').append('<li><a href="javascript:void(0);" onclick="pg(this)" value="' + pg + '">' + pg + '</a></li>')
+                        }
+                    }
+                    if (page != num_pages) {
+                        $('#page').append('<li><a href="javascript:void(0);" onclick="pg(this)" value="' + (page + 1) + '">»</a></li>')
+                    }
+                    else {
+                        $('#page').append('<li class="am-disabled"><a href="javascript:void(0);">»</a></li>')
+                    }
+
+                },
+                error: function () {
+                    $("#user").text('');
+                    $("#user").append("<tr><td colspan='10' style='text-align: center'>网络繁忙，请稍后重试</td></tr>")
+                }
+            })
+        }
+
+    </script>
     <script>
         function down(obj) {
             user_id = $(obj).val();
@@ -181,5 +307,29 @@
                 }
             })
         }
+    </script>
+    <script>
+        $('#start,#end').click(function () {
+            $(this).val("")
+        });
+        $(document).ready(function () {
+            $('#start,#end').datepicker().on('changeDate.datepicker.amui', function (event) {
+                getuser()
+            });
+
+            $("#user_state").change(function () {
+                getuser()
+            });
+
+            $('#search').click(function () {
+                getuser()
+            });
+            $(window).keydown(function (event) { //这个是你在页面按任意按钮的时候会触发该方法
+                if (event && event.keyCode == 13) {
+                    getuser()
+                }
+            });
+            getuser()
+        })
     </script>
 {% endblock %}
