@@ -25,7 +25,7 @@
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+
     </div>
 </div>
 <hr>
@@ -58,6 +58,7 @@
 				</ul>
 <div>
 				<div id="select_one">
+                 {% if contacts %}
 {% for i in contacts %}
     <div id="four">
     <div id="one" >
@@ -103,7 +104,13 @@
     </div>
     </div>
     {% endfor %}
+           {% else %}
+        <div style="margin-left: 140px;margin-top: 40px">
+        <div class="no_goods_msg" style="color: red">亲！抱歉您没有找到相关商品</div>
+            <div class="no_goods"><img src="../static/Images/auction_no_goods.png" alt=""></div>
 
+        </div>
+    {% endif %}
 </div>
 </div>
 

@@ -16,7 +16,7 @@
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+
     </div>
 </div>
 <hr>
@@ -36,8 +36,8 @@
 				<li><a href="/my_auction_buy_one/">· 竞拍中</a></li>
 				<li><a href="/my_auction_buy_two/" >· 竞拍失败</a></li>
 				<li><a href="/my_auction_buy_three/" >· 竞拍成功</a></li>
-				<li><a href="/my_auction_buy_four/" style="color: #fbbfae">· 付款失败</a></li>
-                <li><a href="/my_auction_buy_five/">· 收货确认</a></li>
+				<li><a href="/my_auction_buy_four/"  class="active">· 付款失败</a></li>
+                <li><a href="/my_auction_buy_five/" >· 收货确认</a></li>
                 <li><a href="/my_auction_buy_six/">· 历史成交订单</a></li>
 			</ul>
 		</div>
@@ -50,7 +50,7 @@
 
 		<div id="select_two">
 <div id="select_three">
-{% for i in list4 %}
+{% for i in contacts %}
   <div id="four">
   <div style="padding-left: 50px;margin-top: 20px;">
         <div>
@@ -66,17 +66,12 @@
 
                     <div>竞拍成功时间：<span id="acution_goods_start_time">{{ i.order.auction_order_date }}</span></div>
                     <br>
-                    <div>我的加价：<span id="auction_goods_floorprice">{{ i.record.auction_goods_premium }}</span></div>
+
+                    <div>我的出价：<span id="price_tag{{ i.order.auction_order_id }}"><em >{{ i.order.auction_order_fianl_price }}</em></span></div>
                     <br>
-                    <div>我的出价：<span id="price_tag{{ i.order.auction_order_id }}"><em >{{ i.record.auction_goods_price }}</em></span></div>
+                    <div>竞拍状态：<span id="acution_goods_start_time">{{ i.state }}</span></div>
                     <br>
-                    <div>竞拍状态：<span id="acution_goods_start_time">已竞拍成功，请尽快付款</span></div>
-                    <br>
-                   <div>
-                       <button id="pay_money" onclick="pay(this)" value ={{ i.order.auction_order_id}} >
-                           付款
-                       </button>
-                   </div>
+
                 </div>
              </div>
          </div>
@@ -89,14 +84,26 @@
     </div>
 </div>
 				<div class="pagenation">
-					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
-				</div>
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+            </div>
 		</div>
 	</div>
 
