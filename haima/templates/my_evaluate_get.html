@@ -21,8 +21,10 @@
 {% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_get/" style="color: #ff8800">收到的评价</a></div>
-    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_give/" style="color: #666">给他人的评价</a></div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_get/" style="color: #ff8800">收到的评价</a>
+    </div>
+    <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;<a href="/my_evaluate_give/" style="color: #666">给他人的评价</a>
+    </div>
 </div>
 
 <div class="main_con clearfix">
@@ -35,7 +37,7 @@
             <li><a href="user_center_order.html">· 我的拍卖</a></li>
             <li><a href="/my_collection/">· 我的收藏</a></li>
             <li><a href="/my_evaluate/" class="active">· 我的评价</a></li>
-            <li><a href="/leave_message/">· 宝贝留言</a></li>
+            <li><a href="/leave_message/">· 消息中心</a></li>
             <li><a href="/modify_information/">· 修改信息</a></li>
             <li><a href="/modify_password/">· 修改密码</a></li>
         </ul>
@@ -51,7 +53,7 @@
             </colgroup>
             <thead>
             <tr>
-                <th class="align-c">
+                <th class="align-c" style="width: 5%">
                     <select onchange="choseGoodOrBad(this);">
                         <option selected="selected" value="1">评价</option>
                         <option value="2">好评</option>
@@ -59,132 +61,88 @@
                         <option value="4">差评</option>
                     </select>
                 </th>
-                <th>
-                    <select onchange="showContent(this);" style="float: left">
-                        <option selected="selected" value="">评论</option>
-                        <option value="1">有评论内容</option>
-                        <option value="0">无评论内容</option>
-                    </select>
-                </th>
-                <th style="text-align: left">
+                <th style="text-align: left;width: 45%">评论</th>
+                <th style="text-align: left;width: 15%">
                     评价人
                 </th>
                 <th style="text-align: left">宝贝信息</th>
-                <th class="align-c">操作 <i class="tb-rate-icf colored" title="已好评则不可修改；中差评在30天内，可删除或修改为好评。"
-                                          data-tbrate-tooltip></i></th>
+
             </tr>
             </thead>
             <tbody>
-            <tr class="J_RateItem rate2">
-                <td class="align-c" style="text-align: center">
-                    <i class="tb-rate-ico ico-rate2" title="好评"></i>
-                </td>
-                <td class="J_ReviewContent">
-                    <p class="comment">
-                        感谢亲的光临，期待再合作啦!
-                    </p>
-                    <p class="date">[2018-07-22 16:17:17]</p>
-                </td>
-                <td>
-                    <span class="saleman">卖家：<a href="" target="_blank">acliu</a></span>
-                </td>
-                <td>
-                    <a href="" title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚" target="_blank" class="desct">牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子</a>
-                    <p class="price"><em>14.8</em>元</p>
-                </td>
-                <td class="J_RateListOp align-c op">
-                    <div class="compaint-content"></div>
-                    <div class="main-complaint-result">
-                        <p></p>
-                    </div>
-                    <div class="append-result">
-                        <p></p>
-                    </div>
-                </td>
-            </tr>
-            <tr class="J_RateItem rate2">
-                <td class="align-c" style="text-align: center">
-                    <i class="tb-rate-ico ico-rate2" title="好评"></i>
-                </td>
-                <td class="J_ReviewContent">
-                    <p class="comment">
-                        Waiting微汀轻珠宝，主营月光石、托帕石925银饰，期待您的光临^_^
-                    </p>
-                    <p class="date">[2018-07-12 15:38:28]</p>
-                </td>
-                <td>
-                    <span class="saleman">卖家：<a href="" target="_blank">幻翼蝴蝶</a></span>
-                </td>
-                <td>
-                    <a href="" title="Waiting星与月 月光石托帕石星星耳坠不对称纯银耳环短发韩国气质" target="_blank" class="desct">Waiting星与月
-                        月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环</a>
-                    <p class="price"><em>159.0</em>元</p>
-                </td>
-                <td class="J_RateListOp align-c op">
-                    <div class="compaint-content"></div>
-                    <div class="main-complaint-result">
-                        <p></p>
-                    </div>
-                    <div class="append-result">
-                        <p></p>
-                    </div>
-                </td>
-            </tr>
-            <tr class="J_RateItem rate3">
-                <td class="align-c" style="text-align: center">
-                    <i class="tb-rate-ico ico-rate3" title="中评"></i>
-                </td>
-                <td class="J_ReviewContent">
-                    <p class="comment">
-                        感谢亲的光临，期待再合作啦!
-                    </p>
-                    <p class="date">[2018-07-22 16:17:17]</p>
-                </td>
-                <td>
-                    <span class="saleman">卖家：<a href="" target="_blank">acliu</a></span>
-                </td>
-                <td>
-                    <a href="" title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚" target="_blank" class="desct">牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子牛津布搬家袋子打包行李手提特大超大容量收纳装被子</a>
-                    <p class="price"><em>14.8</em>元</p>
-                </td>
-                <td class="J_RateListOp align-c op">
-                    <div class="compaint-content"></div>
-                    <div class="main-complaint-result">
-                        <p></p>
-                    </div>
-                    <div class="append-result">
-                        <p></p>
-                    </div>
-                </td>
-            </tr>
-            <tr class="J_RateItem rate4">
-                <td class="align-c" style="text-align: center">
-                    <i class="tb-rate-ico ico-rate4" title="差评"></i>
-                </td>
-                <td class="J_ReviewContent">
-                    <p class="comment">
-                        Waiting微汀轻珠宝，主营月光石、托帕石925银饰，期待您的光临^_^
-                    </p>
-                    <p class="date">[2018-07-12 15:38:28]</p>
-                </td>
-                <td>
-                    <span class="saleman">卖家：<a href="" target="_blank">幻翼蝴蝶</a></span>
-                </td>
-                <td>
-                    <a href="" title="Waiting星与月 月光石托帕石星星耳坠不对称纯银耳环短发韩国气质" target="_blank" class="desct">Waiting星与月
-                        月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环月光石托帕石星星耳坠不对称纯银耳环</a>
-                    <p class="price"><em>159.0</em>元</p>
-                </td>
-                <td class="J_RateListOp align-c op">
-                    <div class="compaint-content"></div>
-                    <div class="main-complaint-result">
-                        <p></p>
-                    </div>
-                    <div class="append-result">
-                        <p></p>
-                    </div>
-                </td>
-            </tr>
+            {% for item in eva_list %}
+                {% if item.eva_state == "0" %}
+                    <tr class="J_RateItem rate2">
+                        <td class="align-c" style="text-align: center">
+                            <i class="tb-rate-ico ico-rate2" title="好评"></i>
+                        </td>
+                        <td class="J_ReviewContent">
+                            <p class="comment">
+                                {{ item.desc }}
+                            </p>
+                            <p class="date">[{{ item.date }}]</p>
+                        </td>
+                        <td>
+                            <span class="saleman"><a
+                                    href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                    target="_blank" style="color: #2d64b3">{{ item.username }} <span
+                                    style="color: #810101">（{{ item.customer }}）</span></a></span>
+                        </td>
+                        <td>
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"
+                               title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚"
+                               target="_blank" class="desct">{{ item.goods_name }}</a>
+                            <p class="price"><em>{{ item.goods_price }}</em>元</p>
+                        </td>
+                    </tr>
+                {% elif item.eva_state == '1' %}
+                    <tr class="J_RateItem rate3">
+                        <td class="align-c" style="text-align: center">
+                            <i class="tb-rate-ico ico-rate3" title="中评"></i>
+                        </td>
+                        <td class="J_ReviewContent">
+                            <p class="comment">
+                                {{ item.desc }}
+                            </p>
+                            <p class="date">[{{ item.date }}]</p>
+                        </td>
+                        <td>
+                        <span class="saleman">{{ item.customer }}<a
+                                href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                target="_blank">{{ item.username }}</a></span>
+                        </td>
+                        <td>
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"
+                               title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚"
+                               target="_blank" class="desct">{{ item.goods_name }}</a>
+                            <p class="price"><em>{{ item.goods_price }}</em>元</p>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr class="J_RateItem rate4">
+                        <td class="align-c" style="text-align: center">
+                            <i class="tb-rate-ico ico-rate4" title="差评"></i>
+                        </td>
+                        <td class="J_ReviewContent">
+                            <p class="comment">
+                                {{ item.desc }}
+                            </p>
+                            <p class="date">[{{ item.date }}]</p>
+                        </td>
+                        <td>
+                                <span class="saleman">{{ item.customer }}<a
+                                        href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                        target="_blank">{{ item.username }}</a></span>
+                        </td>
+                        <td>
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"
+                               title="Waiting星与月 月光石托帕石星星耳坠不对称纯银耳环短发韩国气质" target="_blank"
+                               class="desct">{{ item.goods_name }}</a>
+                            <p class="price"><em>{{ item.goods_price }}</em>元</p>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
     </div>

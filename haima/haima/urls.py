@@ -31,6 +31,7 @@ urlpatterns = [
     path('admin_user/', view.admin_user),
     path('admin_order/', view.admin_order),
     path('admin_search_goods/', view.admin_search_goods),
+    path('admin_search_user/', view.admin_search_user),
     path('admin_update/', view.admin_update),
     path('exit/', view.exit),
     path('', view.homepage),
@@ -52,6 +53,7 @@ urlpatterns = [
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
+    path('system_message/', view.system_message),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
     path('leave_message_three/', view.leave_message_three),
@@ -63,6 +65,7 @@ urlpatterns = [
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
     path('my_buy_complete/', view.my_buy_complete),
+    path('order_mark/', view.order_mark),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -89,13 +92,13 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
     path('modify_password/', view.modify_password),  # 修改密码
-    path('buy_auction/', view.buy_auction),
+
     path('modify_password/', view.modify_password),  # 修改密码
     path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
     path('modify_information/', view.modify_information),  # 修改信息
 
- # path('modify_information/', view.modify_information),
-     path('buy_auction/', auction.buy_auction),
+    # path('modify_information/', view.modify_information),
+    path('buy_auction/', auction.buy_auction),
 
     # 实时计算拍卖总价的路径
     path('calculate_price/', auction.calculate_price),
@@ -157,7 +160,6 @@ urlpatterns = [
 
     path("buy_auction_ok/", auction.buy_auction_ok),
 
-
     path("confirm_goods/", view.confirm_goods),
     # 拍卖商品发货
     path("delivery/", auction.delivery),
@@ -169,7 +171,7 @@ urlpatterns = [
     path('top_up_money/', cz.top_up_money),  # 充值
     path('auction_money/', auction_pay.auction_money),
     path('page4/', auction_pay.page4),
-    path('place_order/',view.place_order),
+    path('place_order/', view.place_order),
     path("my_auction_buy_one/", auction_buy.my_auction_buy_one),
     path("my_auction_buy_two/", auction_buy.my_auction_buy_two),
     path("my_auction_buy_three/", auction_buy.my_auction_buy_three),
@@ -183,10 +185,12 @@ urlpatterns = [
     path("my_auction_sale_five/", auction_sale.my_auction_sale_five),
     path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
     path("my_auction_sale_seven/", auction_sale.my_auction_sale_seven),
+
     path('auction_place_order/',auction.auction_place_order),
     path('Determine_pay_date/',auction.Determine_pay_date),
     path('time_test/',auction.time_test),
     path('test_auction_pay_time/',auction.test_auction_pay_time),
     path('cate_auction_index/',auction.cate_auction_index),
+
 
 ]
