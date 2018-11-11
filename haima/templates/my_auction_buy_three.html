@@ -16,7 +16,7 @@
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+
     </div>
 </div>
 <hr>
@@ -50,7 +50,7 @@
 
 		<div id="select_two">
 <div id="select_three">
-{% for i in list3 %}
+{% for i in contacts %}
   <div id="four">
   <div style="padding-left: 50px;margin-top: 20px;">
         <div>
@@ -91,14 +91,26 @@
     </div>
 </div>
 				<div class="pagenation">
-					<a href="#">上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
-				</div>
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% else %}
+                <span>
+                    <a href="?page={{ pg }}">{{ pg }}</a>
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+            </div>
 		</div>
 	</div>
 

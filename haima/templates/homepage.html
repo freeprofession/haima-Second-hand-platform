@@ -20,6 +20,7 @@
                 <input type="hidden" name="price_low" value="{{ price_low }}">
                 <input type="hidden" name="price_high" value="{{ price_high }}">
                 <input type="submit" class="input_btn fr" value="搜  索">
+                <input type="file" class="input_btn fr" id="search_img">
             </form>
         </div>
     </div>
@@ -33,7 +34,8 @@
                     <div class="fl">
                         <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                              alt="" height="100"></div>
-                    <div class="fl" style="margin-top: 40px;margin-left: 20px"><span style="font-weight: bolder;font-size: 20px">您没有收藏任何商品</span></div>
+                    <div class="fl" style="margin-top: 40px;margin-left: 20px"><span
+                            style="font-weight: bolder;font-size: 20px">您没有收藏任何商品</span></div>
                 </div>
             {% else %}
                 {% for value in collection_list %}
@@ -499,6 +501,56 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
+<script>
+    $('#search_img').on('change', function (e) {
+            var file = e.target.files[0];
+            var key;
+            var observable;
+            var subscription;
+            var token;
+            var putExtra = {
+                mimeType: ["image/png", "image/jpeg", "image/gif"] || null,
+            };
+            var config = {
+                region: qiniu.region.z0
+            };
+            var observer = {
+                next(res) {
+                    console.log(res.total.percent);
+                },
+                error(err) {
+                    console.log(err)
+                },
+                complete(res) {
+                    url = 'http://pgwecu7z4.bkt.clouddn.com/' + res['key']
+                    console.log(url)
+                    form = $(" <form method='post' action='/search_image/'></form>")
+                    input = $("<input type='text'>").val(url).attr('name', 'url')
+                    form.append(input)
+                    $(document.body).append(form);
+                    form.submit()
+                }
+            }
+            var index = 0
+            $.ajax({
+                url: "/gettokendata/",
+                data: {'index': index},
+                type: "POST",
+                async: false,
+                success: function (data) {//请求成功后调用的函数
+                    token = data;
+                    observable = qiniu.upload(file, key, token, putExtra, config)
+                    subscription = observable.subscribe(observer) // 上传开始
+                    console.log('kaishi')
+                },
+                error: function () {//请求失败后调用的函数
+                    console.log(err);
+                }
+            });
+        }
+    )
+</script>
+<script type="text/javascript" src="https://unpkg.com/qiniu-js@2.5.1/dist/qiniu.min.js"></script>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script>
     $(document).ready(function () {

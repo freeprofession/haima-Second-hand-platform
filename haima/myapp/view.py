@@ -1,6 +1,13 @@
 import pymysql
 import time
 from utils.pay import AliPay
+from aip import AipImageSearch
+
+APP_ID = '14640597'
+API_KEY = '6pT1zsnXTY7Ywkx5OuOZjEFg'
+SECRET_KEY = 'gIG4esr46GPbTTVOLGcbfDnYtiLxyISh'
+
+client = AipImageSearch(APP_ID, API_KEY, SECRET_KEY)
 
 st_time = time.localtime(time.time())
 loc_time = '{}-{}-{}'.format(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
@@ -1145,15 +1152,17 @@ def pub_success(request):
             desc = '该卖家比较懒，还没有商品描述'
         for i in filelist:
             print(i)
+        url = "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0]
         sql = "INSERT INTO t_goods(`user_id`,`release_date`,`goods_title`,`goods_desc`,`goods_price`,`goods_category_id`,`goods_imgurl`,`goods_address`,`goods_appearance`) \
                                                                            VALUES ('%s','%s','%s','%s','%f','%s','%s','%s','%s')" % \
               (
-                  str(user_id), loc_time, title, desc, price, category,
-                  "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0],
-                  address,
-                  appearance)
+                  str(user_id), loc_time, title, desc, price, category, url, address, appearance)
         cur.execute(sql)
         last_id = cur.lastrowid
+        options = {}
+        options["brief"] = "{\"id\":\"" + str(last_id) + "\", \"url\":\"" + url + "\"}"
+        print(options["brief"])
+        print(client.productAddUrl(url, options))
         for file in filelist:
             img.rpush(last_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
         con.commit()
@@ -2275,7 +2284,10 @@ def admin_update(request, user):
             else:
                 result = cur.execute("update t_goods set goods_state = %s where goods_id = %s", [action, goods_id, ])
         else:
-            result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
+            if action == 'del':
+                result = cur.execute("delete from t_user where user_id = %s", [user_id, ])
+            else:
+                result = cur.execute("update t_user set user_state = %s where user_id = %s", [action, user_id, ])
     con.commit()
     if result:
         return HttpResponse("success")
@@ -2313,3 +2325,24 @@ def place_order(request):
     cur.execute("select * from t_goods where goods_id=%s", [goods_id])
     goods_message = cur.fetchone()
     return render(request, 'place_order.html', locals())
+
+def by_scort(t):
+    return t[1]
+
+def search_image(request):
+    goods_id_list = []
+    url = request.POST.get("url")
+    print(url)
+    result = client.productSearchUrl(url)
+    print(result)
+    if result:
+        for goods in result['result']:
+            score = goods['score']
+            if score > 0.5:
+                brief = json.loads(goods['brief'])
+                id = brief['id']
+                print(id)
+                goods_id_list.append((id, score))
+    goods_id_list = sorted(goods_id_list, key=by_scort, reverse=True)
+    print(goods_id_list)
+    return HttpResponse("search_img")
