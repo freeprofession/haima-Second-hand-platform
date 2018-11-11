@@ -54,6 +54,7 @@ urlpatterns = [
     path('user_center/', view.user_center),
     path('user_credit/', view.user_credit),  # 用户信誉
     path('my_collection/', view.my_collection),
+    path('system_message/', view.system_message),
     path('leave_message/', view.leave_message),
     path('leave_message_two/', view.leave_message_two),
     path('leave_message_three/', view.leave_message_three),
@@ -189,5 +190,8 @@ urlpatterns = [
     path('Determine_pay_date/', auction.Determine_pay_date),
     path('time_test/', auction.time_test),
     path('search_image/', view.search_image),
+    path('test_auction_pay_time/',auction.test_auction_pay_time),
+    path('cate_auction_index/',auction.cate_auction_index),
+
 
 ]

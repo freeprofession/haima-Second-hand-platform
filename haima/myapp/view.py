@@ -1827,6 +1827,13 @@ def my_evaluate_give(request):
     return render(request, 'my_evaluate_give.html', locals())
 
 
+# 系统消息
+@login_required
+@mysql_required
+def system_message(request):
+    return render(request, 'system_message.html')
+
+
 # 收到的回复
 @login_required
 @mysql_required

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+      <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+</head>
+<body onload="s()">
+<span id="four">142</span>
+</body>
+<script>
+function s() {
+    su=$("#four").text();
+    $.post("/Determine_pay_date/"
+    ,{
+        "su":su
+        }
+        ,function (date) {
+            alert("123")
+        })
+}
+</script>
+</html>

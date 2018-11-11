@@ -27,7 +27,7 @@
             <li><a href="user_center_order.html">· 我的拍卖</a></li>
             <li><a href="/my_collection/">· 我的收藏</a></li>
             <li><a href="/my_evaluate_get/">· 我的评价</a></li>
-            <li><a href="/leave_message/">· 宝贝留言</a></li>
+            <li><a href="/leave_message/">· 消息中心</a></li>
             <li><a href="/modify_information/">· 修改信息</a></li>
             <li><a href="/modify_password/">· 修改密码</a></li>
         </ul>
@@ -35,9 +35,15 @@
     <div class="right_content clearfix">
         <h3 class="common_title2" style="color: dodgerblue">完成订单</h3>
         {% if not  contacts1 %}
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                 alt="" height="100">
-            这里空空如也，快去 <a href="">发布（发布链接）</a>
+            <div>
+                <div class="fl" style="margin-left: 230px">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                         alt="" height="100"></div>
+                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                        style="font-weight: bolder;font-size: 20px">这里空空如也，快去
+                <a href="/publish/">发布</a></span>
+                </div>
+            </div>
         {% else %}
             {% for item in contacts1 %}
                 <ul class="order_list_th w978 clearfix" id="goods_{{ item.goods_id }}">
@@ -94,8 +100,6 @@
 
     </div>
 </div>
-
-
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>

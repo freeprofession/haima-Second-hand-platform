@@ -24,7 +24,7 @@
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+
     </div>
 </div>
 <hr>
@@ -95,7 +95,11 @@
 </div>
 </div>
 
-				<div class="pagenation">
+
+		</div>
+
+	</div>
+		<div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
             <a href="?page={{ contacts.previous_page_number }}">上一页</a>
@@ -116,9 +120,6 @@
         {% endif %}
     </span>
             </div>
-		</div>
-	</div>
-
 	<div class="footer">
 		<div class="foot_link">
 			<a href="#">关于我们</a>
