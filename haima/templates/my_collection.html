@@ -33,9 +33,14 @@
         <div class="has_view_list clearfix">
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
                 {% if not collection_list %}
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                         alt="" height="100">
-                    你没有收藏任何商品，<a href="/haima/" style="color: royalblue"> 快去收藏吧</a>
+                    <div>
+                        <div class="fl" style="margin-left: 230px">
+                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                                 alt="" height="100"></div>
+                        <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                                style="font-weight: bolder;font-size: 20px">您没有收藏任何商品
+                            <a href="/haima/" style="color: royalblue">快去收藏吧</a></span></div>
+                    </div>
                 {% else %}
                     {% for value in contacts %}
                         {% if value.goods_state == '2' %}

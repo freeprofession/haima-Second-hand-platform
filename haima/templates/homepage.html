@@ -25,13 +25,16 @@
     </div>
 
     <div class="guest_cart fr">
-        <a href="#" class="cart_name fl">我的收藏</a>
+        <a href="/my_collection/" class="cart_name fl">我的收藏</a>
         <div class="goods_count fl" id="show_count">15</div>
         <ul class="cart_goods_show">
             {% if not collection_list %}
-                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                     alt="" height="100">
-                你没有收藏任何商品
+                <div>
+                    <div class="fl">
+                        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                             alt="" height="100"></div>
+                    <div class="fl" style="margin-top: 40px;margin-left: 20px"><span style="font-weight: bolder;font-size: 20px">您没有收藏任何商品</span></div>
+                </div>
             {% else %}
                 {% for value in collection_list %}
                     <li>
@@ -514,7 +517,7 @@
     $(document).ready(function () {
         // 滚动窗口来判断按钮显示或隐藏
         $(window).scroll(function () {
-            if ($(this).scrollTop() > 200) {
+            if ($(this).scrollTop() > 230) {
                 $('#back-to-top').fadeIn(800);
             } else {
                 $('#back-to-top').fadeOut(800);
