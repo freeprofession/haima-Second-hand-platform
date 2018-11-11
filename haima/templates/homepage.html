@@ -33,14 +33,16 @@
                     <div class="fl">
                         <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
                              alt="" height="100"></div>
-                    <div class="fl" style="margin-top: 40px;margin-left: 20px"><span style="font-weight: bolder;font-size: 20px">您没有收藏任何商品</span></div>
+                    <div class="fl" style="margin-top: 40px;margin-left: 20px"><span
+                            style="font-weight: bolder;font-size: 20px">您没有收藏任何商品</span></div>
                 </div>
             {% else %}
                 {% for value in collection_list %}
                     <li>
                         <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
                                                                                  alt="商品图片"></a>
-                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4 style="overflow: hidden;
+white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
                 {% endfor %}

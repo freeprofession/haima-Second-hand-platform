@@ -159,6 +159,14 @@ def homepage(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        print(message_check, "消息推送")
         login_status = username
         cur.execute(
             "select * from t_goods where goods_address = (select user_address from t_user where user_id = %s) order by rand() limit 5",
@@ -995,6 +1003,13 @@ def lea_message(request):
             [user_id, Published, goods_id, now_time])
         con.commit()
         url = "success"
+        value = "goods_message"
+        cur.execute("select user_id from t_goods where goods_id=%s", [goods_id, ])
+        check_name_ = cur.fetchone()
+        if check_name_["user_id"] == user_id:
+            pass
+        else:
+            message_push.lpush(check_name_["user_id"], value)
         return HttpResponse(json.dumps({"href": url}))
 
     else:
@@ -1341,12 +1356,23 @@ def my_sale(request):
 
 def order_mark(request):
     order_id = request.POST.get("order_id")
+    user_id = request.session.get('user_id')
     order_mark = request.POST.get("order_mark")
     print("提交物流信息", order_id, order_mark)
+    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     try:
         cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
         con.commit()
         msg = "success"
+        cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
+        user_id_ = cur.fetchone()
+        user_id1 = user_id_["buy_user_id"]
+        value = "system"
+        message_push.lpush(user_id1, value)
+        desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
+        cur.execute(
+            "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+            [user_id, user_id1, desc, now_time])
     except:
         msg = "fail"
     return HttpResponse(json.dumps({"msg": msg}))
@@ -1505,6 +1531,24 @@ def my_buy(request):
     order_list = cur.fetchall()
     print(order_list)
     return render(request, 'my_buy.html', locals())
+
+
+@mysql_required
+@login_required
+def tinxinfahuo(request):
+    user_id = request.session.get("user_id")
+    order_id = request.POST.get("order_id")
+    cur.execute("select * from t_order where order_id=%s", [order_id, ])
+    order_list = cur.fetchone()
+    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    desc = "收到单号为" + str(order_id) + "的发货请求"
+    cur.execute(
+        "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+        [user_id, order_list["release_user_id"], desc, now_time])
+    msg = "success"
+    con.commit()
+    message_push.lpush(user_id, "system")
+    return HttpResponse(json.dumps({"msg": msg}))
 
 
 @mysql_required
@@ -1715,6 +1759,7 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
         set_eva.hset(key_, "eva_state", eva_state)
         set_eva.hset(key_, "customer", "卖家")
+        message_push.lpush(user_id, "evaluation")
     else:
         cur.execute(
             "update t_evaluation set seller_evaluation_date = %s,seller_desc=%s,sell_state=%s where evaluation_order_id = %s",
@@ -1757,6 +1802,7 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
         set_eva.hset(key_, "eva_state", eva_state)
         set_eva.hset(key_, "customer", "买家")
+        message_push.lpush(user_id, "evaluation")
     con.commit()
     msg = "success"
     return HttpResponse(json.dumps({"msg": msg}))
@@ -1803,6 +1849,7 @@ def my_evaluate_give(request):
     for id in order_id:
         one = {}
         key = str(user_id) + str(id["order_id"])
+        print(key)
         a = set_eva.hgetall(key)
         # print(key, a)
         if a:
@@ -1979,13 +2026,13 @@ def confirm_goods(request):
     cur.execute("select * from t_order where order_goods_id=%s", [goods_id])
     goods_message = cur.fetchone()
     date = datetime.datetime.now().strftime('%Y-%m-%d')
-    print(goods_message)
     user_id = request.session.get('user_id')
     # 把信息加到订单成功表：然后删除原来订单表里的数据
     try:
         cur.execute("insert into t_order_success (release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s\
                       )",
                     [str(goods_message["release_user_id"]), str(goods_message["buy_user_id"]), date, str(goods_id)])
+        goods_order_id=cur.lastrowid
         cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
         cur.execute("delete from t_order where order_goods_id=%s", [str(goods_id)])
         # 用户确认收货以后需要把卖家的钱增加
@@ -1995,12 +2042,13 @@ def confirm_goods(request):
         user_money = cur.fetchone()["user_money"]
         user_money = user_money + goods_price
         cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, goods_message["release_user_id"]])
-        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)", [])
+        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)", [goods_order_id,user_id,goods_message["release_user_id"]])
+        con.commit()
         print("ok")
     except Exception as e:
         con.rollback()
         print(e)
-    con.commit()
+
     return HttpResponse(json.dumps({"msg": "123"}))
 
 
@@ -2116,6 +2164,7 @@ def page2(request):
             cur.execute("update t_goods set goods_state=%s where goods_id=%s", ["1", goods_id])
             print("更新商品状态成功")
             con.commit()
+            message_push.lpush(release_user_id, "my_sale")
 
         except Exception as e:
             print(e)
