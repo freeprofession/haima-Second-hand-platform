@@ -284,7 +284,7 @@
         <ul class="goods_type_list clearfix" id="goods_type_ul">
             {% for goods in contacts %}
                 <li>
-                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
+                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}?imageView2/0/w/160/h/160"></a>
                     <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                     <div class="operate">
                         <span class="prize">￥{{ goods.goods_price }}</span>

@@ -38,8 +38,7 @@
             {% else %}
                 {% for value in collection_list %}
                     <li>
-                        <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
-                                                                                 alt="商品图片"></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }} "alt="商品图片"></a>
                         <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
@@ -342,18 +341,6 @@
                     </ul>
                 </div>
                 <div id="dc2" class="hold clearfix">
-                    {#                                        <ul>#}
-                    {#                                            {% for goods in goods_recommend_list %}#}
-                    {#                                                <li>#}
-                    {#                                                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"#}
-                    {#                                                                                                             class="goods_pic"></a>#}
-                    {#                                                    <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"#}
-                    {#                                                           title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>#}
-                    {#                                                    </h4>#}
-                    {#                                                    <div class="prize">¥ {{ goods.goods_price }}</div>#}
-                    {#                                                </li>#}
-                    {#                                            {% endfor %}#}
-                    {#                                        </ul>#}
                 </div>
                 <div id="dc3" class="hold">
                     {% if same_city_list %}
@@ -410,7 +397,7 @@
                 {% for goods in phone_list %}
                     <li>
                         <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img
-                                src="{{ goods.goods_imgurl }}"></a>
+                                src="{{ goods.goods_imgurl }}?imageView2/0/w/130/h/130"></a>
                         <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -449,7 +436,7 @@
                 {% for goods in computer_list %}
                     <li>
                         <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img
-                                src="{{ goods.goods_imgurl }}"></a>
+                                src="{{ goods.goods_imgurl }}?imageView2/0/w/130/h/130"></a>
                         <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
@@ -487,7 +474,7 @@
                 {% for goods in camera_list %}
                     <li>
                         <a href="/goods_detail/?goods={{ goods.goods_id }}" class="goods_pic"><img
-                                src="{{ goods.goods_imgurl }}"></a>
+                                src="{{ goods.goods_imgurl }}?imageView2/0/w/130/h/130"></a>
                         <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="prize">¥ {{ goods.goods_price }}</div>
                     </li>
