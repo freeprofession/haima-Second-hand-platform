@@ -20,7 +20,8 @@
                 <input type="hidden" name="price_low" value="{{ price_low }}">
                 <input type="hidden" name="price_high" value="{{ price_high }}">
                 <input type="submit" class="input_btn fr" value="搜  索">
-                <input type="file" class="input_btn fr" id="search_img">
+                <label for="search_img" class="search_img" title="图片搜索"></label>
+                <input type="file" class="input_btn fr" id="search_img" hidden>
             </form>
         </div>
     </div>
@@ -40,7 +41,8 @@
             {% else %}
                 {% for value in collection_list %}
                     <li>
-                        <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }} "alt="商品图片"></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }} "
+                                                                                 alt="商品图片"></a>
                         <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
@@ -343,6 +345,9 @@
                     </ul>
                 </div>
                 <div id="dc2" class="hold clearfix">
+                   <div style="padding-top: 80px;padding-left: 250px">
+                            <span style="font-size: 25px;font-weight: bold">后台正在为您拼命推荐！！</span>
+                        </div>
                 </div>
                 <div id="dc3" class="hold">
                     {% if same_city_list %}
@@ -501,6 +506,43 @@
         <p>电话：0512-****888 苏ICP备*******8号</p>
     </div>
 </div>
+<style>
+    .background {
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        background: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2000;
+    }
+
+    .progressBar {
+        border: solid 2px #86A5AD;
+        background: white url(../static/Images/5-121204193R0.gif) no-repeat 10px 10px;
+    }
+
+    .progressBar {
+        display: block;
+        width: 148px;
+        height: 28px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: -74px;
+        margin-top: -14px;
+        padding: 10px 10px 10px 50px;
+        text-align: left;
+        line-height: 27px;
+        font-weight: bold;
+        z-index: 2001;
+    }
+</style>
+<div id="background" class="background" style="display: none; "></div>
+<div id="progressBar" class="progressBar" style="display: none; ">数据提交中，请稍等...</div>
 <script>
     $('#search_img').on('change', function (e) {
             var file = e.target.files[0];
@@ -542,6 +584,8 @@
                     observable = qiniu.upload(file, key, token, putExtra, config)
                     subscription = observable.subscribe(observer) // 上传开始
                     console.log('kaishi')
+                     var ajaxbg = $("#background,#progressBar");
+                        ajaxbg.show();
                 },
                 error: function () {//请求失败后调用的函数
                     console.log(err);
@@ -578,6 +622,7 @@
         $.post('/goods_recommend/', {
             'user_id': user_id
         }, function (data) {
+            $('#dc2').text('')
             $("#dc2").append(data.rr)
         }, "json")
     })

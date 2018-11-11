@@ -4041,3 +4041,14 @@ label:hover {
     background-color: rgba(0, 0, 0, 0);
 
 }
+
+.search_img {
+    padding-left: 18px;
+    height: 20px;
+    width: 18px;
+    background: url("../Images/camera_search.png") no-repeat;
+    background-position: 0 0;
+    position: relative;
+    left: 488px;
+    top: -22px;
+}

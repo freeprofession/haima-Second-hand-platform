@@ -2326,15 +2326,16 @@ def place_order(request):
     goods_message = cur.fetchone()
     return render(request, 'place_order.html', locals())
 
+
 def by_scort(t):
     return t[1]
 
+
 def search_image(request):
     goods_id_list = []
+    goods_list = []
     url = request.POST.get("url")
-    print(url)
     result = client.productSearchUrl(url)
-    print(result)
     if result:
         for goods in result['result']:
             score = goods['score']
@@ -2344,5 +2345,9 @@ def search_image(request):
                 print(id)
                 goods_id_list.append((id, score))
     goods_id_list = sorted(goods_id_list, key=by_scort, reverse=True)
-    print(goods_id_list)
-    return HttpResponse("search_img")
+    for goods_id in goods_id_list:
+        cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",
+                    [goods_id[0], ])
+        goods = cur.fetchone()
+        goods_list.append(goods)
+    return render(request, 'search_image.html', locals())
