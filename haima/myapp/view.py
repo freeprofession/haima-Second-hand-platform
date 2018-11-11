@@ -1764,12 +1764,58 @@ def evaluate_ajax(request):
 
 # 我收到的评价
 def my_evaluate_get(request):
-    return render(request, 'my_evaluate_get.html')
+    user_id = request.session.get('user_id')
+    cur.execute(
+        "select order_id from t_order_success where buy_user_id=%s and sell_eva_state=%s or release_user_id=%s and buy_eva_state=%s",
+        [user_id, 1, user_id, 1])
+    order_id = cur.fetchall()
+    eva_list = []
+    # print(user_id)
+    count_order = len(order_id)
+    for id in order_id:
+        one = {}
+        key = str(user_id) + str(id["order_id"])
+        a = get_eva.hgetall(key)
+        # print(key, a)
+        if a:
+            for i in a:
+                c = a[i].decode("utf-8")
+                i = i.decode("utf-8")
+                one[i] = c
+            eva_list.append(one)
+        else:
+            eva_list.append("none")
+    print(eva_list)
+
+    return render(request, 'my_evaluate_get.html', locals())
 
 
 # 给他人的评价
 def my_evaluate_give(request):
-    return render(request, 'my_evaluate_give.html')
+    user_id = request.session.get('user_id')
+    cur.execute(
+        "select order_id from t_order_success where buy_user_id=%s and sell_eva_state=%s or release_user_id=%s and buy_eva_state=%s",
+        [user_id, 1, user_id, 1])
+    order_id = cur.fetchall()
+    eva_list = []
+    # print(user_id)
+    count_order = len(order_id)
+    for id in order_id:
+        one = {}
+        key = str(user_id) + str(id["order_id"])
+        a = set_eva.hgetall(key)
+        # print(key, a)
+        if a:
+            for i in a:
+                c = a[i].decode("utf-8")
+                i = i.decode("utf-8")
+                one[i] = c
+            eva_list.append(one)
+        else:
+            eva_list.append("none")
+    print(eva_list)
+
+    return render(request, 'my_evaluate_give.html', locals())
 
 
 # 收到的回复
