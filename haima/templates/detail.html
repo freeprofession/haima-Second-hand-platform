@@ -330,11 +330,18 @@
                 </div>
                 <div class="type_select">
                     <label>快递:</label>
-                    <span>免运费</span>
+                    {% if goods.goods_postage == 0 %}
+                        <span>包邮</span>
+                    {% else %}
+                        <span>不包邮</span>
+                    {% endif %}
+
                 </div>
                 <div class="operate_btn">
                     {% if  seller_in == "no_seller" and goods_state == "0" %}
-                        <a href="/place_order/?goods_id={{ goods.goods_id }}"><button class="buy_btn">立即购买</button></a>
+                        <a href="/place_order/?goods_id={{ goods.goods_id }}">
+                            <button class="buy_btn">立即购买</button>
+                        </a>
                         <a href="javascript:;" class="add_cart" id="add_cart">加入收藏</a>
                     {% elif seller_in == "no_seller" and goods_state == "1" %}
                         <a href="javascript:;" class="buy_btn">已经出售</a>

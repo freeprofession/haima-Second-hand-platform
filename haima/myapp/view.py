@@ -31,8 +31,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
 # from myapp import AI_assess
 from myapp import goods_recommend
-
-
 class CJsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
@@ -43,18 +41,19 @@ class CJsonEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-r = redis.Redis(host="47.100.200.132", port=6379,password="haima1234")
-r1 = redis.Redis(host="47.100.200.132", port=6379, db=1,password="haima1234")
-img = redis.Redis(host="47.100.200.132", port=6379, db=2,password="haima1234")
-category = redis.Redis(host="47.100.200.132", port=6379, db=3,password="haima1234")
-cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4,password="haima1234")
-auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5,password="haima1234")
-sms = redis.Redis(host="47.100.200.132", port=6379, db=5,password="haima1234")  # 注册验证码
-set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7,password="haima1234")  # 设置评论
-get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8,password="haima1234")  # 得到评论
-search_record = redis.Redis(host="47.100.200.132", port=6379, db=9,password="haima1234")  # 用户搜索记录
-goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10,password="haima1234")  # 浏览记录
-message_push = redis.Redis(host="47.100.200.132", port=6379, db=11,password="haima1234")  # 消息推送
+r = redis.Redis(host="47.100.200.132", port=6379, password='haima1234')
+r1 = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
+img = redis.Redis(host="47.100.200.132", port=6379, db=2, password='haima1234')
+category = redis.Redis(host="47.100.200.132", port=6379, db=3, password='haima1234')
+cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4, password='haima1234')
+auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5, password='haima1234')
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5, password='haima1234')  # 注册验证码
+set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7, password='haima1234')  # 设置评论
+get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8, password='haima1234')  # 得到评论
+user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9, password='haima1234')  # 用户推荐
+goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10, password='haima1234')  # 浏览记录
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11, password='haima1234')  # 消息推送
+
 
 
 def get_token(func):
@@ -107,7 +106,6 @@ def mysql_required(function):
         con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
         cur = con.cursor(pymysql.cursors.DictCursor)
         return function(request)
-
     return mysql_restart
 
 
@@ -657,6 +655,19 @@ def user_credit(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     user_credit_id = request.GET.get('user_credit_id')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        message_list_push = []
+        message_list_push1 = message_push.lrange(user_id, 0, 3)
+        for item in message_list_push1:
+            message_list_push.append(item.decode("utf-8"))
+        print(message_list_push)
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        print(message_check, "消息推送")
+        login_status = username
     # 判断是否登陆-------------------------------
     if user_id:
         # 判断是否为本人进入
@@ -1683,7 +1694,7 @@ def tinxinfahuo(request):
         [user_id, order_list["release_user_id"], desc, now_time])
     msg = "success"
     con.commit()
-    message_push.lpush(user_id, "system")
+    message_push.lpush(order_list["release_user_id"], "system")
     return HttpResponse(json.dumps({"msg": msg}))
 
 
@@ -1813,6 +1824,14 @@ def my_collection(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             contacts = paginator.page(paginator.num_pages)
         # -----------------------------------
+        r_goods_list = []
+        recommend_goods = user_recommend.smembers(user_id)
+        for r_goods_id in recommend_goods:
+            r_goods_id = r_goods_id.decode('utf-8')
+            cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",
+                        [r_goods_id, ])
+            r_goods = cur.fetchone()
+            r_goods_list.append(r_goods)
         return render(request, 'my_collection.html', locals())
 
 
@@ -2096,7 +2115,7 @@ def system_message(request):
         print(message_check, "消息推送")
         login_status = username
     login_status = username
-    cur.execute("select * from t_system_message where get_message_id=%s", [user_id, ])
+    cur.execute("select * from t_system_message where get_message_id=%s order by system_message_id desc", [user_id, ])
     message_list = cur.fetchall()
     paginator = Paginator(message_list, 5)
     page = request.GET.get('page')
@@ -2229,6 +2248,8 @@ def leave_message_three(request):
 @mysql_required
 @login_required
 def modify_information(request):
+    user_id = request.session.get('user_id')
+    print(user_id)
     username = request.session.get('username')
     if username:
         message_check1 = message_push.lrange(user_id, 0, 1)

@@ -7,19 +7,19 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <style>
-        .mark ul {
+        div[class^='mark'] ul {
             padding-left: 0;
             overflow: hidden;
         }
 
-        .mark ul li {
+        div[class^='mark'] ul li {
             float: left;
             list-style: none;
             width: 20px;
             height: 20px;
         }
 
-        .mark ul li a {
+        div[class^='mark'] ul li a {
             display: inline-block;
             padding-top: 20px;
             width: 50%;
@@ -325,16 +325,16 @@
             {% if eva_state == 0 %}
                 <div class="tab_content current">
 
-                    <table border="0" id="eva" align="center">
+                    <table border="0" id="eva" align="center" style="width: 220px">
                         <tr>
-                            <td><label><input type="radio" value="" name="evaluate" checked>好评</label></td>
-                            <td><label><input type="radio" value="" name="evaluate">中评</label></td>
-                            <td><label><input type="radio" value="" name="evaluate">差评</label></td>
+                            <td><label><input type="radio" value="0" name="evaluate" checked id="radio_1">好评</label></td>
+                            <td><label><input type="radio" value="1" name="evaluate" id="radio_1">中评</label></td>
+                            <td><label><input type="radio" value="2" name="evaluate" id="radio_1">差评</label></td>
                         </tr>
                         <tr>
                             <td>卖家态度：</td>
                             <td colspan="2">
-                                <div class="mark">
+                                <div class="mark1">
                                     <ul>
                                         <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
                                         </li>
@@ -346,6 +346,7 @@
                                         </li>
                                         <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
                                         </li>
+                                        <li class="eva_li1" style="line-height: 24px;margin-left: 10px"></li>
                                     </ul>
                                 </div>
                             </td>
@@ -353,7 +354,7 @@
                         <tr>
                             <td>宝贝情况：</td>
                             <td colspan="2">
-                                <div class="mark">
+                                <div class="mark2">
                                     <ul>
                                         <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;"
                                                                                              class="dd">2</a>
@@ -370,6 +371,7 @@
                                         <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;"
                                                                                              class="dd">10</a>
                                         </li>
+                                        <li class="eva_li2" style="line-height: 24px;margin-left: 10px"></li>
                                     </ul>
                                 </div>
                             </td>
@@ -377,7 +379,7 @@
                         <tr>
                             <td>发货速度：</td>
                             <td colspan="2">
-                                <div class="mark">
+                                <div class="mark3">
                                     <ul>
                                         <li class="emptyStar"><a href="javascript:;">1</a><a href="javascript:;">2</a>
                                         </li>
@@ -389,6 +391,7 @@
                                         </li>
                                         <li class="emptyStar"><a href="javascript:;">9</a><a href="javascript:;">10</a>
                                         </li>
+                                        <li class="eva_li3" style="line-height: 24px;margin-left: 10px"></li>
                                     </ul>
                                 </div>
                             </td>
@@ -425,9 +428,7 @@
                                 </dd>
                             </dl>
                         {% endfor %}
-
                     {% endif %}
-
                 </div>
             {% endif %}
             <div class="tab_content">
@@ -441,7 +442,9 @@
             </div>
         </div>
     </div>
+    <div id="tttttt" style="height: 200px;width: 200px">
 
+    </div>
     <div class="footer">
         <div class="foot_link">
             <a href="#">关于我们</a>
@@ -480,7 +483,50 @@
     })
 </script>
 <script type="text/javascript">
-    $(".mark ul li a").on("mouseover", function () {
+    $(".mark1 ul li a").on("mouseover", function () {
+        $(".eva_li1").text($(this).text());
+        //判断是全星点还是半星点，修改当前标签的父标签li的class为对应的星星图像
+        if (parseInt($(this).html()) % 2 == 1) {
+            $(this).parent().attr("class", "halfStar");
+        } else {
+            $(this).parent().attr("class", "fullStar");
+        }
+        //对前方的星星进行处理，遍历前方的li使背景图均变为全星
+        var prev = $(this).parent();
+        for (var i = 0; i <= (parseInt($(this).html()) / 2) - 1; i++) {
+            prev.prev().attr("class", "fullStar");
+            prev = prev.prev();
+        }
+        //对后方星星进行处理，遍历后面的li使背景图均变为空星
+        var after = $(this).parent();
+        for (var i = 0; i <= (5 - parseInt($(this).html()) / 2) - 1; i++) {
+            after.next().attr("class", "emptyStar");
+            after = after.next();
+        }
+    })
+    $(".mark2 ul li a").on("mouseover", function () {
+        $(".eva_li2").text($(this).text());
+        //判断是全星点还是半星点，修改当前标签的父标签li的class为对应的星星图像
+        if (parseInt($(this).html()) % 2 == 1) {
+            $(this).parent().attr("class", "halfStar");
+        } else {
+            $(this).parent().attr("class", "fullStar");
+        }
+        //对前方的星星进行处理，遍历前方的li使背景图均变为全星
+        var prev = $(this).parent();
+        for (var i = 0; i <= (parseInt($(this).html()) / 2) - 1; i++) {
+            prev.prev().attr("class", "fullStar");
+            prev = prev.prev();
+        }
+        //对后方星星进行处理，遍历后面的li使背景图均变为空星
+        var after = $(this).parent();
+        for (var i = 0; i <= (5 - parseInt($(this).html()) / 2) - 1; i++) {
+            after.next().attr("class", "emptyStar");
+            after = after.next();
+        }
+    })
+    $(".mark3 ul li a").on("mouseover", function () {
+        $(".eva_li3").text($(this).text());
         //判断是全星点还是半星点，修改当前标签的父标签li的class为对应的星星图像
         if (parseInt($(this).html()) % 2 == 1) {
             $(this).parent().attr("class", "halfStar");

@@ -77,6 +77,8 @@ def my_auction_sale_one(request):
 def my_auction_sale_two(request):
     user_id = request.session.get("user_id")
     username = request.session.get("username")
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
@@ -117,9 +119,11 @@ def my_auction_sale_two(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
-
+    cur.close()
     return render(request,'my_auction_sale_two.html',locals())
 def my_auction_sale_three(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     username = request.session.get("username")
     login_status = username
@@ -167,8 +171,11 @@ def my_auction_sale_three(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_sale_three.html',locals())
 def my_auction_sale_four(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     username = request.session.get("username")
     login_status = username
@@ -226,8 +233,11 @@ def my_auction_sale_four(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_sale_four.html',locals())
 def my_auction_sale_five(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     username = request.session.get("username")
     login_status = username
@@ -284,8 +294,11 @@ def my_auction_sale_five(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_sale_five.html',locals())
 def my_auction_sale_six(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     username = request.session.get("username")
     login_status = username
@@ -337,8 +350,11 @@ def my_auction_sale_six(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_sale_six.html',locals())
 def my_auction_sale_seven(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     username = request.session.get("username")
     login_status = username
@@ -388,6 +404,7 @@ def my_auction_sale_seven(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_sale_seven.html',locals())
 def my_auction_one(request):
     user_id = request.session.get("user_id")
