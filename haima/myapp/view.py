@@ -657,6 +657,19 @@ def user_credit(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     user_credit_id = request.GET.get('user_credit_id')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        message_list_push = []
+        message_list_push1 = message_push.lrange(user_id, 0, 3)
+        for item in message_list_push1:
+            message_list_push.append(item.decode("utf-8"))
+        print(message_list_push)
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        print(message_check, "消息推送")
+        login_status = username
     # 判断是否登陆-------------------------------
     if user_id:
         # 判断是否为本人进入
@@ -1683,7 +1696,7 @@ def tinxinfahuo(request):
         [user_id, order_list["release_user_id"], desc, now_time])
     msg = "success"
     con.commit()
-    message_push.lpush(user_id, "system")
+    message_push.lpush(order_list["release_user_id"], "system")
     return HttpResponse(json.dumps({"msg": msg}))
 
 
@@ -2104,7 +2117,7 @@ def system_message(request):
         print(message_check, "消息推送")
         login_status = username
     login_status = username
-    cur.execute("select * from t_system_message where get_message_id=%s", [user_id, ])
+    cur.execute("select * from t_system_message where get_message_id=%s order by system_message_id desc", [user_id, ])
     message_list = cur.fetchall()
     paginator = Paginator(message_list, 5)
     page = request.GET.get('page')
@@ -2237,6 +2250,7 @@ def leave_message_three(request):
 @mysql_required
 @login_required
 def modify_information(request):
+    user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
         message_check1 = message_push.lrange(user_id, 0, 1)
