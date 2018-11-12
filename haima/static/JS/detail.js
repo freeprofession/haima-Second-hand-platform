@@ -60,9 +60,12 @@ var checkLength = function (dom, maxLength) {
 
             //鼠标移动时移动span
             $(span).css({
+                "overflow": "hidden",
+                "cursor": "move",
+                "position": "fixed",
                 "display": "block",
                 "margin-left": (l + 80) + "px",
-                "margin-top": (t + 220) + "px"
+                "margin-top": (t + 100) + "px"
             });
 
             //计算偏移量

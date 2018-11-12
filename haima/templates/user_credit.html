@@ -17,10 +17,11 @@
 <div id="user_info">
     {% for item in user_info %}
         <div id="user_info2" class="clearfix">
-            <div>
-            <span><img src="{{ item.user_imgurl }}" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7"
-                       width="80" height="80"></span>
-            </div>
+            {% if item.user_imgurl %}
+                <div><span><img src="{{ item.user_imgurl }}" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7" width="80" height="80"></span></div>
+             {% else %}
+                 <div><span><img src="../static/Images/default_hp.jpg" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7" width="80" height="80"></span></div>
+            {% endif %}
             <div id="user_info3">
                 <span>用户名：{{ item.user_name }}</span><br>
                 <span>注册时间：{{ item.user_startdate }}</span><br>
@@ -82,9 +83,11 @@
                     <li class="comment-data-item clearfix">
                         <div class="cell">
                             <div class="user-infor">
-                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="40" width="40"
-                                                       style="border: 2px solid #e9e9e9;border-radius: 50%;"></a></span>
-                                <span class="post-name"><a href="/user_credit/?user_credit_id={{ item.user_id }}" style="color: #2d64b3">{{ item.username }}</a></span>
+                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img
+                                src="{{ item.user_imgurl }}" alt="" height="40" width="40"
+                                style="border: 2px solid #e9e9e9;border-radius: 50%;"></a></span>
+                                <span class="post-name"><a href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                                           style="color: #2d64b3">{{ item.username }}</a></span>
                             </div>
 
                         </div>

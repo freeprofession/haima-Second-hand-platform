@@ -37,7 +37,14 @@
     </div>
     <div class="right_content clearfix">
         {% if not order_list %}
-            <p>暂时无数据 <a href="/haima/"> 快去购买</a></p>
+            <div class="clearfix" style="border-bottom: 1px solid #e6e6e6;margin-bottom: 20px;padding-bottom: 20px">
+                <div class="fl" style="margin-left: 230px">
+                    <img src="../static/Images/no_goods1.jpg"
+                         alt="" height="100"></div>
+                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                        style="font-weight: bolder;font-size: 20px">没有数据 快去<a href="/haima/" style="color: red">购买</a></span>
+                </div>
+            </div>
         {% else %}
             {% for item in order_list %}
                 <ul class="order_list_th w978 clearfix">
@@ -125,7 +132,7 @@
             }
             , function (data) {
 
-                 window.location.reload();
+                window.location.reload();
             }
             , 'json'
         )

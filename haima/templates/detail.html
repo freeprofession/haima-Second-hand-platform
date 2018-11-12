@@ -364,8 +364,12 @@
         <div class="detail_right" id="user_detail">
             {% for item in seller_info %}
                 <div class="info_detail">
-                    <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
-                    <div><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    {% if item.user_imgurl %}
+                        <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                    {% else %}
+                        <div><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></div>
+                    {% endif %}
+                    <div class="msg_a"><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
                     <br>
                     <div><span title="已实名认证" class="user-verify"></span></div>
                 </div>
