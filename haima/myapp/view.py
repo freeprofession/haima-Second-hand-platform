@@ -43,18 +43,18 @@ class CJsonEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-r = redis.Redis(host="47.100.200.132", port=6379)
-r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
-img = redis.Redis(host="47.100.200.132", port=6379, db=2)
-category = redis.Redis(host="47.100.200.132", port=6379, db=3)
-cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
-auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
-sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
-set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
-get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
-search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
-goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
-message_push = redis.Redis(host="47.100.200.132", port=6379, db=11)  # 消息推送
+r = redis.Redis(host="47.100.200.132", port=6379, password='haima1234')
+r1 = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
+img = redis.Redis(host="47.100.200.132", port=6379, db=2, password='haima1234')
+category = redis.Redis(host="47.100.200.132", port=6379, db=3, password='haima1234')
+cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4, password='haima1234')
+auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5, password='haima1234')
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5, password='haima1234')  # 注册验证码
+set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7, password='haima1234')  # 设置评论
+get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8, password='haima1234')  # 得到评论
+search_record = redis.Redis(host="47.100.200.132", port=6379, db=9, password='haima1234')  # 用户搜索记录
+goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10, password='haima1234')  # 浏览记录
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11, password='haima1234')  # 消息推送
 
 
 def get_token(func):
@@ -1118,7 +1118,7 @@ def pub_success(request):
         if filelist:
             img.delete(goods_id)
             for file in filelist:
-                img.rpush(goods_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
+                img.rpush(goods_id, "http://files.g1.xmgc360.com/" + file)
             goods_img = img.lindex(goods_id, 0)
             goods_img = goods_img.decode("utf-8")
             cur.execute(
@@ -1152,7 +1152,7 @@ def pub_success(request):
             desc = '该卖家比较懒，还没有商品描述'
         for i in filelist:
             print(i)
-        url = "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0]
+        url = "http://files.g1.xmgc360.com/" + filelist[0]
         sql = "INSERT INTO t_goods(`user_id`,`release_date`,`goods_title`,`goods_desc`,`goods_price`,`goods_category_id`,`goods_imgurl`,`goods_address`,`goods_appearance`) \
                                                                            VALUES ('%s','%s','%s','%s','%f','%s','%s','%s','%s')" % \
               (
@@ -1164,7 +1164,7 @@ def pub_success(request):
         print(options["brief"])
         print(client.productAddUrl(url, options))
         for file in filelist:
-            img.rpush(last_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
+            img.rpush(last_id, "http://files.g1.xmgc360.com/" + file)
         con.commit()
         print(title, category, price, postage, filelist)
         href = '/publish_ok/?goods_id=' + str(last_id)
@@ -1909,21 +1909,27 @@ def leave_message_three(request):
 @mysql_required
 @login_required
 def modify_information(request):
+    user_id = request.session.get('user_id')
     if request.method == 'GET':
-        return render(request, 'modify_information.html')
+        cur.execute("select * from t_user where user_id = '%s'" % user_id)
+        result = cur.fetchall()[0]
+        user = json.dumps(result, cls=CJsonEncoder)
+        user = json.loads(user)
+        print(user)
+        return render(request, 'modify_information.html', {'user': user})
     else:
-        nickname = request.POST.get('nickname')
         shen = request.POST.get('cmbProvince')
         shi = request.POST.get('cmbCity')
         xian = request.POST.get('cmbArea')
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        print(nickname, shen, shi, xian, img, date, sex)
-
-        imgurl = "pgwecu7z4.bkt.clouddn.com/" + img
-        print(imgurl)
-        return render(request, 'modify_information.html')
+        area = shen + ' ' + shi + ' ' + xian
+        cur.execute(
+            "UPDATE t_user SET `user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
+                img, sex, date, area, user_id))
+        con.commit()
+        return redirect('/modify_information/')
 
 
 def modify_password(request):
