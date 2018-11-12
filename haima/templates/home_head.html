@@ -15,12 +15,13 @@
                 <span>|</span>
                 <a href="" id="my_order">我的订单</a>
                 <span>|</span>
-                <a href="" id="my_msg">消息 <img src="../static/Images/message.png" alt=""
-                                               style="width:10px;height: 10px"></a>
+                <a href="/leave_message/" id="my_order">消息 <img src="{{ message_check }}" alt=""
+                                                 style="width:14px;height: 14px"></a>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <div id="order_show">
     <ul>
         <li><a href="/my_sale/">我出售的</a></li>
@@ -28,8 +29,32 @@
     </ul>
 </div>
 
+{#<script>#}
+{#    $("#my_order").ready(function () {#}
+{#        var check_message = "{{ check_message }}"#}
+{#        if (check_message) {#}
+{#            $("#my_order").text("有新的消息")#}
+{#        }#}
+{##}
+{#    })#}
+{#</script>#}
 <div class="new_msg">
-    <span>1111111111111111111111111111111111111111111</span>
+    {% if message_list_push %}
+        {% for item in message_list_push %}
+            {% if item == "goods_message" %}
+                <span><a href="/leave_message_three/">您发布的商品有人留言了！</a></span>
+            {% elif item == "system" %}
+                <span><a href="/leave_message_system/">收到一条系统消息！</a></span>
+            {% elif item == "evaluation" %}
+                <span><a href="/my_evaluate_get/">收到一条评价！</a></span>
+            {% else %}
+                <span><a href="/system_message/">收到一条发货提醒</a></span>
+            {% endif %}
+
+        {% endfor %}
+    {% else %}
+        <span>暂无消息-_-</span>
+    {% endif %}
 </div>
 <div class="triangle_border_up">
     <span></span>
@@ -68,4 +93,3 @@
         $(".triangle_border_up").hide();
     });
 </script>
-

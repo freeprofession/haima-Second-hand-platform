@@ -43,7 +43,8 @@
                     <li>
                         <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }} "
                                                                                  alt="商品图片"></a>
-                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4 style="overflow: hidden;
+white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
                 {% endfor %}
