@@ -775,6 +775,10 @@ label:hover {
     margin-right: 5px;
 }
 
+.item-type li a {
+    color: black;
+}
+
 .add {
     margin-bottom: -1px;
     color: #fc0;
@@ -4035,11 +4039,10 @@ label:hover {
 .hid_div {
     position: absolute;
     top: 30px;
-    left: 1138px;
-    height: 40px;
-    width: 220px;
+    left: 1320px;
+    height: 5px;
+    width: 30px;
     background-color: rgba(0, 0, 0, 0);
-
 }
 
 .search_img {
