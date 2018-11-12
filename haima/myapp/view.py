@@ -52,7 +52,7 @@ auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
 sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
 set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
 get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
-search_record = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户搜索记录
+user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户推荐
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
 message_push = redis.Redis(host="47.100.200.132", port=6379, db=11)  # 消息推送
 
@@ -1612,6 +1612,14 @@ def my_collection(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             contacts = paginator.page(paginator.num_pages)
         # -----------------------------------
+        r_goods_list = []
+        recommend_goods = user_recommend.smembers(user_id)
+        for r_goods_id in recommend_goods:
+            r_goods_id = r_goods_id.decode('utf-8')
+            cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",
+                        [r_goods_id, ])
+            r_goods = cur.fetchone()
+            r_goods_list.append(r_goods)
         return render(request, 'my_collection.html', locals())
 
 
