@@ -476,7 +476,14 @@ html, body {
 }
 
 .sub_menu li {
-    height: 30px;
+    text-align: center;
+    height: 82px;
+}
+
+.sub_menu li a {
+    font-size: 30px;
+    color: white;
+    line-height: 82px;
 }
 
 .sub_menu li:hover {
@@ -486,7 +493,7 @@ html, body {
     cursor: pointer;
 }
 
-.sub_menu li:hover .level1 a {
+.sub_menu li:hover a {
     color: #333;
 }
 
