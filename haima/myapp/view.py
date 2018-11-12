@@ -565,6 +565,14 @@ def user_center(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
         # 用户信息------------------
         cur.execute("select * from t_user where user_name=%s", [username, ])
         user_info = cur.fetchall()
@@ -713,7 +721,17 @@ def goods_detail(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     goods_id = request.GET.get('goods')
-
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     # 商品收藏------------------------------------------
     cur.execute(
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
@@ -1083,6 +1101,19 @@ def goods_detail_ajax(request):
 def goods_republish(request):
     user_name = request.session.get('username')
     goods_id = request.GET.get("goods_id")
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
+
     if goods_id:
         cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])
         goods_list = cur.fetchone()
@@ -1319,6 +1350,17 @@ def buy_goods_ok(request):
 def my_sale(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     # 发布中的商品------------------------------
     cur.execute(
         'select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc',
@@ -1463,6 +1505,18 @@ def user_lower_goods(request):
 def my_sale_lower(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     if request.is_ajax():
         goods_id = request.POST.get("goods_id")
         try:
@@ -1503,6 +1557,18 @@ def my_sale_complete(request):
     else:
         user_id = request.session.get('user_id')
         username = request.session.get('username')
+        username = request.session.get('username')
+        if username:
+            message_check1 = message_push.lrange(user_id, 0, 1)
+            # message_check = message_check.decode[0]("utf-8")
+            # print(message_check, "消息推送")
+            if message_check1:
+                message_check = "../static/Images/new02.gif"
+            else:
+                message_check = "../static/Images/message.png"
+            login_status = username
+        else:
+            login_status = "未登录"
         cur.execute(
             'select * from t_order_success right join t_goods on order_goods_id=goods_id where release_user_id=%s ',
             [user_id, ])
@@ -1527,6 +1593,18 @@ def my_sale_complete(request):
 def my_buy(request):
     username = request.session.get('username')
     user_id = request.session.get("user_id")
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute("select * from t_order right join t_goods on order_goods_id=goods_id where buy_user_id=%s", [user_id])
     order_list = cur.fetchall()
     print(order_list)
@@ -1556,6 +1634,18 @@ def tinxinfahuo(request):
 def my_buy_complete(request):
     username = request.session.get('username')
     user_id = request.session.get("user_id")
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute("select * from t_order_success right join t_goods on order_goods_id=goods_id where buy_user_id=%s",
                 [user_id, ])
     order_success_list = cur.fetchall()
@@ -1570,6 +1660,18 @@ def my_collection(request):
     cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     if request.is_ajax():
         page_ = request.POST.get("page_")
         goods_id = request.POST.get("goods_id")
@@ -1656,6 +1758,17 @@ def my_collection(request):
 def evaluate(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     goods_id = request.GET.get('goods_id')
     customer = request.GET.get("customer")
     print("evaluate", "------", username, user_id, goods_id)
@@ -1811,6 +1924,18 @@ def evaluate_ajax(request):
 # 我收到的评价
 def my_evaluate_get(request):
     user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute(
         "select order_id from t_order_success where buy_user_id=%s and sell_eva_state=%s or release_user_id=%s and buy_eva_state=%s",
         [user_id, 1, user_id, 1])
@@ -1839,6 +1964,18 @@ def my_evaluate_get(request):
 # 给他人的评价
 def my_evaluate_give(request):
     user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute(
         "select order_id from t_order_success where buy_user_id=%s and sell_eva_state=%s or release_user_id=%s and buy_eva_state=%s",
         [user_id, 1, user_id, 1])
@@ -1869,7 +2006,34 @@ def my_evaluate_give(request):
 @login_required
 @mysql_required
 def system_message(request):
-    return render(request, 'system_message.html')
+    username = request.session.get('username')
+    user_id = request.session.get('user_id')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
+    login_status = username
+    cur.execute("select * from t_system_message where get_message_id=%s", [user_id, ])
+    message_list = cur.fetchall()
+    paginator = Paginator(message_list, 5)
+    page = request.GET.get('page')
+    print("系统消息", message_list)
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render(request, 'system_message.html', locals())
 
 
 # 收到的回复
@@ -1878,6 +2042,18 @@ def system_message(request):
 def leave_message(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute(
         'select * from t_second_message inner join t_user on child_user_id=user_id inner join t_goods on second_goods_id=goods_id '
         'where to_rid=%s order by second_message_id desc',
@@ -1902,6 +2078,17 @@ def leave_message(request):
 def leave_message_two(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute(
         'select * from t_second_message inner join t_user on to_rid=user_id inner join t_goods on second_goods_id=goods_id '
         'where child_user_id=%s order by second_message_id desc',
@@ -1925,6 +2112,17 @@ def leave_message_two(request):
 def leave_message_three(request):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     cur.execute(
         "select * from t_goods right join t_message on goods_id=message_goods_id inner join t_user on message_user_id=t_user.user_id where t_goods.user_id=%s ",
         [user_id, ])
@@ -1947,6 +2145,18 @@ def leave_message_three(request):
 @mysql_required
 @login_required
 def modify_information(request):
+    username=request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        # message_check = message_check.decode[0]("utf-8")
+        # print(message_check, "消息推送")
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        login_status = username
+    else:
+        login_status = "未登录"
     if request.method == 'GET':
         return render(request, 'modify_information.html')
     else:
@@ -2039,7 +2249,7 @@ def confirm_goods(request):
         cur.execute("insert into t_order_success (release_user_id,buy_user_id,order_date,order_goods_id) values (%s,%s,%s,%s\
                       )",
                     [str(goods_message["release_user_id"]), str(goods_message["buy_user_id"]), date, str(goods_id)])
-        goods_order_id=cur.lastrowid
+        goods_order_id = cur.lastrowid
         cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
         cur.execute("delete from t_order where order_goods_id=%s", [str(goods_id)])
         # 用户确认收货以后需要把卖家的钱增加
@@ -2049,7 +2259,8 @@ def confirm_goods(request):
         user_money = cur.fetchone()["user_money"]
         user_money = user_money + goods_price
         cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, goods_message["release_user_id"]])
-        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)", [goods_order_id,user_id,goods_message["release_user_id"]])
+        cur.execute("insert into t_evaluation (evaluation_order_id,buy_id,sell_id) values (%s,%s,%s)",
+                    [goods_order_id, user_id, goods_message["release_user_id"]])
         con.commit()
         print("ok")
     except Exception as e:

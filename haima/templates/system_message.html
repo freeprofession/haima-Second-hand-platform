@@ -18,7 +18,7 @@
             height: 50px;
         }
 
-        .release-goods-list li .sys_div div:nth-child(2) span{
+        .release-goods-list li .sys_div div:nth-child(2) span {
             font-size: 12px;
         }
 
@@ -59,24 +59,14 @@
     </div>
     <div id="c2">
         <ul class="release-goods-list" style="margin-left: 220px;margin-top: 20px">
-            <li class="clearfix">
-                <div class="sys_div">
-                    <div><span>11111111111111</span></div>
-                    <div><span>2018年11月11日 14:15</span></div>
-                </div>
-            </li>
-            <li class="clearfix">
-                <div class="sys_div">
-                    <div><span>11111111111111</span></div>
-                    <div><span>2018年11月11日 14:15</span></div>
-                </div>
-            </li>
-            <li class="clearfix">
-                <div class="sys_div">
-                    <div><span>11111111111111</span></div>
-                    <div><span>2018年11月11日 14:15</span></div>
-                </div>
-            </li>
+            {% for item in contacts %}
+                <li class="clearfix">
+                    <div class="sys_div">
+                        <div><span>{{ item.system_desc }}</span></div>
+                        <div><span>{{ item.system_date }}</span></div>
+                    </div>
+                </li>
+            {% endfor %}
 
         </ul>
     </div>
