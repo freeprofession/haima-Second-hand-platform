@@ -160,7 +160,7 @@
                 user_state = 'am-text-danger'
                 state_text = '违规封禁'
             }
-            var text = '<tr>' +
+            var text = '<tr id="tr'+user_id+'">' +
                 '                        <td><input type="checkbox"/></td>' +
                 '                        <td>' + user_id + '</td>' +
                 '                        <td>' + user_name + '</td>' +
@@ -270,6 +270,27 @@
 
     </script>
     <script>
+        function del(obj) {
+            user_id = $(obj).val();
+            $.ajax({
+                type: "POST",
+                url: "/admin_update/",
+                async: false,
+                data: {'user_id': user_id, 'action': 'del'},
+                success: function (data) {
+                    //处理返回后的数据
+                    if (data) {
+                        $("#tr" + user_id).text('')
+                        alert("删除成功")
+                    } else {
+                        {#alert("上架失败，请刷新页面重试")#}
+                    }
+                }, error: function () {
+                    alert("业务繁忙")
+                }
+            })
+        }
+
         function down(obj) {
             user_id = $(obj).val();
             $.ajax({

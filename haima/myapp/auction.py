@@ -7,9 +7,9 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
-history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
-auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
-message_push = redis.Redis(host="47.100.200.132", port=6379, db=11)
+history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11,password='haima1234')
+auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5,password='haima1234')
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11,password='haima1234')
 import datetime
 # 历史拍卖
 def history_auction(request):

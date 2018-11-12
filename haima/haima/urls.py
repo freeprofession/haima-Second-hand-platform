@@ -45,6 +45,7 @@ urlpatterns = [
     path('register_ok/', view.register_ok),
     path('goods_list/', view.goods_list),
     path('publish/', view.goods_republish),
+    path('publish_ok/', view.publish_ok),
     path('pub_success/', view.pub_success),
     path('assess/', view.assess),
     path('assess_ajax/', view.assess_ajax),
@@ -61,6 +62,7 @@ urlpatterns = [
     path('my_sale_lower/', view.my_sale_lower),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
+    path("tixinfahuo/",view.tinxinfahuo),
     path('my_sale_complete/', view.my_sale_complete),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
@@ -184,12 +186,11 @@ urlpatterns = [
     path("my_auction_sale_five/", auction_sale.my_auction_sale_five),
     path("my_auction_sale_six/", auction_sale.my_auction_sale_six),
     path("my_auction_sale_seven/", auction_sale.my_auction_sale_seven),
-
-    path('auction_place_order/',auction.auction_place_order),
-    path('Determine_pay_date/',auction.Determine_pay_date),
-    path('time_test/',auction.time_test),
+    path('auction_place_order/', auction.auction_place_order),
+    path('Determine_pay_date/', auction.Determine_pay_date),
+    path('time_test/', auction.time_test),
+    path('search_image/', view.search_image),
     path('test_auction_pay_time/',auction.test_auction_pay_time),
     path('cate_auction_index/',auction.cate_auction_index),
-
 
 ]

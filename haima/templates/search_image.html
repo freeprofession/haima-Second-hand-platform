@@ -255,139 +255,42 @@
 </div>
 
 <div id="breadcrumb">
-    <p style="font-size: 14px;">{{ prompt }}</p>
+    <p style="font-size: 14px;">根据相似度，为您推荐以下商品</p>
 </div>
-
-<div class="main_list clearfix">
-    <div class="sort_bar">
-        <span class="sort_btn0 sort_active0"><a
-                href="?q={{ question }}&page={{ pg }}&price_low={{ price_low }}&price_high={{ price_high }}">综合</a></span>
-        <span class="sort_btn sort_active1" onclick="active({{ sort_method }})"><a
-                href="?q={{ question }}&page={{ pg }}&sort_method=1&price_low={{ price_low }}&price_high={{ price_high }}">价格升序</a></span>
-        <span class="sort_btn sort_active2" onclick="active({{ sort_method }})"><a
-                href="?q={{ question }}&page={{ pg }}&sort_method=2&price_low={{ price_low }}&price_high={{ price_high }}">价格降序</a></span>
-        <span class="sort_btn sort_active4" onclick="active({{ sort_method }})"><a
-                href="?q={{ question }}&page={{ pg }}&sort_method=3&price_low={{ price_low }}&price_high={{ price_high }}">信用</a></span>
-        <form action="/goods_list/" method="get">
-            <div class="sortdiv">
-                <input type="hidden" name="q" value="{{ question }}">
-                <input type="hidden" name="page" value="{{ pg }}">
-                <input type="hidden" name="sort_method" value="{{ sort_method }}">
-                <input type="text" placeholder="¥" class="sort" name="price_low">
-                <span>-</span>
-                <input type="text" placeholder="¥" class="sort" name="price_high">
-                <input type="submit" value="确定" id="sortok">
-            </div>
-        </form>
-    </div>
-    {% if contacts %}
-        <ul class="goods_type_list clearfix" id="goods_type_ul">
-            {% for goods in contacts %}
-                <li>
-                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}?imageView2/0/w/160/h/160"></a>
-                    <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
-                    <div class="operate">
-                        <span class="prize">￥{{ goods.goods_price }}</span>
-                        <span class="unit">/台</span>
-                        <a href="#" class="add_goods" title="加入购物车"></a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <div style="margin-left: 140px;margin-top: 40px">
-            <div class="no_goods"></div>
-            <div class="no_goods_msg">亲！抱歉没有找到"<span style="color: #ff4e3f">{{ question }}</span>"相关商品</div>
-        </div>
-    {% endif %}
-    {#        这是分页#}
-    <div class="pagenation">
-    <span class="step-links">
-        {% if contacts.has_previous %}
-            <a href="?q={{ question }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">上一页</a>
-        {% endif %}
-        {% for pg in contacts.paginator.page_range %}
-            {% if pg == contacts.number %}
-                <span class="active">
-                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
-                </span>
-            {% else %}
-                <span>
-                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
-                </span>
-            {% endif %}
+</div>
+{% if goods_list %}
+    <ul class="goods_type_list clearfix" id="goods_type_ul">
+        {% for goods in goods_list %}
+            <li>
+                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img
+                        src="{{ goods.goods_imgurl }}?imageView2/0/w/160/h/160"></a>
+                <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
+                <div class="operate">
+                    <span class="prize">￥{{ goods.goods_price }}</span>
+                    <span class="unit">/台</span>
+                    <a href="#" class="add_goods" title="加入购物车"></a>
+                </div>
+            </li>
         {% endfor %}
-        {% if contacts.has_next %}
-            <a href="?q={{ question }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">下一页</a>
-        {% endif %}
-    </span>
+    </ul>
+{% else %}
+    <div style="margin-left: 140px;margin-top: 40px">
+        <div class="no_goods"></div>
+        <div class="no_goods_msg">亲！抱歉没有找到"<span style="color: #ff4e3f">{{ question }}</span>"相关商品</div>
     </div>
-
-    <div class="footer">
-        <div class="foot_link">
-            <a href="#">关于我们</a>
-            <span>|</span>
-            <a href="#">联系我们</a>
-            <span>|</span>
-            <a href="#">招聘人才</a>
-            <span>|</span>
-            <a href="#">友情链接</a>
-        </div>
-        <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
-        <p>电话：0512-****888 苏ICP备*******8号</p>
+{% endif %}
+<div class="footer" style="margin-top: 50px;">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
     </div>
-    <script type="text/javascript" src="../static/JS/main.js"></script>
-    <script>
-        $(document).click(function () {
-            $("#sortok").hide()
-            $(".sortdiv").removeClass("sortdiv1")
-        });
-        $(".sort").click(function (event) {
-            event.stopPropagation();
-            $("#sortok").show()
-            $(".sortdiv").addClass("sortdiv1")
-        });
-    </script>
-    <script>
-        /* $(".sort_btn").click(function () {
-             $(".sort_btn").removeClass("sort_active");
-             $(this).addClass("sort_active")
-         }) */
-    </script>
-    <script>
-        function GetQueryString(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]);
-            return null;
-        }
-
-        var sort_method = GetQueryString("sort_method");
-        if (sort_method != null && sort_method.toString().length >= 1) {
-            $(".sort_active" + sort_method).addClass('sort_active');
-            $(".sort_btn0").css({"color": "#000", "background-color": "#fbf3f3"});
-        }
-    </script>
-    <script>
-        function keyLight(id, key, Color) {
-            var oDiv = document.getElementById(id),
-                oChilds = oDiv.childNodes,
-                Color = Color || "red",
-                sKey = "<span style='color: " + Color + ";'>" + key + "</span>",
-                rStr = new RegExp(key, "g");
-            for (var i = 0; i < oChilds.length - 1; i++) {
-                if (oChilds[i].nodeType == 3 && /\s/.test(oChilds[i].nodeValue)) {  //删除空白的节点
-                    oChilds[i].parentNode.removeChild(oChilds[i]);
-                }
-                oChilds[i].innerHTML = oChilds[i].innerHTML.replace(rStr, sKey);  //替换key
-            }
-        }
-        {% for keys in question_word %}
-            keyLight('goods_type_ul', "{{ keys }}");
-            // keyLight('breadcrumb', "{{ keys }}");
-        {% endfor %}
-        keyLight('breadcrumb', "{{ user_address }}");
-    </script>
+    <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
+    <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 </body>
 </html>
