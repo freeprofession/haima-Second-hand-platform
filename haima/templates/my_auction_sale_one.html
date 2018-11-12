@@ -25,7 +25,7 @@
     <div id="auction_Navigation">
         <a href="/release_auction/"><button id="release_auction">发布拍卖</button></a>
         <a href="/auction_index/"><button id="now_auction">正在拍卖</button></a>
-        <a href="/history_auction/"><button id="histroy_auction">历史拍卖</button></a>
+
     </div>
 </div>
 <hr>
@@ -59,6 +59,7 @@
 				</ul>
 <div>
 				<div id="select_one">
+ {% if contacts %}
 {% for i in contacts %}
     <div id="four">
     <div id="one">
@@ -102,6 +103,13 @@
     </div>
     </div>
     {% endfor %}
+
+                {% else %}
+        <div style="margin-left: 140px;margin-top: 40px">
+            <div class="no_goods"></div>
+            <div class="no_goods_msg">亲！抱歉没有找到"<span style="color: #ff4e3f">{{ question }}</span>"相关商品</div>
+        </div>
+    {% endif %}
 </div>
 </div>
 
@@ -165,7 +173,6 @@ function f1(obj){
 }
 $("#ok").click(function () {
     goods_id=$("#goods_id").text();
-    alert(goods_id);
     $.post("/end_auction/"
     ,
         {

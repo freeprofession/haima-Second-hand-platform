@@ -90,13 +90,13 @@
                         </div>
                         <div class="comment-data cell" style="padding-top: 20px">
                             {% if item.eva_state == '0' %}
-                                <span>来至{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
+                                <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
                                                                                       title="好评"></i></span><br>
                             {% elif item.eva_state == '1' %}
-                                <span>来至{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate3"
+                                <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate3"
                                                                                       title="中评"></i></span>
                             {% else %}
-                                <span>来至{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate4"
+                                <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate4"
                                                                                       title="差评"></i></span>
                                 <br>
                             {% endif %}
@@ -130,15 +130,15 @@
 </div>
 </body>
 <script>
-    $(".nav").mouseover(function () {
+    $(".nav").click(function () {
         $(".nav").removeClass("credit_active");
         $(this).addClass("credit_active")
     })
-    $(".credit_select_span1").mouseover(function () {
+    $(".credit_select_span1").click(function () {
         $("#c1").show()
         $("#c2").hide()
     })
-    $(".credit_select_span2").mouseover(function () {
+    $(".credit_select_span2").click(function () {
         $("#c1").hide()
         $("#c2").show()
     })

@@ -15,7 +15,7 @@
                 <span>|</span>
                 <a href="" id="my_order">我的订单</a>
                 <span>|</span>
-                <a href="" id="my_order">消息 <img src="{{ message_check }}" alt=""
+                <a href="/leave_message/" id="my_order">消息 <img src="{{ message_check }}" alt=""
                                                  style="width:14px;height: 14px"></a>
             </div>
         </div>
@@ -38,3 +38,58 @@
 {##}
 {#    })#}
 {#</script>#}
+<div class="new_msg">
+    {% if message_list_push %}
+        {% for item in message_list_push %}
+            {% if item == "goods_message" %}
+                <span><a href="/leave_message_three/">您发布的商品有人留言了！</a></span>
+            {% elif item == "system" %}
+                <span><a href="/leave_message_system/">收到一条系统消息！</a></span>
+            {% elif item == "evaluation" %}
+                <span><a href="/my_evaluate_get/">收到一条评价！</a></span>
+            {% else %}
+                <span><a href="/system_message/">收到一条发货提醒</a></span>
+            {% endif %}
+
+        {% endfor %}
+    {% else %}
+        <span>暂无消息-_-</span>
+    {% endif %}
+</div>
+<div class="triangle_border_up">
+    <span></span>
+</div>
+<div class="hid_div">
+
+</div>
+
+<script>
+    $("#my_msg").hover(function () {
+        $(".new_msg").show();
+        $(".triangle_border_up").show();
+    }, function () {
+        $(".new_msg").hide();
+        $(".triangle_border_up").hide();
+    });
+    $(".new_msg").hover(function () {
+        $(".new_msg").show();
+        $(".triangle_border_up").show();
+    }, function () {
+        $(".new_msg").hide();
+        $(".triangle_border_up").hide();
+    });
+    $(".triangle_border_up").hover(function () {
+        $(".new_msg").show();
+        $(".triangle_border_up").show();
+    }, function () {
+        $(".new_msg").hide();
+        $(".triangle_border_up").hide();
+    });
+    $(".hid_div").hover(function () {
+        $(".new_msg").show();
+        $(".triangle_border_up").show();
+    }, function () {
+        $(".new_msg").hide();
+        $(".triangle_border_up").hide();
+    });
+</script>

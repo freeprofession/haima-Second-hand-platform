@@ -226,7 +226,6 @@ FFile.prototype = {
         if (self.FileSet.upButton) {
             $(self.FileSet.upButton).on('click', function (e) {
                 goods_id = $('#goods_id').val();
-                alert(goods_id, 455)
                 if (goods_id) {
                 } else {
                     if (checkform()) {

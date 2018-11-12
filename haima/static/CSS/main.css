@@ -3988,3 +3988,67 @@ label:hover {
     vertical-align: middle;
     font-size: 14px;
 }
+
+.credit_select_span1:hover {
+    cursor: pointer;
+}
+
+.credit_select_span2:hover {
+    cursor: pointer;
+}
+
+.new_msg {
+    width: 200px;
+    position: fixed;
+    top: 34px;
+    right: 160px;
+    padding: 10px;
+    border: 1px solid #e4dedb;
+    z-index: 99999;
+    background-color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: none;
+}
+
+#my_msg {
+    padding: 6px 0;
+}
+
+#my_msg:hover {
+    background-color: white;
+}
+
+.triangle_border_up {
+    width: 0;
+    height: 0;
+    border-width: 0 5px 5px;
+    border-style: solid;
+    border-color: transparent transparent #e4dedb; /*透明 透明  灰*/
+    margin: 0 1330px;
+    position: fixed;
+    z-index: 99999;
+    display: none;
+}
+
+.hid_div {
+    position: absolute;
+    top: 30px;
+    left: 1138px;
+    height: 40px;
+    width: 220px;
+    background-color: rgba(0, 0, 0, 0);
+
+}
+
+.search_img {
+    padding-left: 18px;
+    height: 20px;
+    width: 18px;
+    background: url("../Images/camera_search.png") no-repeat;
+    background-position: 0 0;
+    position: relative;
+    left: 488px;
+    top: -22px;
+}

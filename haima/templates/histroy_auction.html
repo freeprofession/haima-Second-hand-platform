@@ -62,10 +62,11 @@
 
 </div>
 <hr style="background-color: #16bcbd">
+{% for i in list1 %}
 <div id="auction_goods">
     <div id="auction_goods_img"><img src="../static/Images/banner01.jpg" alt=""></div>
     <div id="auction_goods_desc">
-        <div id="title" style="font-size: large">这是商品的标题</div>
+        <div id="title" style="font-size: large">{{ i.goods.auction_goods_title }}</div>
         <div id="desc" style="font-size: medium">这是商品的介绍在这里输入商品的介绍sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.</div>
 
         <div id="auction_messige">
@@ -94,7 +95,7 @@
 
     </div>
 </div>
-
+{% endfor %}
 
 </body>
 </html>

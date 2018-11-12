@@ -14,7 +14,7 @@ boston = load_boston()
 X = boston.data
 y = boston.target  # (1)数据集分成两份，其中一份是训练集，一份是测试集
 # for i in range(100):
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=47)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
 # print(boston.feature_names)  # 查看特征 #
 
 
@@ -33,14 +33,12 @@ def assess_price(lst):
     print(len(y_test))
     return price
 
-
-# model = polynomial_model(2)
-# model.fit(X_train, y_train)
-# start = time.clock()
-# train_score = model.score(X_train, y_train)
-# cv_score = model.score(X_test, y_test)
-# print('用时:{0:.6f};训练分数:{1:0.6f}; 测验分数:{2:0.6f}'.format(time.clock() - start, train_score, cv_score))
-    # print(i)
+#     model = polynomial_model(2)
+#     model.fit(X_train, y_train)
+#     start = time.clock()
+#     train_score = model.score(X_train, y_train)
+#     cv_score = model.score(X_test, y_test)
+#     print('用时:{0:.6f};训练分数:{1:0.6f}; 测验分数:{2:0.6f}'.format(time.clock() - start, train_score, cv_score),i)
 # print(len(y_test))
 # for i in range(len(y_train)):
 #     print(model.predict([X_train[i]]),[y_train[i]])

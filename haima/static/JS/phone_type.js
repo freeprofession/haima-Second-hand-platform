@@ -128,6 +128,39 @@ var brandList = [
             {name: 'Max', configurationList: ['2G+16G', '3G+32G', '3G+64G', '4G+128G']},
         ]
     },
+    {
+        name: '红米', modelList: [
+            {name: 'Note4x', configurationList: ['4G+64G', '4G+16G', '3G+32G', '3G+16G','2G+32G']},
+            {name: '4x', configurationList: ['4G+64G', '3G+32G', '2G+16G']},
+            {name: 'Note3', configurationList: ['3G+32G', '2G+16G']},
+            {name: 'Note5', configurationList: ['3G+32G', '4G+64G','6G+64G','6G+128G']},
+            {name: 'Note4', configurationList: ['2G+16G', '3G+32G', '4G+64G']},
+            {name: '5plus', configurationList: ['3G+32G', '4G+64G']},
+            {name: '4a', configurationList: ['2G+16G']},
+            {name: '6pro', configurationList: ['3G+32G', '4G+32G', '4G+64G']},
+        ]
+    },
+    {
+        name: 'OPPO', modelList: [
+            {name: 'Findx', configurationList: ['8G+128G', '8G+256G']},
+            {name: 'R17', configurationList: ['6G+128G', '8G+128G']},
+            {name: 'R15', configurationList: ['4G+128G', '6G+128G']},
+            {name: 'R11s', configurationList: ['4G+64G', '6G+128G']},
+            {name: 'R11', configurationList: ['4G+64G', '6G+128G']},
+            {name: 'R9s', configurationList: ['4G+64G']},
+            {name: 'R9', configurationList: ['4G+64G']},
+            {name: 'R9plus', configurationList: ['4G+64G', '4G+128G']},
+            {name: 'R7', configurationList: ['3G+16G']},
+            {name: 'R7s', configurationList: ['3G+32G', '4G+32G']},
+            {name: 'A37', configurationList: ['2G+16G']},
+            {name: 'A5', configurationList: ['3G+64G', '4G+32G', '4G+64G']},
+            {name: 'A57', configurationList: ['4G+32G', '3G+32G']},
+            {name: 'A33', configurationList: ['2G+16G']},
+            {name: 'A59s', configurationList: ['4G+32G']},
+            {name: 'A59', configurationList: ['3G+32G']},
+            {name: 'A53', configurationList: ['2G+16G']},
+        ]
+    },
 ];
 
 

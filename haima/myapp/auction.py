@@ -2,6 +2,7 @@ import pymysql
 import time
 import json
 import redis
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
@@ -11,17 +12,31 @@ auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
 import datetime
 # 历史拍卖
 def history_auction(request):
+    list1=[]
     goods_list=[]
     id = request.session.get('user_id')
     print(id)
     for item in history_auction.lrange("history", 0, 10):
         item = item.decode("utf-8")
         goods_list.append(item)
-
-    if id:
-        cur.execute('select user_name from t_user where user_id=%s',[id])
-        username = cur.fetchone()
-        return render(request, 'histroy_auction.html', locals())
+    cur.execute('select user_name from t_user where user_id=%s',[id])
+    username = cur.fetchone()
+    for goods_id in goods_list:
+        dict1 = {}
+        data_list=[]
+        cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
+        goods_messge = cur.fetchone()
+        cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
+        goods_auction_message = cur.fetchone()
+        # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
+        # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
+        cur.execute("select end_date from t_auction_attribute where auction_goods_id=%s", [goods_id])
+        end_data = cur.fetchone()["end_date"]
+        data_list.append(end_data)
+        dict1["goods"] = goods_messge
+        dict1["attribute"] = goods_auction_message
+        list1.append(dict1)
+    return render(request, 'histroy_auction.html', locals())
 
 
 # *********************************************拍卖商品的收货*******************************************************
@@ -38,7 +53,7 @@ def confirm_auction_goods(request):
         cur.execute("select auction_order_goods_id from t_auction_order where auction_order_id=%s", [order_id])
         auction_goods_id = cur.fetchone()["auction_order_goods_id"]
 
-        history_auction.lpush("history",auction_goods_id)
+        # history_auction.lpush("history",auction_goods_id)
 
         # 用户确认收货以后需要把钱打到卖家账户
         cur.execute("select auction_goods_margin from t_auction_attribute where auction_goods_id=%s",
@@ -101,7 +116,7 @@ def auction_index(request):
     data_list=[]
     cur.execute(
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
-        [id, ])
+        [id])
     collection_list = cur.fetchall()
     if id:
         goods_list = []
@@ -128,6 +143,16 @@ def auction_index(request):
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
         time_length=len(data_list)
+        paginator = Paginator(list1, 5)
+        page = request.GET.get('page')
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            contacts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            contacts = paginator.page(paginator.num_pages)
         return render(request, "auction_index.html", locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -202,6 +227,7 @@ def publish_auction(request):
         end_date = request.POST.get("end_date")
         start_date = request.POST.get("start_date")
         category = request.POST.get("category")
+        print(category)
         postage = request.POST.get("postage")
         imgurl_list = json.loads(request.POST.get("img_address"))
         imgurl = "http://pgwecu7z4.bkt.clouddn.com/" + imgurl_list[0]
@@ -217,7 +243,7 @@ def publish_auction(request):
                 cur.execute("insert into t_auction_goods(auction_goods_title,auction_goods_desc,auction_goods_imgurl,\
                             auction_goods_user_id,auction_goods_category_id) values(%s,%s,%s,%s,%s)",
                             [title, desc, imgurl, \
-                             str(user_id), str(postage)])
+                             str(user_id), str(category)])
 
                 goods_id = cur.lastrowid
                 # 把其余的图片传到redis
@@ -232,7 +258,7 @@ def publish_auction(request):
                     cur.execute("insert into t_auction_goods_record(auction_goods_id,auction_goods_title,auction_goods_desc,auction_goods_imgurl,\
                                                     auction_goods_user_id,auction_goods_category_id) values(%s,%s,%s,%s,%s,%s)",
                                 [str(goods_id), title, desc, imgurl, \
-                                 str(user_id), str(postage)])
+                                 str(user_id), str(category)])
                     cur.execute("insert into t_auction_attribute (start_date,end_date,auction_goods_floorprice,auction_goods_floorpremium,\
                                 auction_goods_price,auction_goods_id) values (%s,%s,%s,%s,%s,%s)",
                                 [start_date, end_date, floorprice, floorpremium, floorprice, str(goods_id)])
@@ -241,7 +267,6 @@ def publish_auction(request):
                 except Exception as e:
                     con.rollback()
                     print(e)
-                print("123")
                 return HttpResponse(json.dumps({"msg": error}))
             elif len(title) < 6:
                 error = 'title.length_error'
@@ -599,3 +624,53 @@ def Determine_pay_date(request):
     # and auction_order_date = % s
 def time_test(request):
     return render(request,'test_time.html')
+def test_auction_pay_time(request):
+    return render(request,'test_auction_pay_time.html')
+
+#这里是拍卖首页分类的：
+def cate_auction_index(request):
+    cate_id=request.GET.get("id")
+    id = request.session.get('user_id')
+    list1 = []
+    data_list = []
+    cur.execute(
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        [id, ])
+    collection_list = cur.fetchall()
+
+    goods_list = []
+    cur.execute('select user_name from t_user where user_id=%s', [id])
+    username = cur.fetchone()
+    cur.execute("select auction_goods_id from t_auction_goods where auction_goods_category_id=%s",[cate_id])
+    goods_dict = cur.fetchall()
+    # 先将需要在首页展示的拍卖商品的id全部拿出来存进一个列表里
+    for i in goods_dict:
+        goods_list.append(i["auction_goods_id"])
+    # 对这个需要展示的商品id进行遍历，将他需要展示的数据全部一条一条的拿出来
+    for goods_id in goods_list:
+        dict1 = {}
+        cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
+        goods_messge = cur.fetchone()
+        cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
+        goods_auction_message = cur.fetchone()
+        # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
+        # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
+        cur.execute("select end_date from t_auction_attribute where auction_goods_id=%s", [goods_id])
+        end_data = cur.fetchone()["end_date"]
+        data_list.append(end_data)
+        dict1["goods"] = goods_messge
+        dict1["attribute"] = goods_auction_message
+        list1.append(dict1)
+    time_length = len(data_list)
+    paginator = Paginator(list1, 5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    return render(request, "auction_index.html", locals())
+
