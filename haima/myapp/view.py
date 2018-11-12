@@ -43,18 +43,18 @@ class CJsonEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-r = redis.Redis(host="47.100.200.132", port=6379)
-r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
-img = redis.Redis(host="47.100.200.132", port=6379, db=2)
-category = redis.Redis(host="47.100.200.132", port=6379, db=3)
-cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
-auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
-sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
-set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
-get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
-user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户推荐
-goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
-message_push = redis.Redis(host="47.100.200.132", port=6379, db=11)  # 消息推送
+r = redis.Redis(host="47.100.200.132", port=6379, password="haima1234")
+r1 = redis.Redis(host="47.100.200.132", port=6379, db=1, password="haima1234")
+img = redis.Redis(host="47.100.200.132", port=6379, db=2, password="haima1234")
+category = redis.Redis(host="47.100.200.132", port=6379, db=3, password="haima1234")
+cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4, password="haima1234")
+auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5, password="haima1234")
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5, password="haima1234")  # 注册验证码
+set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7, password="haima1234")  # 设置评论
+get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8, password="haima1234")  # 得到评论
+user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9, password="haima1234")  # 用户推荐
+goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10, password="haima1234")  # 浏览记录
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11, password="haima1234")  # 消息推送
 
 
 def get_token(func):
@@ -775,6 +775,12 @@ def goods_detail(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     goods_id = request.GET.get('goods')
+    message_second_id = request.GET.get('message_second_id')
+    if message_second_id:
+        pass
+    else:
+        message_second_id = "q2"
+    print(message_second_id, "锚标记！！")
     if username:
         message_check1 = message_push.lrange(user_id, 0, 1)
         message_list_push = []
@@ -1827,7 +1833,7 @@ def my_collection(request):
             contacts = paginator.page(paginator.num_pages)
         # -----------------------------------
         r_goods_list = []
-        recommend_goods = user_recommend.smembers(user_id)
+        recommend_goods = user_recommend.lrange(user_id, 0, -1)
         for r_goods_id in recommend_goods:
             r_goods_id = r_goods_id.decode('utf-8')
             cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",
@@ -1913,9 +1919,23 @@ def evaluate(request):
 def evaluate_ajax(request):
     user_id = request.session.get('user_id')
     evaluate_text = request.POST.get('evaluate_text')
-    eva_state = request.POST.get('dddddddd')
     customer = request.POST.get('customer')
     order_id = request.POST.get('order_id')
+    sudu = int(request.POST.get('sudu'))
+    qingkuang = int(request.POST.get('qingkuang'))
+    taidu = int(request.POST.get('taidu'))
+    eva_state = int(request.POST.get('pingjia'))
+    if eva_state == 0:
+        user_credit1 = 2 * (sudu + qingkuang + taidu) / 3
+    elif eva_state == 1:
+        user_credit1 = (sudu + qingkuang + taidu) / 3
+    else:
+        sudu = 10 - sudu
+        taidu = 10 - taidu
+        qingkuang = 10 - qingkuang
+        user_credit1 = -(sudu + qingkuang + taidu) / 3
+
+    print(sudu, qingkuang, taidu, eva_state, 666666666666666666666666)
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(evaluate_text, eva_state, customer, type(order_id))
     if customer == "buy":
@@ -1926,6 +1946,8 @@ def evaluate_ajax(request):
         # __________________redis保存被回复人记录(别人查看记录)-----------------------------------------------------------------------
         cur.execute("select * from t_order_success where order_id=%s", [int(order_id), ])
         order_list = cur.fetchone()
+        cur.execute("update t_user set user_credit=user_credit+%s where user_id=%s",
+                    [user_credit1, order_list["release_user_id"]])
         key = str(order_list["release_user_id"]) + str(order_id)
         print("购买人，", key)
         # 评价人的信息！-------------
@@ -1959,8 +1981,9 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
         set_eva.hset(key_, "eva_state", eva_state)
         set_eva.hset(key_, "customer", "卖家")
-        message_push.lpush(user_id, "evaluation")
+        message_push.lpush(order_list["release_user_id"], "evaluation")
     else:
+        print("卖卖卖")
         cur.execute(
             "update t_evaluation set seller_evaluation_date = %s,seller_desc=%s,sell_state=%s where evaluation_order_id = %s",
             [now_time, evaluate_text, eva_state, order_id])
@@ -1968,6 +1991,8 @@ def evaluate_ajax(request):
         # __________________redis保存被回复人记录(别人查看记录)-----------------------------------------------------------------------
         cur.execute("select * from t_order_success where order_id=%s", [int(order_id), ])
         order_list = cur.fetchone()
+        cur.execute("update t_user set user_credit=user_credit+%s where user_id=%s",
+                    [user_credit1, order_list["buy_user_id"]])
         key = str(order_list["buy_user_id"]) + str(order_id)
         # 被评价用户的信息！-------------
         cur.execute("select * from t_user where user_id=%s", [user_id, ])
@@ -2002,7 +2027,7 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
         set_eva.hset(key_, "eva_state", eva_state)
         set_eva.hset(key_, "customer", "买家")
-        message_push.lpush(user_id, "evaluation")
+        message_push.lpush(order_list["buy_user_id"], "evaluation")
     con.commit()
     msg = "success"
     return HttpResponse(json.dumps({"msg": msg}))
