@@ -9,6 +9,7 @@ con = pymysql.connect(host='47.100.200.132', user='user', password='123456', dat
 cur = con.cursor(pymysql.cursors.DictCursor)
 history_auction = redis.Redis(host="47.100.200.132", port=6379, db=11)
 auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11)
 import datetime
 # 历史拍卖
 def history_auction(request):
@@ -41,6 +42,20 @@ def history_auction(request):
 
 # *********************************************拍卖商品的收货*******************************************************
 def confirm_auction_goods(request):
+    user_id=request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
     order_id = request.POST.get("order_id")
     # 用户确认收货以后改变状态
     user_id = request.session.get("user_id")
@@ -75,12 +90,14 @@ def confirm_auction_goods(request):
     except Exception as e:
         con.rollback()
         print(e)
-    return HttpResponse("/my_auction_four/")
+    return HttpResponse("/my_auction_buy_one/")
 
 # ******************************************购买拍卖页面**********************************************
 # 用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
     id = request.session.get('user_id')
+    username = request.session.get("username")
+    login_status = username
     dict1 = {}
     list1 = []
     img_list = []
@@ -112,6 +129,18 @@ def buy_auction(request):
 # 拍卖首页
 def auction_index(request):
     id = request.session.get('user_id')
+    message_check1 = message_push.lrange(id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    username=request.session.get("username")
+    login_status = username
     list1 = []
     data_list=[]
     cur.execute(
@@ -120,8 +149,6 @@ def auction_index(request):
     collection_list = cur.fetchall()
     if id:
         goods_list = []
-        cur.execute('select user_name from t_user where user_id=%s', [id])
-        username = cur.fetchone()
         cur.execute("select auction_goods_id from t_auction_goods")
         goods_dict = cur.fetchall()
         # 先将需要在首页展示的拍卖商品的id全部拿出来存进一个列表里
@@ -139,6 +166,7 @@ def auction_index(request):
             cur.execute("select end_date from t_auction_attribute where auction_goods_id=%s",[goods_id])
             end_data=cur.fetchone()["end_date"]
             data_list.append(end_data)
+            username=request.session.get("session")
             dict1["goods"] = goods_messge
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
@@ -165,6 +193,8 @@ def auction_index(request):
 # 默认是进入用户的发布历史界面
 def my_auction(request):
     id = request.session.get('user_id')
+    username = request.session.get("username")
+    login_status = username
     print(id)
     if id:
         cur.execute('select user_name from t_user where user_id=%s', [id])
@@ -201,7 +231,20 @@ def my_auction(request):
 
 
 def release_auction(request):
+    username = request.session.get("username")
+    login_status = username
     id = request.session.get('user_id')
+    message_check1 = message_push.lrange(id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    login_status = username
     if id:
         cur.execute('select user_name from t_user where user_id=%s', [id])
         username = cur.fetchone()
@@ -217,7 +260,8 @@ def publish_auction(request):
     user_id = request.session.get('user_id')
     cur.execute("select user_money from t_user where user_id=%s", [user_id])
     user_money = cur.fetchone()["user_money"]
-
+    username = request.session.get("username")
+    login_status = username
     if request.method == 'POST':
 
         title = request.POST.get('title')
@@ -297,13 +341,13 @@ def release_auction_ok(request):
 
 def my_release_record(request):
     return_title = request.GET.get("id")  # 根据传回来的id 来判断返回的值
-    print(type(return_title))
     print(return_title)
     if return_title == "one":
         list1 = []
         user_id = request.session.get("user_id")
 
 
+    print(type(return_title))
 # 发布拍卖成功
 def release_auction_ok(request):
     return render(request, 'release_auction_ok.html')
@@ -595,6 +639,8 @@ def delivery(request):
     return HttpResponse("my_auction_sale_five.html")
 
 def auction_place_order(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     order_id = request.GET.get("id")
     cur.execute("select * from t_auction_order where auction_order_id=%s", [order_id])
@@ -620,7 +666,7 @@ def Determine_pay_date(request):
             except Exception as e:
                 con.rollback()
                 print(e)
-    return redirect("/auction_index/")
+    return HttpResponse("ok")
     # and auction_order_date = % s
 def time_test(request):
     return render(request,'test_time.html')

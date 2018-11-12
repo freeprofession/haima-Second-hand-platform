@@ -5,8 +5,25 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
+from myapp import view
+def login_required(function):
+
+    def check_login_status(request):
+        user = request.session.get('user')
+        user_id = request.session.get('user_id')
+        if user_id:
+            return function(request)
+        elif user:
+            return function(request)
+        else:
+            return HttpResponseRedirect('/login/')
+
+    return check_login_status
 # **********************************************************返回用户的我的拍卖中心我的竞拍的界面**************************************
+@login_required
 def my_auction_buy_one(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -61,6 +78,8 @@ def my_auction_buy_one(request):
         contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_buy_one.html',locals())
 def my_auction_buy_two(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -116,6 +135,8 @@ def my_auction_buy_two(request):
         contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_buy_two.html',locals())
 def my_auction_buy_three(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     list3=[]
     # 先找到该用户的所有竞拍记录
@@ -180,6 +201,8 @@ def my_auction_buy_three(request):
         contacts = paginator.page(paginator.num_pages)
     return render(request,'my_auction_buy_three.html',locals())
 def my_auction_buy_four(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     # 找到用户的订单
     list2=[]
@@ -224,6 +247,8 @@ def my_auction_buy_four(request):
 
 
 def my_auction_buy_five(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     list5=[]
     # 先找到该用户的所有竞拍记录
@@ -274,6 +299,8 @@ def my_auction_buy_five(request):
 
     return render(request,'my_auction_buy_five.html',locals())
 def my_auction_buy_six(request):
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     list6=[]
     # 先找到该用户的所有竞拍记录

@@ -8,6 +8,8 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 # **********************************************************返回用户的我的拍卖中心的我的发布界面**************************************
 # 这里主要是显示他的发布记录,和发布商品现在的状态
 def my_auction_sale_one(request):
+    username = request.session.get("username")
+    login_status = username
     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
     cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
@@ -74,8 +76,8 @@ def my_auction_sale_one(request):
     return render(request,'my_auction_sale_one.html',locals())
 def my_auction_sale_two(request):
     user_id = request.session.get("user_id")
-    username = request.session.get('username')
-    print(username)
+    username = request.session.get("username")
+    login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
     message = cur.fetchall()
@@ -119,8 +121,8 @@ def my_auction_sale_two(request):
     return render(request,'my_auction_sale_two.html',locals())
 def my_auction_sale_three(request):
     user_id = request.session.get("user_id")
-    username = request.session.get('username')
-    print(username)
+    username = request.session.get("username")
+    login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
     message = cur.fetchall()
@@ -168,8 +170,8 @@ def my_auction_sale_three(request):
     return render(request,'my_auction_sale_three.html',locals())
 def my_auction_sale_four(request):
     user_id = request.session.get("user_id")
-    username = request.session.get('username')
-    print(username)
+    username = request.session.get("username")
+    login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
     message = cur.fetchall()
@@ -227,8 +229,8 @@ def my_auction_sale_four(request):
     return render(request,'my_auction_sale_four.html',locals())
 def my_auction_sale_five(request):
     user_id = request.session.get("user_id")
-    username = request.session.get('username')
-    print(username)
+    username = request.session.get("username")
+    login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
     message = cur.fetchall()
@@ -285,8 +287,8 @@ def my_auction_sale_five(request):
     return render(request,'my_auction_sale_five.html',locals())
 def my_auction_sale_six(request):
     user_id = request.session.get("user_id")
-    username = request.session.get('username')
-    print(username)
+    username = request.session.get("username")
+    login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
     message = cur.fetchall()
@@ -338,8 +340,8 @@ def my_auction_sale_six(request):
     return render(request,'my_auction_sale_six.html',locals())
 def my_auction_sale_seven(request):
     user_id = request.session.get("user_id")
-    username = request.session.get('username')
-    print(username)
+    username = request.session.get("username")
+    login_status = username
     # 从发布记录表里找到商品id
     cur.execute("select release_auction_goods_id from t_release_auction where release_auction_user_id=%s", [user_id])
     message = cur.fetchall()

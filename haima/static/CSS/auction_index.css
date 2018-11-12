@@ -340,3 +340,6 @@ html, body {
     box-sizing: border-box;
     cursor: pointer;
 }
+.navlist  li{
+    padding-left: 50px;
+}
