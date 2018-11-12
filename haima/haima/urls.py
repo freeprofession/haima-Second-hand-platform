@@ -62,6 +62,7 @@ urlpatterns = [
     path('my_sale_lower/', view.my_sale_lower),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
+    path("tixinfahuo/",view.tinxinfahuo),
     path('my_sale_complete/', view.my_sale_complete),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
@@ -82,7 +83,6 @@ urlpatterns = [
     path('test_ajax', view.test_ajax),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata), path('modify_information/', view.modify_information),  # 修改信息
-    path('my_auction/', auction.my_auction),
     path('history_auction/', auction.history_auction),
     path('release_auction/', auction.release_auction),
     path('test/', view.text_message),
@@ -192,6 +192,5 @@ urlpatterns = [
     path('search_image/', view.search_image),
     path('test_auction_pay_time/',auction.test_auction_pay_time),
     path('cate_auction_index/',auction.cate_auction_index),
-
 
 ]

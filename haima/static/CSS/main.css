@@ -775,10 +775,14 @@ label:hover {
     margin-right: 5px;
 }
 
+.item-type li a {
+    color: black;
+}
+
 .add {
     margin-bottom: -1px;
     color: #fc0;
-    border-bottom: 3px solid #fc0 !important;
+    border-bottom: 3px solid #fc0;
 }
 
 .hold ul {
@@ -1609,7 +1613,7 @@ label:hover {
 
 #buy_now_message {
     width: 400px;
-    height: 300px;
+    height: 320px;
     background-color: #16bcbd;
     position: fixed;
     left: 30%;
@@ -4035,11 +4039,10 @@ label:hover {
 .hid_div {
     position: absolute;
     top: 30px;
-    left: 1138px;
-    height: 40px;
-    width: 220px;
+    left: 1320px;
+    height: 5px;
+    width: 30px;
     background-color: rgba(0, 0, 0, 0);
-
 }
 
 .search_img {

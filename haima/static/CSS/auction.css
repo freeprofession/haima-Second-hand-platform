@@ -215,7 +215,7 @@ html, body {
 .navbar_con {
     height: 30px;
     border-bottom: 1px solid #ddd;
-    background: #f9f9f9
+    background: #ffda44;
 }
 
 .navbar {
@@ -229,7 +229,7 @@ html, body {
     text-align: center;
     font-size: 14px;
     color: #666;
-    background-color: #f1f1f1;
+    background-color: #fcd540;
     font-weight: bold;
 }
 
@@ -282,7 +282,9 @@ html, body {
 
 .navlist li {
     float: left;
+    width: 190px;
     line-height: 30px;
+    text-align: center;
 }
 
 .navlist li a {
@@ -476,7 +478,14 @@ html, body {
 }
 
 .sub_menu li {
-    height: 30px;
+    text-align: center;
+    height: 82px;
+}
+
+.sub_menu li a {
+    font-size: 30px;
+    color: white;
+    line-height: 82px;
 }
 
 .sub_menu li:hover {
@@ -486,7 +495,7 @@ html, body {
     cursor: pointer;
 }
 
-.sub_menu li:hover .level1 a {
+.sub_menu li:hover a {
     color: #333;
 }
 

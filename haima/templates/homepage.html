@@ -43,7 +43,8 @@
                     <li>
                         <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }} "
                                                                                  alt="商品图片"></a>
-                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4 style="overflow: hidden;
+white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
                 {% endfor %}
@@ -322,7 +323,7 @@
                 <ul class="item-type" style="margin-left: 25px">
                     <li class="nav" id="guess1"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank"
                                                    onmouseover="change_div('dc1')">全新闲置</a></li>
-                    <li class="nav selected" id="guess2"><a href="" target="_blank" onmouseover="change_div('dc2')"
+                    <li class="nav selected" id="guess2"><a href="" onmouseover="change_div('dc2')"
                     >猜你喜欢</a></li>
                     <li class="nav" id="guess3"><a href="/goods_list/?q=同城交易&price_low=&price_high=" target="_blank"
                                                    onmouseover="change_div('dc3')">同城交易</a></li>
@@ -345,9 +346,9 @@
                     </ul>
                 </div>
                 <div id="dc2" class="hold clearfix">
-                   <div style="padding-top: 80px;padding-left: 250px">
-                            <span style="font-size: 25px;font-weight: bold">后台正在为您拼命推荐！！</span>
-                        </div>
+                    <div style="padding-top: 80px;padding-left: 250px">
+                        <span style="font-size: 25px;font-weight: bold">后台正在为您拼命推荐！！</span>
+                    </div>
                 </div>
                 <div id="dc3" class="hold">
                     {% if same_city_list %}
@@ -376,6 +377,9 @@
     <div class="list_model">
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">1F 手机通讯</h3>
+            <div class="subtitle fr" style="background: #719ef7;">
+                <a href="" style="color: #fff;">更多>></a>
+            </div>
         </div>
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
@@ -416,6 +420,9 @@
     <div class="list_model model02">
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">2F 电脑数码</h3>
+            <div class="subtitle fr" style="background: #61c1e6">
+                <a href="" style="color: #fff;">更多>></a>
+            </div>
         </div>
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
@@ -455,6 +462,9 @@
     <div class="list_model model03">
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">3F 摄影摄像</h3>
+            <div class="subtitle fr" style="background: #c584ec">
+                <a href="" style="color: #fff;">更多>></a>
+            </div>
         </div>
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
@@ -564,7 +574,7 @@
                     console.log(err)
                 },
                 complete(res) {
-                    url = 'http://pgwecu7z4.bkt.clouddn.com/' + res['key']
+                    url = 'http://files.g1.xmgc360.com.qiniudns.com/' + res['key']
                     console.log(url)
                     form = $(" <form method='post' action='/search_image/'></form>")
                     input = $("<input type='text'>").val(url).attr('name', 'url')
@@ -584,8 +594,8 @@
                     observable = qiniu.upload(file, key, token, putExtra, config)
                     subscription = observable.subscribe(observer) // 上传开始
                     console.log('kaishi')
-                     var ajaxbg = $("#background,#progressBar");
-                        ajaxbg.show();
+                    var ajaxbg = $("#background,#progressBar");
+                    ajaxbg.show();
                 },
                 error: function () {//请求失败后调用的函数
                     console.log(err);

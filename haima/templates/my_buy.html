@@ -27,7 +27,7 @@
             <li><a href="/user_center/">· 个人信息</a></li>
             <li><a href="/my_sale/">· 我出售的</a></li>
             <li><a href="/my_buy/" class="active">· 我购买的</a></li>
-            <li><a href="user_center_order.html">· 我的拍卖</a></li>
+            <li><a href="/my_auction_buy_one/">· 我的拍卖</a></li>
             <li><a href="/my_collection/">· 我的收藏</a></li>
             <li><a href="/my_evaluate_get/">· 我的评价</a></li>
             <li><a href="/leave_message/">· 消息中心</a></li>
@@ -57,13 +57,14 @@
                             </ul>
                         </td>
                         {% if item.state != 0 %}
-                            <td width="15%"><a href="">查看运单号</a></td>
+                            <td width="30%"><a href="">运单号：{{ item.order_mark }}</a></td>
                             <td width="15%">
                                 <button onclick="f1(this)" value={{ item.goods_id }}>确认收货</button>
                             </td>
                         {% else %}
                             <td width="15%">
-                                <button onclick="f1(this)" value={{ item.goods_id }}>提醒卖家发货</button>
+                                <button onclick="tixinfahuo({{ item.order_id }})" id="tixin_{{ order_id }}">提醒卖家发货
+                                </button>
                             </td>
                         {% endif %}
                     </tr>
@@ -124,7 +125,7 @@
             }
             , function (data) {
 
-                window.location.reload();
+                 window.location.reload();
             }
             , 'json'
         )
@@ -135,5 +136,20 @@
         window.location.reload();
 
     })
+</script>
+<script>
+    function tixinfahuo(id) {
+        order_id = id;
+        alert(order_id)
+        $.post("/tixinfahuo/", {
+            "order_id": order_id
+        }, function (data) {
+            console.log(data.msg)
+            alert("已提醒卖家")
+            $("tixin_" + id).text("已提醒发货")
+        }, "json")
+
+
+    }
 </script>
 </html>
