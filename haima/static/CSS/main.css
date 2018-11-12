@@ -782,7 +782,7 @@ label:hover {
 .add {
     margin-bottom: -1px;
     color: #fc0;
-    border-bottom: 3px solid #fc0 !important;
+    border-bottom: 3px solid #fc0;
 }
 
 .hold ul {

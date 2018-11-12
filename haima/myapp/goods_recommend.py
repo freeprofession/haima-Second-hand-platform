@@ -12,8 +12,8 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 
 def goods_recommend(requset):
     user_id = requset.POST.get('user_id')
-    r = redis.Redis(host="47.100.200.132", port=6379, db=10)
-    r9 = redis.Redis(host="47.100.200.132", port=6379, db=9)
+    r = redis.Redis(host="47.100.200.132", port=6379, db=10, password='haima1234')
+    r9 = redis.Redis(host="47.100.200.132", port=6379, db=9, password='haima1234')
     conn = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
     cur = conn.cursor(pymysql.cursors.DictCursor)
     uid_score_bid = []

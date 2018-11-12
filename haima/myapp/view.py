@@ -43,18 +43,18 @@ class CJsonEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-r = redis.Redis(host="47.100.200.132", port=6379)
-r1 = redis.Redis(host="47.100.200.132", port=6379, db=1)
-img = redis.Redis(host="47.100.200.132", port=6379, db=2)
-category = redis.Redis(host="47.100.200.132", port=6379, db=3)
-cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4)
-auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5)
-sms = redis.Redis(host="47.100.200.132", port=6379, db=5)  # 注册验证码
-set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7)  # 设置评论
-get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8)  # 得到评论
-user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9)  # 用户推荐
-goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10)  # 浏览记录
-message_push = redis.Redis(host="47.100.200.132", port=6379, db=11)  # 消息推送
+r = redis.Redis(host="47.100.200.132", port=6379, password='haima1234')
+r1 = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
+img = redis.Redis(host="47.100.200.132", port=6379, db=2, password='haima1234')
+category = redis.Redis(host="47.100.200.132", port=6379, db=3, password='haima1234')
+cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4, password='haima1234')
+auction_img = redis.Redis(host="47.100.200.132", port=6379, db=5, password='haima1234')
+sms = redis.Redis(host="47.100.200.132", port=6379, db=5, password='haima1234')  # 注册验证码
+set_eva = redis.Redis(host="47.100.200.132", port=6379, db=7, password='haima1234')  # 设置评论
+get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8, password='haima1234')  # 得到评论
+user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9, password='haima1234')  # 用户推荐
+goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10, password='haima1234')  # 浏览记录
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11, password='haima1234')  # 消息推送
 
 
 def get_token(func):
