@@ -3002,3 +3002,47 @@ html, body {
 [v-cloak] {
     display: none
 }
+
+.new_msg {
+    width: 200px;
+    position: fixed;
+    top: 34px;
+    right: 160px;
+    padding: 10px;
+    border: 1px solid #e4dedb;
+    z-index: 99999;
+    background-color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: none;
+}
+
+#my_msg {
+    padding: 6px 0;
+}
+
+#my_msg:hover {
+    background-color: white;
+}
+
+.triangle_border_up {
+    width: 0;
+    height: 0;
+    border-width: 0 5px 5px;
+    border-style: solid;
+    border-color: transparent transparent #e4dedb; /*透明 透明  灰*/
+    margin: 0 1330px;
+    position: fixed;
+    z-index: 99999;
+    display: none;
+}
+
+.hid_div {
+    position: absolute;
+    top: 30px;
+    left: 1320px;
+    height: 5px;
+    width: 30px;
+    background-color: rgba(0, 0, 0, 0);
+}

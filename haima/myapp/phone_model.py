@@ -2,10 +2,6 @@ import pandas as pd
 
 df = pd.read_csv("myapp/phone_model.csv", encoding='utf-8')
 
-<<<<<<< HEAD
-df = pd.read_csv("C:\\phone_model.csv")
-=======
->>>>>>> 711ea62dd15f44c2d7124c54164445d2d4f9ccfa
 
 def Phone_model(brand, model):
     a = list(df['0']).index(brand)
