@@ -14,7 +14,7 @@ boston = load_boston()
 X = boston.data
 y = boston.target  # (1)数据集分成两份，其中一份是训练集，一份是测试集
 # for i in range(100):
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=20)
 # print(boston.feature_names)  # 查看特征 #
 
 

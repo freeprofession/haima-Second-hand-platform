@@ -3002,7 +3002,6 @@ html, body {
 [v-cloak] {
     display: none
 }
-<<<<<<< HEAD
 
 .new_msg {
     width: 200px;
@@ -3046,9 +3045,9 @@ html, body {
     height: 5px;
     width: 30px;
     background-color: rgba(0, 0, 0, 0);
-=======
+}
+
 .navlist  li {
     padding-left: 50px;
 
->>>>>>> d74164b62dcecdf33022760c3202065c0f8d1f7a
 }

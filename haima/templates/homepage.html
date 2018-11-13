@@ -335,7 +335,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                     <ul>
                         {% for goods in newest_list %}
                             <li>
-                                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"
+                                <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}?imageView2/0/w/110/h/110"
                                                                                          class="goods_pic"></a>
                                 <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"
                                        title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>
@@ -356,7 +356,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                             {% for goods in same_city_list %}
                                 <li>
                                     <a href="/goods_detail/?goods={{ goods.goods_id }}"><img
-                                            src="{{ goods.goods_imgurl }}"
+                                            src="{{ goods.goods_imgurl }}?imageView2/0/w/110/h/110"
                                             class="goods_pic"></a>
                                     <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"
                                            title="{{ goods.goods_title }}">{{ goods.goods_title }}</a>

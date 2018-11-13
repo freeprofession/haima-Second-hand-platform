@@ -9,51 +9,52 @@
     <link rel="stylesheet" href="../static/CSS/my_buy.css">
     <style>
         #for_psw {
-    height: 1400px;
-    width: 1520px;
-    position: absolute;
-    top: 0;
-    z-index: 100;
-    background-color: rgba(0, 0, 0, .7);
-    display: none;
-}
+            height: 1400px;
+            width: 1520px;
+            position: absolute;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, .7);
+            display: none;
+        }
 
-.popwin_title {
-    width: 394px;
-    height: 50px;
-    text-align: left;
-    font-size: 14px;
-    color: #333;
-    line-height: 50px;
-    background: #F5F5F5;
-    padding-left: 20px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom: 1px solid #DDDDDD;
-    position: absolute;
-    z-index: 10002;
-    top: 200px;
-    left: 540px;
-}
+        .popwin_title {
+            width: 394px;
+            height: 50px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            line-height: 50px;
+            background: #F5F5F5;
+            padding-left: 20px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border-bottom: 1px solid #DDDDDD;
+            position: absolute;
+            z-index: 10002;
+            top: 200px;
+            left: 540px;
+        }
 
-.popwin_content {
-    width: 374px;
-    height: auto;
-    padding: 20px;
-    text-align: center;
-    background-color: white;
-    position: absolute;
-    z-index: 10002;
-    top: 250px;
-    left: 540px;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-#info{
-    position: fixed;
-    top:10%;
-    left: 7%;
-}
+        .popwin_content {
+            width: 374px;
+            height: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: white;
+            position: absolute;
+            z-index: 10002;
+            top: 250px;
+            left: 540px;
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        #info {
+            position: fixed;
+            top: 10%;
+            left: 7%;
+        }
     </style>
 
 </head>
@@ -91,7 +92,8 @@
                     <img src="../static/Images/no_goods1.jpg"
                          alt="" height="100"></div>
                 <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
-                        style="font-weight: bolder;font-size: 20px">没有数据 快去<a href="/haima/" style="color: red">购买</a></span>
+                        style="font-weight: bolder;font-size: 20px">没有数据 快去<a href="/haima/"
+                                                                              style="color: red">购买</a></span>
                 </div>
             </div>
         {% else %}
@@ -105,12 +107,16 @@
                     <tr>
                         <td width="55%">
                             <ul class="order_goods_list clearfix">
+                                <input type="text" id="user_id_1" value="{{ item.user_id }}">
                                 <li class="col01"><a href="/goods_detail?goods={{ item.goods_id }}"><img
                                         src="{{ item.goods_imgurl }}"></a></li>
                                 <li class="col02"><a href="/goods_detail?goods={{ item.goods_id }}"
                                                      style="color: dodgerblue">{{ item.goods_title }}</a><em
                                         style="color: red">{{ item.goods_price }}</em></li>
                             </ul>
+                        </td>
+                        <td width="15%">
+                            <button onclick="return tuikuan({{ item.order_id }})" id="tuikuang_1">退款</button>
                         </td>
                         {% if item.state != 0 %}
                             <td width="30%"><a href="">运单号：{{ item.order_mark }}</a></td>
@@ -156,7 +162,7 @@
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
 <div id="for_psw">
-     <div id="info">
+    <div id="info">
         <p class="popwin_title">
             您已经收到货
         </p>
@@ -166,10 +172,47 @@
             <span id="goods_id" style="display: none"></span>
         </div>
 
-        </div>
     </div>
+</div>
+<div id="for_psw1">
+    <div id="info">
+        <p class="popwin_title">
+            退款原因：<input type="text" id="reason">
+        </p>
+        <div class="popwin_content">
+            <button id="ok1">确认退款</button>
+            <button id="no1">关闭</button>
+            <span id="goods_id" style="display: none"></span>
+        </div>
+
+    </div>
+</div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 </body>
+<script>
+    function tuikuan(id) {
+        $("#ok1").click(function () {
+            refund_user_id = $("#user_id_1").val()
+            order_id = id;
+            reason = $("#reason").val()
+            $.post("/refund_ajax/", {
+                "refund_user_id": refund_user_id,
+                "order_id": order_id,
+                "reason": reason,
+            }, function (data) {
+                alert(data.msg)
+                if (data.msg === "success") {
+                    $("#tuikuang_1").val("退款中")
+                } else {
+                    alert("退款失败")
+                }
+
+            },"json")
+
+        })
+
+    }
+</script>
 <script>
     function f1(obj) {
         id = obj.value
