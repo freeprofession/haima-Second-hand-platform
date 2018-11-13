@@ -534,8 +534,12 @@ def goods_list(request):
                     if user_address:
                         cur.execute("select * from t_goods where goods_address = %s", [user_address, ])
                         goods_lst = cur.fetchall()
-                        prompt = '以下商品为' + user_address + '地区同城的商品，如需要查询其他地区请在用户中心中修改居住地'
+                        if goods_lst:
+                            prompt = '以下商品为' + user_address + '地区同城的商品，如需要查询其他地区请在用户中心中修改居住地'
+                        else:
+                            prompt = '抱歉没有找到您所在的' + user_address + '的商品'
                     else:
+                        print(user_address)
                         prompt = '亲还没有设置居住地看不到同城商品哟！请在用户中心设置'
                 else:
                     return redirect('/user_center/')
@@ -579,6 +583,12 @@ def goods_list(request):
                         [category, ])
             goods_lst = cur.fetchall()
             prompt = '已选类型：电玩随身听'
+        if category == '5':
+            cur.execute(
+                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
+                [category, ])
+            goods_lst = cur.fetchall()
+            prompt = '已选类型：其他'
         # 价格筛选
         if request.GET.get("price_low") and request.GET.get("price_high"):
             price_low = int(request.GET.get("price_low"))
@@ -607,7 +617,7 @@ def goods_list(request):
             goods_lst.sort(key=lambda x: x['goods_price'], reverse=True)
 
         # 分页
-        paginator = Paginator(goods_lst, 18)
+        paginator = Paginator(goods_lst, 24)
         page = request.GET.get('page')
         try:
             contacts = paginator.page(page)

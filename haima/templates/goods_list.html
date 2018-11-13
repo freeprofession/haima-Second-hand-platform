@@ -285,7 +285,8 @@
         <ul class="goods_type_list clearfix" id="goods_type_ul">
             {% for goods in contacts %}
                 <li>
-                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}?imageView2/0/w/160/h/160"></a>
+                    <a href="/goods_detail/?goods={{ goods.goods_id }}"><img
+                            src="{{ goods.goods_imgurl }}?imageView2/0/w/160/h/160"></a>
                     <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                     <div class="operate">
                         <span class="prize">￥{{ goods.goods_price }}</span>
@@ -307,17 +308,17 @@
         {% if contacts.has_previous %}
             <a href="?q={{ question }}&c={{ category }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">上一页</a>
         {% endif %}
-        {% for pg in contacts.paginator.page_range %}
-            {% if pg == contacts.number %}
-                <span class="active">
+            {% for pg in contacts.paginator.page_range %}
+                {% if pg == contacts.number %}
+                    <span class="active">
                     <a href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
-            {% else %}
-                <span>
+                {% else %}
+                    <span>
                     <a href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
-            {% endif %}
-        {% endfor %}
+                {% endif %}
+            {% endfor %}
         {% if contacts.has_next %}
             <a href="?q={{ question }}&c={{ category }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">下一页</a>
         {% endif %}
