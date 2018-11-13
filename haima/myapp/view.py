@@ -29,13 +29,9 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-<<<<<<< HEAD
 from myapp import AI_assess
-=======
 # from myapp import AI_assess
 from myapp import goods_recommend
->>>>>>> 711ea62dd15f44c2d7124c54164445d2d4f9ccfa
-
 
 class CJsonEncoder(json.JSONEncoder):
     def default(self, obj):
