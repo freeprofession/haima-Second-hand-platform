@@ -3,6 +3,7 @@ function checktitle() {
     if (pub_goods.title.value == "") {
         checktitle.style.display = "block";
         return true
+
     }
     else {
         checktitle.style.display = "none";
@@ -32,7 +33,7 @@ function checkprice() {
 }
 
 function checkform() {
-    if (checktitle()) {
+    if (checktitle())
         return false
     }
     if (checkprice()) {
