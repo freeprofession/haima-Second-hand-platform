@@ -559,10 +559,11 @@ def goods_list(request):
                             value_list.append(value)
                 value_list = sorted(set(value_list), key=value_list.index)
                 for goods_id in value_list:
-                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d" % goods_id
+                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d and goods_state = 0" % goods_id
                     cur.execute(sql)
                     goods = cur.fetchone()
-                    goods_lst.append(goods)
+                    if goods:
+                        goods_lst.append(goods)
                 prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
         if category == '1':
             cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
@@ -1852,7 +1853,6 @@ def my_collection(request):
             except:
                 msg = "success"
                 a_append = ""
-            con.close()
             return HttpResponse(json.dumps({"msg": msg, "html": a_append}))
 
     else:
@@ -2348,11 +2348,11 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        password=request.POST.get('pay_password')
+        password = request.POST.get('pay_password')
         area = shen + ' ' + shi + ' ' + xian
         cur.execute(
             "UPDATE t_user SET `user_imgurl` = '%s',`user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
-                password,img, sex, date, area, user_id))
+                password, img, sex, date, area, user_id))
         con.commit()
         return redirect('/modify_information/')
 
@@ -2373,7 +2373,7 @@ def modify_password(request):
             message_check = "../static/Images/message.png"
         print(message_check, "消息推送")
         login_status = username
-    return render(request, 'modify_password.html',locals())
+    return render(request, 'modify_password.html', locals())
 
 
 @mysql_required
@@ -2560,8 +2560,8 @@ def page2(request):
         phone = request.session.get("user_buy_phone")
         name = request.session.get("name")
         address = request.session.get("address")
-        cur.execute("select order_id from t_order where order_goods_id=%s",[goods_id])
-        x=cur.fetchone()
+        cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
+        x = cur.fetchone()
         params = request.GET.dict()
         sign = params.pop('sign', None)
         status = alipay.verify(params, sign)
