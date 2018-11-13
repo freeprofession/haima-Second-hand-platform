@@ -41,7 +41,7 @@
     </style>
 
 </head>
-<body onload="href()">
+<body>
 {% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
@@ -275,7 +275,7 @@
 
         <ul class="navlist fl">
             <li><a href="/haima/">首页</a></li>
-            <li><a href="/pablish/">发布闲置</a></li>
+            <li><a href="/publish/">发布闲置</a></li>
             <li><a href="/auction_index/">拍卖</a></li>
             <li><a href="/assess/">二手估价</a></li>
             <li><a href="/user_center/">我的海马</a></li>
@@ -364,8 +364,12 @@
         <div class="detail_right" id="user_detail">
             {% for item in seller_info %}
                 <div class="info_detail">
-                    <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
-                    <div><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    {% if item.user_imgurl %}
+                        <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                    {% else %}
+                        <div><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></div>
+                    {% endif %}
+                    <div class="msg_a"><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
                     <br>
                     <div><span title="已实名认证" class="user-verify"></span></div>
                 </div>
@@ -392,11 +396,11 @@
     <div class="main_wrap clearfix" style="margin-top: 500px">
         <div class="wrap fr clearfix">
             <ul class="detail_tab clearfix">
-                <li class="active">宝贝信息</li>
-                <li>留言</li>
+                <li id="desc_check1">宝贝信息</li>
+                <li id="message_check1">留言</li>
                 <li>安全保证</li>
             </ul>
-            <div class="tab_content current">
+            <div class="tab_content" id="desc_check2">
                 <dl>
                     <dd>
                         <p style="text-indent: 2em">
@@ -405,8 +409,7 @@
                     </dd>
                 </dl>
             </div>
-
-            <div class="tab_content">
+            <div class="tab_content" id="message_check2">
                 <p id="leave_message_head">留言：</p>
                 {% for key,value in p_comment_dict.items %}
                     <dl style="margin-bottom: 10px;border: 1px solid #eeeeee">
@@ -461,6 +464,7 @@
                                 </div>
                             </div>
                         </dd>
+                        <a name="href_{{ value.message_id }}"></a>
                         <div style="display: none" class="hidreview_{{ value.message_id }}" id="hidreview">
                             {% for item in value.child_message %}
                                 <dl>
@@ -565,10 +569,6 @@
 <script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
-
-
-</script>
-<script>
     var get_message_id = 0;
     var rip_id = 0
     var button_list = {{ button_list }}
@@ -581,6 +581,21 @@
                 $('#up img').attr('src', $(this).attr('src'));//当前图片地址给#up img
             });
         });
+</script>
+<script>
+    check_22 = '{{ message_second_id}}'
+    $(document).ready(function () {
+        if (check_22 === 'q2') {
+            $("#desc_check1").addClass('active')
+            $("#desc_check2").addClass('current')
+
+        } else {
+            $("#message_check1").addClass('active')
+            $("#message_check2").addClass('current')
+            $(".review_" +{{ message_second_id }}).trigger("click")
+        }
+    })
+
 </script>
 <script>
     $(function () {

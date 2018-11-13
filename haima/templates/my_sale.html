@@ -36,9 +36,14 @@
     <div class="right_content clearfix">
         <h3 class="common_title2" style="color: red">交易中</h3>
         {% if not contacts2 %}
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                 alt="" height="100">
-            你没有交易中的商品
+            <div class="clearfix" style="border-bottom: 1px solid #e6e6e6;margin-bottom: 20px;padding-bottom: 20px">
+                <div class="fl" style="margin-left: 230px">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                         alt="" height="100"></div>
+                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                        style="font-weight: bolder;font-size: 20px">没有交易中的商品</span>
+                </div>
+            </div>
         {% else %}
             {% for item in contacts2 %}
                 <ul class="order_list_th w978 clearfix">
@@ -108,9 +113,15 @@
         {% endif %}
         <h3 class="common_title2" style="color: dodgerblue">发布中</h3>
         {% if not  contacts1 %}
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                 alt="" height="100">
-            这里空空如也，快去 <a href="">发布（发布链接）</a>
+            <div class="clearfix">
+                <div class="fl" style="margin-left: 230px">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                         alt="" height="100"></div>
+                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                        style="font-weight: bolder;font-size: 20px">这里空空如也，快去
+                <a href="/publish/">发布</a></span>
+                </div>
+            </div>
         {% else %}
             {% for item in contacts1 %}
                 <ul class="order_list_th w978 clearfix" id="goods_{{ item.goods_id }}">

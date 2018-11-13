@@ -36,16 +36,24 @@
                 <div>
 
                     <ul class="user_info_list">
-                        <li><span>用户名：</span>{{ user.user_name }}</li>
+                        {% if user.user_sex == 0 %}
+                            <li><span>用户名：</span>{{ user.user_name }} <em style="color: blue">(♂)</em></li>
+                        {% else %}
+                            <li><span>用户名：</span>{{ user.user_name }} <em style="color: deeppink">(♀)</em></li>
+                        {% endif %}
                         <li><span>手机号：</span>{{ user.user_phone }}</li>
                         <li><span>余额：</span>{{ user.user_money }}</li>
                     </ul>
                 </div>
                 <div>
                     <ul class="user_info_list">
-                        <li><span>用户信用：</span>1星</li>
+                        <li><span>用户信用：</span>{{ user.user_credit }}</li>
                         <li><span>地区：</span>{{ user.user_address }}</li>
-                        <li><span>身份认证：</span>未认证</li>
+                        {% if user.user_birthday %}
+                            <li><span>出生日期：</span>{{ user.user_birthday }}</li>
+                        {% else %}
+                            <li><span>出生日期：</span>未设置</li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div>
