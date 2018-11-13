@@ -29,11 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-<<<<<<< HEAD
 from myapp import AI_assess
-=======
-# from myapp import AI_assess
->>>>>>> 089b6140d99308d47e8445e919f5fa3bd3c8e67e
 from myapp import goods_recommend
 
 
@@ -553,10 +549,8 @@ def goods_list(request):
                 question_word = list(question_word)
                 if len(question_word) != 1:
                     question_word.insert(0, question)
-                count = 0
                 for key in question_word:
                     if cut_words.smembers(key):
-                        count += 1
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
@@ -812,6 +806,8 @@ def user_credit(request):
 # ******************************************************商品界面设置,返回商品详情***************************************
 @mysql_required
 def goods_detail(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     goods_id = request.GET.get('goods')
@@ -944,6 +940,7 @@ def goods_detail(request):
         login_status = '未登录'
         user_imgurl = '../static/Images/default_hp.jpg'
     href = 1
+    cur.close()
     return render(request, "detail.html", locals())
 
 

@@ -106,18 +106,22 @@ def goods_recommend(requset):
 
     # 声明一个ItemBased推荐的对象
     goods_list = []
-    if user_id == 'visitor':
+    if not user_id:
         res = list(keys_dict)[0:5]
     else:
-        Item = ItemBasedCF(uid_score_bid)
-        Item.ItemSimilarity()
-        recommedDic = Item.Recommend(user_id)  # 计算给用户A的推荐列表
-        res = list(recommedDic.items())[0:5]
-    if len(res) < 5:
-        for i in range(5 - len(res)):
-            res.append((keys_dict[i][0], 1))
-    if r9.llen(user_id) != 0:
-        r9.delete(user_id)
+        if user_id == 'visitor':
+            res = list(keys_dict)[0:5]
+        else:
+
+            Item = ItemBasedCF(uid_score_bid)
+            Item.ItemSimilarity()
+            recommedDic = Item.Recommend(user_id)  # 计算给用户A的推荐列表
+            res = list(recommedDic.items())[0:5]
+        if len(res) < 5:
+            for i in range(5 - len(res)):
+                res.append((keys_dict[i][0], 1))
+        if r9.llen(user_id) != 0:
+            r9.delete(user_id)
     for k, v in res:
         r9.rpush(user_id, k)
         cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s", [k, ])
@@ -130,7 +134,7 @@ def goods_recommend(requset):
         else:
             rr = """<ul>
                                     <li>
-                                        <a href="/goods_detail/?goods={0}"><img src="{1}"class="goods_pic"></a>
+                                        <a href="/goods_detail/?goods={0}"><img src="{1}?imageView2/0/w/110/h/110"class="goods_pic"></a>
                                         <h4><a href="/goods_detail/?goods={2}"title="{3}">{4}</a></h4>
                                         <div class="prize">¥ {5}</div>
                                     </li>

@@ -33,7 +33,7 @@ function checkprice() {
 }
 
 function checkform() {
-    if (checktitle())
+    if (checktitle()){
         return false
     }
     if (checkprice()) {
