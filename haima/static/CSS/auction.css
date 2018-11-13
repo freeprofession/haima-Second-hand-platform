@@ -3002,3 +3002,7 @@ html, body {
 [v-cloak] {
     display: none
 }
+.navlist  li {
+    padding-left: 50px;
+
+}

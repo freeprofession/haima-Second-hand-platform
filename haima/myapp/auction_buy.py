@@ -1,10 +1,12 @@
 import pymysql
 import time
+import redis
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
+message_push = redis.Redis(host="47.100.200.132", port=6379, db=11,password='haima1234')
 from myapp import view
 def login_required(function):
 
@@ -24,9 +26,20 @@ def login_required(function):
 def my_auction_buy_one(request):
     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
     cur = con.cursor(pymysql.cursors.DictCursor)
+    user_id = request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
     username = request.session.get("username")
     login_status = username
-    user_id = request.session.get("user_id")
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
@@ -68,6 +81,7 @@ def my_auction_buy_one(request):
             dict1["record"] = record_message
             dict1["attribute"] = attribute
             list1.append(dict1)
+    list1.reverse()
     paginator = Paginator(list1, 2)
     page = request.GET.get('page')
     try:
@@ -83,9 +97,20 @@ def my_auction_buy_one(request):
 def my_auction_buy_two(request):
     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
     cur = con.cursor(pymysql.cursors.DictCursor)
+    user_id = request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
     username = request.session.get("username")
     login_status = username
-    user_id = request.session.get("user_id")
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
                 [user_id])
@@ -128,6 +153,7 @@ def my_auction_buy_two(request):
             dict1["record"] = record_message
             dict1["attribute"] = attribute
             list2.append(dict1)
+    list2.reverse()
     paginator = Paginator(list2, 2)
     page = request.GET.get('page')
     try:
@@ -146,6 +172,19 @@ def my_auction_buy_three(request):
     username = request.session.get("username")
     login_status = username
     user_id = request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
     list3=[]
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -197,6 +236,7 @@ def my_auction_buy_three(request):
                     dict1["order"] = order_messge
                     dict1["record"]=record_message
                     list3.append(dict1)
+    list3.reverse()
     paginator = Paginator(list3, 2)
     page = request.GET.get('page')
     try:
@@ -215,6 +255,19 @@ def my_auction_buy_four(request):
     username = request.session.get("username")
     login_status = username
     user_id = request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
     # 找到用户的订单
     list2=[]
     cur.execute("select *  from t_auction_order where auction_order_buy_user_id=%s", [user_id])
@@ -243,6 +296,7 @@ def my_auction_buy_four(request):
             dict1["order"]=order_message
             dict1["attribute"] = attribute
             list2.append(dict1)
+    list2.reverse()
     print(list2)
     paginator = Paginator(list2, 2)
     page = request.GET.get('page')
@@ -264,6 +318,19 @@ def my_auction_buy_five(request):
     username = request.session.get("username")
     login_status = username
     user_id = request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
     list5=[]
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -310,6 +377,7 @@ def my_auction_buy_five(request):
                 dict1["order"] = order_messge
 
                 list5.append(dict1)
+    list5.reverse()
     paginator = Paginator(list5, 2)
     page = request.GET.get('page')
     try:
@@ -328,6 +396,20 @@ def my_auction_buy_six(request):
     username = request.session.get("username")
     login_status = username
     user_id = request.session.get("user_id")
+    message_check1 = message_push.lrange(user_id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(user_id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
+
     list6=[]
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -361,6 +443,7 @@ def my_auction_buy_six(request):
                 dict1["goods"] = goods_message
                 dict1["order"] = order_messge
                 list6.append(dict1)
+    list6.reverse()
     print(list6)
     paginator = Paginator(list6, 2)
     page = request.GET.get('page')

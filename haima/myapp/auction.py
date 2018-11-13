@@ -96,6 +96,17 @@ def confirm_auction_goods(request):
 # 用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
     id = request.session.get('user_id')
+    message_check1 = message_push.lrange(id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
     username = request.session.get("username")
     login_status = username
     dict1 = {}
@@ -108,10 +119,10 @@ def buy_auction(request):
         print("123")
         goods_id = request.GET.get("id")
         print(goods_id)
-        for item in auction_img.lrange(goods_id, 0, 4):
+        for item in auction_img.lrange(goods_id, 0, -1):
             item = item.decode("utf-8")
             img_list.append(item)
-        print(img_list)
+        img_list.reverse()
         cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
         goods_messge = cur.fetchone()
         goods_user_id = goods_messge["auction_goods_user_id"]
@@ -144,9 +155,10 @@ def auction_index(request):
     list1 = []
     data_list=[]
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
-        [id])
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,5',
+        [id, ])
     collection_list = cur.fetchall()
+    print(collection_list)
     if id:
         goods_list = []
         cur.execute("select auction_goods_id from t_auction_goods")
@@ -170,6 +182,7 @@ def auction_index(request):
             dict1["goods"] = goods_messge
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
+        list1.reverse()
         time_length=len(data_list)
         paginator = Paginator(list1, 5)
         page = request.GET.get('page')
@@ -675,8 +688,21 @@ def test_auction_pay_time(request):
 
 #这里是拍卖首页分类的：
 def cate_auction_index(request):
-    cate_id=request.GET.get("id")
     id = request.session.get('user_id')
+    message_check1 = message_push.lrange(id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
+    cate_id=request.GET.get("id")
     list1 = []
     data_list = []
     cur.execute(

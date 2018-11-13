@@ -62,6 +62,7 @@ def my_auction_sale_one(request):
                     else:
                         dict1["user_name"] = "无"
             list10.append(dict1)
+    list10.reverse()
     paginator = Paginator(list10, 2)
     page = request.GET.get('page')
     try:
@@ -108,7 +109,7 @@ def my_auction_sale_two(request):
             dict1["user_name"] = "无"
             list11.append(dict1)
             # 分页
-
+    list11.reverse()
     paginator = Paginator(list11, 2)
     page = request.GET.get('page')
     try:
@@ -161,6 +162,7 @@ def my_auction_sale_three(request):
             dict1["user_name"] = user_name
 
             list12.append(dict1)
+    list12.reverse()
     paginator = Paginator(list12, 2)
     page = request.GET.get('page')
     try:
@@ -223,6 +225,7 @@ def my_auction_sale_four(request):
                 # list14.append(dict1)
             else:
                 list13.append(dict1)
+    list13.reverse()
     paginator = Paginator(list13, 2)
     page = request.GET.get('page')
     try:
@@ -283,7 +286,7 @@ def my_auction_sale_five(request):
 
                 dict1["the_goods_state"] = the_goods_state
                 list14.append(dict1)
-
+    list14.reverse()
     paginator = Paginator(list14, 2)
     page = request.GET.get('page')
     try:
@@ -340,6 +343,7 @@ def my_auction_sale_six(request):
             dict1["state"] = "商品已经收货"
 
             list15.append(dict1)
+    list15.reverse()
     paginator = Paginator(list15, 2)
     page = request.GET.get('page')
     try:
@@ -394,6 +398,7 @@ def my_auction_sale_seven(request):
             dict1["user_name"] = user_name
 
             list16.append(dict1)
+    list16.reverse()
     paginator = Paginator(list16, 2)
     page = request.GET.get('page')
     try:
