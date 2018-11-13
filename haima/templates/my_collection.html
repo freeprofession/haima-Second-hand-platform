@@ -181,9 +181,9 @@
                 'goods_id': goods_id,
             }, function (data) {
                 if (data.msg === "success") {
-                    $("#for_psw").fadeOut(500);
+                    $(".for_psw").fadeOut(500);
                     $("#goods_" + id).remove()
-                    $("#append_1").append(data.html)
+                    $(".append_1").append(data.html)
                 } else if (data.msg === "flash") {
                     top.location.href = data.href
                 }
