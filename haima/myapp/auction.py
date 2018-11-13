@@ -102,7 +102,20 @@ def confirm_auction_goods(request):
 # ******************************************购买拍卖页面**********************************************
 # 用户点击相应的商品图片或者竞拍按钮进入到商品的购买详情页
 def buy_auction(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     id = request.session.get('user_id')
+    message_check1 = message_push.lrange(id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
     username = request.session.get("username")
     login_status = username
     dict1 = {}
@@ -115,10 +128,10 @@ def buy_auction(request):
         print("123")
         goods_id = request.GET.get("id")
         print(goods_id)
-        for item in auction_img.lrange(goods_id, 0, 4):
+        for item in auction_img.lrange(goods_id, 0, -1):
             item = item.decode("utf-8")
             img_list.append(item)
-        print(img_list)
+        img_list.reverse()
         cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
         goods_messge = cur.fetchone()
         goods_user_id = goods_messge["auction_goods_user_id"]
@@ -130,6 +143,7 @@ def buy_auction(request):
         print('图片的地址', img_list)
         print("12364456555")
         list1.append(dict1)
+        cur.close()
         return render(request, 'buy_auction.html', locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -137,6 +151,8 @@ def buy_auction(request):
 
 # 拍卖首页
 def auction_index(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     id = request.session.get('user_id')
     message_check1 = message_push.lrange(id, 0, 1)
     message_list_push = []
@@ -153,9 +169,10 @@ def auction_index(request):
     list1 = []
     data_list = []
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
-        [id])
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,5',
+        [id, ])
     collection_list = cur.fetchall()
+    print(collection_list)
     if id:
         goods_list = []
         cur.execute("select auction_goods_id from t_auction_goods")
@@ -179,7 +196,8 @@ def auction_index(request):
             dict1["goods"] = goods_messge
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
-        time_length = len(data_list)
+        list1.reverse()
+        time_length=len(data_list)
         paginator = Paginator(list1, 5)
         page = request.GET.get('page')
         try:
@@ -190,6 +208,7 @@ def auction_index(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             contacts = paginator.page(paginator.num_pages)
+        cur.close()
         return render(request, "auction_index.html", locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -237,6 +256,8 @@ def my_auction(request):
 
 
 def release_auction(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get("username")
     login_status = username
     id = request.session.get('user_id')
@@ -254,6 +275,7 @@ def release_auction(request):
     if id:
         cur.execute('select user_name from t_user where user_id=%s', [id])
         username = cur.fetchone()
+        cur.close()
         return render(request, 'release_auction.html', locals())
     else:
         return HttpResponseRedirect('/login/')
@@ -280,7 +302,7 @@ def publish_auction(request):
         print(category)
         postage = request.POST.get("postage")
         imgurl_list = json.loads(request.POST.get("img_address"))
-        imgurl = "http://pgwecu7z4.bkt.clouddn.com/" + imgurl_list[0]
+        imgurl = "http://files.g1.xmgc360.com/" + imgurl_list[0]
         list1 = []
         date_now = datetime.datetime.now().strftime('%Y-%m-%d')
         if title and desc and floorpremium and floorprice and end_date and start_date and category and postage:
@@ -298,7 +320,7 @@ def publish_auction(request):
                 goods_id = cur.lastrowid
                 # 把其余的图片传到redis
                 for i in imgurl_list:
-                    i = "http://pgwecu7z4.bkt.clouddn.com/" + i
+                    i = "http://files.g1.xmgc360.com/" + i
 
                     auction_img.lpush(goods_id, i)
                 try:
@@ -314,6 +336,7 @@ def publish_auction(request):
                                 [start_date, end_date, floorprice, floorpremium, floorprice, str(goods_id)])
                     cur.execute("update t_user set user_money=%s where user_id=%s", [user_money, user_id])
                     con.commit()
+                    print("ok")
                 except Exception as e:
                     con.rollback()
                     print(e)
@@ -703,6 +726,20 @@ def test_auction_pay_time(request):
 def cate_auction_index(request):
     cate_id = request.GET.get("id")
     id = request.session.get('user_id')
+    message_check1 = message_push.lrange(id, 0, 1)
+    message_list_push = []
+    message_list_push1 = message_push.lrange(id, 0, 3)
+    for item in message_list_push1:
+        message_list_push.append(item.decode("utf-8"))
+    print(message_list_push)
+    if message_check1:
+        message_check = "../static/Images/new02.gif"
+    else:
+        message_check = "../static/Images/message.png"
+    print(message_check, "消息推送")
+    username = request.session.get("username")
+    login_status = username
+    cate_id=request.GET.get("id")
     list1 = []
     data_list = []
     cur.execute(

@@ -441,12 +441,11 @@ html,body
     width: 300px;
     height: 200px;
     position: fixed;
+    background-color: #f3f3f3;
     top: 30%;
     left: 35%;
-    background-color: #2e3846;
     border: #ffda44 solid 7px;
     border-radius: 15px;
-
 
 
 }

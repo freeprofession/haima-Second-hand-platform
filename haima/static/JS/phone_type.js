@@ -169,10 +169,11 @@ $(function () {
     $("#assess_button").click(function () {
         brand = $("#cmbBrand").val();
         if (brand == '请选择手机品牌') {
-            $(".error_mes1").show();
-            return false
+            $(".error_mes").show();
         }
         else {
+            $(".error_mes1").hide();
+            $("#price_res").show();
             model = $("#cmbModel").val();
             configuration = $("#cmbConfiguration").val();
             color = $("#phone_color").val();
@@ -202,9 +203,11 @@ $("#close_fix").click(function () {
 });
 
 $("#assess_button").click(function () {
-    $("#price_res").show();
+    $("#assess_price").text('正在估价请稍等...')
 });
 
-$("#assess_button").click(function () {
-    $("#assess_price").text('正在估价请稍等...')
+$("#cmbBrand").change(function () {
+    if ($(this).val() != '请选择手机品牌') {
+        $(".error_mes").hide();
+    }
 });

@@ -112,7 +112,7 @@ def goods_recommend(requset):
         Item = ItemBasedCF(uid_score_bid)
         Item.ItemSimilarity()
         recommedDic = Item.Recommend(user_id)  # 计算给用户A的推荐列表
-        res = list(recommedDic.items())
+        res = list(recommedDic.items())[0:5]
     if len(res) < 5:
         for i in range(5 - len(res)):
             res.append((keys_dict[i][0], 1))

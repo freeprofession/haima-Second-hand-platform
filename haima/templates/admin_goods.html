@@ -60,7 +60,7 @@
                     <th class="table-check"><input type="checkbox" name="checkall"/></th>
                     {#                    <th class="table-id">排序</th>#}
                     <th class="table-id">ID</th>
-                    <th class="table-title">标题</th>
+                    <th class="table-title" style="width: 320px;">标题</th>
                     <th class="table-user">发布用户</th>
                     <th class="table-type">类别</th>
                     <th class="table-author am-hide-sm-only">上架/下架/出售 <i class="am-icon-check am-text-warning"></i> <i
@@ -259,6 +259,7 @@
                 }
             })
         }
+
         function del(obj) {
             goods_id = $(obj).val();
             $.ajax({
@@ -290,7 +291,7 @@
             } else {
                 goods_state = 'am-icon-circle-o am-text-success'
             }
-            var text = '<tr class="goods" id="tr'+goods_id+'">\n' + '<td><input type="checkbox" name="checkbox" value="' + goods_id + '"/></td>\n' +
+            var text = '<tr class="goods" id="tr' + goods_id + '">\n' + '<td><input type="checkbox" name="checkbox" value="' + goods_id + '"/></td>\n' +
                 '<td>' + goods_id + '</td>\n' + '<td>' + goods_title + '</td>\n' +
                 '                        <td>' + user_name + '</td>\n' +
                 '                        <td>' + goods_category_id + '</td>\n' +
@@ -364,4 +365,5 @@
             getgoods()
         })
     </script>
+
 {% endblock %}

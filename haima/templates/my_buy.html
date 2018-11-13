@@ -7,6 +7,55 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="../static/CSS/my_buy.css">
+    <style>
+        #for_psw {
+    height: 1400px;
+    width: 1520px;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, .7);
+    display: none;
+}
+
+.popwin_title {
+    width: 394px;
+    height: 50px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    line-height: 50px;
+    background: #F5F5F5;
+    padding-left: 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #DDDDDD;
+    position: absolute;
+    z-index: 10002;
+    top: 200px;
+    left: 540px;
+}
+
+.popwin_content {
+    width: 374px;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    position: absolute;
+    z-index: 10002;
+    top: 250px;
+    left: 540px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+#info{
+    position: fixed;
+    top:10%;
+    left: 7%;
+}
+    </style>
+
 </head>
 <body>
 {% include 'home_head.html' %}
@@ -37,7 +86,14 @@
     </div>
     <div class="right_content clearfix">
         {% if not order_list %}
-            <p>暂时无数据 <a href="/haima/"> 快去购买</a></p>
+            <div class="clearfix" style="border-bottom: 1px solid #e6e6e6;margin-bottom: 20px;padding-bottom: 20px">
+                <div class="fl" style="margin-left: 230px">
+                    <img src="../static/Images/no_goods1.jpg"
+                         alt="" height="100"></div>
+                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                        style="font-weight: bolder;font-size: 20px">没有数据 快去<a href="/haima/" style="color: red">购买</a></span>
+                </div>
+            </div>
         {% else %}
             {% for item in order_list %}
                 <ul class="order_list_th w978 clearfix">
@@ -99,22 +155,26 @@
     <p>CopyRight © 2018 苏州海马商业股份有限公司 All Rights Reserved</p>
     <p>电话：0512-****888 苏ICP备*******8号</p>
 </div>
-<div id="info_message">
-    <span id="info">您已经收到货</span>
-    <span id="goods_id" style="display: none">0</span>
-    <br>
-    <div id="button">
-        <button id="ok">确认</button>
-        <button id="no">返回</button>
+<div id="for_psw">
+     <div id="info">
+        <p class="popwin_title">
+            您已经收到货
+        </p>
+        <div class="popwin_content">
+            <button id="ok">确认收货</button>
+            <button id="no">关闭</button>
+            <span id="goods_id" style="display: none"></span>
+        </div>
+
+        </div>
     </div>
-</div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 </body>
 <script>
     function f1(obj) {
         id = obj.value
         document.getElementById("goods_id").innerText = id;
-        $("#info_message").show()
+        $("#for_psw").show()
     }
 
     $("#ok").click(function () {
@@ -125,7 +185,7 @@
             }
             , function (data) {
 
-                 window.location.reload();
+                window.location.reload();
             }
             , 'json'
         )

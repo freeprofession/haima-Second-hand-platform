@@ -370,10 +370,12 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <div class="detail_right" id="user_detail">
             {% for item in seller_info %}
                 <div class="info_detail">
-                    <div><a href="/user_credit/?user_credit_id={{ item.user_id }}" style="font-size: 16px;"><img
-                            src="{{ item.user_imgurl }}" alt="" height="45" width="45"></a></div>
-                    <div><a href="/user_credit/?user_credit_id={{ item.user_id }}"
-                            style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    {% if item.user_imgurl %}
+                        <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                    {% else %}
+                        <div><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></div>
+                    {% endif %}
+                    <div class="msg_a"><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
                     <br>
                 </div>
                 <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
@@ -533,9 +535,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
 
             <div class="tab_content">
                 <dl>
-                    <dt>安全保证：</dt>
-                    <dd>它纤薄如刃，轻盈如羽，却又比以往速度更快、性能更强大。它为你展现的，是迄今最明亮、最多彩的 Mac
-                        笔记本显示屏。它更配备了触控栏，一个内置于键盘的玻璃面多点触控条，让你能在需要时快速取用各种工具。MacBook Pro 是对我们突破性理念的一场出色演绎，而它，也正期待着演绎你的奇思妙想。
+                    <dd style="margin-left: 20px">如遇到以下情况可能是诈骗行为：1.宝贝价格异常低；2.卖家要求QQ沟通；3.卖家要求直接汇款。
                     </dd>
                 </dl>
             </div>

@@ -1347,16 +1347,24 @@ label:hover {
 .pagenation span {
     display: inline-block;
     border: 1px solid #d2d2d2;
-    background-color: #f8f6f7;
+    background-color: #fffdfe;
     font-size: 12px;
     padding: 7px 10px;
     color: #666;
-    margin: 5px
+    margin: 5px;
+    border-radius: 2px;
 }
 
 .pagenation .active {
-    background-color: #fff;
-    color: #43a200
+    background-color: #e22c37;
+}
+
+.pagenation .active a {
+    color: white;
+}
+
+.pagenation a {
+    color: black;
 }
 
 /* 商品详情样式 */
@@ -1393,7 +1401,6 @@ label:hover {
 
 .info_detail div {
     float: left;
-    margin-right: 20px;
     margin-left: 20px;
 }
 
@@ -1401,6 +1408,13 @@ label:hover {
     margin-top: 6px;
     height: 50px;
     border-bottom: 1px solid #ededed;
+}
+
+.msg_a {
+    width: 110px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .user-verify {
@@ -1424,6 +1438,10 @@ label:hover {
     background-image: linear-gradient(to bottom, #f50, #ed4f00);
     background: -moz-linear-gradient(top, #f50, #ed4f00);
     background: -webkit-linear-gradient(top, #f50, #ed4f00);
+}
+
+.opsale:hover {
+    cursor: pointer;
 }
 
 #detail_user h3 {
@@ -1882,8 +1900,8 @@ label:hover {
     height: 329px;
     background: url(../images/register_banner.png) no-repeat;
     float: right;
-    margin: 20px 10px 0 0;
-    opacity: 0.5
+    margin: 50px 10px 0 0;
+    opacity: 1
 }
 
 .r_con {
@@ -3949,7 +3967,8 @@ label:hover {
 .error_mes {
     display: none;
     color: red;
-    font-size: 13px;
+    margin-left: 20px;
+    font-size: 15px;
 }
 
 #mod_psw_prcs ul li {
@@ -4054,4 +4073,27 @@ label:hover {
     position: relative;
     left: 488px;
     top: -22px;
+}
+
+#top_up {
+    font-size: 15px;
+    border: 1px solid #ffde1f;
+    border-radius: 10%;
+    background: -webkit-linear-gradient(45deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+-moz-linear-gradient(45 deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+-ms-linear-gradient(45 deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+    color: transparent;
+    /*设置字体颜色透明*/
+    -webkit-background-clip: text;
+    /*背景裁剪为文本形式*/
+    animation: ran 10s linear infinite;
+    /*动态10s展示*/
+}
+@keyframes ran {
+    from {
+        backgroud-position: 0 0;
+    }
+    to {
+        background-position: 400px 0;
+    }
 }

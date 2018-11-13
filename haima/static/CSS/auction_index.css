@@ -341,10 +341,8 @@ html, body {
     box-sizing: border-box;
     cursor: pointer;
 }
-<<<<<<< HEAD
-.navlist  li{
-    padding-left: 50px;
-=======
+
+
 
 .new_msg {
     width: 200px;
@@ -388,5 +386,5 @@ html, body {
     height: 5px;
     width: 30px;
     background-color: rgba(0, 0, 0, 0);
->>>>>>> e025146753c20c7e01223463144f6e7477fc1854
+
 }

@@ -93,9 +93,8 @@
                     {% endfor %}
                 {% endif %}
             </ul>
-        </div>
-        <input type="text" hidden value="{{ page }}" id="page_">
-        <div class="pagenation">
+            <input type="text" hidden value="{{ page }}" id="page_">
+            <div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
             <a href="?page={{ contacts.previous_page_number }}">上一页</a>
@@ -115,7 +114,9 @@
             <a href="?page={{ contacts.next_page_number }}">下一页</a>
         {% endif %}
     </span>
+            </div>
         </div>
+
 
         <h3 class="common_title2">宝贝推荐</h3>
         <div class="has_view_list">

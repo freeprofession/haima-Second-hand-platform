@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/reset.css">
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
     <link rel="stylesheet" href="../static/CSS/user_center.css">
+
 </head>
 <body>
 {% include 'home_head.html' %}
@@ -60,7 +61,7 @@
                         <li><span>累计出售：</span>{{ sell_count }}</li>
                         <li><span>累计购买：</span>{{ buy_count }}</li>
                         <li>
-                            <button id="top_up">充值</button>
+                            <button id="top_up">充&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;值</button>
                         </li>
                     </ul>
                 </div>
@@ -107,12 +108,11 @@
     </div>
 </div>
 <div id="top_up_money">
-    <div style="float: right">
+    <div style="float: right" class="clearfix">
         <button id="shutdown">关闭</button>
     </div>
     {#    <form action="/top_up_money/"method="post">#}
     <table id="money_table">
-
         <tr>
             <td><input type="radio" name="money" value="50" checked>50元</td>
             <td><input type="radio" name="money" value="100">100元</td>
@@ -132,7 +132,7 @@
         </tr>
         <tr>
             <td style="text-align: center;padding-top: 40px;" colspan="3">
-                <input type="button" value="确定充值" id="cz" style="width: 80px;height: 25px;">
+                <input type="button"  value="确定充值" id="cz" style="width: 80px;height: 25px;">
             </td>
         </tr>
     </table>
@@ -140,7 +140,7 @@
 
 </div>
 
-<div class="footer" style="margin-top: 920px;">
+<div class="footer" style="margin-top: 50px;">
     <div class="foot_link">
         <a href="#">关于我们</a>
         <span>|</span>
@@ -186,5 +186,6 @@
         $("#top_up_money").hide()
     })
 </script>
+
 </body>
 </html>

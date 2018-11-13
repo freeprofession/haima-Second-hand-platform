@@ -17,10 +17,11 @@
 <div id="user_info">
     {% for item in user_info %}
         <div id="user_info2" class="clearfix">
-            <div>
-            <span><img src="{{ item.user_imgurl }}" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7"
-                       width="80" height="80"></span>
-            </div>
+            {% if item.user_imgurl %}
+                <div><span><img src="{{ item.user_imgurl }}" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7" width="80" height="80"></span></div>
+             {% else %}
+                 <div><span><img src="../static/Images/default_hp.jpg" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7" width="80" height="80"></span></div>
+            {% endif %}
             <div id="user_info3">
                 {% if item.user_sex == 0 %}
                     <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别： <img

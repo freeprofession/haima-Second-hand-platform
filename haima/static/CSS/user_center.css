@@ -1,22 +1,61 @@
-#top_up_money{
+#top_up_money {
     width: 400px;
     height: 300px;
-    background-color: black;
+    font-family: "黑体";
+    color: #8c888b;
+    background: white;
+    border: 3px solid #e6e6e6;
+    /*background: -webkit-linear-gradient(45deg, #70f7fe, #fbd7c6, #bfb5dd, #bed5f5);*/
+/*-moz-linear-gradient(45 deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);*/
+/*-ms-linear-gradient(45 deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);*/
     position: fixed;
     top: 30%;
     left: 40%;
-    color: white;
     display: none;
-
+    border-radius: 5px;
 }
-td{
+
+td {
     padding-top: 30px;
     width: 100px;
     height: 20px;
     font-size: 16px;
 }
-#money_table{
-    margin-left: 30px;
+
+#money_table {
+    margin-left: 50px;
 }
 
+#shutdown {
+    border: 0;
+    color: #ff6f2d;
+    background-color: rgba(0, 0, 0, 0);
+}
 
+#cz:hover {
+    cursor: pointer;
+}
+
+#cz {
+    border: 1px solid #ff92e4;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px gray;
+    background: -webkit-linear-gradient(45deg, #fe3c29, #b3adfb, #fdefac);
+-moz-linear-gradient(45 deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+-ms-linear-gradient(45 deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+    color: transparent;
+    /*设置字体颜色透明*/
+    -webkit-background-clip: text;
+    /*背景裁剪为文本形式*/
+    animation: ran 10s linear infinite;
+    /*动态10s展示*/
+}
+
+@keyframes ran {
+    from {
+        backgroud-position: 0 0;
+    }
+    to {
+        background-position: 400px 0;
+    }
+}
