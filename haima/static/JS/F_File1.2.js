@@ -164,7 +164,7 @@ FFile.prototype = {
         // console.log(dex);
         // console.log(fileArray)
         // console.log(postArray)
-        form.submit();
+        // form.submit();
 
         // $.ajax({
         //     type: "POST",
@@ -232,12 +232,11 @@ FFile.prototype = {
                         if (dex.length == 0) {
                             alert('请添加商品图片')
                             return
+                        } else {
+                            self.funUploadFile(e);
                         }
-
                     }
                 }
-                self.funUploadFile(e);
-
             })
         }
     }
