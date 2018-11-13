@@ -86,7 +86,7 @@
                             {#                        {% if user_id != item.user_id %}#}
                             {#                            <span class="line2" style="color: #5e5e5e"><u>{{ item.second_desc }}</u>&nbsp;<span style="color: red">@自己</span></span><br>#}
                             {#                        {% else %}#}
-                            <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}#abc"
+                            <span class="line2"><a href="/goods_detail/?goods={{ item.goods_id }}&message_second_id={{ item.parent_message_id }}#href_{{ item.parent_message_id }}"
                                                    style="color: red">{{ item.second_desc }}</a></span><br>
                             {#                        {% endif %}#}
                             <span>{{ item.second_date }}</span>

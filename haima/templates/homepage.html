@@ -85,7 +85,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1"><a
-                    href="/goods_list/?q=手机&price_low=&price_high=" class="main_type">手机</a><a
+                    href="/goods_list/?c=1&price_low=&price_high=" class="main_type">手机</a><a
                     href="/goods_list/?q=手机壳&price_low=&price_high=" class="child_type">手机壳</a><a
                     href="/goods_list/?q=充电器&price_low=&price_high=" class="child_type">充电器</a><a
                     href="/goods_list/?q=耳机&price_low=&price_high=" class="child_type">耳机</a><a
@@ -127,7 +127,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/computer.png" alt="" height="30" width="15" class="pic1"><a
-                    href="/goods_list/?q=电脑&price_low=&price_high=" class="main_type">电脑</a><a
+                    href="/goods_list/?c=2&price_low=&price_high=" class="main_type">电脑</a><a
                     href="/goods_list/?q=笔记本&price_low=&price_high=" class="child_type">笔记本</a><a
                     href="/goods_list/?q=台式机&price_low=&price_high=" class="child_type">台式机</a><a
                     href="/goods_list/?q=平板电脑&price_low=&price_high=" class="child_type">平板电脑</a>
@@ -161,7 +161,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/camera.png" alt="" height="30" width="15" class="pic1">
-                <a href="/goods_list/?q=摄影&price_low=&price_high=" class="main_type">摄影</a><a
+                <a href="/goods_list/?c=3&price_low=&price_high=" class="main_type">摄影</a><a
                     href="/goods_list/?q=相机&price_low=&price_high=" class="child_type">相机</a><a
                     href="/goods_list/?q=单反&price_low=&price_high=" class="child_type">单反</a><a
                     href="/goods_list/?q=摄像机&price_low=&price_high=" class="child_type">摄像机</a><a
@@ -207,7 +207,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <li class="newli">
             <div class="level1">
                 <img src="../static/Images/game.png" alt="" height="30" width="15" class="pic1"><a
-                    href="/goods_list/?q=电玩随身听&price_low=&price_high=" class="main_type">电玩随声听</a><a
+                    href="/goods_list/?c=4&price_low=&price_high=" class="main_type">电玩随声听</a><a
                     href="/goods_list/?q=MP3&price_low=&price_high=" class="child_type">MP3</a><a
                     href="/goods_list/?q=PSP&price_low=&price_high=" class="child_type">PSP</a><a
                     href="/goods_list/?q=iPod&price_low=&price_high=" class="child_type">iPod</a>
@@ -246,8 +246,8 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         </li>
         <li class="newli" style="border-bottom: 0px">
             <div class="level1">
-                <img src="../static/Images/pad.png" alt="" height="30" width="15" class="pic1"><a href="#"
-                                                                                                  class="main_type">其他</a><a
+                <img src="../static/Images/pad.png" alt="" height="30" width="15" class="pic1"><a
+                    href="/goods_list/?c=5&price_low=&price_high=" class="main_type">其他</a><a
                     href="/goods_list/?q=充电宝&price_low=&price_high=" class="child_type">充电宝</a><a
                     href="/goods_list/?q=支架&price_low=&price_high=" class="child_type">支架</a><a href="车载充电器"
                                                                                                 class="child_type">车载充电器</a>
@@ -366,9 +366,36 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <div style="padding-top: 80px;padding-left: 250px">
-                            <span style="font-size: 25px;font-weight: bold">您尚未登录，无法查看同城商品哟！</span>
-                        </div>
+                        {% if same_city_msg == 1 %}
+                            <div class="clearfix" style="margin-top: 40px">
+                                <div class="fl" style="margin-left: 120px;">
+                                    <img src="../static/Images/no_goods1.jpg"
+                                         alt="" height="100"></div>
+                                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                                        style="font-weight: bolder;font-size: 20px">抱歉 没有找到您所在地区的商品,立即<a
+                                        href="/publish/" style="color: red">发布</a>成为第一人吧</span>
+                                </div>
+                            </div>
+                        {% elif same_city_msg == 2 %}
+                            <div class="clearfix" style="margin-top: 40px">
+                                <div class="fl" style="margin-left: 150px;">
+                                    <img src="../static/Images/no_goods1.jpg"
+                                         alt="" height="100"></div>
+                                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                                        style="font-weight: bolder;font-size: 20px">请到<a href="/modify_information/"
+                                                                                         style="color: red">用户中心-修改信息</a>设置您所在的地区哟！</span>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="clearfix" style="margin-top: 40px">
+                                <div class="fl" style="margin-left: 160px;">
+                                    <img src="../static/Images/no_goods1.jpg"
+                                         alt="" height="100"></div>
+                                <div class="fl" style="margin-top: 40px;margin-left: 40px"><span
+                                        style="font-weight: bolder;font-size: 20px">您尚未登录，无法查看同城商品哟！</span>
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -378,7 +405,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">1F 手机通讯</h3>
             <div class="subtitle fr" style="background: #719ef7;">
-                <a href="" style="color: #fff;">更多>></a>
+                <a href="/goods_list/?c=1&price_low=&price_high=" style="color: #fff;">更多>></a>
             </div>
         </div>
         <div class="goods_con clearfix">
@@ -421,7 +448,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">2F 电脑数码</h3>
             <div class="subtitle fr" style="background: #61c1e6">
-                <a href="" style="color: #fff;">更多>></a>
+                <a href="/goods_list/?c=2&price_low=&price_high=" style="color: #fff;">更多>></a>
             </div>
         </div>
         <div class="goods_con clearfix">
@@ -463,7 +490,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">3F 摄影摄像</h3>
             <div class="subtitle fr" style="background: #c584ec">
-                <a href="" style="color: #fff;">更多>></a>
+                <a href="/goods_list/?c=3&price_low=&price_high=" style="color: #fff;">更多>></a>
             </div>
         </div>
         <div class="goods_con clearfix">

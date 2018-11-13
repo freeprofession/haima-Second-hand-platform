@@ -120,7 +120,6 @@ def goods_recommend(requset):
         r9.delete(user_id)
     for k, v in res:
         r9.rpush(user_id, k)
-
         cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s", [k, ])
         goods_list.append(cur.fetchone())
     a = ''

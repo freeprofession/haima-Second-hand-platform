@@ -122,8 +122,8 @@
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
                 {% for goods in r_goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods_id={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
-                        <h4><a href="/goods_detail/?goods_id={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
+                        <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
+                        <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ goods.goods_price }}</span>
                             <span class="unit">/台</span>
@@ -163,16 +163,15 @@
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 <script>
     $(".del_col").click(function () {
-        $("#for_psw").fadeIn(500);
+        $(".for_psw").fadeIn(500);
     })
     $(".cancer_fgt_psw").click(function () {
-        $("#for_psw").fadeOut(500);
+        $(".for_psw").fadeOut(500);
     })
 </script>
 </body>
 <script>
     function delete_(id) {
-        alert(id)
         id1 = id;
         $("#delete_collection").click(function () {
             page_ = $('#page_').val()
@@ -186,7 +185,6 @@
                     $("#goods_" + id).remove()
                     $("#append_1").append(data.html)
                 } else if (data.msg === "flash") {
-                    alert(data.href)
                     top.location.href = data.href
                 }
             }, "json")
@@ -196,13 +194,14 @@
     }
 </script>
 </html>
-$(".for_psw").fadeIn();
-})
-$(".cancer_fgt_psw").click(function () {
-$(".for_psw").fadeOut();
-})
+<script>
+    $(".for_psw").fadeIn();
+    })
+    $(".cancer_fgt_psw").click(function () {
+        $(".for_psw").fadeOut();
+    })
 </script>
 <
 /body>
-< /html>
+</html>
 
