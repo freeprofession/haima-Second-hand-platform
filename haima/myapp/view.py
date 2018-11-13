@@ -29,11 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-<<<<<<< HEAD
 from myapp import AI_assess
-=======
-# from myapp import AI_assess
->>>>>>> d74164b62dcecdf33022760c3202065c0f8d1f7a
 from myapp import goods_recommend
 
 
@@ -2345,11 +2341,14 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        password=request.POST.get('pay_password')
-        area = shen + ' ' + shi + ' ' + xian
+        password = request.POST.get('pay_password')
+        if shen == '请选择省份':
+            area = ''
+        else:
+            area = shen + ' ' + shi + ' ' + xian
         cur.execute(
-            "UPDATE t_user SET `user_imgurl` = '%s',`user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
-                password,img, sex, date, area, user_id))
+            "UPDATE t_user SET `user_pay_password` = '%s',`user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
+                password, img, sex, date, area, user_id))
         con.commit()
         return redirect('/modify_information/')
 
@@ -2542,8 +2541,8 @@ def page2(request):
         phone = request.session.get("user_buy_phone")
         name = request.session.get("name")
         address = request.session.get("address")
-        cur.execute("select order_id from t_order where order_goods_id=%s",[goods_id])
-        x=cur.fetchone()
+        cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
+        x = cur.fetchone()
         params = request.GET.dict()
         sign = params.pop('sign', None)
         status = alipay.verify(params, sign)
