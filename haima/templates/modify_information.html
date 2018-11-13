@@ -22,7 +22,7 @@
             <li><a href="/user_center/">· 个人信息</a></li>
             <li><a href="/my_sale/">· 我出售的</a></li>
             <li><a href="/my_buy/">· 我购买的</a></li>
-            <li><a href="user_center_order.html">· 我的拍卖</a></li>
+            <li><a href="/my_auction_buy_one/">· 我的拍卖</a></li>
             <li><a href="/my_collection/">· 我的收藏</a></li>
             <li><a href="/my_evaluate_get/">· 我的评价</a></li>
             <li><a href="/leave_message/">· 消息中心</a></li>
@@ -37,41 +37,55 @@
                 <ul>
                     <li class="clearfix">
                         <div>更换头像：</div>
-                        <div id="modify_hp">
-                            <img src="../static/Images/default_hp.jpg" alt="" height="90" width="90">
-                        </div>
+                        {% if user.user_imgurl %}
+                            <div id="modify_hp">
+                                <img src="{{ user.user_imgurl }}" alt="" height="90" width="90">
+                            </div>
+                        {% else %}
+                            <div id="modify_hp">
+                                <img src="../static/Images/default_hp.jpg" alt="" height="90" width="90">
+                            </div>
+                        {% endif %}
                         <div id="pic">
                             <label for="file"><img src="../static/Images/addpic.jpg" height="90px" width="90px"></label>
                             <input type="file" id="file" name="" style="display: none"/>
                         </div>
-                        <input type="text" value="" name="img" style="display: none" id="img">
+                        <input type="text" value="{{ user.user_imgurl }}" name="img" style="display: none" id="img">
+                    </li>
+                    <li class="clearfix">
+                        <div style="margin-top: 3px">用&nbsp;户&nbsp;名&nbsp;：</div>
+                        <div>
+                            <input type="text" style="height: 25px;width: 200px;margin-left: 2px" disabled
+                                   value="{{ user.user_name }}">
+                        </div>
                     </li>
                     <li class="clearfix">
                         <div style="margin-top: 3px">手&nbsp;机&nbsp;号&nbsp;：</div>
                         <div>
                             <input type="text" style="height: 25px;width: 200px;margin-left: 2px" disabled
-                                   value="xxxxxxxxxx">
-                        </div>
-                    </li>
-                    <li class="clearfix">
-                        <div style="margin-top: 3px">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</div>
-                        <div>
-                            <input type="text" style="height: 25px;width: 200px" placeholder="{{ user.nickname }}" name="nickname">
+                                   value="{{ user.user_phone }}">
                         </div>
                     </li>
                     <li class="clearfix">
                         <div style="margin-top: 3px">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</div>
                         <div style="margin-top: 4px">
-                            <input type="radio" value="0" name="sex" id="J_gender1" checked><span
-                                style="font-size: 14px"> 男</span>
-                            <input type="radio" value="1" id="J_gender2" name="sex"
-                                   style="margin-left:20px; "><span style="font-size: 14px"> 女</span>
+                            {% if user.user_sex == 1 %}
+                                <input type="radio" value="0" name="sex" id="J_gender1"><span
+                                    style="font-size: 14px"> 男</span>
+                                <input type="radio" value="1" id="J_gender2" name="sex"
+                                       style="margin-left:20px; " checked><span style="font-size: 14px"> 女</span>
+                            {% else %}
+                                <input type="radio" value="0" name="sex" id="J_gender1" checked><span
+                                    style="font-size: 14px"> 男</span>
+                                <input type="radio" value="1" id="J_gender2" name="sex"
+                                       style="margin-left:20px; "><span style="font-size: 14px"> 女</span>
+                            {% endif %}
                         </div>
                     </li>
                     <li class="clearfix">
                         <div style="margin-top: 3px">出生日期：</div>
                         <div>
-                            <input type="date" name="date">
+                            <input type="date" name="date" value="{{ user.user_birthday }}">
                         </div>
                     </li>
                     <li class="clearfix">
@@ -134,7 +148,7 @@
                 },
                 complete(res) {
                     console.log(res)
-                    document.getElementById('img').value=res['key'];
+                    document.getElementById('img').value = 'http://files.g1.xmgc360.com/' + res['key'];
                 }
             }
             $.ajax({
@@ -156,8 +170,9 @@
 
 
     };
-
-    addressInit('cmbProvince', 'cmbCity', 'cmbArea');
+    add = '{{ user.user_address }}'
+    var arr = add.split(' ')
+    addressInit('cmbProvince', 'cmbCity', 'cmbArea', arr[0], arr[1], arr[2]);
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@ $.fn.yomi=function(){
 		_DOM=dom;
 		data=$(dom).attr("data");
 		data = data.replace(/-/g,"/");
-		data = Math.round((new Date(data)).getTime()/1000);
+		data = Math.round((new Date(data)).getTime()/1000+(24*60*60));
 		$(_DOM).append("<ul class='yomi'><li class='yomiday'></li><li class='split'>天</li><li class='yomihour'></li><li class='split'>:</li><li class='yomimin'></li><li class='split'>:</li><li class='yomisec'></li></ul>")
 		reflash();
 
