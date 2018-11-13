@@ -541,5 +541,6 @@ a = [{'goods_id': 580670260232, 'user_id': 1, 'release_date': datetime.date(2018
 # collection_list = cur.fetchall()
 #
 # print(collection_list[2])
-print(6 // 3)
-print(6 % 3)
+check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
+check_ = check_name.match("55爱你哦www!")
+print(check_)

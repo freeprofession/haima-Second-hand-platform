@@ -46,7 +46,7 @@
                     <li class="comment-data-item clearfix" style="height: 120px;">
                         <div class="cell">
                             <div class="user-infor">
-                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img
+                        <span class="post-avator"><a href="/user_credit/?user_credit_id={{ item.message_user_id }}"><img
                                 src="{{ item.user_imgurl }}" alt="" height="40" width="40"
                                 style="border: 2px solid #e9e9e9;border-radius: 50%;"></a></span>
                                 {% if item.user_id == user_id %}
@@ -62,7 +62,7 @@
                         </div>
                         <div class="comment-data cell" style="padding-top: 30px">
                         <span class="line2"><a
-                                href="/user_credit/?user_credit_id={{ item.user_id }}"
+                                href="/goods_detail/?goods={{ item.goods_id }}&message_second_id={{ item.message_id }}#abc"
                                 style="color: #5e5e5e">{{ item.message_desc }}</a></span><br>
                             <span>{{ item.message_date }}</span>
                         </div>

@@ -29,7 +29,11 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
+<<<<<<< HEAD
 from myapp import AI_assess
+=======
+# from myapp import AI_assess
+>>>>>>> 089b6140d99308d47e8445e919f5fa3bd3c8e67e
 from myapp import goods_recommend
 
 
@@ -321,7 +325,7 @@ def login_ajax(request):
                         pass
                 else:
                     return_url = "/haima/"
-                # print(return_url, "enddddd")
+                print(return_url, "enddddd")
                 return HttpResponse(json.dumps({"msg": error, "href": return_url}))
             else:
 
@@ -410,10 +414,10 @@ def register_ajax(request):
         cur.execute("select * from t_user where user_name=%s", [username, ])  # 全表搜索，待建立索引
         user_list = cur.fetchall()
         if len(username) in range(6, 17):
-            check_name = re.compile(r'^\w+$')
+            check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
             check_ = check_name.match(username)
             if check_ is None:
-                user_error = "用户名为6-16位的数字或英文"
+                user_error = "用户名为6-16位的数字或英文,或汉子"
                 return HttpResponse(json.dumps({"error": user_error}))
             else:
                 if user_list:  # 判断用户名是否存在
@@ -455,9 +459,10 @@ def register_ajax(request):
             if check_code == code:  # 手机验证判断！
                 if user_error == "" and check_all == 'true':
                     now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+                    user_imgurl = '../static/Images/default_hp.jpg'
                     cur.execute(
-                        "insert into t_user(user_name,user_password,user_phone,user_startdate) values(%s,%s,%s,%s)",
-                        [username, password, phone, now_time])
+                        "insert into t_user(user_name,user_password,user_phone,user_startdate,user_imgurl) values(%s,%s,%s,%s,%s)",
+                        [username, password, phone, now_time, user_imgurl])
                     # print(username, email, phone, password)
                     con.commit()
                     r.delete(phone)
@@ -831,7 +836,7 @@ def goods_detail(request):
         login_status = username
     # 商品收藏------------------------------------------
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,4',
         [user_id, ])
     collection_list = cur.fetchall()
     # --------------------------------------------------
@@ -857,10 +862,12 @@ def goods_detail(request):
     else:
         seller_in = "no_seller"
         collection_count = ""
-
     # =-----卖家信息————————————————
     cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
     seller_info = cur.fetchall()
+    cur.execute("select count(*) from t_order_success where release_user_id=%s", [seller_id])
+    count_sell = cur.fetchone()["count(*)"]
+    print(count_sell)
     # cur.execute("select count(*) from test where id=1")成交记录
     # ------------------------------------
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
@@ -1905,7 +1912,7 @@ def evaluate(request):
     print("evaluate", "------", username, user_id, goods_id)
     # 商品收藏------------------------------------------
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,4',
         [user_id, ])
     collection_list = cur.fetchall()
     # --------------------------------------------------
@@ -1925,6 +1932,8 @@ def evaluate(request):
     # =-----卖家信息————————————————
     cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
     seller_info = cur.fetchall()
+    cur.execute("select count(*) from t_order_success where release_user_id=%s", [seller_id])
+    count_sell = cur.fetchone()["count(*)"]
     # 判断买卖家
     if customer == "buy":
         # --本商品是否已经评价-------------------
@@ -1997,6 +2006,7 @@ def evaluate_ajax(request):
         get_eva.hset(key, "username", get_user_list["user_name"])
         get_eva.hset(key, "user_imgurl", get_user_list["user_imgurl"])
         get_eva.hset(key, "user_id", get_user_list["user_id"])
+        get_eva.hset(key, "user_address", get_user_list["user_address"])
         get_eva.hset(key, "desc", evaluate_text)
         get_eva.hset(key, "date", now_time)
         get_eva.hset(key, "goods_id", goods_lst["goods_id"])
@@ -2012,6 +2022,7 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "username", set_user_list["user_name"])
         set_eva.hset(key_, "user_imgurl", set_user_list["user_imgurl"])
         set_eva.hset(key_, "user_id", set_user_list["user_id"])
+        set_eva.hset(key, "user_address", set_user_list["user_address"])
         set_eva.hset(key_, "desc", evaluate_text)
         set_eva.hset(key_, "date", now_time)
         set_eva.hset(key_, "goods_id", goods_lst["goods_id"])
@@ -2333,7 +2344,7 @@ def modify_information(request):
                 message_check = "../static/Images/message.png"
             print(message_check, "消息推送")
             login_status = username
-        return render(request, 'modify_information.html', {'user': user})
+        return render(request, 'modify_information.html', locals())
     else:
         shen = request.POST.get('cmbProvince')
         shi = request.POST.get('cmbCity')
@@ -2354,7 +2365,22 @@ def modify_information(request):
 
 
 def modify_password(request):
-    return render(request, 'modify_password.html')
+    user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        message_list_push = []
+        message_list_push1 = message_push.lrange(user_id, 0, 3)
+        for item in message_list_push1:
+            message_list_push.append(item.decode("utf-8"))
+        print(message_list_push)
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        print(message_check, "消息推送")
+        login_status = username
+    return render(request, 'modify_password.html',locals())
 
 
 @mysql_required

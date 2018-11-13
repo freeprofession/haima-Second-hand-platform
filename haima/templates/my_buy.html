@@ -200,7 +200,6 @@
 <script>
     function tixinfahuo(id) {
         order_id = id;
-        alert(order_id)
         $.post("/tixinfahuo/", {
             "order_id": order_id
         }, function (data) {

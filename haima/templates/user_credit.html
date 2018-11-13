@@ -24,19 +24,23 @@
             {% endif %}
             <div id="user_info3">
                 {% if item.user_sex == 0 %}
-                    <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别： <img src="../static/Images/nam1.jpg"
-                                                                                                                 alt="" style="width: 13px"></span>
+                    <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别： <img
+                            src="../static/Images/nam1.jpg"
+                            alt="" style="width: 13px"></span>
                     <br>
                 {% else %}
-                    <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别：<img src="../static/Images/woman.jpg"
-                                                                                                                alt="" style="width: 13px"></span>
+                    <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别：<img
+                            src="../static/Images/woman.jpg"
+                            alt="" style="width: 13px"></span>
                     <br>
                 {% endif %}
                 <span>注册时间：{{ item.user_startdate }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
                 {% if item.user_address %}
-                    <span>居住地：{{ item.user_address }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信用：<em style="color: #810101">{{ item.user_credit }}</em></span>
+                    <span>居住地：{{ item.user_address }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信用：<em
+                            style="color: #810101">{{ item.user_credit }}</em></span>
                 {% else %}
-                    <span>居住地：未设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信用：<em style="color: #810101">{{ item.user_credit }}</em></span>
+                    <span>居住地：未设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信用：<em
+                            style="color: #810101">{{ item.user_credit }}</em></span>
                 {% endif %}
             </div>
 
@@ -105,14 +109,29 @@
                         </div>
                         <div class="comment-data cell" style="padding-top: 20px">
                             {% if item.eva_state == '0' %}
-                                <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
-                                                                                      title="好评"></i></span><br>
+                                {% if item.user_address != 'None' %}
+                                    <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
+                                                                                          title="好评"></i></span><br>
+                                {% else %}
+                                    <span>未设置地区{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
+                                                                      title="好评"></i></span><br>
+                                {% endif %}
                             {% elif item.eva_state == '1' %}
-                                <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate3"
-                                                                                      title="中评"></i></span>
+                                {% if item.user_address != 'None' %}
+                                    <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate3"
+                                                                                          title="中评"></i></span>
+                                {% else %}
+                                    <span>未设置地区{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
+                                                                      title="好评"></i></span><br>
+                                {% endif %}
                             {% else %}
-                                <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate4"
-                                                                                      title="差评"></i></span>
+                                {% if item.user_address != 'None' %}
+                                    <span>来自{{ item.user_address }}{{ item.customer }}的<i class="tb-rate-ico ico-rate4"
+                                                                                          title="差评"></i></span>
+                                {% else %}
+                                    <span>未设置地区{{ item.customer }}的<i class="tb-rate-ico ico-rate2"
+                                                                      title="好评"></i></span><br>
+                                {% endif %}
                                 <br>
                             {% endif %}
                             <span style="text-overflow: ellipsis;color: black">{{ item.desc }}</span><br><br>
