@@ -2698,19 +2698,24 @@ def search_image(request):
     goods_id_list = []
     goods_list = []
     url = request.POST.get("url")
-    result = client.productSearchUrl(url)
-    if result:
-        for goods in result['result']:
-            score = goods['score']
-            if score > 0.5:
-                brief = json.loads(goods['brief'])
-                id = brief['id']
-                print(id)
-                goods_id_list.append((id, score))
-    goods_id_list = sorted(goods_id_list, key=by_scort, reverse=True)
-    for goods_id in goods_id_list:
-        cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",
-                    [goods_id[0], ])
-        goods = cur.fetchone()
-        goods_list.append(goods)
-    return render(request, 'search_image.html', locals())
+    if url:
+        result = client.productSearchUrl(url)
+        print(url)
+        if result['result']:
+            print(result)
+            for goods in result['result']:
+                score = goods['score']
+                if score > 0.5:
+                    brief = json.loads(goods['brief'])
+                    id = brief['id']
+                    print(id)
+                    goods_id_list.append((id, score))
+        goods_id_list = sorted(goods_id_list, key=by_scort, reverse=True)
+        for goods_id in goods_id_list:
+            cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",
+                        [goods_id[0], ])
+            goods = cur.fetchone()
+            goods_list.append(goods)
+        return render(request, 'search_image.html', locals())
+    else:
+        return redirect('/haima/')
