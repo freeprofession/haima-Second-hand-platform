@@ -5,8 +5,27 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
 cur = con.cursor(pymysql.cursors.DictCursor)
+from myapp import view
+def login_required(function):
+
+    def check_login_status(request):
+        user = request.session.get('user')
+        user_id = request.session.get('user_id')
+        if user_id:
+            return function(request)
+        elif user:
+            return function(request)
+        else:
+            return HttpResponseRedirect('/login/')
+
+    return check_login_status
 # **********************************************************返回用户的我的拍卖中心我的竞拍的界面**************************************
+@login_required
 def my_auction_buy_one(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -59,8 +78,13 @@ def my_auction_buy_one(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_buy_one.html',locals())
 def my_auction_buy_two(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     # 先找到该用户的所有竞拍记录
     cur.execute("select auction_record_id  from t_auction_record where auction_goods_buyuser_id=%s",
@@ -114,8 +138,13 @@ def my_auction_buy_two(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_buy_two.html',locals())
 def my_auction_buy_three(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     list3=[]
     # 先找到该用户的所有竞拍记录
@@ -178,8 +207,13 @@ def my_auction_buy_three(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_buy_three.html',locals())
 def my_auction_buy_four(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     # 找到用户的订单
     list2=[]
@@ -220,10 +254,15 @@ def my_auction_buy_four(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request, 'my_auction_buy_four.html', locals())
 
 
 def my_auction_buy_five(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     list5=[]
     # 先找到该用户的所有竞拍记录
@@ -271,9 +310,23 @@ def my_auction_buy_five(request):
                 dict1["order"] = order_messge
 
                 list5.append(dict1)
-
+    paginator = Paginator(list5, 2)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_buy_five.html',locals())
 def my_auction_buy_six(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
+    username = request.session.get("username")
+    login_status = username
     user_id = request.session.get("user_id")
     list6=[]
     # 先找到该用户的所有竞拍记录
@@ -319,6 +372,7 @@ def my_auction_buy_six(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    cur.close()
     return render(request,'my_auction_buy_six.html',locals())
 
 def my_auction_four(request):

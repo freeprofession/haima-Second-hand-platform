@@ -52,11 +52,8 @@
 			</ul>
 		</div>
         <div class="right_content clearfix">
-				<h3 class="common_title2">全部订单</h3>
-				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
-				</ul>
+				<h3 class="common_title2">我发布的竞拍</h3>
+
 <div>
 				<div id="select_one">
  {% if contacts %}
@@ -102,14 +99,13 @@
          </div>
     </div>
     </div>
-    {% endfor %}
-
-                {% else %}
-        <div style="margin-left: 140px;margin-top: 40px">
-            <div class="no_goods"></div>
-            <div class="no_goods_msg">亲！抱歉没有找到"<span style="color: #ff4e3f">{{ question }}</span>"相关商品</div>
-        </div>
-    {% endif %}
+  {% endfor %}
+    {% else %}
+    <div style="margin-left: 100px;margin-top: 50px;">
+        <span ><b style="font-size: 20px;">海马商城温馨提示，你还没有竞拍的商品哦!</b></span>
+        <div ><img src="../static/Images/no_goods.jpg" alt="" width=100 height="100"></div>
+    </div>
+{% endif %}
 </div>
 </div>
 

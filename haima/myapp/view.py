@@ -29,7 +29,12 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
+<<<<<<< HEAD
 from myapp import AI_assess
+=======
+# from myapp import AI_assess
+from myapp import goods_recommend
+>>>>>>> 711ea62dd15f44c2d7124c54164445d2d4f9ccfa
 
 
 class CJsonEncoder(json.JSONEncoder):
@@ -54,6 +59,7 @@ get_eva = redis.Redis(host="47.100.200.132", port=6379, db=8, password='haima123
 user_recommend = redis.Redis(host="47.100.200.132", port=6379, db=9, password='haima1234')  # 用户推荐
 goods_browse = redis.Redis(host="47.100.200.132", port=6379, db=10, password='haima1234')  # 浏览记录
 message_push = redis.Redis(host="47.100.200.132", port=6379, db=11, password='haima1234')  # 消息推送
+
 
 
 def get_token(func):
@@ -799,6 +805,12 @@ def goods_detail(request):
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     goods_id = request.GET.get('goods')
+    message_second_id = request.GET.get('message_second_id')
+    if message_second_id:
+        pass
+    else:
+        message_second_id = "q2"
+    print(message_second_id, "锚标记！！")
     if username:
         message_check1 = message_push.lrange(user_id, 0, 1)
         message_list_push = []
@@ -1240,7 +1252,7 @@ def pub_success(request):
         if filelist:
             img.delete(goods_id)
             for file in filelist:
-                img.rpush(goods_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
+                img.rpush(goods_id, "http://files.g1.xmgc360.com/" + file)
             goods_img = img.lindex(goods_id, 0)
             goods_img = goods_img.decode("utf-8")
             cur.execute(
@@ -1274,7 +1286,7 @@ def pub_success(request):
             desc = '该卖家比较懒，还没有商品描述'
         for i in filelist:
             print(i)
-        url = "http://pgwecu7z4.bkt.clouddn.com/" + filelist[0]
+        url = "http://files.g1.xmgc360.com/" + filelist[0]
         sql = "INSERT INTO t_goods(`user_id`,`release_date`,`goods_title`,`goods_desc`,`goods_price`,`goods_category_id`,`goods_imgurl`,`goods_address`,`goods_appearance`) \
                                                                            VALUES ('%s','%s','%s','%s','%f','%s','%s','%s','%s')" % \
               (
@@ -1286,7 +1298,7 @@ def pub_success(request):
         print(options["brief"])
         print(client.productAddUrl(url, options))
         for file in filelist:
-            img.rpush(last_id, "http://pgwecu7z4.bkt.clouddn.com/" + file)
+            img.rpush(last_id, "http://files.g1.xmgc360.com/" + file)
         con.commit()
         print(title, category, price, postage, filelist)
         href = '/publish_ok/?goods_id=' + str(last_id)
@@ -1939,9 +1951,23 @@ def evaluate(request):
 def evaluate_ajax(request):
     user_id = request.session.get('user_id')
     evaluate_text = request.POST.get('evaluate_text')
-    eva_state = request.POST.get('dddddddd')
     customer = request.POST.get('customer')
     order_id = request.POST.get('order_id')
+    sudu = int(request.POST.get('sudu'))
+    qingkuang = int(request.POST.get('qingkuang'))
+    taidu = int(request.POST.get('taidu'))
+    eva_state = int(request.POST.get('pingjia'))
+    if eva_state == 0:
+        user_credit1 = 2 * (sudu + qingkuang + taidu) / 3
+    elif eva_state == 1:
+        user_credit1 = (sudu + qingkuang + taidu) / 3
+    else:
+        sudu = 10 - sudu
+        taidu = 10 - taidu
+        qingkuang = 10 - qingkuang
+        user_credit1 = -(sudu + qingkuang + taidu) / 3
+
+    print(sudu, qingkuang, taidu, eva_state, 666666666666666666666666)
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(evaluate_text, eva_state, customer, type(order_id))
     if customer == "buy":
@@ -1952,6 +1978,8 @@ def evaluate_ajax(request):
         # __________________redis保存被回复人记录(别人查看记录)-----------------------------------------------------------------------
         cur.execute("select * from t_order_success where order_id=%s", [int(order_id), ])
         order_list = cur.fetchone()
+        cur.execute("update t_user set user_credit=user_credit+%s where user_id=%s",
+                    [user_credit1, order_list["release_user_id"]])
         key = str(order_list["release_user_id"]) + str(order_id)
         print("购买人，", key)
         # 评价人的信息！-------------
@@ -1985,8 +2013,9 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
         set_eva.hset(key_, "eva_state", eva_state)
         set_eva.hset(key_, "customer", "卖家")
-        message_push.lpush(user_id, "evaluation")
+        message_push.lpush(order_list["release_user_id"], "evaluation")
     else:
+        print("卖卖卖")
         cur.execute(
             "update t_evaluation set seller_evaluation_date = %s,seller_desc=%s,sell_state=%s where evaluation_order_id = %s",
             [now_time, evaluate_text, eva_state, order_id])
@@ -1994,6 +2023,8 @@ def evaluate_ajax(request):
         # __________________redis保存被回复人记录(别人查看记录)-----------------------------------------------------------------------
         cur.execute("select * from t_order_success where order_id=%s", [int(order_id), ])
         order_list = cur.fetchone()
+        cur.execute("update t_user set user_credit=user_credit+%s where user_id=%s",
+                    [user_credit1, order_list["buy_user_id"]])
         key = str(order_list["buy_user_id"]) + str(order_id)
         # 被评价用户的信息！-------------
         cur.execute("select * from t_user where user_id=%s", [user_id, ])
@@ -2028,7 +2059,7 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "goods_price", goods_lst["goods_price"])
         set_eva.hset(key_, "eva_state", eva_state)
         set_eva.hset(key_, "customer", "买家")
-        message_push.lpush(user_id, "evaluation")
+        message_push.lpush(order_list["buy_user_id"], "evaluation")
     con.commit()
     msg = "success"
     return HttpResponse(json.dumps({"msg": msg}))
@@ -2277,35 +2308,39 @@ def leave_message_three(request):
 @login_required
 def modify_information(request):
     user_id = request.session.get('user_id')
-    username = request.session.get('username')
-    if username:
-        message_check1 = message_push.lrange(user_id, 0, 1)
-        message_list_push = []
-        message_list_push1 = message_push.lrange(user_id, 0, 3)
-        for item in message_list_push1:
-            message_list_push.append(item.decode("utf-8"))
-        print(message_list_push)
-        if message_check1:
-            message_check = "../static/Images/new02.gif"
-        else:
-            message_check = "../static/Images/message.png"
-        print(message_check, "消息推送")
-        login_status = username
     if request.method == 'GET':
-        return render(request, 'modify_information.html')
+        cur.execute("select * from t_user where user_id = '%s'" % user_id)
+        result = cur.fetchall()[0]
+        user = json.dumps(result, cls=CJsonEncoder)
+        user = json.loads(user)
+        username = request.session.get('username')
+        if username:
+            message_check1 = message_push.lrange(user_id, 0, 1)
+            message_list_push = []
+            message_list_push1 = message_push.lrange(user_id, 0, 3)
+            for item in message_list_push1:
+                message_list_push.append(item.decode("utf-8"))
+            print(message_list_push)
+            if message_check1:
+                message_check = "../static/Images/new02.gif"
+            else:
+                message_check = "../static/Images/message.png"
+            print(message_check, "消息推送")
+            login_status = username
+        return render(request, 'modify_information.html', {'user': user})
     else:
-        nickname = request.POST.get('nickname')
         shen = request.POST.get('cmbProvince')
         shi = request.POST.get('cmbCity')
         xian = request.POST.get('cmbArea')
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        print(nickname, shen, shi, xian, img, date, sex)
-
-        imgurl = "pgwecu7z4.bkt.clouddn.com/" + img
-        print(imgurl)
-        return render(request, 'modify_information.html')
+        area = shen + ' ' + shi + ' ' + xian
+        cur.execute(
+            "UPDATE t_user SET `user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
+                img, sex, date, area, user_id))
+        con.commit()
+        return redirect('/modify_information/')
 
 
 def modify_password(request):

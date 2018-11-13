@@ -23,9 +23,21 @@
                  <div><span><img src="../static/Images/default_hp.jpg" alt="" style="border-radius: 50%;border: 3px solid #c7c7c7" width="80" height="80"></span></div>
             {% endif %}
             <div id="user_info3">
-                <span>用户名：{{ item.user_name }}</span><br>
-                <span>注册时间：{{ item.user_startdate }}</span><br>
-                <span>居住地：{{ item.user_address }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实名：已认证</span>
+                {% if item.user_sex == 0 %}
+                    <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别： <img src="../static/Images/nam1.jpg"
+                                                                                                                 alt="" style="width: 13px"></span>
+                    <br>
+                {% else %}
+                    <span>用户名：{{ item.user_name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别：<img src="../static/Images/woman.jpg"
+                                                                                                                alt="" style="width: 13px"></span>
+                    <br>
+                {% endif %}
+                <span>注册时间：{{ item.user_startdate }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
+                {% if item.user_address %}
+                    <span>居住地：{{ item.user_address }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信用：<em style="color: #810101">{{ item.user_credit }}</em></span>
+                {% else %}
+                    <span>居住地：未设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信用：<em style="color: #810101">{{ item.user_credit }}</em></span>
+                {% endif %}
             </div>
 
             <div id="user_info4">

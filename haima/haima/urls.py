@@ -83,7 +83,6 @@ urlpatterns = [
     path('test_ajax', view.test_ajax),
     # 获取图片上传token
     path('gettokendata/', view.gettokendata), path('modify_information/', view.modify_information),  # 修改信息
-    path('my_auction/', auction.my_auction),
     path('history_auction/', auction.history_auction),
     path('release_auction/', auction.release_auction),
     path('test/', view.text_message),

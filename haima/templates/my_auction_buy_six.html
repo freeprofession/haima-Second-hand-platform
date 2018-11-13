@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../static/CSS/main.css">
       <script type="text/javascript" src="../static/JS/jquery-1.12.4.min.js"></script>
 
+
 </head>
 <body>
 <div style="min-height:100%;height:auto;">
@@ -35,51 +36,63 @@
 			<ul>
 				<li><a href="/my_auction_buy_one/">· 竞拍中</a></li>
 				<li><a href="/my_auction_buy_two/" >· 竞拍失败</a></li>
-				<li><a href="/my_auction_buy_three/" >· 竞拍成功</a></li>
-				<li><a href="/my_auction_buy_four/" >· 付款失败</a></li>
-                <li><a href="/my_auction_buy_five/" >· 收货确认</a></li>
-                <li><a href="/my_auction_buy_six/" class="active">· 历史成交订单</a></li>
+				<li><a href="/my_auction_buy_three/">· 竞拍成功</a></li>
+				<li><a href="/my_auction_buy_four/">· 付款失败</a></li>
+                <li><a href="/my_auction_buy_five/">· 收货确认</a></li>
+                <li><a href="/my_auction_buy_six/"  class="active">· 历史成交订单</a></li>
 			</ul>
 		</div>
 		<div class="right_content clearfix">
-				<h3 class="common_title2">竞拍中记录</h3>
-				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
-				</ul>
+				<h3 class="common_title2">历史成交订单</h3>
 
-		<div id="select_two">
-<div id="select_six">
-{% for i in contacts %}
+
+				<div id="select_one">
+{% if list6 %}
+{% for i in contacts%}
   <div id="four">
-  <div style="padding-left: 50px;margin-top: 20px;">
+  <div style="margin-top: 20px;margin-left: 40px;">
         <div>
-            <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="300px">
+           <a href="/buy_auction/?id={{ i.goods.auction_goods_id }}">
+                    <img src={{ i.goods.auction_goods_imgurl }} alt="" height="300px" width="340px">
+                </a>
         </div>
-         <div id="auction_goods_desc" style="padding-top: 50px;">
+         <div id="auction_goods_desc">
              <div id="title" style="font-size:25px">
                 {{ i.goods.auction_goods_title }}
              </div>
              <br>
              <div id="auction_messige">
                 <div id="auction_messige_desc" >
-                    <div>订单号：<span id="acution_goods_start_time">{{ i.order.auction_order_id }}</span></div>
+                    <div>开始时间：<span id="acution_goods_start_time">{{ i.attribute.start_date }}</span></div>
                     <br>
-                    <div>订单生成时间：<span id="acution_goods_start_time">{{ i.order.auction_order_date }}</span></div>
+                    <div>结束时间：<span id="acution_goods_start_time">{{ i.attribute.end_date }}</span></div>
                     <br>
-                    <div>交易成功时间：<span id="acution_goods_start_time">{{ i.order.order_success_date }}</span></div>
+                    <div>开始价格：<span id="acution_goods_start_price">{{ i.record.auction_goods_oldprice }}</span></div>
                     <br>
-                    <div>订单金额：<span id="auction_goods_floorprice">{{ i.order.auction_order_fianl_price }}</span></div>
+                    <div>我的加价：<span id="auction_goods_my_price">{{ i.record.auction_goods_premium }}</span></div>
                     <br>
+                    <div>加价后价格：<span id="acution_goods_start_time">{{ i.record.auction_goods_price }}</span></div>
+                    <br>
+                    <div>竞拍状态：<span id="acution_goods_start_time" style="color: #ffda44">{{ i.state }}</span></div>
+                    <br>
+                     <div>
 
+                    </div>
+                    <br>
                 </div>
              </div>
          </div>
   </div>
     </div>
 {% endfor %}
+    {% else %}
+    <div style="margin-left: 100px;margin-top: 50px;">
+        <span ><b style="font-size: 20px;">海马商城温馨提示，你还没有竞拍的商品哦!</b></span>
+        <div ><img src="../static/Images/no_goods.jpg" alt="" width=100 height="100"></div>
+    </div>
+{% endif %}
 </div>
-       <div class="pagenation">
+<div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
             <a href="?page={{ contacts.previous_page_number }}">上一页</a>
@@ -100,6 +113,7 @@
         {% endif %}
     </span>
             </div>
+		</div>
 	</div>
 
 

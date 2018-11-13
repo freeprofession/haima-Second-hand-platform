@@ -601,7 +601,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                     console.log(err)
                 },
                 complete(res) {
-                    url = 'http://pgwecu7z4.bkt.clouddn.com/' + res['key']
+                    url = 'http://files.g1.xmgc360.com.qiniudns.com/' + res['key']
                     console.log(url)
                     form = $(" <form method='post' action='/search_image/'></form>")
                     input = $("<input type='text'>").val(url).attr('name', 'url')
