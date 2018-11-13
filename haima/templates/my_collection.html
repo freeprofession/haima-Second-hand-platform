@@ -122,8 +122,8 @@
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
                 {% for goods in r_goods_list %}
                     <li>
-                        <a href="/goods_detail/?goods_id={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
-                        <h4><a href="/goods_detail/?goods_id={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
+                        <a href="/goods_detail/?goods={{ goods.goods_id }}"><img src="{{ goods.goods_imgurl }}"></a>
+                        <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
                         <div class="operate">
                             <span class="prize">￥{{ goods.goods_price }}</span>
                             <span class="unit">/台</span>

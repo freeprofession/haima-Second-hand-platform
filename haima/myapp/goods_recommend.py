@@ -116,8 +116,10 @@ def goods_recommend(requset):
     if len(res) < 5:
         for i in range(5 - len(res)):
             res.append((keys_dict[i][0], 1))
+    if r9.llen(user_id) != 0:
+        r9.delete(user_id)
     for k, v in res:
-        r9.sadd(user_id, k)
+        r9.rpush(user_id, k)
         cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s", [k, ])
         goods_list.append(cur.fetchone())
     a = ''

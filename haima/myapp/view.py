@@ -181,20 +181,25 @@ def homepage(request):
         message_list_push1 = message_push.lrange(user_id, 0, 3)
         for item in message_list_push1:
             message_list_push.append(item.decode("utf-8"))
-        print(message_list_push)
         if message_check1:
             message_check = "../static/Images/new02.gif"
         else:
             message_check = "../static/Images/message.png"
-        print(message_check, "消息推送")
         login_status = username
-        cur.execute(
-            "select * from t_goods where goods_address = (select user_address from t_user where user_id = %s) order by rand() limit 5",
-            [user_id, ])
-        same_city_list = cur.fetchall()
+        cur.execute("select user_address from t_user where user_id = %s", [user_id])
+        user_address = cur.fetchone()
+        if user_address['user_address']:
+            cur.execute(
+                "select * from t_goods where goods_address = %s order by rand() limit 5",
+                [user_address['user_address'], ])
+            same_city_list = cur.fetchall()
+            if not same_city_list:
+                same_city_msg = 1
+        else:
+            same_city_msg = 2
         cur.execute("select user_imgurl from t_user where user_id = %s", [user_id, ])
         user_imgurl = cur.fetchone()
-        if user_imgurl['user_imgurl'] == None:
+        if user_imgurl['user_imgurl'] == '':
             cur.execute("update t_user set user_imgurl = %s where user_id = %s",
                         ['../static/Images/default_hp.jpg', user_id])
             con.commit()
@@ -505,54 +510,74 @@ def goods_list(request):
         message_list_push1 = message_push.lrange(user_id, 0, 3)
         for item in message_list_push1:
             message_list_push.append(item.decode("utf-8"))
-        print(message_list_push)
         if message_check1:
             message_check = "../static/Images/new02.gif"
         else:
             message_check = "../static/Images/message.png"
-        print(message_check, "消息推送")
         login_status = username
 
     if request.method == 'GET':
         question = request.GET.get('q')
-        if question == '全新闲置':
-            prompt = '以下商品为本平台最新上架商品，只显示最新的60条哟！'
-            cur.execute("select * from t_goods order by goods_id desc limit 60")
-            goods_lst = cur.fetchall()
-        elif question == '同城交易':
-            if request.session.get('user_id'):
-                user_id = request.session.get('user_id')
-                cur.execute("select user_address from t_user where user_id = %s", [user_id])
-                user_address_dict = cur.fetchone()
-                user_address = user_address_dict['user_address']
-                if user_address:
-                    cur.execute("select * from t_goods where goods_address = %s", [user_address, ])
-                    goods_lst = cur.fetchall()
-                    prompt = '以下商品为' + user_address + '地区同城的商品，如需要查询其他地区请在用户中心中修改居住地'
+        category = request.GET.get('c')
+        if question:
+            if question == '全新闲置':
+                prompt = '以下商品为本平台最新上架商品，只显示最新的60条哟！'
+                cur.execute("select * from t_goods order by goods_id desc limit 60")
+                goods_lst = cur.fetchall()
+            elif question == '同城交易':
+                if request.session.get('user_id'):
+                    user_id = request.session.get('user_id')
+                    cur.execute("select user_address from t_user where user_id = %s", [user_id])
+                    user_address_dict = cur.fetchone()
+                    user_address = user_address_dict['user_address']
+                    if user_address:
+                        cur.execute("select * from t_goods where goods_address = %s", [user_address, ])
+                        goods_lst = cur.fetchall()
+                        prompt = '以下商品为' + user_address + '地区同城的商品，如需要查询其他地区请在用户中心中修改居住地'
+                    else:
+                        prompt = '亲还没有设置居住地看不到同城商品哟！请在用户中心设置'
                 else:
-                    prompt = '亲还没有设置居住地看不到同城商品哟！请在用户中心设置'
+                    return redirect('/user_center/')
             else:
-                return redirect('/user_center/')
-        else:
-            question_word = jieba.cut(question)
-            question_word = list(question_word)
-            if len(question_word) != 1:
-                question_word.insert(0, question)
-            count = 0
-            for key in question_word:
-                if cut_words.smembers(key):
-                    count += 1
-                    bvalue_list = list(cut_words.smembers(key))
-                    for value in bvalue_list:
-                        value = int(value.decode('utf-8'))
-                        value_list.append(value)
-            value_list = sorted(set(value_list), key=value_list.index)
-            for goods_id in value_list:
-                sql = "select * from t_goods where goods_id = %d" % goods_id
-                cur.execute(sql)
-                goods = cur.fetchone()
-                goods_lst.append(goods)
-            prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
+                question_word = jieba.cut(question)
+                question_word = list(question_word)
+                if len(question_word) != 1:
+                    question_word.insert(0, question)
+                count = 0
+                for key in question_word:
+                    if cut_words.smembers(key):
+                        count += 1
+                        bvalue_list = list(cut_words.smembers(key))
+                        for value in bvalue_list:
+                            value = int(value.decode('utf-8'))
+                            value_list.append(value)
+                value_list = sorted(set(value_list), key=value_list.index)
+                for goods_id in value_list:
+                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d" % goods_id
+                    cur.execute(sql)
+                    goods = cur.fetchone()
+                    goods_lst.append(goods)
+                prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
+        if category == '1':
+            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
+                        [category, ])
+            goods_lst = cur.fetchall()
+            prompt = '已选类型：手机'
+        if category == '2':
+            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
+                        [category, ])
+            goods_lst = cur.fetchall()
+            prompt = '已选类型：电脑'
+        if category == '3':
+            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
+                        [category, ])
+            goods_lst = cur.fetchall()
+            prompt = '已选类型：相机'
+        if category == '4':
+            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
+                        [category, ])
+            goods_lst = cur.fetchall()
+            prompt = '已选类型：电玩随身听'
         # 价格筛选
         if request.GET.get("price_low") and request.GET.get("price_high"):
             price_low = int(request.GET.get("price_low"))
@@ -1308,10 +1333,12 @@ def assess_ajax(request):
     assess_list.append(maintain)
     UT = int(request.POST.get('UT'))
     assess_list.append(UT)
-    print(assess_list)
     price = AI_assess.assess_price(assess_list)[0]
+    # print(assess_list)
+    # print(price)
+    if price < 0:
+        price = -price
     price = '¥' + str(int(price))
-    print(price)
     time.sleep(1)
     return HttpResponse(json.dumps({"price": price}))
 
@@ -1826,7 +1853,7 @@ def my_collection(request):
             contacts = paginator.page(paginator.num_pages)
         # -----------------------------------
         r_goods_list = []
-        recommend_goods = user_recommend.smembers(user_id)
+        recommend_goods = user_recommend.lrange(user_id, 0, -1)
         for r_goods_id in recommend_goods:
             r_goods_id = r_goods_id.decode('utf-8')
             cur.execute("select goods_id,goods_imgurl,goods_title,goods_price from t_goods where goods_id = %s",

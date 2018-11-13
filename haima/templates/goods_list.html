@@ -57,7 +57,7 @@
                 <li class="newli">
                     <div class="level1">
                         <img src="../static/Images/phone.png" alt="" height="30" width="15" class="pic1"><a
-                            href="/goods_list/?q=手机&price_low=&price_high=" class="main_type">手机</a><a
+                            href="/goods_list/?c=1&price_low=&price_high=" class="main_type">手机</a><a
                             href="/goods_list/?q=手机壳&price_low=&price_high=" class="child_type">手机壳</a><a
                             href="/goods_list/?q=充电器&price_low=&price_high=" class="child_type">充电器</a><a
                             href="/goods_list/?q=耳机&price_low=&price_high=" class="child_type">耳机</a><a
@@ -99,7 +99,7 @@
                 <li class="newli">
                     <div class="level1">
                         <img src="../static/Images/computer.png" alt="" height="30" width="15" class="pic1"><a
-                            href="/goods_list/?q=电脑&price_low=&price_high=" class="main_type">电脑</a><a
+                            href="/goods_list/?c=2&price_low=&price_high=" class="main_type">电脑</a><a
                             href="/goods_list/?q=笔记本&price_low=&price_high=" class="child_type">笔记本</a><a
                             href="/goods_list/?q=台式机&price_low=&price_high=" class="child_type">台式机</a><a
                             href="/goods_list/?q=平板电脑&price_low=&price_high=" class="child_type">平板电脑</a>
@@ -133,7 +133,7 @@
                 <li class="newli">
                     <div class="level1">
                         <img src="../static/Images/camera.png" alt="" height="30" width="15" class="pic1">
-                        <a href="/goods_list/?q=摄影&price_low=&price_high=" class="main_type">摄影</a><a
+                        <a href="/goods_list/?c=3&price_low=&price_high=" class="main_type">摄影</a><a
                             href="/goods_list/?q=相机&price_low=&price_high=" class="child_type">相机</a><a
                             href="/goods_list/?q=单反&price_low=&price_high=" class="child_type">单反</a><a
                             href="/goods_list/?q=摄像机&price_low=&price_high=" class="child_type">摄像机</a><a
@@ -179,7 +179,7 @@
                 <li class="newli">
                     <div class="level1">
                         <img src="../static/Images/game.png" alt="" height="30" width="15" class="pic1"><a
-                            href="/goods_list/?q=电玩随身听&price_low=&price_high=" class="main_type">电玩随声听</a><a
+                            href="/goods_list/?c=4&price_low=&price_high=" class="main_type">电玩随声听</a><a
                             href="/goods_list/?q=MP3&price_low=&price_high=" class="child_type">MP3</a><a
                             href="/goods_list/?q=PSP&price_low=&price_high=" class="child_type">PSP</a><a
                             href="/goods_list/?q=iPod&price_low=&price_high=" class="child_type">iPod</a>
@@ -218,8 +218,8 @@
                 </li>
                 <li class="newli" style="border-bottom: 0px">
                     <div class="level1">
-                        <img src="../static/Images/pad.png" alt="" height="30" width="15" class="pic1"><a href="#"
-                                                                                                          class="main_type">其他</a><a
+                        <img src="../static/Images/pad.png" alt="" height="30" width="15" class="pic1"><a
+                            href="/goods_list/?c=5&price_low=&price_high=" class="main_type">其他</a><a
                             href="/goods_list/?q=充电宝&price_low=&price_high=" class="child_type">充电宝</a><a
                             href="/goods_list/?q=支架&price_low=&price_high=" class="child_type">支架</a><a href="车载充电器"
                                                                                                         class="child_type">车载充电器</a>
@@ -261,16 +261,17 @@
 <div class="main_list clearfix">
     <div class="sort_bar">
         <span class="sort_btn0 sort_active0"><a
-                href="?q={{ question }}&page={{ pg }}&price_low={{ price_low }}&price_high={{ price_high }}">综合</a></span>
+                href="?q={{ question }}&c={{ category }}&page={{ pg }}&price_low={{ price_low }}&price_high={{ price_high }}">综合</a></span>
         <span class="sort_btn sort_active1" onclick="active({{ sort_method }})"><a
-                href="?q={{ question }}&page={{ pg }}&sort_method=1&price_low={{ price_low }}&price_high={{ price_high }}">价格升序</a></span>
+                href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method=1&price_low={{ price_low }}&price_high={{ price_high }}">价格升序</a></span>
         <span class="sort_btn sort_active2" onclick="active({{ sort_method }})"><a
-                href="?q={{ question }}&page={{ pg }}&sort_method=2&price_low={{ price_low }}&price_high={{ price_high }}">价格降序</a></span>
+                href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method=2&price_low={{ price_low }}&price_high={{ price_high }}">价格降序</a></span>
         <span class="sort_btn sort_active4" onclick="active({{ sort_method }})"><a
-                href="?q={{ question }}&page={{ pg }}&sort_method=3&price_low={{ price_low }}&price_high={{ price_high }}">信用</a></span>
+                href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method=3&price_low={{ price_low }}&price_high={{ price_high }}">信用</a></span>
         <form action="/goods_list/" method="get">
             <div class="sortdiv">
                 <input type="hidden" name="q" value="{{ question }}">
+                <input type="hidden" name="c" value="{{ category }}">
                 <input type="hidden" name="page" value="{{ pg }}">
                 <input type="hidden" name="sort_method" value="{{ sort_method }}">
                 <input type="text" placeholder="¥" class="sort" name="price_low">
@@ -304,21 +305,21 @@
     <div class="pagenation">
     <span class="step-links">
         {% if contacts.has_previous %}
-            <a href="?q={{ question }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">上一页</a>
+            <a href="?q={{ question }}&c={{ category }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">上一页</a>
         {% endif %}
         {% for pg in contacts.paginator.page_range %}
             {% if pg == contacts.number %}
                 <span class="active">
-                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
+                    <a href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
             {% else %}
                 <span>
-                    <a href="?q={{ question }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
+                    <a href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
             {% endif %}
         {% endfor %}
         {% if contacts.has_next %}
-            <a href="?q={{ question }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">下一页</a>
+            <a href="?q={{ question }}&c={{ category }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">下一页</a>
         {% endif %}
     </span>
     </div>

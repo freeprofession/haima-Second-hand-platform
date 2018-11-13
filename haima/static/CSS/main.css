@@ -1892,8 +1892,8 @@ label:hover {
     height: 329px;
     background: url(../images/register_banner.png) no-repeat;
     float: right;
-    margin: 20px 10px 0 0;
-    opacity: 0.5
+    margin: 50px 10px 0 0;
+    opacity: 1
 }
 
 .r_con {
@@ -3959,7 +3959,8 @@ label:hover {
 .error_mes {
     display: none;
     color: red;
-    font-size: 13px;
+    margin-left: 20px;
+    font-size: 15px;
 }
 
 #mod_psw_prcs ul li {

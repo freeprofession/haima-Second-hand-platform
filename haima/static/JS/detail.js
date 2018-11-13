@@ -69,7 +69,7 @@ var checkLength = function (dom, maxLength) {
             });
 
             //计算偏移量
-            var ll = (l / $(img).width()) * 300 + "%";
+            var ll = (l / $(img).width()) * 200 + "%";
             var tt = (t / $(img).height()) * 300 + "%";
 
             //设置大图偏移
