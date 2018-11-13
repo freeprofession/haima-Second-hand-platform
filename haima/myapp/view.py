@@ -29,7 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-# from myapp import AI_assess
+from myapp import AI_assess
 from myapp import goods_recommend
 
 
@@ -321,7 +321,7 @@ def login_ajax(request):
                         pass
                 else:
                     return_url = "/haima/"
-                # print(return_url, "enddddd")
+                print(return_url, "enddddd")
                 return HttpResponse(json.dumps({"msg": error, "href": return_url}))
             else:
 
@@ -410,10 +410,10 @@ def register_ajax(request):
         cur.execute("select * from t_user where user_name=%s", [username, ])  # 全表搜索，待建立索引
         user_list = cur.fetchall()
         if len(username) in range(6, 17):
-            check_name = re.compile(r'^\w+$')
+            check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
             check_ = check_name.match(username)
             if check_ is None:
-                user_error = "用户名为6-16位的数字或英文"
+                user_error = "用户名为6-16位的数字或英文,或汉子"
                 return HttpResponse(json.dumps({"error": user_error}))
             else:
                 if user_list:  # 判断用户名是否存在
@@ -455,9 +455,10 @@ def register_ajax(request):
             if check_code == code:  # 手机验证判断！
                 if user_error == "" and check_all == 'true':
                     now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+                    user_imgurl = '../static/Images/default_hp.jpg'
                     cur.execute(
-                        "insert into t_user(user_name,user_password,user_phone,user_startdate) values(%s,%s,%s,%s)",
-                        [username, password, phone, now_time])
+                        "insert into t_user(user_name,user_password,user_phone,user_startdate,user_imgurl) values(%s,%s,%s,%s,%s)",
+                        [username, password, phone, now_time, user_imgurl])
                     # print(username, email, phone, password)
                     con.commit()
                     r.delete(phone)
@@ -548,20 +549,19 @@ def goods_list(request):
                 question_word = list(question_word)
                 if len(question_word) != 1:
                     question_word.insert(0, question)
-                count = 0
                 for key in question_word:
                     if cut_words.smembers(key):
-                        count += 1
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
                             value_list.append(value)
                 value_list = sorted(set(value_list), key=value_list.index)
                 for goods_id in value_list:
-                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d" % goods_id
+                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d and goods_state = 0" % goods_id
                     cur.execute(sql)
                     goods = cur.fetchone()
-                    goods_lst.append(goods)
+                    if goods:
+                        goods_lst.append(goods)
                 prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
         if category == '1':
             cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
@@ -807,6 +807,8 @@ def user_credit(request):
 # ******************************************************商品界面设置,返回商品详情***************************************
 @mysql_required
 def goods_detail(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     goods_id = request.GET.get('goods')
@@ -831,7 +833,7 @@ def goods_detail(request):
         login_status = username
     # 商品收藏------------------------------------------
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,4',
         [user_id, ])
     collection_list = cur.fetchall()
     # --------------------------------------------------
@@ -857,10 +859,12 @@ def goods_detail(request):
     else:
         seller_in = "no_seller"
         collection_count = ""
-
     # =-----卖家信息————————————————
     cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
     seller_info = cur.fetchall()
+    cur.execute("select count(*) from t_order_success where release_user_id=%s", [seller_id])
+    count_sell = cur.fetchone()["count(*)"]
+    print(count_sell)
     # cur.execute("select count(*) from test where id=1")成交记录
     # ------------------------------------
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
@@ -937,6 +941,7 @@ def goods_detail(request):
         login_status = '未登录'
         user_imgurl = '../static/Images/default_hp.jpg'
     href = 1
+    cur.close()
     return render(request, "detail.html", locals())
 
 
@@ -1470,7 +1475,7 @@ def my_sale(request):
         login_status = username
     # 发布中的商品------------------------------
     cur.execute(
-        'select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc',
+        'select * from t_goods  where user_id=%s and goods_state=%s order by release_date desc',
         [user_id, 0])
     p_sale_list = cur.fetchall()
     paginator1 = Paginator(p_sale_list, 3)
@@ -1503,6 +1508,23 @@ def my_sale(request):
     return render(request, 'my_sale.html', locals())
 
 
+def refund_ajax(request):
+    user_id = request.session.get('user_id')
+    order_id = request.POST.get("order_id")
+    reason = request.POST.get("reason")
+    refund_user_id = request.POST.get("refund_user_id")
+    print("退款", order_id, reason, refund_user_id)
+    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    desc = "你收到一条订单为" + str(order_id) + "的退款消息！"
+    cur.execute("update t_order set refund_state=%s,refund_reason=%s where order_id=%s", [1, reason, order_id])
+    cur.execute(
+        "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+        [user_id, refund_user_id, desc, now_time])
+    message_push.lpush(refund_user_id, "system")
+    msg = "success"
+    return HttpResponse(json.dumps({"msg": msg}))
+
+
 def order_mark(request):
     order_id = request.POST.get("order_id")
     user_id = request.session.get('user_id')
@@ -1528,14 +1550,15 @@ def order_mark(request):
 
 
 # my_sale 户中心商品下架——ajax: 待修改
-@login_required
-@mysql_required
 def user_lower_goods(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get("goods_id")
     user_id = request.session.get('user_id')
     page_count_c = request.POST.get("page_count_c")
-    print(page_count_c)
-    if page_count_c is not None:
+    print(page_count_c, "传过来的页数")
+    print(goods_id)
+    if page_count_c != 'None' and page_count_c != 0:
         page_count = int(page_count_c)
     else:
         page_count = 1
@@ -1543,17 +1566,18 @@ def user_lower_goods(request):
     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
     con.commit()
     # ---页面拼接---------------------------
-    cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
+    cur.execute("select * from t_goods where user_id=%s and goods_state=%s order by release_date desc",
                 [user_id, 0])
     goods_list = cur.fetchall()
     print(len(goods_list) % 3, "秋雨", len(goods_list))
-    if len(goods_list) % 3 == 0:
+    if len(goods_list) % 3 == '0':
         msg = "flash"
         href = "/my_sale/?page1=" + str(page_count - 1)
         print(href)
         return HttpResponse(json.dumps({"msg": msg, "href": href}))
     else:
         try:
+            print(3 * page_count, "页数+++++")
             goods_list_ = goods_list[3 * page_count - 1]
             goods_id_ = goods_list_["goods_id"]
             release_date = goods_list_["release_date"]
@@ -1581,7 +1605,7 @@ def user_lower_goods(request):
                                         <li class="col04">{10}人浏览</li>
                                     </ul>
                                 </td>
-                                <td width="15%"><input type="button" class="lower1_btn lower_{11}"
+                                <td width="15%"><input type="button" class="lower1_btn lower_{11} oper_btn"
                                            onclick="lower({12})" value="下架"></td>
                                 <td width="15%"><a href="" class="oper_btn">修改</a></td>
                             </tr>
@@ -1849,7 +1873,6 @@ def my_collection(request):
             except:
                 msg = "success"
                 a_append = ""
-            con.close()
             return HttpResponse(json.dumps({"msg": msg, "html": a_append}))
 
     else:
@@ -1905,7 +1928,7 @@ def evaluate(request):
     print("evaluate", "------", username, user_id, goods_id)
     # 商品收藏------------------------------------------
     cur.execute(
-        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s ',
+        'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,4',
         [user_id, ])
     collection_list = cur.fetchall()
     # --------------------------------------------------
@@ -1925,6 +1948,8 @@ def evaluate(request):
     # =-----卖家信息————————————————
     cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
     seller_info = cur.fetchall()
+    cur.execute("select count(*) from t_order_success where release_user_id=%s", [seller_id])
+    count_sell = cur.fetchone()["count(*)"]
     # 判断买卖家
     if customer == "buy":
         # --本商品是否已经评价-------------------
@@ -1997,6 +2022,7 @@ def evaluate_ajax(request):
         get_eva.hset(key, "username", get_user_list["user_name"])
         get_eva.hset(key, "user_imgurl", get_user_list["user_imgurl"])
         get_eva.hset(key, "user_id", get_user_list["user_id"])
+        get_eva.hset(key, "user_address", get_user_list["user_address"])
         get_eva.hset(key, "desc", evaluate_text)
         get_eva.hset(key, "date", now_time)
         get_eva.hset(key, "goods_id", goods_lst["goods_id"])
@@ -2012,6 +2038,7 @@ def evaluate_ajax(request):
         set_eva.hset(key_, "username", set_user_list["user_name"])
         set_eva.hset(key_, "user_imgurl", set_user_list["user_imgurl"])
         set_eva.hset(key_, "user_id", set_user_list["user_id"])
+        set_eva.hset(key, "user_address", set_user_list["user_address"])
         set_eva.hset(key_, "desc", evaluate_text)
         set_eva.hset(key_, "date", now_time)
         set_eva.hset(key_, "goods_id", goods_lst["goods_id"])
@@ -2333,7 +2360,7 @@ def modify_information(request):
                 message_check = "../static/Images/message.png"
             print(message_check, "消息推送")
             login_status = username
-        return render(request, 'modify_information.html', {'user': user})
+        return render(request, 'modify_information.html', locals())
     else:
         shen = request.POST.get('cmbProvince')
         shi = request.POST.get('cmbCity')
@@ -2341,17 +2368,37 @@ def modify_information(request):
         img = request.POST.get('img')
         date = request.POST.get('date')
         sex = request.POST.get('sex')
-        password=request.POST.get('pay_password')
-        area = shen + ' ' + shi + ' ' + xian
+        password = request.POST.get('pay_password')
+
+        if shen == '请选择省份':
+            area = ''
+        else:
+            area = shen + ' ' + shi + ' ' + xian
         cur.execute(
-            "UPDATE t_user SET `user_imgurl` = '%s',`user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
-                password,img, sex, date, area, user_id))
+            "UPDATE t_user SET `user_pay_password` = '%s',`user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
+
+                password, img, sex, date, area, user_id))
         con.commit()
         return redirect('/modify_information/')
 
 
 def modify_password(request):
-    return render(request, 'modify_password.html')
+    user_id = request.session.get('user_id')
+    username = request.session.get('username')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        message_list_push = []
+        message_list_push1 = message_push.lrange(user_id, 0, 3)
+        for item in message_list_push1:
+            message_list_push.append(item.decode("utf-8"))
+        print(message_list_push)
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        print(message_check, "消息推送")
+        login_status = username
+    return render(request, 'modify_password.html', locals())
 
 
 @mysql_required
@@ -2538,8 +2585,8 @@ def page2(request):
         phone = request.session.get("user_buy_phone")
         name = request.session.get("name")
         address = request.session.get("address")
-        cur.execute("select order_id from t_order where order_goods_id=%s",[goods_id])
-        x=cur.fetchone()
+        cur.execute("select order_id from t_order where order_goods_id=%s", [goods_id])
+        x = cur.fetchone()
         params = request.GET.dict()
         sign = params.pop('sign', None)
         status = alipay.verify(params, sign)

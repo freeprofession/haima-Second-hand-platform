@@ -61,14 +61,20 @@
         <div class="goods_count fl" id="show_count">15</div>
         <ul class="cart_goods_show">
             {% if not collection_list %}
-                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
-                     alt="" height="100">
-                你没有收藏任何商品
+                <div>
+                    <div class="fl">
+                        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540615640800&di=10f74a08906679e36162dacb90ed2431&imgtype=0&src=http%3A%2F%2Fcdns2.freepik.com%2Ffree-photo%2Fsad-sleepy-emoticon-face-square_318-58496.jpg"
+                             alt="" height="100"></div>
+                    <div class="fl" style="margin-top: 40px;margin-left: 20px"><span
+                            style="font-weight: bolder;font-size: 20px">您没有收藏任何商品</span></div>
+                </div>
             {% else %}
                 {% for value in collection_list %}
                     <li>
-                        <img src="{{ value.goods_imgurl }}" alt="商品图片">
-                        <h4>{{ value.goods_title }}</h4>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }} "
+                                                                                 alt="商品图片"></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4 style="overflow: hidden;
+white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
                 {% endfor %}
@@ -365,20 +371,24 @@
             {% for item in seller_info %}
                 <div class="info_detail">
                     {% if item.user_imgurl %}
-                        <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                        <div><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></a></div>
                     {% else %}
-                        <div><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></div>
+                        <div><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></a></div>
                     {% endif %}
-                    <div class="msg_a"><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    <div class="msg_a"><a href="/user_credit/?user_credit_id={{ item.user_id }}" style="font-size: 16px;">{{ item.user_name }}</a></div>
                     <br>
-                    <div><span title="已实名认证" class="user-verify"></span></div>
                 </div>
                 <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
-                    <div><p>男</p>
+                    <div>
+                        {% if item.user_sex == 0 %}
+                            <p>男</p>
+                        {% else %}
+                            <p>女</p>
+                        {% endif %}
                         <p>注册时间：{{ item.user_startdate }}</p></div>
                 </div>
                 <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">
-                    <h4>转卖 <strong>0</strong>笔，<strong>0</strong>人评价</h4>
+                    <h4>已卖 <strong>{{ count_sell }}</strong> 笔</h4>
                     <ul>
                         <li><span>卖家评分：</span><strong>{{ item.user_credit }}</strong> 分</li>
                     </ul>
@@ -387,7 +397,7 @@
                     <a href="/user_credit/?user_credit_id={{ item.user_id }}"><input type="button" value="卖家信息"
                                                                                      id="check_detail"
                                                                                      class="opsale"></a>
-                    <input type="button" value="私聊卖家" id="communication" class="opsale">
+
                 </div>
             {% endfor %}
         </div>
@@ -693,7 +703,7 @@
                             if (data.msg === 'need_login') {
                                 top.location.href = data.href
                             } else {
-                                location = location
+                                location.reload()
                             }
                         }, 'json')
                     }

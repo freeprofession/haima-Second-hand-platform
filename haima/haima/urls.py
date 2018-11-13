@@ -62,12 +62,13 @@ urlpatterns = [
     path('my_sale_lower/', view.my_sale_lower),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
-    path("tixinfahuo/",view.tinxinfahuo),
+    path("tixinfahuo/", view.tinxinfahuo),
     path('my_sale_complete/', view.my_sale_complete),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
     path('my_buy_complete/', view.my_buy_complete),
     path('order_mark/', view.order_mark),
+    path('refund_ajax/', view.refund_ajax),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),
@@ -190,7 +191,7 @@ urlpatterns = [
     path('Determine_pay_date/', auction.Determine_pay_date),
     path('time_test/', auction.time_test),
     path('search_image/', view.search_image),
-    path('test_auction_pay_time/',auction.test_auction_pay_time),
-    path('cate_auction_index/',auction.cate_auction_index),
+    path('test_auction_pay_time/', auction.test_auction_pay_time),
+    path('cate_auction_index/', auction.cate_auction_index),
 
 ]

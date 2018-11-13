@@ -73,7 +73,8 @@
                     <li>
                         <a href="/goods_detail/?goods={{ value.goods_id }}"><img src="{{ value.goods_imgurl }}"
                                                                                  alt="商品图片"></a>
-                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4>{{ value.goods_title }}</h4></a>
+                        <a href="/goods_detail/?goods={{ value.goods_id }}"><h4 style="overflow: hidden;
+white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }}</h4></a>
                         <div><span style="color: red"></span>{{ value.goods_price }}</div>
                     </li>
                 {% endfor %}
@@ -99,7 +100,7 @@
 <div class="pos_center_con clearfix">
     <ul class="slide">
         <li><a href="#"><img src="../static/images/a_slide01.png" alt="幻灯片01" height="350" width="1600"></a></li>
-        <li><a href="#"><img src="../static/Images/QQ截图20181113103729.png" alt="幻灯片02" height="350" width="1600"></a></li>
+        <li><a href="#"><img src="../static/Images/a2.png" alt="幻灯片02" height="350" width="1600"></a></li>
         <li><a href="#"><img src="../static/Images/auction2.jpg" alt="幻灯片03" height="350" width="1600"></a></li>
         <li><a href="#"><img src="../static/images/slide04.jpg" alt="幻灯片04"></a></li>
     </ul>

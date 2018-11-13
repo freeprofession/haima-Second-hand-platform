@@ -3907,6 +3907,11 @@ label:hover {
     background: -webkit-linear-gradient(top, #f50, #ed4f00);
 }
 
+#save:hover {
+    cursor: pointer;
+    box-shadow: 1px 1px 1px gray;
+}
+
 #modify_button {
     line-height: 20px;
     padding: 5px 20px;
@@ -4089,6 +4094,7 @@ label:hover {
     animation: ran 10s linear infinite;
     /*动态10s展示*/
 }
+
 @keyframes ran {
     from {
         backgroud-position: 0 0;
