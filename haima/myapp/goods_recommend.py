@@ -104,30 +104,27 @@ def goods_recommend(requset):
                     rank[j] += score * wj  # 如果物品j没有浏览过，则累计物品j与item的相似度*兴趣评分，作为user对物品j的兴趣程度
             return dict(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:10])
 
-    # 声明一个ItemBased推荐的对象
     goods_list = []
-    if not user_id:
+    if user_id == 'visitor':
         res = list(keys_dict)[0:5]
     else:
-        if user_id == 'visitor':
+        if r9.llen(user_id) == 0:
             res = list(keys_dict)[0:5]
         else:
-
+            # 声明一个ItemBased推荐的对象
             Item = ItemBasedCF(uid_score_bid)
             Item.ItemSimilarity()
             recommedDic = Item.Recommend(user_id)  # 计算给用户A的推荐列表
             res = list(recommedDic.items())[0:5]
+            r9.delete(user_id)
         if len(res) < 5:
             for i in range(5 - len(res)):
                 res.append((keys_dict[i][0], 1))
-        if r9.llen(user_id) != 0:
-            r9.delete(user_id)
     for k, v in res:
         r9.rpush(user_id, k)
         cur.execute("select goods_title,goods_id,goods_imgurl,goods_price from t_goods where goods_id=%s", [k, ])
         goods_list.append(cur.fetchone())
     a = ''
-    c = 0
     for item in goods_list:
         if item == None:
             continue
@@ -142,9 +139,6 @@ def goods_recommend(requset):
             b = rr.format(item['goods_id'], item['goods_imgurl'], item['goods_id'], item['goods_title'],
                           item['goods_title'], item['goods_price'])
             a += b
-            c += 1
-            if c == 5:
-                break
     return HttpResponse(json.dumps({'rr': a}))
 
 # a = [0, 1, 1, 1, 0, 0]

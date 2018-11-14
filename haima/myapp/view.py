@@ -44,7 +44,7 @@ class CJsonEncoder(json.JSONEncoder):
 
 
 r = redis.Redis(host="47.100.200.132", port=6379, password='haima1234')
-r1 = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
+aip = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
 img = redis.Redis(host="47.100.200.132", port=6379, db=2, password='haima1234')
 category = redis.Redis(host="47.100.200.132", port=6379, db=3, password='haima1234')
 cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4, password='haima1234')
@@ -189,12 +189,16 @@ def homepage(request):
         else:
             message_check = "../static/Images/message.png"
         login_status = username
+        cur.execute("select count(collection_user_id) from t_user_collection where collection_user_id = %s",
+                    [user_id, ])
+        col_count = cur.fetchone()
+        col_count = col_count['count(collection_user_id)']
         cur.execute("select user_address from t_user where user_id = %s", [user_id])
         user_address = cur.fetchone()
         if user_address['user_address']:
             cur.execute(
-                "select * from t_goods where goods_address = %s order by rand() limit 5",
-                [user_address['user_address'], ])
+                "select * from (select * from t_goods where goods_state = %s)t where goods_address = %s order by rand() limit 5",
+                ['0', user_address['user_address']])
             same_city_list = cur.fetchall()
             if not same_city_list:
                 same_city_msg = 1
@@ -210,6 +214,7 @@ def homepage(request):
             user_imgurl = cur.fetchone()
     else:
         login_status = "未登录"
+        col_count = 0
         user_imgurl = {}
         user_imgurl['user_imgurl'] = '../static/Images/default_hp.jpg'
     cur.execute(
@@ -230,7 +235,7 @@ def homepage(request):
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,5',
         [user_id, ])
     collection_list = cur.fetchall()
-    cur.execute("select * from t_goods order by goods_id desc limit 5")
+    cur.execute("select * from (select * from t_goods where goods_state = %s)t order by goods_id desc limit 5", ['0', ])
     newest_list = cur.fetchall()
     return render(request, 'homepage.html', locals())
 
@@ -527,14 +532,21 @@ def goods_list(request):
         else:
             message_check = "../static/Images/message.png"
         login_status = username
-
+        cur.execute("select count(collection_user_id) from t_user_collection where collection_user_id = %s",
+                    [user_id, ])
+        col_count = cur.fetchone()
+        col_count = col_count['count(collection_user_id)']
+    else:
+        col_count = 0
     if request.method == 'GET':
         question = request.GET.get('q')
         category = request.GET.get('c')
         if question:
             if question == '全新闲置':
-                prompt = '以下商品为本平台最新上架商品，只显示最新的60条哟！'
-                cur.execute("select * from t_goods order by goods_id desc limit 60")
+                prompt = '以下商品为本平台最新上架商品，只显示最新的100条哟！'
+                cur.execute(
+                    "select * from (select * from t_goods where goods_state = %s)t order by goods_id desc limit 100",
+                    ['0', ])
                 goods_lst = cur.fetchall()
             elif question == '同城交易':
                 if request.session.get('user_id'):
@@ -543,60 +555,72 @@ def goods_list(request):
                     user_address_dict = cur.fetchone()
                     user_address = user_address_dict['user_address']
                     if user_address:
-                        cur.execute("select * from t_goods where goods_address = %s", [user_address, ])
+                        cur.execute("select * from t_goods where goods_address = %s and goods_state = %s",
+                                    [user_address, '0'])
                         goods_lst = cur.fetchall()
                         if goods_lst:
                             prompt = '以下商品为' + user_address + '地区同城的商品，如需要查询其他地区请在用户中心中修改居住地'
                         else:
                             prompt = '抱歉没有找到您所在的' + user_address + '的商品'
                     else:
-                        print(user_address)
                         prompt = '亲还没有设置居住地看不到同城商品哟！请在用户中心设置'
                 else:
                     return redirect('/user_center/')
             else:
-                question_word = jieba.cut(question)
-                question_word = list(question_word)
-                if len(question_word) != 1:
-                    question_word.insert(0, question)
+                question_word = []
+                if cut_words.smembers(question):
+                    question_word.append(question)
+                else:
+                    question_word = jieba.cut(question)
+                    question_word = list(question_word)
+                    if len(question_word) != 1:
+                        question_word.insert(0, question)
                 for key in question_word:
                     if cut_words.smembers(key):
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
-                            value_list.append(value)
-                value_list = sorted(set(value_list), key=value_list.index)
-                for goods_id in value_list:
-                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d and goods_state = 0" % goods_id
-                    cur.execute(sql)
-                    goods = cur.fetchone()
-                    if goods:
-                        goods_lst.append(goods)
-                prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
+
+                            if value not in value_list:
+                                value_list.append(value)
+                                cur.execute(
+                                    "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %s and goods_state = %s",
+                                    [value, '0'])
+                                goods = cur.fetchone()
+                                if goods:
+                                    goods_lst.append(goods)
+                                else:
+                                    cut_words.srem(key, value)
+                    prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
+
         if category == '1':
-            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
-                        [category, ])
+            cur.execute(
+                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
+                [category, '0'])
             goods_lst = cur.fetchall()
             prompt = '已选类型：手机'
         if category == '2':
-            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
-                        [category, ])
+            cur.execute(
+                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
+                [category, '0'])
             goods_lst = cur.fetchall()
             prompt = '已选类型：电脑'
         if category == '3':
-            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
-                        [category, ])
+            cur.execute(
+                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
+                [category, '0'])
             goods_lst = cur.fetchall()
             prompt = '已选类型：相机'
         if category == '4':
-            cur.execute("select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
-                        [category, ])
+            cur.execute(
+                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
+                [category, '0'])
             goods_lst = cur.fetchall()
             prompt = '已选类型：电玩随身听'
         if category == '5':
             cur.execute(
-                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s",
-                [category, ])
+                "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
+                [category, '0'])
             goods_lst = cur.fetchall()
             prompt = '已选类型：其他'
         # 价格筛选
@@ -960,7 +984,6 @@ def goods_detail(request):
     except:
         return render(request,"404.html")
 
-
 # 测试用---------------------------------
 def text_message(request):
     cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
@@ -1200,11 +1223,13 @@ def lower_goods(request):
         cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
         msg = "下架成功"
         # msg = "下架失败"
+        aip.sadd('aip', goods_id)
         con.commit()
         href = '/goods_detail/?goods=' + str(goods_id)
     else:
         cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['0', goods_id])
         msg = "上架成功"
+        aip.sadd('aip', goods_id)
         con.commit()
         href = '/goods_detail/?goods=' + str(goods_id)
         print(href)
@@ -1394,38 +1419,6 @@ def assess_ajax(request):
     return HttpResponse(json.dumps({"price": price}))
 
 
-# 拍卖首页
-def auction_index(request):
-    id = request.session.get('user_id')
-    print(id)
-    list1 = []
-    if id:
-        goods_list = []
-        cur.execute('select user_name from t_user where user_id=%s', [id])
-        username = cur.fetchone()
-        cur.execute("select auction_goods_id from t_auction_goods")
-        goods_dict = cur.fetchall()
-        # 先将需要在首页展示的拍卖商品的id全部拿出来存进一个列表里
-        for i in goods_dict:
-            goods_list.append(i["auction_goods_id"])
-        # 对这个需要展示的商品id进行遍历，将他需要展示的数据全部一条一条的拿出来
-        for goods_id in goods_list:
-            dict1 = {}
-            cur.execute("select * from t_auction_goods where auction_goods_id=%s ", [goods_id])
-            goods_messge = cur.fetchone()
-            cur.execute("select * from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            goods_auction_message = cur.fetchone()
-            # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
-            # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            dict1["goods"] = goods_messge
-            dict1["attribute"] = goods_auction_message
-            list1.append(dict1)
-
-        return render(request, "auction_index.html", locals())
-    else:
-        return HttpResponseRedirect('/login/')
-
-
 # ********************************************************************普通商品购买***************************************
 def goods_confirm_buy(request):
     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
@@ -1466,6 +1459,7 @@ def goods_confirm_buy(request):
                     [str(release_user_id), str(user_id), date, str(goods_id)])
                 print("生成订单成功")
                 cur.execute("update t_goods set goods_state=%s where goods_id=%s", ["1", goods_id])
+                aip.sadd('aip', goods_id)
                 print("更新商品状态成功")
                 con.commit()
                 error = "pay_ok"
@@ -1604,6 +1598,7 @@ def user_lower_goods(request):
     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
     con.commit()
     msg = "append"
+    aip.sadd('aip', goods_id)
     return HttpResponse(json.dumps({"msg": msg}))
 
 
@@ -1714,6 +1709,7 @@ def my_sale_lower(request):
         goods_id = request.POST.get("goods_id")
         try:
             cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['0', goods_id])
+            aip.sadd('aip', goods_id)
             msg = "上架成功"
             con.commit()
             msg = "success"
@@ -1957,8 +1953,7 @@ def my_collection(request):
         page = request.GET.get('page')
         try:
             contacts = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
+        except PageNotAnInteger:            # If page is not an integer, deliver first page.
             contacts = paginator.page(1)
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
@@ -2746,7 +2741,16 @@ def admin(request, user):
     num_user = cur.fetchall()[0]['COUNT(*)']
     cur.execute('SELECT COUNT(*) FROM t_goods WHERE goods_state = 0')
     num_goods = cur.fetchall()[0]['COUNT(*)']
-    return render(request, 'admin.html', {'user': user, 'num_user': num_user, 'num_goods': num_goods})
+    cur.execute(
+        'select sum(goods_price),count(goods_price) from (t_goods inner join t_order_success on t_goods.goods_id=t_order_success.order_goods_id)')
+    order = cur.fetchall()[0]
+    num_count = order['sum(goods_price)']
+    num_num = order['count(goods_price)']
+    cur.execute(
+        'select sum(goods_price),count(goods_price) from (t_goods inner join t_order_success on t_goods.goods_id=t_order_success.order_goods_id) where to_days(order_date) = to_days(now());')
+    now = cur.fetchall()
+    print(now)
+    return render(request, 'admin.html', locals())
 
 
 @admin_session
@@ -2932,3 +2936,38 @@ def search_image(request):
         return render(request, 'search_image.html', locals())
     else:
         return redirect('/haima/')
+
+
+@admin_session
+def refund(request, user):
+    cur.execute(
+        "select * from (t_goods inner join t_user on t_goods.user_id=t_user.user_id)inner join t_order on t_goods.goods_id = t_order.order_goods_id where refund_state = '1'")
+    refundlist = cur.fetchall()
+    print(refundlist)
+    return render(request, 'refund.html', locals())
+
+
+@admin_session
+def category(request, user):
+    cur.execute('select * from t_goods_category')
+    category = cur.fetchall()
+    return render(request, 'category.html', locals())
+
+
+def aip_manage(request):
+    goods_list = aip.smembers('aip')
+    if goods_list:
+        goodsid_list = ','.join([i.decode('utf-8') for i in goods_list])
+        cur.execute("select * from t_goods where goods_id in " + '(' + goodsid_list + ')')
+        re = cur.fetchall()
+        aip.delete('aip')
+        for goods in re:
+            url = goods['goods_imgurl']
+            if goods['goods_state'] == '0':
+                options = {}
+                options["brief"] = "{\"id\":\"" + str(goods['goods_id']) + "\", \"url\":\"" + url + "\"}"
+                print(client.productAddUrl(url, options))
+                print(goods)
+            else:
+                print(client.productDeleteByUrl(url))
+    return HttpResponse('aip')

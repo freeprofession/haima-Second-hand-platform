@@ -2,11 +2,11 @@
 {% block mainbody %}
     <div class="admin-biaogelist">
         <div class="listbiaoti am-cf">
-            <ul class="am-icon-flag on"> 订单列表</ul>
-            <dl class="am-icon-home" style="float: right;">当前位置： 首页 > <a href="/admin/">商品列表</a></dl>
-            <dl>
-                <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"> 补充线订单</button>
-            </dl>
+            <ul class="am-icon-flag on"> 退款申请</ul>
+            <dl class="am-icon-home" style="float: right;">当前位置： 首页 > <a href="/admin/">退款申请</a></dl>
+            {#            <dl>#}
+            {#                <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"> 补充线订单</button>#}
+            {#            </dl>#}
             <!--这里打开的是新页面-->
         </div>
         <form class="am-form am-g">
@@ -14,27 +14,27 @@
                 <thead>
                 <tr class="am-success">
                     <th class="table-check"><input type="checkbox"/></th>
-                    <th class="table-id">ID</th>
+                    <th class="table-t">订单id</th>
                     <th class="table-sale">卖家</th>
                     <th class="table-goods">商品id</th>
                     <th class="table-title">商品名</th>
-                    <th class="table-type">价格</th>
                     <th class="table-author am-hide-sm-only">购买人</th>
                     <th class="table-date am-hide-sm-only">购买日期</th>
+                    <th class="table-type">原因</th>
                     <th width="130px" class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for order in orderlist %}
+                {% for order in refundlist %}
                     <tr>
                         <td><input type="checkbox"/></td>
                         <td>{{ order.order_id }}</td>
                         <td>{{ order.user_name }}</td>
                         <td>{{ order.goods_id }}</td>
                         <td><a href="/goods_detail/?goods={{ order.goods_id }}">{{ order.goods_title }}</a></td>
-                        <td>{{ order.goods_price }}</td>
                         <td class="am-hide-sm-only">{{ order.buy_name }}</td>
                         <td class="am-hide-sm-only">{{ order.order_date }}</td>
+                        <td>{{ order.refund_reason }}</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
@@ -67,13 +67,6 @@
                 <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
             </div>
             <ul class="am-pagination am-fr">
-                <li class="am-disabled"><a href="#">«</a></li>
-                <li class="am-active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">»</a></li>
             </ul>
             <hr/>
             <p>注：.....</p>

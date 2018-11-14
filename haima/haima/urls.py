@@ -33,6 +33,8 @@ urlpatterns = [
     path('admin_search_goods/', view.admin_search_goods),
     path('admin_search_user/', view.admin_search_user),
     path('admin_update/', view.admin_update),
+    path('refund/', view.refund),
+    path('category/', view.category),
     path('exit/', view.exit),
     path('', view.homepage),
     path('haima/', view.homepage),
@@ -193,5 +195,5 @@ urlpatterns = [
     path('search_image/', view.search_image),
     path('test_auction_pay_time/', auction.test_auction_pay_time),
     path('cate_auction_index/', auction.cate_auction_index),
-
+    path('aip_manage/', view.aip_manage),
 ]

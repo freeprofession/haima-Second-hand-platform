@@ -21,7 +21,7 @@
                         data-am-dropdown-toggle> 消息管理<span class="am-badge am-badge-danger am-round">3</span></button>
                 <ul class="am-dropdown-content">
                     <li><a href="#">用户申诉 <span class="am-badge am-badge-danger am-round">556</span></a></li>
-                    <li><a href="#">退款处理 <span class="am-badge am-badge-danger am-round">69</span></a></li>
+                    <li><a href="/refund/">退款申请 <span class="am-badge am-badge-danger am-round">69</span></a></li>
                     <li><a href="#">客服介入</a></li>
                     <li><a href="#">用户评价</a></li>
                     <li><a href="#">用户反馈<span class="am-badge am-badge-danger am-round">999</span></a></li>
@@ -60,45 +60,31 @@
             <h3 class="am-icon-flag"><em></em> <a href="#">商品管理</a></h3>
             <ul>
                 <li><a href="/admin_goods/">商品列表</a></li>
-                <li class="func" dataType='html' dataLink='msn.htm' iconImg='images/msn.gif'><a href="#">添加新商品</a></li>
-                <li><a href="#">商品分类</a></li>
-                <li><a href="#">用户评论</a></li>
-                <li><a href="#">商品回收站</a></li>
+                <li class="func" dataType='html' dataLink='msn.htm' iconImg='images/msn.gif'><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')">添加新商品</a></li>
+                <li><a href="/category/">商品分类</a></li>
             </ul>
             <h3 class="am-icon-cart-plus"><em></em> <a href="#">订单管理</a></h3>
             <ul>
                 <li><a href="/admin_order/">订单列表</a></li>
-                <li><a href="#">合并订单</a></li>
-                <li><a href="#">订单打印</a></li>
-                <li><a href="#">添加订单</a></li>
-                <li><a href="#">发货单列表</a></li>
             </ul>
             <h3 class="am-icon-users"><em></em> <a href="#">用户管理</a></h3>
             <ul>
                 <li><a href="/admin_user/">用户列表</a></li>
-                <li><a href="#">游客统计</a></li>
-                <li><a href="#">用户统计</a></li>
-                <li><a href="#">用户推荐图</a></li>
-                <li><a href="#">推荐列表</a></li>
+                <li><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')"游客统计</a></li>
             </ul>
             <h3 class="am-icon-volume-up"><em></em> <a href="#">信息通知</a></h3>
             <ul>
-                <li><a href="#">站内消息 /留言</a></li>
-                <li><a href="#">短信</a></li>
-                <li><a href="#">邮件</a></li>
-                <li><a href="#">微信</a></li>
-                <li><a href="#">客服</a></li>
-                <li><a href="#">退款申请</a></li>
+                <li><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')"站内消息 /留言</a></li>
+                <li><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')"短信</a></li>
+                <li><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')"客服</a></li>
+                <li><a href="/refund/">退款申请</a></li>
             </ul>
             <h3 class="am-icon-gears"><em></em> <a href="#">系统设置</a></h3>
             <ul>
-                <li><a href="#">数据备份</a></li>
-                <li><a href="#">邮件/短信管理</a></li>
-                <li><a href="#">文件管理</a></li>
-                <li><a href="#">权限设置</a></li>
-                <li><a href="#">网站设置</a></li>
-                <li><a href="#">第三方支付</a></li>
-                <li><a href="#">平台设置</a></li>
+                <li><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')"数据备份</a></li>
+                <li><a href="https://www.qiniu.com">文件管理</a></li>
+                <li><a href="javascript: void(0)" onclick="alert('功能待开发，敬请期待')">权限设置</a></li>
+                <li><a href="javascript: void(0)" onclick="aip_manage()">搜索图库更新</a></li>
                 <li><a href="/exit/">退出登录</a></li>
             </ul>
         </div>
@@ -128,7 +114,7 @@
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="am-btn am-btn-default am-radius am-btn-xs">奖金管理<a
+                    <button type="button" class="am-btn am-btn-default am-radius am-btn-xs">用户管理<a
                             href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close="">×</a>
                     </button>
                 </li>
@@ -147,20 +133,20 @@
                         <dd>{{ num_user }}</dd>
                         <dd class="f12">用户数量</dd>
                     </dl>
-                    <dl data-am-scrollspy="{animation: 'slide-right', delay: 300}">
-                        <dt class="cs"><i class="am-icon-area-chart"></i></dt>
-                        <dd>455</dd>
-                        <dd class="f12">今日收入</dd>
-                    </dl>
                     <dl data-am-scrollspy="{animation: 'slide-right', delay: 600}">
                         <dt class="hs"><i class="am-icon-shopping-cart"></i></dt>
                         <dd>{{ num_goods }}</dd>
                         <dd class="f12">商品数量</dd>
                     </dl>
+                    <dl data-am-scrollspy="{animation: 'slide-right', delay: 300}">
+                        <dt class="cs"><i class="am-icon-area-chart"></i></dt>
+                        <dd>{{ num_num }}</dd>
+                        <dd class="f12">总成交量</dd>
+                    </dl>
                     <dl data-am-scrollspy="{animation: 'slide-right', delay: 900}">
                         <dt class="ls"><i class="am-icon-cny"></i></dt>
-                        <dd>455</dd>
-                        <dd class="f12">全部收入</dd>
+                        <dd>{{ num_count }}</dd>
+                        <dd class="f12">总成交额</dd>
                     </dl>
                 </div>
                 <div class="admin-biaoge">
@@ -459,6 +445,24 @@
     $("#start,#end").hover(function () {
         $(this).css("cursor", 'pointer');
     });
+</script>
+<script>
+    function aip_manage() {
+        $.ajax({
+            type: "POST",
+            url: "/aip_manage/",
+            async: false,
+            data: {},
+            success: function (res) {
+                if (res == 'aip') {
+                    alert('更新成功')
+                }
+            }, error: function () {
+                alert('业务繁忙')
+            }
+        })
+
+    }
 </script>
 </body>
 </html>

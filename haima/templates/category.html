@@ -1,0 +1,36 @@
+{% extends "admin.html" %}
+{% block mainbody %}
+    <div class="admin-biaogelist">
+        <div class="listbiaoti am-cf">
+            <ul class="am-icon-flag on"> 商品分类</ul>
+            <dl class="am-icon-home" style="float: right;">当前位置： 首页 > <a href="/admin/">商品分类</a></dl>
+            {#            <dl>#}
+            {#                <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"> 补充线订单</button>#}
+            {#            </dl>#}
+            <!--这里打开的是新页面-->
+        </div>
+        <div style="width: 200px;margin: 50px" >
+            <table class="am-table">
+                <thead>
+                <tr>
+                    <th>分类ID</th>
+                    <th>分类名称</th>
+                </tr>
+                </thead>
+                {% for cat in category %}
+                    <tbody>
+                    <tr>
+                        <td>{{ cat.category_id }}</td>
+                        <td>{{ cat.category_name }}</td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+
+        <hr/>
+        <p>注：.....</p>
+        </form>
+        {% include "admin_bottom.html" %}
+    </div>
+{% endblock %}
