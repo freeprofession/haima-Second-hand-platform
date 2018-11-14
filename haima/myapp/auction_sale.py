@@ -157,6 +157,7 @@ def my_auction_sale_three(request):
             cur.execute("select auction_order_buy_user_id from t_auction_order where auction_order_goods_id=%s",
                         [goods_id])
             buy_user_id = cur.fetchone()
+            print(buy_user_id)
             cur.execute("select user_name from t_user where user_id=%s", [buy_user_id["auction_order_buy_user_id"]])
             user_name = cur.fetchone()["user_name"]
             dict1["user_name"] = user_name
