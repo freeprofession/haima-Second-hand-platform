@@ -179,7 +179,7 @@
         {% endif %}
     </div>
 </div>
-<input id="page_count_c" value="{{ page1 }}">
+<input id="page_count_c" value="{{ page1 }}" hidden>
 <div class="for_psw_send">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         通知买家
@@ -244,10 +244,11 @@
                 'page_count_c': page_count_c,
             }, function (data) {
                 if (data.msg === "append") {
-                    $("#goods_" + id).remove();
-                    $("#goods1_" + id).remove();
-                    $("#append").after(data.html)
+                    {#$("#goods_" + id).remove();#}
+                    {#$("#goods1_" + id).remove();#}
+                    {#$("#append").after(data.html)#}
                     $(".for_psw_down").fadeOut(500);
+                    location.reload()
                     console.log(data.msg)
                 } else if (data.msg === "flash") {
                     top.location.href = data.href

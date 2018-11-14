@@ -941,7 +941,6 @@ def goods_detail(request):
         login_status = '未登录'
         user_imgurl = '../static/Images/default_hp.jpg'
     href = 1
-    cur.close()
     return render(request, "detail.html", locals())
 
 
@@ -1549,10 +1548,7 @@ def order_mark(request):
     return HttpResponse(json.dumps({"msg": msg}))
 
 
-# my_sale 户中心商品下架——ajax: 待修改
 def user_lower_goods(request):
-    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
-    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get("goods_id")
     user_id = request.session.get('user_id')
     page_count_c = request.POST.get("page_count_c")
@@ -1565,69 +1561,89 @@ def user_lower_goods(request):
     # 下架商品-------------------
     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
     con.commit()
-    # ---页面拼接---------------------------
-    cur.execute("select * from t_goods where user_id=%s and goods_state=%s order by release_date desc",
-                [user_id, 0])
-    goods_list = cur.fetchall()
-    print(len(goods_list) % 3, "秋雨", len(goods_list))
-    if len(goods_list) % 3 == '0':
-        msg = "flash"
-        href = "/my_sale/?page1=" + str(page_count - 1)
-        print(href)
-        return HttpResponse(json.dumps({"msg": msg, "href": href}))
-    else:
-        try:
-            print(3 * page_count, "页数+++++")
-            goods_list_ = goods_list[3 * page_count - 1]
-            goods_id_ = goods_list_["goods_id"]
-            release_date = goods_list_["release_date"]
-            goods_imgurl = goods_list_["goods_imgurl"]
-            goods_title = goods_list_['goods_title']
-            goods_browse_count = goods_list_["goods_browse_count"]
-            goods_price = goods_list_["goods_price"]
-            dd = """  <ul class="order_list_th w978 clearfix" id="goods_{0}">
-                            <input type="text" value="{1}" hidden id="goods_id_{2}">
-                            <li class="col01" id="date">{3}</li>
-                        </ul>
-    
-                        <table class="order_list_table w980" id="goods1_{4}">
-                            <tbody>
-                            <tr>
-                                <td width="55%">
-                                    <ul class="order_goods_list clearfix">
-                                        <li class="col01"><a href="/goods_detail/?goods={5}"><img
-                                                src="{6}"></a></li>
-                                        <li class="col02"><a
-                                                href="/goods_detail/?goods={7}"
-                                                style="color: dodgerblue">{8}</a><em
-                                                style="color: red">{9}元</em>
-                                        </li>
-                                        <li class="col04">{10}人浏览</li>
-                                    </ul>
-                                </td>
-                                <td width="15%"><input type="button" class="lower1_btn lower_{11} oper_btn"
-                                           onclick="lower({12})" value="下架"></td>
-                                <td width="15%"><a href="" class="oper_btn">修改</a></td>
-                            </tr>
-                            </tbody>
-                        </table>"""
-            rr = dd.format(goods_id_, goods_id_, goods_id_, release_date, goods_id_, goods_id_, goods_imgurl,
-                           goods_id_,
-                           goods_title, goods_price,
-                           goods_browse_count, goods_id, goods_id_)
-            msg = "append"
-            html = rr
-        except:
-            msg = "append"
-            html = ""
-        return HttpResponse(json.dumps({"msg": msg, "html": html}))
-        # except:
-        #     msg = "flash"
-        #     href = "/my_sale/"
-        #     return HttpResponse(json.dumps({"msg": msg, "href": href}))
-        # msg = "error"
-        # href = "/my_sale/"
-        # return HttpResponse(json.dumps({"msg": msg, "href": href}))
+    msg = "append"
+    return HttpResponse(json.dumps({"msg": msg}))
+
+
+# my_sale 户中心商品下架——ajax: 待修改
+# def user_lower_goods(request):
+#     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+#     cur = con.cursor(pymysql.cursors.DictCursor)
+#     goods_id = request.POST.get("goods_id")
+#     user_id = request.session.get('user_id')
+#     page_count_c = request.POST.get("page_count_c")
+#     print(page_count_c, "传过来的页数")
+#     print(goods_id)
+#     if page_count_c != 'None' and page_count_c != 0:
+#         page_count = int(page_count_c)
+#     else:
+#         page_count = 1
+#     # 下架商品-------------------
+#     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
+#     con.commit()
+#     # ---页面拼接---------------------------
+#     cur.execute("select * from t_goods where user_id=%s and goods_state=%s order by release_date desc",
+#                 [user_id, 0])
+#     goods_list = cur.fetchall()
+#     print(len(goods_list) % 3, "秋雨", len(goods_list))
+#     if len(goods_list) % 3 == '0':
+#         msg = "flash"
+#         href = "/my_sale/?page1=" + str(page_count - 1)
+#         print(href)
+#         return HttpResponse(json.dumps({"msg": msg, "href": href}))
+#     else:
+#         try:
+#             print(3 * page_count, "页数+++++")
+#             goods_list_ = goods_list[3 * page_count - 1]
+#             goods_id_ = goods_list_["goods_id"]
+#             release_date = goods_list_["release_date"]
+#             goods_imgurl = goods_list_["goods_imgurl"]
+#             goods_title = goods_list_['goods_title']
+#             goods_browse_count = goods_list_["goods_browse_count"]
+#             goods_price = goods_list_["goods_price"]
+#             dd = """  <ul class="order_list_th w978 clearfix" id="goods_{0}">
+#                             <input type="text" value="{1}" hidden id="goods_id_{2}">
+#                             <li class="col01" id="date">{3}</li>
+#                         </ul>
+#
+#                         <table class="order_list_table w980" id="goods1_{4}">
+#                             <tbody>
+#                             <tr>
+#                                 <td width="55%">
+#                                     <ul class="order_goods_list clearfix">
+#                                         <li class="col01"><a href="/goods_detail/?goods={5}"><img
+#                                                 src="{6}"></a></li>
+#                                         <li class="col02"><a
+#                                                 href="/goods_detail/?goods={7}"
+#                                                 style="color: dodgerblue">{8}</a><em
+#                                                 style="color: red">{9}元</em>
+#                                         </li>
+#                                         <li class="col04">{10}人浏览</li>
+#                                     </ul>
+#                                 </td>
+#                                 <td width="15%"><input type="button" class="lower1_btn lower_{11} oper_btn"
+#                                            onclick="lower({12})" value="下架"></td>
+#                                 <td width="15%"><a href="" class="oper_btn">修改</a></td>
+#                             </tr>
+#                             </tbody>
+#                         </table>"""
+#             rr = dd.format(goods_id_, goods_id_, goods_id_, release_date, goods_id_, goods_id_, goods_imgurl,
+#                            goods_id_,
+#                            goods_title, goods_price,
+#                            goods_browse_count, goods_id, goods_id_)
+#             msg = "append"
+#             html = rr
+#         except:
+#             msg = "append"
+#             html = ""
+#         return HttpResponse(json.dumps({"msg": msg, "html": html}))
+#         # except:
+#         #     msg = "flash"
+#         #     href = "/my_sale/"
+#         #     return HttpResponse(json.dumps({"msg": msg, "href": href}))
+#         # msg = "error"
+#         # href = "/my_sale/"
+#         # return HttpResponse(json.dumps({"msg": msg, "href": href}))
 
 
 # 我的出售，上下架页面
