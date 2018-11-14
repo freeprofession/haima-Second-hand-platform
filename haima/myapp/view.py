@@ -44,7 +44,7 @@ class CJsonEncoder(json.JSONEncoder):
 
 
 r = redis.Redis(host="47.100.200.132", port=6379, password='haima1234')
-r1 = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
+aip = redis.Redis(host="47.100.200.132", port=6379, db=1, password='haima1234')
 img = redis.Redis(host="47.100.200.132", port=6379, db=2, password='haima1234')
 category = redis.Redis(host="47.100.200.132", port=6379, db=3, password='haima1234')
 cut_words = redis.Redis(host="47.100.200.132", port=6379, db=4, password='haima1234')
@@ -1175,11 +1175,13 @@ def lower_goods(request):
         cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
         msg = "下架成功"
         # msg = "下架失败"
+        aip.sadd('aip', goods_id)
         con.commit()
         href = '/goods_detail/?goods=' + str(goods_id)
     else:
         cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['0', goods_id])
         msg = "上架成功"
+        aip.sadd('aip', goods_id)
         con.commit()
         href = '/goods_detail/?goods=' + str(goods_id)
         print(href)
@@ -1435,6 +1437,7 @@ def goods_confirm_buy(request):
                     [str(release_user_id), str(user_id), date, str(goods_id)])
                 print("生成订单成功")
                 cur.execute("update t_goods set goods_state=%s where goods_id=%s", ["1", goods_id])
+                aip.sadd('aip', goods_id)
                 print("更新商品状态成功")
                 con.commit()
                 error = "pay_ok"
@@ -1546,6 +1549,7 @@ def user_lower_goods(request):
     # 下架商品-------------------
     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
     con.commit()
+    aip.sadd('aip', goods_id)
     # ---页面拼接---------------------------
     cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
                 [user_id, 0])
@@ -1634,6 +1638,7 @@ def my_sale_lower(request):
         goods_id = request.POST.get("goods_id")
         try:
             cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['0', goods_id])
+            aip.sadd('aip', goods_id)
             msg = "上架成功"
             con.commit()
             msg = "success"
@@ -1853,7 +1858,7 @@ def my_collection(request):
             except:
                 msg = "success"
                 a_append = ""
-            con.close()
+            cur.close()
             return HttpResponse(json.dumps({"msg": msg, "html": a_append}))
 
     else:
@@ -2377,7 +2382,7 @@ def modify_password(request):
             message_check = "../static/Images/message.png"
         print(message_check, "消息推送")
         login_status = username
-    return render(request, 'modify_password.html',locals())
+    return render(request, 'modify_password.html', locals())
 
 
 @mysql_required
@@ -2628,7 +2633,16 @@ def admin(request, user):
     num_user = cur.fetchall()[0]['COUNT(*)']
     cur.execute('SELECT COUNT(*) FROM t_goods WHERE goods_state = 0')
     num_goods = cur.fetchall()[0]['COUNT(*)']
-    return render(request, 'admin.html', {'user': user, 'num_user': num_user, 'num_goods': num_goods})
+    cur.execute(
+        'select sum(goods_price),count(goods_price) from (t_goods inner join t_order_success on t_goods.goods_id=t_order_success.order_goods_id)')
+    order = cur.fetchall()[0]
+    num_count = order['sum(goods_price)']
+    num_num = order['count(goods_price)']
+    cur.execute(
+        'select sum(goods_price),count(goods_price) from (t_goods inner join t_order_success on t_goods.goods_id=t_order_success.order_goods_id) where to_days(order_date) = to_days(now());')
+    now = cur.fetchall()
+    print(now)
+    return render(request, 'admin.html', locals())
 
 
 @admin_session
@@ -2814,3 +2828,38 @@ def search_image(request):
         return render(request, 'search_image.html', locals())
     else:
         return redirect('/haima/')
+
+
+@admin_session
+def refund(request, user):
+    cur.execute(
+        "select * from (t_goods inner join t_user on t_goods.user_id=t_user.user_id)inner join t_order on t_goods.goods_id = t_order.order_goods_id where refund_state = '1'")
+    refundlist = cur.fetchall()
+    print(refundlist)
+    return render(request, 'refund.html', locals())
+
+
+@admin_session
+def category(request, user):
+    cur.execute('select * from t_goods_category')
+    category = cur.fetchall()
+    return render(request, 'category.html', locals())
+
+
+def aip_manage(request):
+    goods_list = aip.smembers('aip')
+    if goods_list:
+        goodsid_list = ','.join([i.decode('utf-8') for i in goods_list])
+        cur.execute("select * from t_goods where goods_id in " + '(' + goodsid_list + ')')
+        re = cur.fetchall()
+        aip.delete('aip')
+        for goods in re:
+            url = goods['goods_imgurl']
+            if goods['goods_state'] == '0':
+                options = {}
+                options["brief"] = "{\"id\":\"" + str(goods['goods_id']) + "\", \"url\":\"" + url + "\"}"
+                print(client.productAddUrl(url, options))
+                print(goods)
+            else:
+                print(client.productDeleteByUrl(url))
+    return HttpResponse('aip')

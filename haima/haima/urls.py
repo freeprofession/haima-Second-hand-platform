@@ -33,6 +33,8 @@ urlpatterns = [
     path('admin_search_goods/', view.admin_search_goods),
     path('admin_search_user/', view.admin_search_user),
     path('admin_update/', view.admin_update),
+    path('refund/', view.refund),
+    path('category/', view.category),
     path('exit/', view.exit),
     path('', view.homepage),
     path('haima/', view.homepage),
@@ -62,7 +64,7 @@ urlpatterns = [
     path('my_sale_lower/', view.my_sale_lower),
     path('my_sale/', view.my_sale),
     path('my_buy/', view.my_buy),
-    path("tixinfahuo/",view.tinxinfahuo),
+    path("tixinfahuo/", view.tinxinfahuo),
     path('my_sale_complete/', view.my_sale_complete),
     path('my_evaluate_get/', view.my_evaluate_get),
     path('my_evaluate_give/', view.my_evaluate_give),
@@ -190,7 +192,8 @@ urlpatterns = [
     path('Determine_pay_date/', auction.Determine_pay_date),
     path('time_test/', auction.time_test),
     path('search_image/', view.search_image),
-    path('test_auction_pay_time/',auction.test_auction_pay_time),
-    path('cate_auction_index/',auction.cate_auction_index),
+    path('test_auction_pay_time/', auction.test_auction_pay_time),
+    path('cate_auction_index/', auction.cate_auction_index),
+    path('aip_manage/', view.aip_manage),
 
 ]
