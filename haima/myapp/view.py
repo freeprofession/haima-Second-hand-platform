@@ -29,7 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-from myapp import AI_assess
+# from myapp import AI_assess
 from myapp import goods_recommend
 
 
@@ -172,6 +172,8 @@ def message_push_(function):
 
 @mysql_required
 def homepage(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     a = 0
     request.session["wo"] = a
     username = request.session.get('username')
@@ -240,6 +242,8 @@ def homepage_ajax(request):
 
 # 登录
 def login(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     url = request.META.get('HTTP_REFERER', '/')
     # print(url, "返回地址")
     request.session["url"] = url
@@ -280,6 +284,8 @@ def login(request):
 @mysql_required
 def login_ajax(request):
     # 验证码判断
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     login_code = {}
     if request.is_ajax():
         a = request.POST.get('response')
@@ -403,6 +409,8 @@ def register(request):
 # 注册条件判断
 @mysql_required
 def register_ajax(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     global user_error
     if request.method == "GET":
         # 获取用户名：
@@ -501,6 +509,8 @@ def register_ok(request):
 # 搜索跳转到商品列表-------------------------------------------
 @mysql_required
 def goods_list(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     value_list = []
     start_list = []
     goods_lst = []
@@ -634,6 +644,8 @@ def goods_list(request):
 @mysql_required
 @login_required
 def user_center(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     if username:
@@ -689,6 +701,8 @@ def user_center(request):
 @login_required
 @mysql_required
 def user_credit(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     user_credit_id = request.GET.get('user_credit_id')
@@ -838,110 +852,113 @@ def goods_detail(request):
     collection_list = cur.fetchall()
     # --------------------------------------------------
     # print(goods_id)  # 获取商品ID
-    cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])  # 获取商品表内容
-    goods_list = cur.fetchall()  # 商品表内容
-    print(goods_list)
-    # print(username, user_id, goods_id, goods_list)
-    seller_id = goods_list[0]['user_id']  # 获取卖家ID
-    goods_state = goods_list[0]['goods_state']  # 商品状态
-    # 获取商品图片
-    img_list = []
-    for item in img.lrange(goods_id, 0, 4):
-        item = item.decode("utf-8")
-        img_list.append(item)
-    # print("商品图片地址", img_list)
+    try:
+        cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])  # 获取商品表内容
+        goods_list = cur.fetchall()  # 商品表内容
+        print(goods_list)
+        # print(username, user_id, goods_id, goods_list)
+        seller_id = goods_list[0]['user_id']  # 获取卖家ID
+        goods_state = goods_list[0]['goods_state']  # 商品状态
+        # 获取商品图片
+        img_list = []
+        for item in img.lrange(goods_id, 0, 4):
+            item = item.decode("utf-8")
+            img_list.append(item)
+        # print("商品图片地址", img_list)
 
-    # 判断是否为发布人进去页面---------------------
-    if user_id == seller_id:
-        cur.execute("SELECT count(*) FROM t_user_collection WHERE collection_goods_id = %s;", [goods_id, ])
-        collection_count = str(cur.fetchone()['count(*)']) + "人收藏"
-        seller_in = "seller_in"
-    else:
-        seller_in = "no_seller"
-        collection_count = ""
-    # =-----卖家信息————————————————
-    cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
-    seller_info = cur.fetchall()
-    cur.execute("select count(*) from t_order_success where release_user_id=%s", [seller_id])
-    count_sell = cur.fetchone()["count(*)"]
-    print(count_sell)
-    # cur.execute("select count(*) from test where id=1")成交记录
-    # ------------------------------------
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
-    # print(username, user_id, goods_id, seller_id, now_time)
-    goods_desc = goods_list[0]['goods_desc']  # 商品详细介绍
-    cur.execute('select * from t_user right join t_message on user_id = message_user_id')
-    message_list = cur.fetchall()  # 留言
-    # ++++++++++++++++++++++++商品留言处理++++++++++++++++++++++++++++++
-    cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
-                [goods_id, ])
-    b = cur.fetchall()
-    # print('weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', b, 'weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
-    cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
-                [goods_id, ])
-    a = cur.fetchall()
-    c_comment_dict = {}
-    for d in b:
-        id = d.get('second_message_id')
-        c_comment_dict[id] = d
-    p_comment_dict = {}
-    # print(c_comment_dict)
-    for d in a:
-        id = d.get('message_id')
-        p_comment_dict[id] = d
-    # lst = {}
-    # print(4444444444444444, p_comment_dict)
-    for i in p_comment_dict:
-        lst = []
-        for j in c_comment_dict:
-            if c_comment_dict[j]:
-                # print(c_comment_dict[j]['parent_message_id'], i, 4444444444444444444444444444444444, type(i))
-                if p_comment_dict[i]['message_user_id'] == c_comment_dict[j]['parent_user_id'] and i == \
-                        int(c_comment_dict[j]['parent_message_id']):
-                    lst.append(c_comment_dict[j])
-                    c_comment_dict[j] = ''
-        p_comment_dict[i]['child_message'] = lst
-    # 按钮列表
-    # print("评论", p_comment_dict)
-    button_list = []
-    for i in p_comment_dict:
-        button_list.append(int(i))
-    # print(p_comment_dict)
-    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-    if username:  # 登录后才记录，浏览记录
-        key = goods_id
-        goods_browse.lpush(key, user_id)
-        key = goods_id
-        cur.execute("select user_imgurl from t_user where user_id=%s", [user_id])
-        user_imgurl = cur.fetchone()["user_imgurl"]
-        # print("图片", user_imgurl)
-        login_status = username
-        cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
-        browse = cur.fetchone()
-        # print(browse, "检查")
-        if browse is None:
-            count = goods_list[0]['goods_browse_count']
-            count += 1
-            # 更新商品浏览次数
-            cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
-            # print(count, goods_id, "商品浏览记录")
-        # 用户浏览记录
-        if seller_id != user_id:
-            cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s",
-                        [user_id, goods_id])
-            user_browse = cur.fetchone()
-            if user_browse:
-                cur.execute("update t_user_browse set browse_date=%s where browse_goods_id=%s and browse_user_id=%s",
-                            [now_time, goods_id, user_id])
-            else:
-                cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
-                            [user_id, now_time, goods_id])
-        con.commit()
-    else:
-        login_status = '未登录'
-        user_imgurl = '../static/Images/default_hp.jpg'
-    href = 1
-    return render(request, "detail.html", locals())
+        # 判断是否为发布人进去页面---------------------
+        if user_id == seller_id:
+            cur.execute("SELECT count(*) FROM t_user_collection WHERE collection_goods_id = %s;", [goods_id, ])
+            collection_count = str(cur.fetchone()['count(*)']) + "人收藏"
+            seller_in = "seller_in"
+        else:
+            seller_in = "no_seller"
+            collection_count = ""
+        # =-----卖家信息————————————————
+        cur.execute("select * from t_user where user_id=%s", [seller_id, ])  # 获取卖家信息
+        seller_info = cur.fetchall()
+        cur.execute("select count(*) from t_order_success where release_user_id=%s", [seller_id])
+        count_sell = cur.fetchone()["count(*)"]
+        print(count_sell)
+        # cur.execute("select count(*) from test where id=1")成交记录
+        # ------------------------------------
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 记录当前时间
+        # print(username, user_id, goods_id, seller_id, now_time)
+        goods_desc = goods_list[0]['goods_desc']  # 商品详细介绍
+        cur.execute('select * from t_user right join t_message on user_id = message_user_id')
+        message_list = cur.fetchall()  # 留言
+        # ++++++++++++++++++++++++商品留言处理++++++++++++++++++++++++++++++
+        cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
+                    [goods_id, ])
+        b = cur.fetchall()
+        # print('weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', b, 'weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+        cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
+                    [goods_id, ])
+        a = cur.fetchall()
+        c_comment_dict = {}
+        for d in b:
+            id = d.get('second_message_id')
+            c_comment_dict[id] = d
+        p_comment_dict = {}
+        # print(c_comment_dict)
+        for d in a:
+            id = d.get('message_id')
+            p_comment_dict[id] = d
+        # lst = {}
+        # print(4444444444444444, p_comment_dict)
+        for i in p_comment_dict:
+            lst = []
+            for j in c_comment_dict:
+                if c_comment_dict[j]:
+                    # print(c_comment_dict[j]['parent_message_id'], i, 4444444444444444444444444444444444, type(i))
+                    if p_comment_dict[i]['message_user_id'] == c_comment_dict[j]['parent_user_id'] and i == \
+                            int(c_comment_dict[j]['parent_message_id']):
+                        lst.append(c_comment_dict[j])
+                        c_comment_dict[j] = ''
+            p_comment_dict[i]['child_message'] = lst
+        # 按钮列表
+        # print("评论", p_comment_dict)
+        button_list = []
+        for i in p_comment_dict:
+            button_list.append(int(i))
+        # print(p_comment_dict)
+        # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+        if username:  # 登录后才记录，浏览记录
+            key = goods_id
+            goods_browse.lpush(key, user_id)
+            key = goods_id
+            cur.execute("select user_imgurl from t_user where user_id=%s", [user_id])
+            user_imgurl = cur.fetchone()["user_imgurl"]
+            # print("图片", user_imgurl)
+            login_status = username
+            cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
+            browse = cur.fetchone()
+            # print(browse, "检查")
+            if browse is None:
+                count = goods_list[0]['goods_browse_count']
+                count += 1
+                # 更新商品浏览次数
+                cur.execute("update t_goods set goods_browse_count=%s where goods_id=%s", [count, goods_id])
+                # print(count, goods_id, "商品浏览记录")
+            # 用户浏览记录
+            if seller_id != user_id:
+                cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s",
+                            [user_id, goods_id])
+                user_browse = cur.fetchone()
+                if user_browse:
+                    cur.execute("update t_user_browse set browse_date=%s where browse_goods_id=%s and browse_user_id=%s",
+                                [now_time, goods_id, user_id])
+                else:
+                    cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
+                                [user_id, now_time, goods_id])
+            con.commit()
+        else:
+            login_status = '未登录'
+            user_imgurl = '../static/Images/default_hp.jpg'
+        href = 1
+        return render(request, "detail.html", locals())
+    except:
+        return render(request,"404.html")
 
 
 # 测试用---------------------------------
@@ -1010,6 +1027,8 @@ def test_ajax(request):
 @mysql_required
 @login_required
 def review_ajax(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     # 判断登陆状态----------------
     username = request.session.get('username')
     user_id = request.session.get('user_id')
@@ -1110,6 +1129,8 @@ def review_ajax(request):
 
 @mysql_required
 def lea_message(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -1141,6 +1162,8 @@ def lea_message(request):
 # 商品收藏页面++++++++++++++++++++++++++++++++++++++++
 @mysql_required
 def collection(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     goods_id = request.POST.get("goods_id")
@@ -1168,6 +1191,8 @@ def collection(request):
 # 商品上架，下架
 @mysql_required
 def lower_goods(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get("goods_id")
     print(goods_id, 888888888888888888888)
     state = request.POST.get("state")
@@ -1201,6 +1226,8 @@ def goods_detail_ajax(request):
 @login_required
 @mysql_required
 def goods_republish(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_name = request.session.get('username')
     goods_id = request.GET.get("goods_id")
     username = request.session.get('username')
@@ -1247,6 +1274,8 @@ def goods_republish(request):
 @mysql_required
 @login_required
 def pub_success(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get('goods_id')
     user_id = request.session.get('user_id')
     if goods_id:
@@ -1399,6 +1428,8 @@ def auction_index(request):
 
 # ********************************************************************普通商品购买***************************************
 def goods_confirm_buy(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     error = ""
     price = request.POST.get("price")
     user_id = request.session.get("user_id")
@@ -1457,6 +1488,8 @@ def buy_goods_ok(request):
 @login_required
 @mysql_required
 def my_sale(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
@@ -1507,57 +1540,66 @@ def my_sale(request):
     return render(request, 'my_sale.html', locals())
 
 
-def refund_ajax(request):
-    user_id = request.session.get('user_id')
-    order_id = request.POST.get("order_id")
-    reason = request.POST.get("reason")
-    refund_user_id = request.POST.get("refund_user_id")
-    print("退款", order_id, reason, refund_user_id)
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    desc = "你收到一条订单为" + str(order_id) + "的退款消息！"
-    cur.execute("update t_order set refund_state=%s,refund_reason=%s where order_id=%s", [1, reason, order_id])
-    cur.execute(
-        "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
-        [user_id, refund_user_id, desc, now_time])
-    message_push.lpush(refund_user_id, "system")
-    msg = "success"
-    return HttpResponse(json.dumps({"msg": msg}))
+#
+# def refund_ajax(request):
+#     user_id = request.session.get('user_id')
+#     order_id = request.POST.get("order_id")
+#     reason = request.POST.get("reason")
+#     refund_user_id = request.POST.get("refund_user_id")
+#     print("退款", order_id, reason, refund_user_id)
+#     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#     desc = "你收到一条订单为" + str(order_id) + "的退款消息！"
+#     cur.execute("update t_order set refund_state=%s,refund_reason=%s where order_id=%s", [1, reason, order_id])
+#     cur.execute(
+#         "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+#         [user_id, refund_user_id, desc, now_time])
+#     con.commit()
+#     message_push.lpush(refund_user_id, "system")
+#     msg = "success"
+#     return HttpResponse(json.dumps({"msg": msg}))
 
 
 def order_mark(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     order_id = request.POST.get("order_id")
     user_id = request.session.get('user_id')
     order_mark = request.POST.get("order_mark")
-    print("提交物流信息", order_id, order_mark)
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    try:
-        cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
-        con.commit()
-        msg = "success"
-        cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
-        user_id_ = cur.fetchone()
-        user_id1 = user_id_["buy_user_id"]
-        value = "system"
-        message_push.lpush(user_id1, value)
-        desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
-        cur.execute(
-            "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
-            [user_id, user_id1, desc, now_time])
-    except:
+    if order_mark:
+        print("提交物流信息", order_id, order_mark)
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        try:
+            cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
+            con.commit()
+            msg = "success"
+            cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
+            user_id_ = cur.fetchone()
+            user_id1 = user_id_["buy_user_id"]
+            value = "system"
+            message_push.lpush(user_id1, value)
+            desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
+            cur.execute(
+                "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+                [user_id, user_id1, desc, now_time])
+        except:
+            msg = "fail"
+    else:
         msg = "fail"
     return HttpResponse(json.dumps({"msg": msg}))
 
 
 def user_lower_goods(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get("goods_id")
     user_id = request.session.get('user_id')
     page_count_c = request.POST.get("page_count_c")
-    print(page_count_c, "传过来的页数")
-    print(goods_id)
-    if page_count_c != 'None' and page_count_c != 0:
-        page_count = int(page_count_c)
-    else:
-        page_count = 1
+    # print(page_count_c, "传过来的页数")
+    # print(goods_id)
+    # if page_count_c != 'None' and page_count_c != 0:
+    #     page_count = int(page_count_c)
+    # else:
+    #     page_count = 1
     # 下架商品-------------------
     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
     con.commit()
@@ -1650,6 +1692,8 @@ def user_lower_goods(request):
 @login_required
 @mysql_required
 def my_sale_lower(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     username = request.session.get('username')
@@ -1701,6 +1745,8 @@ def my_sale_lower(request):
 # 出售完成页面
 @login_required
 def my_sale_complete(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     if request.is_ajax():
         print(111111)
     else:
@@ -1724,6 +1770,7 @@ def my_sale_complete(request):
             'select * from t_order_success right join t_goods on order_goods_id=goods_id where release_user_id=%s ',
             [user_id, ])
         order_list = cur.fetchall()
+
         print(order_list)
         paginator1 = Paginator(order_list, 4)
         page1 = request.GET.get('page1')
@@ -1742,6 +1789,8 @@ def my_sale_complete(request):
 @mysql_required
 @login_required
 def my_buy(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')
     user_id = request.session.get("user_id")
     username = request.session.get('username')
@@ -1769,6 +1818,8 @@ def my_buy(request):
 @mysql_required
 @login_required
 def tinxinfahuo(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get("user_id")
     order_id = request.POST.get("order_id")
     cur.execute("select * from t_order where order_id=%s", [order_id, ])
@@ -1787,6 +1838,8 @@ def tinxinfahuo(request):
 @mysql_required
 @login_required
 def my_buy_complete(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')
     user_id = request.session.get("user_id")
     username = request.session.get('username')
@@ -1815,6 +1868,8 @@ def my_buy_complete(request):
 @login_required
 @mysql_required
 def my_collection(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
     cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')  # 获取买家用户名
@@ -1924,6 +1979,8 @@ def my_collection(request):
 @root_request
 @mysql_required
 def evaluate(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')  # 获取买家用户名
     user_id = request.session.get('user_id')  # 获取买家ID
     if username:
@@ -1996,6 +2053,8 @@ def evaluate(request):
 
 @mysql_required
 def evaluate_ajax(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     evaluate_text = request.POST.get('evaluate_text')
     customer = request.POST.get('customer')
@@ -2118,6 +2177,8 @@ def evaluate_ajax(request):
 @mysql_required
 @message_push_
 def my_evaluate_get(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
@@ -2161,6 +2222,8 @@ def my_evaluate_get(request):
 # 给他人的评价
 @mysql_required
 def my_evaluate_give(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
@@ -2207,6 +2270,8 @@ def my_evaluate_give(request):
 @mysql_required
 @message_push_
 def system_message(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     if username:
@@ -2244,6 +2309,8 @@ def system_message(request):
 @mysql_required
 @message_push_
 def leave_message(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     username = request.session.get('username')
@@ -2282,6 +2349,8 @@ def leave_message(request):
 @login_required
 @mysql_required
 def leave_message_two(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
@@ -2319,6 +2388,8 @@ def leave_message_two(request):
 @mysql_required
 @message_push_
 def leave_message_three(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
@@ -2356,6 +2427,8 @@ def leave_message_three(request):
 @mysql_required
 @login_required
 def modify_information(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     if request.method == 'GET':
         cur.execute("select * from t_user where user_id = '%s'" % user_id)
@@ -2399,6 +2472,8 @@ def modify_information(request):
 
 
 def modify_password(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     if username:
@@ -2420,6 +2495,8 @@ def modify_password(request):
 @mysql_required
 @login_required
 def modify_password_ajax(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     user_phone = request.POST.get('user_phone')
     phone_yzm = request.POST.get('phone_yzm')
     user_id = request.session.get('user_id')
@@ -2478,6 +2555,8 @@ def gettokendata(request):
 @mysql_required
 @login_required
 def confirm_goods(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get("goods_id")
     cur.execute("select * from t_order where order_goods_id=%s", [goods_id])
     goods_message = cur.fetchone()
@@ -2569,6 +2648,8 @@ def page1(request):
 
 @mysql_required
 def page2(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     alipay = get_ali_object()
     if request.method == "POST":
         # 检测是否支付成功
