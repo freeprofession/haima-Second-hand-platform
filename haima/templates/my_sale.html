@@ -25,7 +25,7 @@
             <li><a href="/user_center/">· 个人信息</a></li>
             <li><a href="/my_sale/" class="active">· 我出售的</a></li>
             <li><a href="/my_buy/">· 我购买的</a></li>
-           <li><a href="/my_auction_buy_one/">· 我的拍卖</a></li>
+            <li><a href="/my_auction_buy_one/">· 我的拍卖</a></li>
             <li><a href="/my_collection/">· 我的收藏</a></li>
             <li><a href="/my_evaluate_get/">· 我的评价</a></li>
             <li><a href="/leave_message/">· 消息中心</a></li>
@@ -65,11 +65,21 @@
                         <td width="15%">
                             <button class="oper_btn sale_msg" onclick="return info({{ item.order_id }})">查看信息</button>
                         </td>
-                        {% if item.state == 0 %}
-                            <td width="15%"><input type="button" class="send" style="color: red" value="去发货"
-                                                   onclick="return send_goods({{ item.order_id }})"></td>
+                        {% if item.refund_state == 1 %}
+
+                            {% if item.state == 0 %}
+                                <td width="15%"><input type="button" class="send" style="color: red" value="去发货"
+                                                       onclick="return send_goods({{ item.order_id }})"></td>
+                            {% else %}
+                                <td width="15%"><a href="#" class="oper_btn">已发货</a></td>
+                            {% endif %}
                         {% else %}
-                            <td width="15%"><a href="#" class="oper_btn">已发货</a></td>
+                            {% if item.state == 0 %}
+                                <td width="15%"><input type="button" class="send" style="color: red" value="去发货"
+                                                       onclick="return send_goods({{ item.order_id }})"></td>
+                            {% else %}
+                                <td width="15%"><a href="#" class="oper_btn">已发货</a></td>
+                            {% endif %}
                         {% endif %}
                     </tr>
                     </tbody>
@@ -169,6 +179,7 @@
         {% endif %}
     </div>
 </div>
+
 <div class="for_psw_send">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         通知买家
@@ -177,6 +188,7 @@
         <p style="font-size: 16px;margin-bottom: 20px">请输入物流单号通知买家</p>
         <input type="text" style="height: 23px;margin-bottom: 10px" id="order_mark">
         <button class="btn_blue change_password_send" style="position: relative;top: 1px" id="send_goods__">确定</button>
+        <button class="shutdown" style="position: relative;top: 1px" id="send_goods__">取消</button>
     </div>
 </div>
 <div class="for_psw_down">
@@ -189,6 +201,7 @@
         <button class="btn_blue cancer_fgt_psw">取消</button>
     </div>
 </div>
+
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>
@@ -213,6 +226,9 @@
     window.setInterval(index, 400);
 </script>
 <script>
+    $(".shutdown").click(function () {
+        $(".for_psw_send").hide()
+    });
     function lower(id) {
         $("#lower_goods_1").click(function () {
             goods_id = id
@@ -236,18 +252,6 @@
                     $(".for_psw_down").fadeOut(500);
                 }
             }, "json")
-            $(function () {
-                var tiemer = "";
-                var time = 3000;//每次点击三秒后才能再次点击
-                var fun = function bClick() {
-                    alert("执行方法");
-                    $(".lower_" + id).unbind("click");
-                    tiemer = setTimeout(function () {
-                        $(".lower_" + id).click(fun);
-                    }, time);
-                };
-                $(".lower_" + id).click(fun);
-            })
         })
     }
 </script>
@@ -270,7 +274,7 @@
     function send_goods(id) {
         $(".for_psw_send").fadeIn(500);
         $(function () {
-            $("#send_goods__").click(function () {
+            $("#send_goods__").one("click",function () {
                 order_mark = $('#order_mark').val();
                 order_id = id;
                 $.post('/order_mark/', {
