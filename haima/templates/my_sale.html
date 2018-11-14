@@ -66,7 +66,7 @@
                             <button class="oper_btn sale_msg" onclick="return info({{ item.order_id }})">查看信息</button>
                         </td>
                         {% if item.refund_state == 1 %}
-                            <td width="15%"><button id="agree_refund" >退款处理</button></td>
+
                             {% if item.state == 0 %}
                                 <td width="15%"><input type="button" class="send" style="color: red" value="去发货"
                                                        onclick="return send_goods({{ item.order_id }})"></td>
@@ -179,7 +179,7 @@
         {% endif %}
     </div>
 </div>
-<input id="page_count_c" value="{{ page1 }}">
+
 <div class="for_psw_send">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         通知买家
@@ -188,6 +188,7 @@
         <p style="font-size: 16px;margin-bottom: 20px">请输入物流单号通知买家</p>
         <input type="text" style="height: 23px;margin-bottom: 10px" id="order_mark">
         <button class="btn_blue change_password_send" style="position: relative;top: 1px" id="send_goods__">确定</button>
+        <button class="shutdown" style="position: relative;top: 1px" id="send_goods__">取消</button>
     </div>
 </div>
 <div class="for_psw_down">
@@ -200,17 +201,7 @@
         <button class="btn_blue cancer_fgt_psw">取消</button>
     </div>
 </div>
-<div class="for_psw_down1">
-    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
-        下架商品
-    </p>
-    <div class="popwin_content">
-        <p style="font-size: 18px;font-weight: bold;margin-bottom: 20px">确定下架商品吗？</p>
-        理由：<input type="text" id="refund_reason_1">
-        <button class="btn_blue" style="margin-right: 40px" id="refund_agree_1">同意</button>
-        <button class="btn_blue cancer_fgt_psw1" id="no_agree">不同意</button>
-    </div>
-</div>
+
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>
@@ -235,6 +226,9 @@
     window.setInterval(index, 400);
 </script>
 <script>
+    $(".shutdown").click(function () {
+        $(".for_psw_send").hide()
+    });
     function lower(id) {
         $("#lower_goods_1").click(function () {
             goods_id = id

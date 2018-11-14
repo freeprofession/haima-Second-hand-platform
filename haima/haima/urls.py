@@ -68,7 +68,7 @@ urlpatterns = [
     path('my_evaluate_give/', view.my_evaluate_give),
     path('my_buy_complete/', view.my_buy_complete),
     path('order_mark/', view.order_mark),
-    path('refund_ajax/', view.refund_ajax),
+    # path('refund_ajax/', view.refund_ajax),
     # 商品详情-------------------------
     path('goods_detail/', view.goods_detail),
     path('goods_detail_ajax/', view.goods_detail_ajax),

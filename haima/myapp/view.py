@@ -29,7 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-from myapp import AI_assess
+# from myapp import AI_assess
 from myapp import goods_recommend
 
 
@@ -1507,45 +1507,49 @@ def my_sale(request):
 
     return render(request, 'my_sale.html', locals())
 
-
-def refund_ajax(request):
-    user_id = request.session.get('user_id')
-    order_id = request.POST.get("order_id")
-    reason = request.POST.get("reason")
-    refund_user_id = request.POST.get("refund_user_id")
-    print("退款", order_id, reason, refund_user_id)
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    desc = "你收到一条订单为" + str(order_id) + "的退款消息！"
-    cur.execute("update t_order set refund_state=%s,refund_reason=%s where order_id=%s", [1, reason, order_id])
-    cur.execute(
-        "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
-        [user_id, refund_user_id, desc, now_time])
-    message_push.lpush(refund_user_id, "system")
-    msg = "success"
-    return HttpResponse(json.dumps({"msg": msg}))
+#
+# def refund_ajax(request):
+#     user_id = request.session.get('user_id')
+#     order_id = request.POST.get("order_id")
+#     reason = request.POST.get("reason")
+#     refund_user_id = request.POST.get("refund_user_id")
+#     print("退款", order_id, reason, refund_user_id)
+#     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#     desc = "你收到一条订单为" + str(order_id) + "的退款消息！"
+#     cur.execute("update t_order set refund_state=%s,refund_reason=%s where order_id=%s", [1, reason, order_id])
+#     cur.execute(
+#         "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+#         [user_id, refund_user_id, desc, now_time])
+#     con.commit()
+#     message_push.lpush(refund_user_id, "system")
+#     msg = "success"
+#     return HttpResponse(json.dumps({"msg": msg}))
 
 
 def order_mark(request):
     order_id = request.POST.get("order_id")
     user_id = request.session.get('user_id')
     order_mark = request.POST.get("order_mark")
-    print("提交物流信息", order_id, order_mark)
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    try:
-        cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
-        con.commit()
-        msg = "success"
-        cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
-        user_id_ = cur.fetchone()
-        user_id1 = user_id_["buy_user_id"]
-        value = "system"
-        message_push.lpush(user_id1, value)
-        desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
-        cur.execute(
-            "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
-            [user_id, user_id1, desc, now_time])
-    except:
-        msg = "fail"
+    if order_mark:
+        print("提交物流信息", order_id, order_mark)
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        try:
+            cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
+            con.commit()
+            msg = "success"
+            cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
+            user_id_ = cur.fetchone()
+            user_id1 = user_id_["buy_user_id"]
+            value = "system"
+            message_push.lpush(user_id1, value)
+            desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
+            cur.execute(
+                "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+                [user_id, user_id1, desc, now_time])
+        except:
+            msg = "fail"
+    else:
+        msg="fail"
     return HttpResponse(json.dumps({"msg": msg}))
 
 
@@ -1708,6 +1712,7 @@ def my_sale_complete(request):
             'select * from t_order_success right join t_goods on order_goods_id=goods_id where release_user_id=%s ',
             [user_id, ])
         order_list = cur.fetchall()
+
         print(order_list)
         paginator1 = Paginator(order_list, 4)
         page1 = request.GET.get('page1')
