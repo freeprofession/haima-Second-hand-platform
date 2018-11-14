@@ -371,11 +371,11 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
             {% for item in seller_info %}
                 <div class="info_detail">
                     {% if item.user_imgurl %}
-                        <div><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></div>
+                        <div><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img src="{{ item.user_imgurl }}" alt="" height="45" width="45"></a></div>
                     {% else %}
-                        <div><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></div>
+                        <div><a href="/user_credit/?user_credit_id={{ item.user_id }}"><img src="../static/Images/default_hp.jpg" alt="" height="45" width="45"></a></div>
                     {% endif %}
-                    <div class="msg_a"><a href="" style="font-size: 16px;">{{ item.user_name }}</a></div>
+                    <div class="msg_a"><a href="/user_credit/?user_credit_id={{ item.user_id }}" style="font-size: 16px;">{{ item.user_name }}</a></div>
                     <br>
                 </div>
                 <div style="padding: 8px 20px;border-bottom: 1px solid #ededed">

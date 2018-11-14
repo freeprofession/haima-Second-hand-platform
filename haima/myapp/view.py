@@ -29,7 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-from myapp import AI_assess
+# from myapp import AI_assess
 from myapp import goods_recommend
 
 
@@ -570,6 +570,7 @@ def goods_list(request):
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
+<<<<<<< HEAD
                             if value not in value_list:
                                 value_list.append(value)
                                 cur.execute(
@@ -581,6 +582,17 @@ def goods_list(request):
                                 else:
                                     cut_words.srem(key, value)
                     prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
+=======
+                            value_list.append(value)
+                value_list = sorted(set(value_list), key=value_list.index)
+                for goods_id in value_list:
+                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d and goods_state = 0" % goods_id
+                    cur.execute(sql)
+                    goods = cur.fetchone()
+                    if goods:
+                        goods_lst.append(goods)
+                prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
+>>>>>>> eda424149f63397f5cd3844ea73783e8b697b033
         if category == '1':
             cur.execute(
                 "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
@@ -1471,7 +1483,7 @@ def my_sale(request):
         login_status = username
     # 发布中的商品------------------------------
     cur.execute(
-        'select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc',
+        'select * from t_goods  where user_id=%s and goods_state=%s order by release_date desc',
         [user_id, 0])
     p_sale_list = cur.fetchall()
     paginator1 = Paginator(p_sale_list, 3)
@@ -1503,40 +1515,62 @@ def my_sale(request):
 
     return render(request, 'my_sale.html', locals())
 
+#
+# def refund_ajax(request):
+#     user_id = request.session.get('user_id')
+#     order_id = request.POST.get("order_id")
+#     reason = request.POST.get("reason")
+#     refund_user_id = request.POST.get("refund_user_id")
+#     print("退款", order_id, reason, refund_user_id)
+#     now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#     desc = "你收到一条订单为" + str(order_id) + "的退款消息！"
+#     cur.execute("update t_order set refund_state=%s,refund_reason=%s where order_id=%s", [1, reason, order_id])
+#     cur.execute(
+#         "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+#         [user_id, refund_user_id, desc, now_time])
+#     con.commit()
+#     message_push.lpush(refund_user_id, "system")
+#     msg = "success"
+#     return HttpResponse(json.dumps({"msg": msg}))
+
 
 def order_mark(request):
     order_id = request.POST.get("order_id")
     user_id = request.session.get('user_id')
     order_mark = request.POST.get("order_mark")
-    print("提交物流信息", order_id, order_mark)
-    now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    try:
-        cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
-        con.commit()
-        msg = "success"
-        cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
-        user_id_ = cur.fetchone()
-        user_id1 = user_id_["buy_user_id"]
-        value = "system"
-        message_push.lpush(user_id1, value)
-        desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
-        cur.execute(
-            "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
-            [user_id, user_id1, desc, now_time])
-    except:
-        msg = "fail"
+    if order_mark:
+        print("提交物流信息", order_id, order_mark)
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        try:
+            cur.execute("update t_order set state=%s,order_mark=%s where order_id=%s", [1, order_mark, order_id])
+            con.commit()
+            msg = "success"
+            cur.execute("select buy_user_id from t_order where order_id=%s", [order_id, ])
+            user_id_ = cur.fetchone()
+            user_id1 = user_id_["buy_user_id"]
+            value = "system"
+            message_push.lpush(user_id1, value)
+            desc = "你购买的订单号为" + str(order_id) + "买家已经发货"
+            cur.execute(
+                "insert into t_system_message (push_message_id,get_message_id,system_desc,system_date) value(%s,%s,%s,%s)",
+                [user_id, user_id1, desc, now_time])
+        except:
+            msg = "fail"
+    else:
+        msg="fail"
     return HttpResponse(json.dumps({"msg": msg}))
 
 
 # my_sale 户中心商品下架——ajax: 待修改
-@login_required
-@mysql_required
 def user_lower_goods(request):
+    con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
+    cur = con.cursor(pymysql.cursors.DictCursor)
     goods_id = request.POST.get("goods_id")
     user_id = request.session.get('user_id')
     page_count_c = request.POST.get("page_count_c")
-    print(page_count_c)
-    if page_count_c is not None:
+    print(page_count_c, "传过来的页数")
+    print(goods_id)
+    if page_count_c != 'None' and page_count_c != 0:
         page_count = int(page_count_c)
     else:
         page_count = 1
@@ -1544,17 +1578,18 @@ def user_lower_goods(request):
     cur.execute("update t_goods set goods_state=%s where goods_id=%s", ['2', goods_id])
     con.commit()
     # ---页面拼接---------------------------
-    cur.execute("select * from t_goods  where user_id=%s and goods_state=%s order by goods_id desc",
+    cur.execute("select * from t_goods where user_id=%s and goods_state=%s order by release_date desc",
                 [user_id, 0])
     goods_list = cur.fetchall()
     print(len(goods_list) % 3, "秋雨", len(goods_list))
-    if len(goods_list) % 3 == 0:
+    if len(goods_list) % 3 == '0':
         msg = "flash"
         href = "/my_sale/?page1=" + str(page_count - 1)
         print(href)
         return HttpResponse(json.dumps({"msg": msg, "href": href}))
     else:
         try:
+            print(3 * page_count, "页数+++++")
             goods_list_ = goods_list[3 * page_count - 1]
             goods_id_ = goods_list_["goods_id"]
             release_date = goods_list_["release_date"]
@@ -1582,7 +1617,7 @@ def user_lower_goods(request):
                                         <li class="col04">{10}人浏览</li>
                                     </ul>
                                 </td>
-                                <td width="15%"><input type="button" class="lower1_btn lower_{11}"
+                                <td width="15%"><input type="button" class="lower1_btn lower_{11} oper_btn"
                                            onclick="lower({12})" value="下架"></td>
                                 <td width="15%"><a href="" class="oper_btn">修改</a></td>
                             </tr>
@@ -1685,6 +1720,7 @@ def my_sale_complete(request):
             'select * from t_order_success right join t_goods on order_goods_id=goods_id where release_user_id=%s ',
             [user_id, ])
         order_list = cur.fetchall()
+
         print(order_list)
         paginator1 = Paginator(order_list, 4)
         page1 = request.GET.get('page1')
@@ -1850,7 +1886,6 @@ def my_collection(request):
             except:
                 msg = "success"
                 a_append = ""
-            con.close()
             return HttpResponse(json.dumps({"msg": msg, "html": a_append}))
 
     else:
@@ -2347,12 +2382,14 @@ def modify_information(request):
         date = request.POST.get('date')
         sex = request.POST.get('sex')
         password = request.POST.get('pay_password')
+
         if shen == '请选择省份':
             area = ''
         else:
             area = shen + ' ' + shi + ' ' + xian
         cur.execute(
             "UPDATE t_user SET `user_pay_password` = '%s',`user_imgurl` = '%s',`user_sex`='%s',`user_birthday`='%s',`user_address`='%s' where user_id = '%s'" % (
+
                 password, img, sex, date, area, user_id))
         con.commit()
         return redirect('/modify_information/')
