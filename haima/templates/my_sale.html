@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
 </head>
 <body>
-
 {% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
@@ -66,7 +65,6 @@
                             <button class="oper_btn sale_msg" onclick="return info({{ item.order_id }})">查看信息</button>
                         </td>
                         {% if item.refund_state == 1 %}
-
                             {% if item.state == 0 %}
                                 <td width="15%"><input type="button" class="send" style="color: red" value="去发货"
                                                        onclick="return send_goods({{ item.order_id }})"></td>
@@ -84,11 +82,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="for_psw info_{{ item.order_id }}" style="background: rgba(0,0,0,0.3)">
-                    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
-                        买家信息
-                    </p>
-                    <div class="popwin_content">
+                <div class="for_psw info_{{ item.order_id }}" style="background: rgba(0,0,0,0)">
+                    <div class="popwin_content" style="position: absolute;left: 300px;border: 1px solid gray;">
                         <table align="center" style="font-size: 15px">
                             <tr>
                                 <td>卖家：</td>
@@ -179,7 +174,6 @@
         {% endif %}
     </div>
 </div>
-
 <div class="for_psw_send">
     <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
         通知买家
@@ -201,7 +195,6 @@
         <button class="btn_blue cancer_fgt_psw">取消</button>
     </div>
 </div>
-
 <div class="footer">
     <div class="foot_link">
         <a href="#">关于我们</a>
@@ -238,10 +231,11 @@
                 'page_count_c': page_count_c,
             }, function (data) {
                 if (data.msg === "append") {
-                    $("#goods_" + id).remove();
-                    $("#goods1_" + id).remove();
-                    $("#append").after(data.html)
+                    {#$("#goods_" + id).remove();#}
+                    {#$("#goods1_" + id).remove();#}
+                    {#$("#append").after(data.html)#}
                     $(".for_psw_down").fadeOut(500);
+                    location.reload()
                     console.log(data.msg)
                 } else if (data.msg === "flash") {
                     top.location.href = data.href

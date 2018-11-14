@@ -7,6 +7,7 @@ body {
 html, body {
     width: 100%;
     min-width: 1520px;
+    max-width: 1520px;
 }
 
 /* 顶部样式 */
@@ -150,7 +151,7 @@ html, body {
 #order_show {
     position: absolute;
     top: 20px;
-    left: 1235px;
+    left: 1230px;
     width: 50px;
     padding: 10px;
     background: #f7f7f7;
@@ -289,6 +290,10 @@ html, body {
 .cart_goods_show li {
     border-bottom: 1px dotted #ddd;
     overflow: hidden;
+}
+
+.cart_goods_show li:hover {
+    background-color: #f8f8f8;
 }
 
 .cart_goods_show li img {
@@ -1458,10 +1463,12 @@ label:hover {
 }
 
 .prize_bar {
-    height: 72px;
+    margin-top: 15px;
+    height: 100px;
     width: 400px;
-    background-color: #fdffad;
-    line-height: 72px;
+    border-radius: 10px;
+    background-color: #fff2e8;
+    line-height: 100px;
 }
 
 .prize_bar .show_pirze {
@@ -3677,7 +3684,7 @@ label:hover {
 
 #sortok {
     line-height: 20px;
-    padding: 5px 10px;
+    padding: 2px 10px;
     margin-left: 10px;
     text-align: center;
     border-radius: 2px;
@@ -3688,6 +3695,10 @@ label:hover {
     background: -moz-linear-gradient(top, #f50, #ed4f00);
     background: -webkit-linear-gradient(top, #f50, #ed4f00);
     display: none;
+}
+
+#sortok:hover {
+    cursor: pointer;
 }
 
 .sortdiv {
@@ -4034,10 +4045,19 @@ label:hover {
     border: 1px solid #e4dedb;
     z-index: 99999;
     background-color: white;
+    display: none;
+}
+
+.new_msg li {
+    text-align: center;
+    width: 200px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    display: none;
+}
+
+.new_msg li a {
+    color: red;
 }
 
 #my_msg {
@@ -4063,9 +4083,9 @@ label:hover {
 .hid_div {
     position: absolute;
     top: 30px;
-    left: 1320px;
+    left: 1310px;
     height: 5px;
-    width: 30px;
+    width: 40px;
     background-color: rgba(0, 0, 0, 0);
 }
 
@@ -4102,4 +4122,34 @@ label:hover {
     to {
         background-position: 400px 0;
     }
+}
+
+.col_msg_1 {
+    background-color: white;
+    font-size: 15px;
+    font-weight: bolder;
+    line-height: 40px;
+    text-align: center;
+    color: #ff1712;
+    position: fixed;
+    z-index: 9999999;
+    top: 180px;
+    left: 650px;
+    height: 40px;
+    width: 300px;
+    border: 2px dashed black;
+    display: none;
+}
+
+#sub {
+    width: 100px;
+    height: 25px;
+    background-color: #ffda44;
+    border: 1px solid #ffda44;
+    border-radius: 2px;
+}
+
+#sub:hover {
+    cursor: pointer;
+    box-shadow: 1px 1px 1px gray;
 }

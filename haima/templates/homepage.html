@@ -28,7 +28,7 @@
 
     <div class="guest_cart fr">
         <a href="/my_collection/" class="cart_name fl">我的收藏</a>
-        <div class="goods_count fl" id="show_count">15</div>
+        <div class="goods_count fl" id="show_count">{{ col_count }}</div>
         <ul class="cart_goods_show">
             {% if not collection_list %}
                 <div>
@@ -323,8 +323,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                 <ul class="item-type" style="margin-left: 25px">
                     <li class="nav" id="guess1"><a href="/goods_list/?q=全新闲置&price_low=&price_high=" target="_blank"
                                                    onmouseover="change_div('dc1')">全新闲置</a></li>
-                    <li class="nav selected" id="guess2"><a href="" onmouseover="change_div('dc2')"
-                    >猜你喜欢</a></li>
+                    <li class="nav selected" id="guess2"><span style="color: black" onmouseover="change_div('dc2')">猜你喜欢</span></li>
                     <li class="nav" id="guess3"><a href="/goods_list/?q=同城交易&price_low=&price_high=" target="_blank"
                                                    onmouseover="change_div('dc3')">同城交易</a></li>
                 </ul>
