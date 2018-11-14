@@ -174,6 +174,10 @@ def auction_index(request):
     collection_list = cur.fetchall()
     print(collection_list)
     if id:
+        cur.execute("select count(collection_user_id) from t_user_collection where collection_user_id = %s",
+                    [id, ])
+        col_count = cur.fetchone()
+        col_count = col_count['count(collection_user_id)']
         goods_list = []
         cur.execute("select auction_goods_id from t_auction_goods")
         goods_dict = cur.fetchall()
@@ -189,15 +193,12 @@ def auction_index(request):
             goods_auction_message = cur.fetchone()
             # 这里需要去两个表的数据，放不同的列表里,在前端需要用字典索引不能用二级列表
             # 所以在这里转化成两个字典，在存进列表，可以在前端遍历
-            cur.execute("select end_date from t_auction_attribute where auction_goods_id=%s", [goods_id])
-            end_data = cur.fetchone()["end_date"]
-            data_list.append(end_data)
             username = request.session.get("session")
             dict1["goods"] = goods_messge
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
         list1.reverse()
-        time_length=len(data_list)
+        time_length = len(data_list)
         paginator = Paginator(list1, 5)
         page = request.GET.get('page')
         try:
@@ -739,7 +740,7 @@ def cate_auction_index(request):
     print(message_check, "消息推送")
     username = request.session.get("username")
     login_status = username
-    cate_id=request.GET.get("id")
+    cate_id = request.GET.get("id")
     list1 = []
     data_list = []
     cur.execute(
