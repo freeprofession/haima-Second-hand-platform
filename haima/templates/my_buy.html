@@ -123,7 +123,8 @@
                             </td>
                         {% else %}
                             <td width="15%">
-                                <button onclick="tixinfahuo({{ item.order_id }})" id="tixin_{{ order_id }}">提醒卖家发货
+                                <button onclick="tixinfahuo({{ item.order_id }})" id="tixin_{{ order_id }}"
+                                        style="border: 1px solid #bfbfbf;background-color: white">提醒卖家发货
                                 </button>
                             </td>
                         {% endif %}
@@ -185,12 +186,14 @@
 
     </div>
 </div>
+<div class="col_msg_1">
+</div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 </body>
 <script>
     function tuikuan(id) {
-         $("#for_psw1").show();
-            $("#ok1").click(function () {
+        $("#for_psw1").show();
+        $("#ok1").click(function () {
 
             refund_user_id = $("#user_id_1").val()
             order_id = id;
@@ -202,16 +205,17 @@
             }, function (data) {
                 if (data.msg === "success") {
                     $("#tuikuang_1").text("退款中");
-                    location.href='/my_buy/'
+                    location.href = '/my_buy/'
                 } else {
                     alert("退款失败")
                 }
 
-            },"json")
+            }, "json")
 
         })
 
     }
+
     $("#no1").click(function () {
         $("#for_psw1").hide();
     })
@@ -249,12 +253,11 @@
         $.post("/tixinfahuo/", {
             "order_id": order_id
         }, function (data) {
-            console.log(data.msg)
-            alert("已提醒卖家")
-            $("tixin_" + id).text("已提醒发货")
+            console.log(data.msg);
+            $(".col_msg_1").text('已提醒发货').show();
+            $(".col_msg_1").delay(1500).fadeOut();
+            $("#tixin_" + id).text("已提醒发货")
         }, "json")
-
-
     }
 </script>
 </html>

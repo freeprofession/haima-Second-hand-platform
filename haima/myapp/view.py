@@ -570,7 +570,6 @@ def goods_list(request):
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
-<<<<<<< HEAD
                             if value not in value_list:
                                 value_list.append(value)
                                 cur.execute(
@@ -582,17 +581,6 @@ def goods_list(request):
                                 else:
                                     cut_words.srem(key, value)
                     prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
-=======
-                            value_list.append(value)
-                value_list = sorted(set(value_list), key=value_list.index)
-                for goods_id in value_list:
-                    sql = "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_id = %d and goods_state = 0" % goods_id
-                    cur.execute(sql)
-                    goods = cur.fetchone()
-                    if goods:
-                        goods_lst.append(goods)
-                prompt = '已选条件： 所有与' + '"' + question + '"' + '相关的宝贝'
->>>>>>> eda424149f63397f5cd3844ea73783e8b697b033
         if category == '1':
             cur.execute(
                 "select goods_id,goods_title,goods_imgurl,goods_price from t_goods where goods_category_id=%s and goods_state = %s",
@@ -1192,7 +1180,7 @@ def collection(request):
     print("商品收藏", collection_check_)
     if username:
         if collection_check_:
-            msg = "您已收藏过改商品"
+            msg = "您已收藏过该商品"
         else:
             msg = "收藏成功"
             cur.execute(
@@ -2222,7 +2210,7 @@ def system_message(request):
     login_status = username
     cur.execute("select * from t_system_message where get_message_id=%s order by system_message_id desc", [user_id, ])
     message_list = cur.fetchall()
-    paginator = Paginator(message_list, 5)
+    paginator = Paginator(message_list, 6)
     page = request.GET.get('page')
     print("系统消息", message_list)
     try:
