@@ -174,6 +174,10 @@ def auction_index(request):
     collection_list = cur.fetchall()
     print(collection_list)
     if id:
+        cur.execute("select count(collection_user_id) from t_user_collection where collection_user_id = %s",
+                    [id, ])
+        col_count = cur.fetchone()
+        col_count = col_count['count(collection_user_id)']
         goods_list = []
         cur.execute("select auction_goods_id from t_auction_goods")
         goods_dict = cur.fetchall()
@@ -194,7 +198,7 @@ def auction_index(request):
             dict1["attribute"] = goods_auction_message
             list1.append(dict1)
         list1.reverse()
-        time_length=len(data_list)
+        time_length = len(data_list)
         paginator = Paginator(list1, 5)
         page = request.GET.get('page')
         try:
@@ -736,7 +740,7 @@ def cate_auction_index(request):
     print(message_check, "消息推送")
     username = request.session.get("username")
     login_status = username
-    cate_id=request.GET.get("id")
+    cate_id = request.GET.get("id")
     list1 = []
     data_list = []
     cur.execute(
