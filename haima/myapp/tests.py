@@ -543,4 +543,7 @@ a = [{'goods_id': 580670260232, 'user_id': 1, 'release_date': datetime.date(2018
 # print(collection_list[2])
 check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
 check_ = check_name.match("55爱你哦www")
-print(check_)
+b = "wwwwwwwwwwww"
+c = "海马海马海马"
+a = b.encode('gbk')
+print(len(a))

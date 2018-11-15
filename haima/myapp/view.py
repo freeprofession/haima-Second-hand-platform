@@ -422,7 +422,7 @@ def register_ajax(request):
         username = request.GET.get("username")
         cur.execute("select * from t_user where user_name=%s", [username, ])  # 全表搜索，待建立索引
         user_list = cur.fetchall()
-        if len(username) in range(6, 17):
+        if len(username.encode('GBK')) in range(6, 13):
             check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
             check_ = check_name.match(username)
             if check_ is None:
@@ -1999,6 +1999,7 @@ def evaluate(request):
         'select * from t_goods right join t_user_collection on collection_goods_id=goods_id where collection_user_id=%s order by collection_record_id desc limit 0,4',
         [user_id, ])
     collection_list = cur.fetchall()
+
     # --------------------------------------------------
     print(goods_id)  # 获取商品ID
     cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])  # 获取商品表内容

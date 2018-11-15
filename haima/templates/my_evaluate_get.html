@@ -106,9 +106,10 @@
                             <p class="date">[{{ item.date }}]</p>
                         </td>
                         <td>
-                        <span class="saleman">{{ item.customer }}<a
+                        <span class="saleman"><a
                                 href="/user_credit/?user_credit_id={{ item.user_id }}"
-                                target="_blank">{{ item.username }}</a></span>
+                                target="_blank">{{ item.username }}<span
+                                    style="color: #810101">（{{ item.customer }}）</span></a></span>
                         </td>
                         <td>
                             <a href="/goods_detail/?goods={{ item.goods_id }}"
@@ -128,9 +129,10 @@
                             <p class="date">[{{ item.date }}]</p>
                         </td>
                         <td>
-                                <span class="saleman">{{ item.customer }}<a
+                                <span class="saleman"><a
                                         href="/user_credit/?user_credit_id={{ item.user_id }}"
-                                        target="_blank">{{ item.username }}</a></span>
+                                        target="_blank">{{ item.username }}<span
+                                    style="color: #810101">（{{ item.customer }}）</span></a></span>
                         </td>
                         <td>
                             <a href="/goods_detail/?goods={{ item.goods_id }}"
