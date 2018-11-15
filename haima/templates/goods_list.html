@@ -366,8 +366,11 @@
         var price_low = GetQueryString("price_low");
         var price_high = GetQueryString("price_high");
         if (sort_method != null && sort_method.toString().length >= 1) {
+            $(".sort_btn0 a").css("color", 'black');
+            $(".sort_btn0").css("background-color", "#fbf3f3");
             $(".sort_active" + sort_method).addClass('sort_active');
-            $(".sort_btn0").css({"color": "#000", "background-color": "#fbf3f3"});
+            $(".sort_active" + sort_method).find('a').css('color', 'white');
+            $(".sort_btn0 a").css("color", "black");
             $("#price_low").val(price_low);
             $("#price_high").val(price_high);
         }

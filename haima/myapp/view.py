@@ -92,7 +92,7 @@ def send_sms(request):
                "mobile": phone,
                "uid": phone}
     textmod = json.dumps(textmod).encode(encoding='utf-8')
-    header_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko',
+    header_dict = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0',
                    "Content-Type": "application/json"}
     req = rq.Request(url='https://open.ucpaas.com/ol/sms/sendsms', data=textmod, headers=header_dict)
     res = rq.urlopen(req)
@@ -324,9 +324,9 @@ def login_ajax(request):
                 # print(href)
                 error = "login_ok"
                 if return_url:
-                    if return_url == "http://127.0.0.1:8000/register_ok/":
+                    if return_url == "http://g1.xmgc360.com/register/_ok/":
                         return_url = "/haima/"
-                    elif return_url == "http://127.0.0.1:8000/register/":
+                    elif return_url == "http://g1.xmgc360.com/register//":
                         return_url = "/haima/"
                     else:
                         pass
@@ -426,7 +426,7 @@ def register_ajax(request):
             check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
             check_ = check_name.match(username)
             if check_ is None:
-                user_error = "用户名为6-16位的数字或英文,或汉子"
+                user_error = "用户名为6-12位的数字或字母或6位以下汉字"
                 return HttpResponse(json.dumps({"error": user_error}))
             else:
                 if user_list:  # 判断用户名是否存在
@@ -436,7 +436,7 @@ def register_ajax(request):
                     user_error = ""  # 用户名可用
                     return HttpResponse(json.dumps({"error": user_error}))
         else:
-            user_error = "用户名为6-16位的数字或英文"
+            user_error = "用户名为6-12位的数字或字母或6位以下汉字"
             return HttpResponse(json.dumps({"error": user_error}))
 
     else:
@@ -580,10 +580,6 @@ def goods_list(request):
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
-<<<<<<< HEAD
-=======
-
->>>>>>> 8740a4b3984e7890fe24ae80ccee1991b5125426
                             if value not in value_list:
                                 value_list.append(value)
                                 cur.execute(

@@ -1251,6 +1251,14 @@ label:hover {
     color: #fff;
 }
 
+.sort_btn a {
+    color: black;
+}
+
+.sort_btn0 a {
+    color: white;
+}
+
 .goods_type_list {
     width: 1248px;
     margin: 10px 139.6px;
