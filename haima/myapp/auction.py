@@ -618,6 +618,7 @@ def Determine_auction_date(request):
                     cur.execute("update t_auction_goods_record set auction_goods_state =%s where auction_goods_id=%s",
                                 [state, i])
                     print("修改商品的状态成功")
+                    con.commit()
                 else:
                     print("有人竞拍")
                     # 2商品有人竞拍
@@ -646,8 +647,8 @@ def Determine_auction_date(request):
                                     [now_date, str(i), str(price), str(who_buy)])
                         print("添加订单成功")
 
-                    con.commit()
-
+                        con.commit()
+                    print("操作完成")
             except Exception as e:
 
                 print(e)
