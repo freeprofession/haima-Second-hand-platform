@@ -606,6 +606,8 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                     input = $("<input type='text'>").val(url).attr('name', 'url')
                     form.append(input)
                     $(document.body).append(form);
+                    var ajaxbg = $("#background,#progressBar");
+                    ajaxbg.hide();
                     form.submit()
                 }
             }
