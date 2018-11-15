@@ -119,7 +119,7 @@
                         {% if item.state != 0 %}
                             <td width="15%"><a href="">运单号：{{ item.order_mark }}</a></td>
                             <td width="15%">
-                                <button onclick="f1(this)" value={{ item.goods_id }}>确认收货</button>
+                                <button class="oper_btn" onclick="f1(this)" value={{ item.goods_id }}>确认收货</button>
                             </td>
                         {% else %}
                             <td width="15%">
@@ -133,16 +133,6 @@
                 </table>
             {% endfor %}
         {% endif %}
-
-        <div class="pagenation">
-            <a href="#">&lt;上一页</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">下一页&gt;</a>
-        </div>
     </div>
 </div>
 

@@ -93,9 +93,8 @@
                             <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}"></a>
                             <h4><a href="/goods_detail/?goods={{ item.goods_id }}">{{ item.goods_title }}</a></h4>
                             <div class="operate">
-                                <span class="prize">￥：{{ item.goods_price }}</span>
+                                <span class="prize">￥{{ item.goods_price }}</span>
                                 <p class="unit">{{ item.browse_date }}</p>
-                                <a href="#" class="add_goods" title="加入购物车"></a>
                             </div>
                         </li>
                     {% endfor %}

@@ -272,9 +272,9 @@
                 <input type="hidden" name="c" value="{{ category }}">
                 <input type="hidden" name="page" value="{{ pg }}">
                 <input type="hidden" name="sort_method" value="{{ sort_method }}">
-                <input type="text" placeholder="¥" class="sort" name="price_low">
+                <input type="text" placeholder="¥" class="sort" name="price_low" id="price_low">
                 <span>-</span>
-                <input type="text" placeholder="¥" class="sort" name="price_high">
+                <input type="text" placeholder="¥" class="sort" name="price_high" id="price_high">
                 <input type="submit" value="确定" id="sortok">
             </div>
         </form>
@@ -363,9 +363,13 @@
         }
 
         var sort_method = GetQueryString("sort_method");
+        var price_low = GetQueryString("price_low");
+        var price_high = GetQueryString("price_high");
         if (sort_method != null && sort_method.toString().length >= 1) {
             $(".sort_active" + sort_method).addClass('sort_active');
             $(".sort_btn0").css({"color": "#000", "background-color": "#fbf3f3"});
+            $("#price_low").val(price_low);
+            $("#price_high").val(price_high);
         }
     </script>
     <script>
@@ -383,9 +387,19 @@
                     oDiv.html(oDiv.html().replace(key, sKey))
                 }
             }
-
         });
 
+    </script>
+    <script>
+        $(function () {
+            /*JQuery 限制文本框只能输入数字*/
+            $(".sort").keyup(function () {
+                $(this).val($(this).val().replace(/[^\d]|^0/g, ''));
+                console.log($(this).val())
+            }).bind("paste", function () {  //CTR+V事件处理
+                $(this).val($(this).val().replace(/D|^0/g, ''));
+            }).css("ime-mode", "disabled"); //CSS设置输入法不可用
+        });
     </script>
 </div>
 </body>
