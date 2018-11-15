@@ -1197,7 +1197,7 @@ def collection(request):
     print("商品收藏", collection_check_)
     if username:
         if collection_check_:
-            msg = "您已收藏过改商品"
+            msg = "您已收藏过该商品"
         else:
             msg = "收藏成功"
             cur.execute(
@@ -2286,7 +2286,7 @@ def system_message(request):
     login_status = username
     cur.execute("select * from t_system_message where get_message_id=%s order by system_message_id desc", [user_id, ])
     message_list = cur.fetchall()
-    paginator = Paginator(message_list, 5)
+    paginator = Paginator(message_list, 6)
     page = request.GET.get('page')
     print("系统消息", message_list)
     try:
@@ -2590,9 +2590,9 @@ def get_ali_object():
 
     # 支付完成后，支付偷偷向这里地址发送一个post请求，识别公网IP,如果是 192.168.20.13局域网IP ,支付宝找不到，def page2() 接收不到这个请求
     # notify_url = "http://47.94.172.250:8804/page2/"
-    notify_url = "http://127.0.0.1:8000/page2/"
+    notify_url = "http://127.0.0.1:80/page2/"
     # 支付完成后，跳转的地址。
-    return_url = "http://127.0.0.1:8000/page2/"
+    return_url = "http://127.0.0.1:80/page2/"
     merchant_private_key_path = "keys/app_private_2048.txt"  # 应用私钥
     alipay_public_key_path = "keys/alipay_public_2048.txt"  # 支付宝公钥
     alipay = AliPay(

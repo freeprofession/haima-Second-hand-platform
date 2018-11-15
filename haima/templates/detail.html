@@ -572,7 +572,8 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         竞拍错误
     </div>
 </div>
-
+<div class="col_msg_1">
+</div>
 <script type="text/javascript" src="../static/JS/main.js"></script>
 <script type="text/javascript" src="../static/JS/detail.js"></script>
 <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
@@ -726,17 +727,18 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                 'goods_id': goods_id,
                 {#'url_': url_#}
             }, function (data) {
-                if (data.msg === '您已收藏过改商品') {
+                if (data.msg === '您已收藏过该商品') {
                     {#$("#add_cart").css("background", "grey").text("已收藏")#}
-                    $("#add_cart").attr('disabled', true)
-
-                    $("#add_cart").css("background", "#F75009").text("已收藏")
-                    alert("您已收藏过改商品")
+                    $("#add_cart").attr('disabled', true);
+                    $("#add_cart").css("background", "#F75009").text("已收藏");
+                    $(".col_msg_1").text('您已经收藏过该商品').show();
+                    $(".col_msg_1").delay(1500).fadeOut()
                 } else if (data.msg === 'need_login') {
                     top.location.href = data.href
                 } else {
                     $("#add_cart").css("background", "#F75009").text("已收藏")
-                    alert("收藏成功")
+                    $(".col_msg_1").text('收藏成功').show();
+                    $(".col_msg_1").delay(1500).fadeOut()
                 }
             }, 'json')
 

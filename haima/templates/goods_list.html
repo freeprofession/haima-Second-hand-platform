@@ -280,12 +280,13 @@
         </form>
     </div>
     {% if contacts %}
-        <ul class="goods_type_list clearfix" id="goods_type_ul">
+        <ul class="goods_type_list clearfix">
             {% for goods in contacts %}
                 <li>
                     <a href="/goods_detail/?goods={{ goods.goods_id }}"><img
                             src="{{ goods.goods_imgurl }}?imageView2/0/w/160/h/160"></a>
-                    <h4><a href="/goods_detail/?goods={{ goods.goods_id }}">{{ goods.goods_title }}</a></h4>
+                    <h4><a href="/goods_detail/?goods={{ goods.goods_id }}"><span>{{ goods.goods_title }}</span></a>
+                    </h4>
                     <div class="operate">
                         <span class="prize">￥{{ goods.goods_price }}</span>
                         <span class="unit">/台</span>
@@ -305,17 +306,17 @@
         {% if contacts.has_previous %}
             <a href="?q={{ question }}&c={{ category }}&page={{ contacts.previous_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">上一页</a>
         {% endif %}
-            {% for pg in contacts.paginator.page_range %}
-                {% if pg == contacts.number %}
-                    <span class="active">
+        {% for pg in contacts.paginator.page_range %}
+            {% if pg == contacts.number %}
+                <span class="active">
                     <a href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
-                {% else %}
-                    <span>
+            {% else %}
+                <span>
                     <a href="?q={{ question }}&c={{ category }}&page={{ pg }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">{{ pg }}</a>
                 </span>
-                {% endif %}
-            {% endfor %}
+            {% endif %}
+        {% endfor %}
         {% if contacts.has_next %}
             <a href="?q={{ question }}&c={{ category }}&page={{ contacts.next_page_number }}&sort_method={{ sort_method }}&price_low={{ price_low }}&price_high={{ price_high }}">下一页</a>
         {% endif %}
@@ -368,24 +369,23 @@
         }
     </script>
     <script>
-        function keyLight(id, key, Color) {
-            var oDiv = document.getElementById(id),
-                oChilds = oDiv.childNodes,
-                Color = Color || "red",
-                sKey = "<span style='color: " + Color + ";'>" + key + "</span>",
-                rStr = new RegExp(key, "g");
-            for (var i = 0; i < oChilds.length - 1; i++) {
-                if (oChilds[i].nodeType == 3 && /\s/.test(oChilds[i].nodeValue)) {  //删除空白的节点
-                    oChilds[i].parentNode.removeChild(oChilds[i]);
+        $(document).ready(function () {
+            var i;
+            for (i = 1; i < 25; i++) {
+                {% for keys in question_word %}
+                    keyLight("{{ keys }}");
+                    keyLight("{{ keys }}");
+                {% endfor %}
+
+                function keyLight(key) {
+                    var oDiv = $('.goods_type_list li:nth-child(' + i + ') h4 a span'),
+                        sKey = "<span style='color: red;'>" + key + "</span>";
+                    oDiv.html(oDiv.html().replace(key, sKey))
                 }
-                oChilds[i].innerHTML = oChilds[i].innerHTML.replace(rStr, sKey);  //替换key
             }
-        }
-        {% for keys in question_word %}
-            keyLight('goods_type_ul', "{{ keys }}");
-            // keyLight('breadcrumb', "{{ keys }}");
-        {% endfor %}
-        keyLight('breadcrumb', "{{ user_address }}");
+
+        });
+
     </script>
 </div>
 </body>

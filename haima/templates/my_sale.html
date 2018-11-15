@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="../static/CSS/main.css">
 </head>
 <body>
-
 {% include 'home_head.html' %}
 <div class="search_bar clearfix">
     <a href="/haima/" class="logo fl"><img src="../static/Images/haima3.png" width="200" height="100"></a>
@@ -83,11 +82,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="for_psw info_{{ item.order_id }}" style="background: rgba(0,0,0,0.3)">
-                    <p class="popwin_title" style="height: 40px;position: absolute;top: 210px;line-height: 40px">
-                        买家信息
-                    </p>
-                    <div class="popwin_content">
+                <div class="for_psw info_{{ item.order_id }}" style="background: rgba(0,0,0,0)">
+                    <div class="popwin_content" style="position: absolute;left: 300px;border: 1px solid gray;">
                         <table align="center" style="font-size: 15px">
                             <tr>
                                 <td>卖家：</td>
