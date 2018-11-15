@@ -88,7 +88,7 @@
                                     target="_blank" style="color: #2d64b3">{{ item.username }} <span style="color: #810101">（{{ item.customer }}）</span></a></span>
                         </td>
                         <td>
-                            <a href="/goods_detail/?goods={{ item.goods_id }}" title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚"
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"
                                target="_blank" class="desct">{{ item.goods_name }}</a>
                             <p class="price"><em>{{ item.goods_price }}</em>元</p>
                         </td>
@@ -105,17 +105,17 @@
                             <p class="date">[{{ item.date }}]</p>
                         </td>
                         <td>
-                        <span class="saleman">{{ item.customer }}<a
+                        <span class="saleman"><a
                                 href="/user_credit/?user_credit_id={{ item.user_id }}"
-                                target="_blank">{{ item.username }}</a></span>
+                                target="_blank">{{ item.username }}<span style="color: #810101">（{{ item.customer }}）</span></a></span>
                         </td>
                         <td>
-                            <a href="/goods_detail/?goods={{ item.goods_id }}" title="牛津布搬家袋子打包行李手提特大超大容量收纳装被子编织帆布加厚"
+                            <a href="/goods_detail/?goods={{ item.goods_id }}"
                                target="_blank" class="desct">{{ item.goods_name }}</a>
                             <p class="price"><em>{{ item.goods_price }}</em>元</p>
                         </td>
                     </tr>
-                {% else %}
+                {% elif item.eva_state == '2' %}
                     <tr class="J_RateItem rate4">
                         <td class="align-c" style="text-align: center">
                             <i class="tb-rate-ico ico-rate4" title="差评"></i>
@@ -127,7 +127,7 @@
                             <p class="date">[{{ item.date }}]</p>
                         </td>
                         <td>
-                            <span class="saleman">{{ item.customer }}<a href="/user_credit/?user_credit_id={{ item.user_id }}" target="_blank">{{ item.username }}</a></span>
+                            <span class="saleman"><a href="/user_credit/?user_credit_id={{ item.user_id }}" target="_blank">{{ item.username }}<span style="color: #810101">（{{ item.customer }}）</span></a></span>
                         </td>
                         <td>
                             <a href="/goods_detail/?goods={{ item.goods_id }}"  title="Waiting星与月 月光石托帕石星星耳坠不对称纯银耳环短发韩国气质" target="_blank" class="desct">{{ item.goods_name }}</a>
