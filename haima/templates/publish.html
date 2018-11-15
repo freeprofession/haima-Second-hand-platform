@@ -111,7 +111,7 @@
                     <td>价格：</td>
                     <td>
                         <input type="text" name="price" placeholder="商品价格" onblur="checkprice()"
-                               value="{{ goods_list.goods_price }}">
+                               value="{{ goods_list.goods_price }}{{ price }}">
                         <div id="checkprice" style="float: right;font-size: 14px;color: red;display: none">格式有误</div>
                     </td>
                 </tr>
@@ -145,7 +145,7 @@
                 <tr>
                     <td>宝贝描述：</td>
                     <td><textarea name="desc" id="desc" cols="100" rows="8"
-                                  placeholder="商品描述不低于10个字">{{ goods_list.goods_desc|safe }}</textarea></td>
+                                  placeholder="商品描述不低于10个字">{{ goods_list.goods_desc|safe }}{{ desc }}</textarea></td>
                 </tr>
             </table>
             <input type="text" name="filelist" id="filelist" style="display:none;">
@@ -157,7 +157,15 @@
     <div class="pub" id="pub_rule">
         <h1 style="font-size: x-large;text-align: center">平台商品发布规则</h1>
         <div style="border: #ffda44 1px solid;height: 500px;width: 300px;">
-            <p style="font-size: 15px;color: black;text-indent: 2em">哈哈哈哈哈哈哈</p>
+            <p style="font-size: 15px;color: black;text-indent: 2em">1.商品名称。在包含商品名称的前提下从外观、功能、特点等方面进行个性化的商品描述。
+2.标题必须带有明确且单一的商品名称，同一条信息标题中严禁出现多个品牌或型号，标题中修饰词间禁用符号分隔，总字数（含数字、标点符号）不超过50个字符。
+3.标题中严禁出现电话号码、E-mail、公司名称等任何联系方式信息。
+4.标题中的商品名称必须与详细说明及图片中的商品保持一致。名称关键字要简洁，与商品相关的字词，最多5个词组。
+5.商品属性。商品本身所固有的属性特征，如：品牌、型号、成分、规格等。
+6.商品属性描述必须与实际物资及/或服务匹配对应，且真实有效。
+7.商品属性须按照商品详情页面的要求规范填写完善，如不能满足要求，可联系平台运营团队进行增加。
+8.商品图片。具体要求见附件《易派客平台图片内容及规格要求》。
+9.商品价格、计量单位、最小起订量、交货期（或制造周期）等交易属性描述必须真实有效；</p>
         </div>
     </div>
 </div>

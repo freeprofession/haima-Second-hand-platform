@@ -31,7 +31,7 @@
     </div>
     <div class="right_content clearfix">
         {% for user in user_info %}
-            <div class="info_con clearfix">
+            <div class="info_con clearfix" style="width: 1032px">
                 <div><img src="{{ user.user_imgurl }}" alt="" width="80" height="80"></div>
                 <div>
 
@@ -73,7 +73,7 @@
             </div>
         {% endfor %}
 
-        <h3 class="common_title2">最近浏览</h3>
+        <h3 class="common_title2" style="margin-top: 10px">最近浏览</h3>
         <div class="has_view_list">
             <a name="href"></a>
             <ul class="goods_type_list clearfix" style="margin-left: 0px;width: 1040px">
@@ -93,9 +93,8 @@
                             <a href="/goods_detail/?goods={{ item.goods_id }}"><img src="{{ item.goods_imgurl }}"></a>
                             <h4><a href="/goods_detail/?goods={{ item.goods_id }}">{{ item.goods_title }}</a></h4>
                             <div class="operate">
-                                <span class="prize">￥：{{ item.goods_price }}</span>
+                                <span class="prize">￥{{ item.goods_price }}</span>
                                 <p class="unit">{{ item.browse_date }}</p>
-                                <a href="#" class="add_goods" title="加入购物车"></a>
                             </div>
                         </li>
                     {% endfor %}

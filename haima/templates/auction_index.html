@@ -99,10 +99,10 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
 
 <div class="pos_center_con clearfix">
     <ul class="slide">
-        <li><a href="#"><img src="../static/images/a_slide01.png" alt="幻灯片01" height="350" width="1600"></a></li>
+        <li><a href="#"><img src="../static/Images/a_slide01.png" alt="幻灯片01" height="350" width="1600"></a></li>
         <li><a href="#"><img src="../static/Images/a2.png" alt="幻灯片02" height="350" width="1600"></a></li>
         <li><a href="#"><img src="../static/Images/auction2.jpg" alt="幻灯片03" height="350" width="1600"></a></li>
-        <li><a href="#"><img src="../static/images/slide04.jpg" alt="幻灯片04"></a></li>
+        <li><a href="#"><img src="../static/Images/slide04.jpg" alt="幻灯片04"></a></li>
     </ul>
     <div class="prev"></div>
     <div class="next"></div>
@@ -215,8 +215,8 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
         {% endif %}
         {% for pg in contacts.paginator.page_range %}
             {% if pg == contacts.number %}
-                <span class="active">
-                    <a href="?page={{ pg }}">{{ pg }}</a>
+                <span>
+                    <a style="background-color: #ffe24c" href="?page={{ pg }}">{{ pg }}</a>
                 </span>
             {% else %}
                 <span>

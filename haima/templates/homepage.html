@@ -27,7 +27,7 @@
     </div>
 
     <div class="guest_cart fr">
-        <a href="/my_collection/" class="cart_name fl">我的收藏</a>
+        <a href="/my_collection/" class="cart_name fl" title="最多显示4条">我的收藏</a>
         <div class="goods_count fl" id="show_count">{{ col_count }}</div>
         <ul class="cart_goods_show">
             {% if not collection_list %}
@@ -420,13 +420,13 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                     <a href="/goods_list/?q=荣耀&price_low=&price_high=">荣耀手机</a>
                     <a href="/goods_list/?q=国美&price_low=&price_high=">国美手机</a>
                     <a href="/goods_list/?q=华为&price_low=&price_high=">华为手机</a>
-                    <a href="#">热销推荐</a>
-                    <a href="#">以旧换新</a>
-                    <a href="#">潮3C</a>
-                    <a href="#">全面屏</a>
-                    <a href="#">守护宝</a>
-                    <a href="#">存储卡</a>
-                    <a href="#">保护套</a>
+                    <a href="/goods_list/?q=热销&price_low=&price_high=">热销推荐</a>
+                    <a href="/goods_list/?q=以旧换新&price_low=&price_high=">以旧换新</a>
+                    <a href="/goods_list/?q=3C&price_low=&price_high=">潮3C</a>
+                    <a href="/goods_list/?q=全面屏&price_low=&price_high=">全面屏</a>
+                    <a href="/goods_list/?q=守护宝&price_low=&price_high=">守护宝</a>
+                    <a href="/goods_list/?q=存储卡&price_low=&price_high=">存储卡</a>
+                    <a href=/goods_list/?q=保护套&price_low=&price_high=>保护套</a>
                 </div>
 
             </div>
@@ -454,22 +454,22 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
             <div class="goods_banner fl">
                 <img src="../static/Images/banner02.jpg">
                 <div class="channel">
-                    <a href="#">电脑</a>
-                    <a href="#">数码</a>
-                    <a href="#">配件</a>
-                    <a href="#">潮电子</a>
+                    <a href="/goods_list/?q=电脑&price_low=&price_high=">电脑</a>
+                    <a href="/goods_list/?q=数码&price_low=&price_high=">数码</a>
+                    <a href="/goods_list/?q=配件&price_low=&price_high=">配件</a>
+                    <a href="/goods_list/?q=电子&price_low=&price_high=">潮电子</a>
                 </div>
                 <div class="key_words">
                     <a href="/goods_list/?q=Apple&price_low=&price_high=">Apple</a>
                     <a href="/goods_list/?q=神舟战神&price_low=&price_high=">神舟战神</a>
                     <a href="/goods_list/?q=单反&price_low=&price_high=">单反相机</a>
                     <a href="/goods_list/?q=智能家居&price_low=&price_high=">智能家居</a>
-                    <a href="#">智能路由</a>
-                    <a href="#">显卡</a>
-                    <a href="#">顽石</a>
-                    <a href="#">内存</a>
-                    <a href="#">耳机</a>
-                    <a href="#">主机</a>
+                    <a href="/goods_list/?q=路由&price_low=&price_high=">智能路由</a>
+                    <a href="/goods_list/?q=显卡&price_low=&price_high=">显卡</a>
+                    <a href="/goods_list/?q=顽石&price_low=&price_high=">顽石</a>
+                    <a href="/goods_list/?q=内存&price_low=&price_high=">内存</a>
+                    <a href="/goods_list/?q=耳机&price_low=&price_high=">耳机</a>
+                    <a href="/goods_list/?q=主机&price_low=&price_high=">主机</a>
                 </div>
             </div>
             <ul class="goods_list fl">
@@ -496,21 +496,21 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
             <div class="goods_banner fl">
                 <img src="../static/Images/banner04.jpg">
                 <div class="channel">
-                    <a href="#">单反相机</a>
-                    <a href="#">数码相机</a>
-                    <a href="#">摄像机</a>
+                    <a href="/goods_list/?q=单反&price_low=&price_high=">单反相机</a>
+                    <a href="/goods_list/?q=数码相机&price_low=&price_high=">数码相机</a>
+                    <a href="/goods_list/?q=摄像机&price_low=&price_high=">摄像机</a>
                 </div>
                 <div class="key_words">
-                    <a href="#">拍立得</a>
-                    <a href="#">镜头</a>
-                    <a href="#">相机包</a>
-                    <a href="#">索尼</a>
-                    <a href="#">尼康</a>
-                    <a href="#">松下</a>
-                    <a href="#">三星</a>
-                    <a href="#">三脚架</a>
-                    <a href="#">微单</a>
-                    <a href="#">投影</a>
+                    <a href="/goods_list/?q=拍立得&price_low=&price_high=">拍立得</a>
+                    <a href="/goods_list/?q=镜头&price_low=&price_high=">镜头</a>
+                    <a href="/goods_list/?q=相机包&price_low=&price_high=">相机包</a>
+                    <a href="/goods_list/?q=索尼&price_low=&price_high=">索尼</a>
+                    <a href="/goods_list/?q=尼康&price_low=&price_high=">尼康</a>
+                    <a href="/goods_list/?q=松下&price_low=&price_high=">松下</a>
+                    <a href="/goods_list/?q=三星&price_low=&price_high=">三星</a>
+                    <a href="/goods_list/?q=三脚架&price_low=&price_high=">三脚架</a>
+                    <a href="/goods_list/?q=微单&price_low=&price_high=">微单</a>
+                    <a href="/goods_list/?q=投影&price_low=&price_high=">投影</a>
                 </div>
             </div>
             <ul class="goods_list fl">
@@ -578,7 +578,7 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
     }
 </style>
 <div id="background" class="background" style="display: none; "></div>
-<div id="progressBar" class="progressBar" style="display: none; ">数据提交中，请稍等...</div>
+<div id="progressBar" class="progressBar" style="display: none; ">图片上传中，请稍等...</div>
 <script>
     $('#search_img').on('change', function (e) {
             var file = e.target.files[0];
@@ -606,6 +606,8 @@ white-space: nowrap;text-overflow: ellipsis;width: 160px">{{ value.goods_title }
                     input = $("<input type='text'>").val(url).attr('name', 'url')
                     form.append(input)
                     $(document.body).append(form);
+                    var ajaxbg = $("#background,#progressBar");
+                    ajaxbg.hide();
                     form.submit()
                 }
             }
