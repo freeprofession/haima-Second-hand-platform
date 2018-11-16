@@ -29,7 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-from myapp import AI_assess
+# from myapp import AI_assess
 from myapp import goods_recommend
 
 
