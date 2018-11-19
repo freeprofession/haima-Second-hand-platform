@@ -164,7 +164,7 @@ FFile.prototype = {
         // console.log(dex);
         // console.log(fileArray)
         console.log(postArray)
-        // form.submit();
+        form.submit();
 
         // $.ajax({
         //     type: "POST",
