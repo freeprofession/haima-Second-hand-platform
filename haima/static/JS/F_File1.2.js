@@ -138,7 +138,7 @@ FFile.prototype = {
                 this.onDelete(fileDelete);
             }
         }
-        this.FileSet.fileFiltre = arrFile;
+        this.FileSet.fileFilter = arrFile;
         return this;
     },
 
@@ -163,8 +163,8 @@ FFile.prototype = {
 
         // console.log(dex);
         // console.log(fileArray)
-        // console.log(postArray)
-        form.submit();
+        console.log(postArray)
+        // form.submit();
 
         // $.ajax({
         //     type: "POST",
