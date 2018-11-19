@@ -92,7 +92,7 @@ def send_sms(request):
                "mobile": phone,
                "uid": phone}
     textmod = json.dumps(textmod).encode(encoding='utf-8')
-    header_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko',
+    header_dict = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0',
                    "Content-Type": "application/json"}
     req = rq.Request(url='https://open.ucpaas.com/ol/sms/sendsms', data=textmod, headers=header_dict)
     res = rq.urlopen(req)
@@ -324,9 +324,9 @@ def login_ajax(request):
                 # print(href)
                 error = "login_ok"
                 if return_url:
-                    if return_url == "http://127.0.0.1:8000/register_ok/":
+                    if return_url == "http://g1.xmgc360.com/register/_ok/":
                         return_url = "/haima/"
-                    elif return_url == "http://127.0.0.1:8000/register/":
+                    elif return_url == "http://g1.xmgc360.com/register//":
                         return_url = "/haima/"
                     else:
                         pass
@@ -426,7 +426,7 @@ def register_ajax(request):
             check_name = re.compile("[\u4e00-\u9fa5_a-zA-Z0-9]+$")
             check_ = check_name.match(username)
             if check_ is None:
-                user_error = "用户名为6-16位的数字或英文,或汉子"
+                user_error = "用户名为6-12位的数字或字母或6位以下汉字"
                 return HttpResponse(json.dumps({"error": user_error}))
             else:
                 if user_list:  # 判断用户名是否存在
@@ -436,7 +436,7 @@ def register_ajax(request):
                     user_error = ""  # 用户名可用
                     return HttpResponse(json.dumps({"error": user_error}))
         else:
-            user_error = "用户名为6-16位的数字或英文"
+            user_error = "用户名为6-12位的数字或字母或6位以下汉字"
             return HttpResponse(json.dumps({"error": user_error}))
 
     else:
@@ -580,7 +580,6 @@ def goods_list(request):
                         bvalue_list = list(cut_words.smembers(key))
                         for value in bvalue_list:
                             value = int(value.decode('utf-8'))
-
                             if value not in value_list:
                                 value_list.append(value)
                                 cur.execute(
@@ -645,6 +644,8 @@ def goods_list(request):
             goods_lst = start_list
 
         sort_method = request.GET.get('sort_method')
+        if sort_method == '0':
+            goods_lst = goods_lst
         if sort_method == '1':
             goods_lst.sort(key=lambda x: x['goods_price'])
         if sort_method == '2':
@@ -912,8 +913,9 @@ def goods_detail(request):
         cur.execute('select * from t_user right join t_message on user_id = message_user_id')
         message_list = cur.fetchall()  # 留言
         # ++++++++++++++++++++++++商品留言处理++++++++++++++++++++++++++++++
-        cur.execute("select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
-                    [goods_id, ])
+        cur.execute(
+            "select * from t_second_message right join t_user on child_user_id=user_id where  second_goods_id=%s",
+            [goods_id, ])
         b = cur.fetchall()
         # print('weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', b, 'weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
         cur.execute('select * from t_message right join t_user on message_user_id=user_id where message_goods_id=%s ',
@@ -948,6 +950,11 @@ def goods_detail(request):
         # print(p_comment_dict)
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
         if username:  # 登录后才记录，浏览记录
+            # 收藏数
+            cur.execute("select count(collection_user_id) from t_user_collection where collection_user_id = %s",
+                        [user_id, ])
+            col_count = cur.fetchone()
+            col_count = col_count['count(collection_user_id)']
             key = goods_id
             goods_browse.lpush(key, user_id)
             key = goods_id
@@ -955,7 +962,8 @@ def goods_detail(request):
             user_imgurl = cur.fetchone()["user_imgurl"]
             # print("图片", user_imgurl)
             login_status = username
-            cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s", [user_id, goods_id])
+            cur.execute("select * from t_user_browse where browse_user_id=%s and browse_goods_id=%s",
+                        [user_id, goods_id])
             browse = cur.fetchone()
             # print(browse, "检查")
             if browse is None:
@@ -970,19 +978,23 @@ def goods_detail(request):
                             [user_id, goods_id])
                 user_browse = cur.fetchone()
                 if user_browse:
-                    cur.execute("update t_user_browse set browse_date=%s where browse_goods_id=%s and browse_user_id=%s",
-                                [now_time, goods_id, user_id])
+                    cur.execute(
+                        "update t_user_browse set browse_date=%s where browse_goods_id=%s and browse_user_id=%s",
+                        [now_time, goods_id, user_id])
                 else:
-                    cur.execute("insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
-                                [user_id, now_time, goods_id])
+                    cur.execute(
+                        "insert into t_user_browse(browse_user_id,browse_date,browse_goods_id) value(%s,%s,%s) ",
+                        [user_id, now_time, goods_id])
             con.commit()
         else:
+            col_count = 0
             login_status = '未登录'
             user_imgurl = '../static/Images/default_hp.jpg'
         href = 1
         return render(request, "detail.html", locals())
     except:
-        return render(request,"404.html")
+        return render(request, "404.html")
+
 
 # 测试用---------------------------------
 def text_message(request):
@@ -1254,7 +1266,6 @@ def goods_republish(request):
     con = pymysql.connect(host='47.100.200.132', user='user', password='123456', database='haima', charset='utf8')
     cur = con.cursor(pymysql.cursors.DictCursor)
     user_name = request.session.get('username')
-    goods_id = request.GET.get("goods_id")
     username = request.session.get('username')
     user_id = request.session.get('user_id')
     if username:
@@ -1270,30 +1281,51 @@ def goods_republish(request):
             message_check = "../static/Images/message.png"
         print(message_check, "消息推送")
         login_status = username
+    if request.method == 'GET':
+        goods_id = request.GET.get("goods_id")
+        if goods_id:
+            cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])
+            goods_list = cur.fetchone()
 
-    if goods_id:
-        cur.execute("select * from t_goods where goods_id=%s", [goods_id, ])
-        goods_list = cur.fetchone()
+            img_list1 = []
+            for item in img.lrange(goods_id, 0, 4):
+                img_list1.append(item.decode("utf-8"))
+            print("图片", img_list1)
+            a = 0
+            c = ""
+            for i in img_list1:
+                rr = """<div id="js-uploadList_fuck{0}" class="img-box">
+        <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="{1}"></span>
+            <img src="{2}">
+        </div>
+    </div>"""
+                b = rr.format(a, a, i)
+                a += 1
+                c += b
+            print(c)
+            return render(request, "publish.html", locals())
+        else:
 
-        img_list1 = []
-        for item in img.lrange(goods_id, 0, 4):
-            img_list1.append(item.decode("utf-8"))
-        print("图片", img_list1)
-        a = 0
-        c = ""
-        for i in img_list1:
-            rr = """<div id="js-uploadList_fuck{0}" class="img-box">
-    <div class="img-border"><span class="js-upload_delete icon-delete_fill red" data-index="{1}"></span>
-        <img src="{2}">
-    </div>
-</div>"""
-            b = rr.format(a, a, i)
-            a += 1
-            c += b
-        print(c)
-        return render(request, "publish.html", locals())
-    else:
-        return render(request, "publish.html", locals())
+            return render(request, "publish.html", locals())
+    if request.method == 'POST':
+        price = int(request.POST.get('price_hid').replace('¥', ''))
+        brand = request.POST.get('brand_hid')
+        model = request.POST.get('model_hid')
+        configuration = request.POST.get('configuration_hid')
+        color = request.POST.get('color_hid')
+        GT = request.POST.get('GT_hid')
+        face = request.POST.get('face_hid')
+        maintain = request.POST.get('maintain_hid')
+        UT = request.POST.get('UT_hid')
+        desc = '品牌：' + brand + '\n' + \
+               '型号：' + model + '\n' + \
+               '配置：' + configuration + '\n' + \
+               '颜色：' + color + '\n' + \
+               '保修情况：' + GT + '\n' + \
+               '外观情况：' + face + '\n' + \
+               '维修情况：' + maintain + '\n' + \
+               '使用时间：' + UT + '\n'
+        return render(request, 'publish.html', locals())
 
 
 @mysql_required
@@ -1381,7 +1413,21 @@ def publish_ok(request):
 
 # 估价
 def assess(request):
-    user_name = request.session.get('username')
+    username = request.session.get('username')
+    user_id = request.session.get('user_id')
+    if username:
+        message_check1 = message_push.lrange(user_id, 0, 1)
+        message_list_push = []
+        message_list_push1 = message_push.lrange(user_id, 0, 3)
+        for item in message_list_push1:
+            message_list_push.append(item.decode("utf-8"))
+        print(message_list_push)
+        if message_check1:
+            message_check = "../static/Images/new02.gif"
+        else:
+            message_check = "../static/Images/message.png"
+        print(message_check, "消息推送")
+        login_status = username
     return render(request, 'assess.html', locals())
 
 
@@ -1953,7 +1999,7 @@ def my_collection(request):
         page = request.GET.get('page')
         try:
             contacts = paginator.page(page)
-        except PageNotAnInteger:            # If page is not an integer, deliver first page.
+        except PageNotAnInteger:  # If page is not an integer, deliver first page.
             contacts = paginator.page(1)
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.

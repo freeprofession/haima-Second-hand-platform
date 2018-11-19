@@ -154,37 +154,37 @@
 
         </div>
 
-        <div id="buy_now_message" style="background-color: #2e3846; color: white">
+        <div id="buy_now_message" style="background-color: #f3f3f3; color: black">
             <div style="margin-left: 30px;">
-                <button id="shutdown">
+                <button id="shutdown" style="border: 0px;background-color: #f3f3f3">
                     关闭
                 </button>
                 <div class="type_select">
                     <label>当前价格:</label>
-                    <span id="old_price" style="color: white">{{ i.attribute.auction_goods_price }}</span>
+                    <span id="old_price" style="color: black">{{ i.attribute.auction_goods_price }}</span>
                 </div>
                 <div class="type_select">
                     <label>竞拍加价:</label>
-                    <span id="buy_auction_premium" style="color: white">0</span>
+                    <span id="buy_auction_premium" style="color: black">0</span>
                 </div>
                 <div class="type_select">
                     <label>总计:</label>
-                    <span id="buy_auction_goods_price" style="color: white">0</span>
+                    <span id="buy_auction_goods_price" style="color: black">0</span>
                 </div>
                 <div class="type_select">
                     <label>需先支付保证金:</label>
-                    <span style="color: white">{{ i.attribute.auction_goods_margin }}</span>
+                    <span style="color: black">{{ i.attribute.auction_goods_margin }}</span>
                 </div>
                 <div class="type_select">
                     <label>请输入支付密码:</label>
-                    <input type="text" maxlength="6" id="pay_password" style="margin-top: 10px;">
+                    <input type="text" maxlength="6" id="pay_password" style="color: black">
                 </div>
 
                 <div class="type_select">
-                    <button id="confirm_buy" style="margin-left: 80px;">确认竞拍</button>
+                    <button id="confirm_buy" style="color: black">确认竞拍</button>
                 </div>
 
-                <div id="pay_error">
+                <div id="pay_error" style="margin-left: 50px;background-color: #ffda44">
                     竞拍错误
                 </div>
             </div>

@@ -193,6 +193,14 @@ $(function () {
             }, function (data) {
                 $("#assess_price").text(data.price);
                 $("#price_hid").val(data.price);
+                $("#brand_hid").val(brand);
+                $("#model_hid").val(model);
+                $("#configuration_hid").val(configuration);
+                $("#color_hid").val($("#phone_color option:selected").text());
+                $("#GT_hid").val($("#GT option:selected").text());
+                $("#face_hid").val($("#face option:selected").text());
+                $("#maintain_hid").val($("#maintain option:selected").text());
+                $("#UT_hid").val($("#UT option:selected").text());
             }, 'json')
         }
     })

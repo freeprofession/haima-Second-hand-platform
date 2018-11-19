@@ -1248,7 +1248,10 @@ label:hover {
 
 .sort_active {
     background-color: #f80000;
-    color: #fff;
+}
+
+.sort_btn a {
+    color: black;
 }
 
 .goods_type_list {

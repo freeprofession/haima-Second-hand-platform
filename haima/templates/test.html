@@ -3,52 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-      <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../static/JS/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-    <div id="2018-11-11" class="time" style="width: 100px;height: 20px;">
+<input type="text" class="txt NumText" Width="100px"/>
 
-    </div>
-    <div id="2018-11-12" class="time" style="width: 100px;height: 20px;">
-
-    </div>
-    <div id="2018-11-13" class="time" style="width: 100px;height: 20px;">
-
-    </div>
+</div>
 </body>
 <script>
+    $(function () {
+        /*JQuery 限制文本框只能输入数字*/
+        $(".NumText").keyup(function () {
+            $(this).val($(this).val().replace(/[^\d]|^0/g, ''));
+            console.log($(this).val())
+        }).bind("paste", function () {  //CTR+V事件处理
+            $(this).val($(this).val().replace(/D|^0/g, ''));
+        }).css("ime-mode", "disabled"); //CSS设置输入法不可用
 
-    var addTimer = function () {
-        var list = [],
-            interval;
+        /*JQuery 限制文本框只能输入数字和小数点*/
 
-        return function (id, time) {
-            if (!interval)
-                interval = setInterval(go, 1000);
-            list.push({ ele: document.getElementById(id), time: time });
-        }
-
-        function go() {
-
-            for (var i = 0; i < list.length; i++) {
-
-                list[i].ele.innerHTML = getTimerString(list[i].time ? list[i].time -= 1 : 0);
-                if (!list[i].time)
-                    list.splice(i--, 1);
-            }
-        }
-
-        function getTimerString(time) {
-                d = Math.floor(time / 86400),
-                h = Math.floor((time % 86400) / 3600),
-                m = Math.floor(((time % 86400) % 3600) / 60),
-                s = Math.floor(((time % 86400) % 3600) % 60);
-
-            if (time>0)
-                return d + "天" + h + "小时" + m + "分" + s + "秒";
-            else return "0天"  + "0小时"  + "0分"  + "0秒";
-        }
-    } ();
+        /*$(".NumDecText").keyup(function () {
+            $(this).val($(this).val().replace(/[^0-9.]/g, ''));
+        }).bind("paste", function () {  //CTR+V事件处理
+            $(this).val($(this).val().replace(/[^0-9.]/g, ''));
+        }).css("ime-mode", "disabled"); //CSS设置输入法不可用*/
+    });
 
 </script>
 </html>
