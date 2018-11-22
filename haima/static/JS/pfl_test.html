@@ -1,0 +1,52 @@
+<script>
+    var visitadd = new Vue({
+        el: '#app',
+        data: {
+            album: {
+                content: "",
+                pics: []
+            },
+            apiUrl: '../app/savealbum?to_uid=10165',
+        },
+        ready: function () {
+
+        },
+        methods: {
+            cancelok: function () {
+                var $iosDialog2 = $('#iosDialog2');
+                $iosDialog2.fadeOut(100);
+            },
+            visitsave: function () {
+                var $loadingToast = $('#loadingToast');
+                if ($loadingToast.css('display') != 'none') return;
+                $loadingToast.fadeIn(100);
+                var vm = this
+                vm.$http.post(vm.apiUrl, vm.album)
+                    .then(function (response) {
+                        var dataobj;
+                        if (typeof(response.data) == 'string') {
+                            var dataobj = JSON.parse(response.data);
+                        } else {
+                            var dataobj = response.data;
+                        }
+
+                        $loadingToast.fadeOut(100);
+                        if (dataobj.code == 0) {
+                            //var $iosDialog2 = $('#iosDialog2');
+                            //$("#showresult").html(dataobj.text);
+                            //$iosDialog2.fadeIn(100);
+                            location.href = "../app/albums?uid=10130&to_uid=10165";
+                        } else {
+                            var $iosDialog2 = $('#iosDialog2');
+                            $("#showresult").html("失败：" + dataobj.text);
+                            $iosDialog2.fadeIn(100);
+                        }
+                    });
+            }
+
+        }
+    })
+</script>
+
+
+

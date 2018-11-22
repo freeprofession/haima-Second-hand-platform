@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">{{ username }}欢迎来到海马商城!</div>
+
+        <div class="login_btn fl">
+            <a href="/login/">登录</a>
+            <span>|</span>
+            <a href="/register/">注册</a>
+        </div>
+        <div class="user_link fl">
+            <span>|</span>
+            <a href="/haima/">首页</a>
+            <span>|</span>
+            <a href="/user/">用户中心</a>
+            <span>|</span>
+            <a href="" id="my_order" onmouseover="showhide()">我的订单</a><br>
+
+        </div>
+    </div>
+</div>
+{% block mainbody %}
+    <p>he</p>
+{% endblock %}
+</body>
+</html>

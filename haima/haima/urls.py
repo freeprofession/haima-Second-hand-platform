@@ -33,6 +33,7 @@ urlpatterns = [
     path('admin_search_goods/', view.admin_search_goods),
     path('admin_search_user/', view.admin_search_user),
     path('admin_update/', view.admin_update),
+ path('category/', view.category),
     path('exit/', view.exit),
     path('', view.homepage),
     path('haima/', view.homepage),

@@ -29,7 +29,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp import phone_model
-# from myapp import AI_assess
+from myapp import AI_assess
 from myapp import goods_recommend
 
 
@@ -324,9 +324,9 @@ def login_ajax(request):
                 # print(href)
                 error = "login_ok"
                 if return_url:
-                    if return_url == "http://g1.xmgc360.com/register/_ok/":
+                    if return_url == "http://g1.xmgc360.com/register_ok/":
                         return_url = "/haima/"
-                    elif return_url == "http://g1.xmgc360.com/register//":
+                    elif return_url == "http://g1.xmgc360.com/register/":
                         return_url = "/haima/"
                     else:
                         pass

@@ -1,0 +1,249 @@
+{% extends "admin.html" %}
+{% block mainbody %}
+    <div class="admin-biaogelist" id="top">
+        <div class="listbiaoti am-cf">
+            <ul class="am-icon-flag on"> 商品管理</ul>
+            <dl class="am-icon-home" style="float: right;"> 当前位置： <a href="/admin/">首页</a> > 商品列表</dl>
+            <dl>
+                <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"> 添加产品</button>
+            </dl>
+        </div>
+        <div class="am-btn-toolbars am-btn-toolbar am-kg am-cf">
+            <ul>
+                <li>
+                    <div class="am-btn-group am-btn-group-xs">
+                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
+                            <option value="b">产品分类</option>
+                            <option value="o">下架</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="am-btn-group am-btn-group-xs">
+                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
+                            <option value="b">产品分类</option>
+                            <option value="o">下架</option>
+                        </select>
+                    </div>
+                </li>
+                <li style="margin-right: 0;">
+                    <span class="tubiao am-icon-calendar"></span>
+                    <input type="text" id="start" class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
+                           placeholder="开始日期" data-am-datepicker="{theme: 'success',}" readonly/>
+                </li>
+                <li style="margin-left: -4px;">
+                    <span class="tubiao am-icon-calendar"></span>
+                    <input type="text" id="end" class="am-form-field am-input-sm am-input-zm  am-icon-calendar"
+                           placeholder="开始日期" data-am-datepicker="{theme: 'success',}" readonly/>
+                </li>
+
+                <li style="margin-left: -10px;">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <select data-am-selected="{btnWidth: 90, btnSize: 'sm', btnStyle: 'default'}">
+                            <option value="b">产品分类</option>
+                            <option value="o">下架</option>
+                        </select>
+                    </div>
+                </li>
+                <li><input type="text" class="am-form-field am-input-sm am-input-xm" placeholder="关键词搜索"
+                           style="margin-top: 0px;"/></li>
+                <li>
+                    <button type="button" class="am-btn am-radius am-btn-xs am-btn-success" id="search">搜索
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <form class="am-form am-g">
+            <table width="100%" class="am-table am-table-bordered am-table-radius am-table-striped">
+                <thead>
+                <tr class="am-success">
+                    <th class="table-check"><input type="checkbox" name="checkall"/></th>
+                    {#                    <th class="table-id">排序</th>#}
+                    <th class="table-id">ID</th>
+                    <th class="table-title">标题</th>
+                    <th class="table-user">发布用户</th>
+                    <th class="table-type">类别</th>
+                    <th class="table-author am-hide-sm-only">上架/下架 <i class="am-icon-check am-text-warning"></i> <i
+                            class="am-icon-close am-text-primary"></i></th>
+                    <th class="table-date am-hide-sm-only">发布日期</th>
+                    <th class="table-area">地区</th>
+                    <th width="163px" class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for goods in contacts %}
+                    <tr>
+                        <td><input type="checkbox" name="checkbox"/></td>
+                        {#                        <td><input type="text" class="am-form-field am-radius am-input-sm"/></td>#}
+                        <td>{{ goods.goods_id }}</td>
+                        <td>{{ goods.goods_title }}</td>
+                        <td>{{ goods.user_name }}</td>
+                        <td>{{ goods.goods_category_id }}</td>
+                        <td class="am-hide-sm-only">
+                            {% if goods.goods_state == '2' %}
+                                <i class="am-icon-close am-text-primary" id="{{ goods.goods_id }}"></i>
+                            {% else %}
+                                <i class="am-icon-check am-text-warning" id="{{ goods.goods_id }}"></i>
+                            {% endif %}
+                        </td>
+                        <td class="am-hide-sm-only">{{ goods.release_date }}</td>
+                        <td>{{ goods.goods_address }}</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" onclick="detail(this)" value="{{ goods.goods_id }}"
+                                            class="am-btn am-btn-default am-btn-xs am-text-success am-round"
+                                            title="查看商品"><span
+                                            class="am-icon-search"></span></button>
+                                    <button type="button" onclick="up(this)" value="{{ goods.goods_id }}"
+                                            class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
+                                            title="上架商品"><span
+                                            class="am-icon-arrow-up"></span></button>
+                                    <button type="button" onclick="down(this)" value="{{ goods.goods_id }}"
+                                            class="am-btn am-btn-default am-btn-xs am-text-warning  am-round"
+                                            title="下架商品"><span
+                                            class="am-icon-arrow-down"></span></button>
+                                    <button type="button"
+                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-round"
+                                            title="强制删除"><span
+                                            class="am-icon-trash-o"></span></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="am-btn-group am-btn-group-xs">
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 删除</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 上架</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 下架</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 移动</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 移动
+                </button>
+                <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除
+                </button>
+            </div>
+            {#{{ contacts.paginator.num_pages }}#}
+            <ul class="am-pagination am-fr">
+                {% if contacts.has_previous %}
+                    <li><a href="?page={{ contacts.previous_page_number }}">«</a></li>
+                {% else %}
+                    <li class="am-disabled"><a href="javascript:void(0);">«</a></li>
+                {% endif %}
+                {% for pg in contacts.paginator.page_range %}
+                    {% if pg == contacts.number %}
+                        <li class="am-active"><a href="javascript:void(0);">{{ pg }}</a></li>
+                    {% else %}
+                        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if contacts.has_next %}
+                    <li><a href="?page={{ contacts.next_page_number }}">»</a></li>
+                {% else %}
+                    <li class="am-disabled"><a href="javascript:void(0);">»</a></li>
+                {% endif %}
+            </ul>
+            <hr/>
+            <p>注：.....</p>
+        </form>
+        {% include "admin_bottom.html" %}
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        function detail(obj) {
+            goods_id = $(obj).val();
+            $(location).attr('href', '/goods_detail/?goods=' + goods_id);
+        }
+
+        function down(obj) {
+            goods_id = $(obj).val();
+            $.ajax({
+                type: "POST",
+                url: "/admin_update/",
+                data: {'goods_id': goods_id, 'action': '2'},
+                success: function (data) {
+                    //处理返回后的数据
+                    if (data) {
+                        $("#" + goods_id).attr("class", "am-icon-close am-text-primary");
+                        {#alert("下架成功")#}
+                    } else {
+                        {#alert("下架失败，请刷新页面重试")#}
+                    }
+                }, error: function () {
+                    console.log("业务繁忙")
+                }
+            })
+        }
+
+        function up(obj) {
+            goods_id = $(obj).val();
+            $.ajax({
+                type: "POST",
+                url: "/admin_update/",
+                data: {'goods_id': goods_id, 'action': '0'},
+                success: function (data) {
+                    //处理返回后的数据
+                    if (data) {
+                        $("#" + goods_id).attr("class", "am-icon-check am-text-warning");
+                        {#alert("上架成功")#}
+                    } else {
+                        {#alert("上架失败，请刷新页面重试")#}
+                    }
+                }, error: function () {
+                    console.log("业务繁忙")
+                }
+            })
+        }
+    </script>
+    <script>
+        function duibi(a, b, flag) {
+            var arr = a.split("-");
+            var starttime = new Date(arr[0], arr[1], arr[2]);
+            var starttimes = starttime.getTime();
+            var arrs = b.split("-");
+            var endTime = new Date(arrs[0], arrs[1], arrs[2]);
+            var endTimes = endTime.getTime();
+            // 进行日期比较
+            if (endTimes >= starttimes) {
+                flag = "true";
+                return flag;
+            } else {
+                flag = "false";
+                return flag;
+            }
+        }
+
+        $('#search').click(function () {
+            start = $('#start').val();
+            end = $('#end').val();
+            console.log(start, end)
+            $.ajax({
+                type: "POST",
+                url: "/admin_search_goods/",
+                data: {'start': start, 'end': end},
+                success: function (data) {
+                    //处理返回后的数据
+                    console.log(data)
+                }
+            })
+        })
+    </script>
+    <script>
+        $('input[name="checkall"]').on("click", function () {
+            if ($(this).is(':checked')) {
+                $('input[name="checkbox"]').each(function () {
+                    $(this).prop("checked", true);
+                });
+            } else {
+                $('input[name="checkbox"]').each(function () {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+
+    </script>
+{% endblock %}
